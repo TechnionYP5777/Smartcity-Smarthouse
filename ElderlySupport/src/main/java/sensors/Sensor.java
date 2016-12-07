@@ -1,4 +1,4 @@
-package temp2.ElderlySupport.sensors;
+package sensors;
 
 /**
  * @author Sharon

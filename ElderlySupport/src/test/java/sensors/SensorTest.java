@@ -1,8 +1,10 @@
-package temp2.ElderlySupport.sensors;
+package sensors;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import sensors.Sensor;
 
 /**
  * @author Sharon
