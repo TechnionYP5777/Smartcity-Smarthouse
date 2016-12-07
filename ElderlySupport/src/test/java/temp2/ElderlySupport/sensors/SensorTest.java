@@ -1,30 +1,39 @@
 package temp2.ElderlySupport.sensors;
 
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-
-import junit.framework.Assert;
 
 /**
  * @author Sharon
  * @since 7.12.16
  */
-@SuppressWarnings("static-method")
 public class SensorTest {
-	@Test
-	public void testSensorCreation() {
-		@SuppressWarnings("unused")
-		Sensor sensor = new Sensor("Default Sensor");
+	private Sensor sensor;
+
+	@Before
+	public void initSensor() {
+		this.sensor = new Sensor("Default Sensor") {
+			@Override
+			protected String[] getObservationsNames() {
+				return new String[] { "name", "last name" };
+			}
+		};
 	}
 
 	@Test
-	public void checkIfNameIsCorrect() {
-		Assert.assertEquals("Default Sensor", new Sensor("Default Sensor").getName());
+	public void initializedNameIsCorrect() {
+		Assert.assertEquals("Default Sensor", this.sensor.getName());
 	}
 
 	@Test
 	public void nameIsCorrectAfterChanging() {
-		Sensor sensor = new Sensor("Default Sensor");
-		sensor.setName("Stove Sensor");
-		Assert.assertEquals("Stove Sensor", sensor.getName());
+		this.sensor.setName("Stove Sensor");
+		Assert.assertEquals("Stove Sensor", this.sensor.getName());
+	}
+
+	@Test
+	public void initializedObsevationsNamesAreCorrect() {
+		Assert.assertArrayEquals(new String[] { "name", "last name" }, this.sensor.getObservationsNames());
 	}
 }
