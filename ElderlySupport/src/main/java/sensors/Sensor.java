@@ -2,19 +2,24 @@ package sensors;
 
 /**
  * @author Sharon
+ * @author Yarden
  * @since 7.12.16
  */
 public abstract class Sensor {
 	protected String name;
+	protected String id;
 
 	/**
-	 * Initializes a new sensor given its name.
+	 * Initializes a new sensor given its name and id.
 	 * 
 	 * @param name
 	 *            name of the sensor
+	 * @param id
+	 *            id of the sensor
 	 */
-	public Sensor(final String name) {
+	public Sensor(final String name, final String id) {
 		this.name = name;
+		this.id = id;
 	}
 
 	/**
@@ -31,6 +36,13 @@ public abstract class Sensor {
 	 */
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * @return id of the sensor
+	 */
+	public String getId() {
+		return this.id;
 	}
 
 	/**
