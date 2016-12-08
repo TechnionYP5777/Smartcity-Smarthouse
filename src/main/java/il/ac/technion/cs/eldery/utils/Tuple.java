@@ -11,29 +11,42 @@ public class Tuple<L, R> {
     this.right = right;
   }
 
-  public void setLeft(final L newLeft) {
-    this.left = newLeft;
+  public void setLeft(final L left) {
+    this.left = left;
   }
 
   public L getLeft() {
     return this.left;
   }
 
-  public void setRight(final R newRight) {
-    this.right = newRight;
+  public void setRight(final R right) {
+    this.right = right;
   }
 
   public R getRight() {
     return this.right;
   }
 
-  // TODO: unchecked warning @inbalzukerman
-  @SuppressWarnings("unchecked") @Override public boolean equals(final Object ¢) {
-    return ¢ instanceof Tuple && this.left.equals(((Tuple<L, R>) ¢).getLeft()) && this.right.equals(((Tuple<L, R>) ¢).getRight());
+  @Override public int hashCode() {
+    return 31 * ((left == null ? 0 : left.hashCode()) + 31) + (right == null ? 0 : right.hashCode());
   }
 
-  @Override public int hashCode() {
-    // TODO Auto-generated method stub
-    return super.hashCode();
+  @Override public boolean equals(final Object ¢) {
+    return ¢ == this || ¢ != null && getClass() == ¢.getClass() && equals((Tuple<?,?>) ¢);
   }
+
+  public boolean equals(final Tuple<?, ?> ¢) {
+    if (left == null) {
+      if (¢.left != null)
+        return false;
+    } else if (!left.equals(¢.left))
+      return false;
+    if (right == null) {
+      if (¢.right != null)
+        return false;
+    } else if (!right.equals(¢.right))
+      return false;
+    return true;
+  }
+
 }
