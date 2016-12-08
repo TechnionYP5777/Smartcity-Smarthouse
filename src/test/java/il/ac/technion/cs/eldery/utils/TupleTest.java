@@ -12,12 +12,14 @@ public class TupleTest {
 
   @Test public void getLeftTest() {
     Assert.assertEquals("A", tupleStrStr.getLeft());
+    // TODO: Convert into assertEquals
     Assert.assertTrue(tupleIntInt.getLeft() == 8);
     Assert.assertNotEquals(7, tupleStrInt.getLeft());
   }
 
   @Test public void getRightTest() {
     Assert.assertEquals("a", tupleStrStr.getRight());
+    // TODO: Convert into assertEquals here and further down
     Assert.assertTrue(tupleIntInt.getRight() == 7);
     Assert.assertNotEquals("A", tupleStrInt.getRight());
   }
