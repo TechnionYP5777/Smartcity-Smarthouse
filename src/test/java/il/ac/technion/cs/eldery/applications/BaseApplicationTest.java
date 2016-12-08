@@ -1,8 +1,9 @@
-package applications;
+package il.ac.technion.cs.eldery.applications;
 
 import org.junit.*;
 
-import system.*;
+import il.ac.technion.cs.eldery.applications.*;
+import il.ac.technion.cs.eldery.system.*;
 
 /** @author Roy
  * @since 8.12.16 */

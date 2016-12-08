@@ -1,6 +1,8 @@
-package sensors;
+package il.ac.technion.cs.eldery.sensors;
 
 import org.junit.*;
+
+import il.ac.technion.cs.eldery.sensors.*;
 
 /** @author Sharon
  * @author Yarden

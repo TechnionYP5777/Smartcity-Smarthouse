@@ -1,6 +1,6 @@
-package applications;
+package il.ac.technion.cs.eldery.applications;
 
-import system.*;
+import il.ac.technion.cs.eldery.system.*;
 
 /** @author roysh
  * @since 8.12.2016 */
@@ -15,12 +15,12 @@ public abstract class BaseApplication {
     return true;
   }
 
-  /** the function that will run when the system installs the app in the
-   * system */
+  /** the function that will run when the il.ac.technion.cs.eldery.system installs the app in the
+   * il.ac.technion.cs.eldery.system */
   public abstract void onInstall();
 
   /** The main loop of the application. Will be runed on a thread in the main
-   * system */
+   * il.ac.technion.cs.eldery.system */
   public abstract void main();
 
   /** Adds the app to the listener list of a specific sensor
@@ -32,7 +32,7 @@ public abstract class BaseApplication {
 
   /** Check if the sensor specified is active in the house
    * @param sensorID
-   * @return true if the main system has this sensor or false otherwise */
+   * @return true if the main il.ac.technion.cs.eldery.system has this sensor or false otherwise */
   @SuppressWarnings("static-method") public boolean checkIfSensorExists(final String sensorID) {
     return true;
   }
