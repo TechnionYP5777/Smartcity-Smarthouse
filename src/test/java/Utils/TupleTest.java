@@ -16,9 +16,9 @@ import Utils.Tuple;
 @SuppressWarnings("boxing")
 public class TupleTest {
 	
-	private Tuple<String, String> tupleStrStr = new Tuple<String, String> ("A", "a");
-	private Tuple<String, Integer> tupleStrInt = new Tuple<String, Integer>("A", 7);
-	private Tuple<Integer, Integer> tupleIntInt = new Tuple<Integer, Integer>(8,7);
+	private Tuple<String, String> tupleStrStr = new Tuple<> ("A", "a");
+	private Tuple<String, Integer> tupleStrInt = new Tuple<>("A", 7);
+	private Tuple<Integer, Integer> tupleIntInt = new Tuple<>(8,7);
 	
 	@Test
 	public void getLeftTest(){
@@ -70,7 +70,7 @@ public class TupleTest {
 		Assert.assertFalse(this.tupleStrInt.equals(this.tupleIntInt));
 		Assert.assertTrue(this.tupleStrInt.equals(this.tupleStrInt));
 		
-		Tuple<String, String> newTuple = new Tuple<String, String>("A", "a");
+		Tuple<String, String> newTuple = new Tuple<>("A", "a");
 		Assert.assertTrue(this.tupleStrStr.equals(newTuple));
 		Assert.assertTrue(newTuple.equals(this.tupleStrStr));
 		
