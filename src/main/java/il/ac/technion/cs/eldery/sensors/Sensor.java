@@ -15,9 +15,10 @@ public abstract class Sensor {
     this.id = id;
   }
 
-  /** Returns the names of the parameters that will be sent to the il.ac.technion.cs.eldery.system. These
-   * names will be used to pass data to the il.ac.technion.cs.eldery.system as a dictionary of (type,
-   * value) tuples.
+  /** Returns the names of the parameters that will be sent to the
+   * il.ac.technion.cs.eldery.system. These names will be used to pass data to
+   * the il.ac.technion.cs.eldery.system as a dictionary of (type, value)
+   * tuples.
    * @return array of names of the data this sensor observers */
   protected abstract String[] getObservationsNames();
 

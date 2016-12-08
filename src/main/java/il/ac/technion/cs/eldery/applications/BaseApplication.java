@@ -15,8 +15,8 @@ public abstract class BaseApplication {
     return true;
   }
 
-  /** the function that will run when the il.ac.technion.cs.eldery.system installs the app in the
-   * il.ac.technion.cs.eldery.system */
+  /** the function that will run when the il.ac.technion.cs.eldery.system
+   * installs the app in the il.ac.technion.cs.eldery.system */
   public abstract void onInstall();
 
   /** The main loop of the application. Will be runed on a thread in the main
@@ -32,7 +32,8 @@ public abstract class BaseApplication {
 
   /** Check if the sensor specified is active in the house
    * @param sensorID
-   * @return true if the main il.ac.technion.cs.eldery.system has this sensor or false otherwise */
+   * @return true if the main il.ac.technion.cs.eldery.system has this sensor or
+   *         false otherwise */
   @SuppressWarnings("static-method") public boolean checkIfSensorExists(final String sensorID) {
     return true;
   }

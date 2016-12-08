@@ -2,8 +2,6 @@ package il.ac.technion.cs.eldery.utils;
 
 import org.junit.*;
 
-import il.ac.technion.cs.eldery.utils.*;
-
 /** @author Inbal Zukerman
  * @since 8.12.2016 */
 @SuppressWarnings("boxing")

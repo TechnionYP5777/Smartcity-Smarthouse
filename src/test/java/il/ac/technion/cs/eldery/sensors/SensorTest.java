@@ -2,8 +2,6 @@ package il.ac.technion.cs.eldery.sensors;
 
 import org.junit.*;
 
-import il.ac.technion.cs.eldery.sensors.*;
-
 /** @author Sharon
  * @author Yarden
  * @since 7.12.16 */

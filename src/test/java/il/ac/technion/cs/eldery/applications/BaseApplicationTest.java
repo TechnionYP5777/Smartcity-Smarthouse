@@ -2,7 +2,6 @@ package il.ac.technion.cs.eldery.applications;
 
 import org.junit.*;
 
-import il.ac.technion.cs.eldery.applications.*;
 import il.ac.technion.cs.eldery.system.*;
 
 /** @author Roy
