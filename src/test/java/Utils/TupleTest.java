@@ -1,87 +1,59 @@
 package Utils;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 
-import Utils.Tuple;
-
-
-/**
- * 
- * @author Inbal Zukerman
- * @since 8.12.2016
- *
- */
-
+/** @author Inbal Zukerman
+ * @since 8.12.2016 */
 @SuppressWarnings("boxing")
 public class TupleTest {
-	
-	private Tuple<String, String> tupleStrStr = new Tuple<> ("A", "a");
-	private Tuple<String, Integer> tupleStrInt = new Tuple<>("A", 7);
-	private Tuple<Integer, Integer> tupleIntInt = new Tuple<>(8,7);
-	
-	@Test
-	public void getLeftTest(){
-		Assert.assertEquals("A", this.tupleStrStr.getLeft());
-		Assert.assertTrue(this.tupleIntInt.getLeft() == 8);
-		Assert.assertNotEquals(7, this.tupleStrInt.getLeft());
-	}
+  private final Tuple<String, String> tupleStrStr = new Tuple<>("A", "a");
+  private final Tuple<String, Integer> tupleStrInt = new Tuple<>("A", 7);
+  private final Tuple<Integer, Integer> tupleIntInt = new Tuple<>(8, 7);
 
-	@Test
-	public void getRightTest(){
-		Assert.assertEquals("a", this.tupleStrStr.getRight());
-		Assert.assertTrue(this.tupleIntInt.getRight() == 7);
-		Assert.assertNotEquals("A", this.tupleStrInt.getRight());
-	}
-	
-	@Test
-	public void setLeftTest(){
-		this.tupleIntInt.setLeft(9);
-		Assert.assertFalse( this.tupleIntInt.getLeft() == 8);
-		Assert.assertTrue( this.tupleIntInt.getLeft() == 9);
-		
-		this.tupleIntInt.setLeft(8);
-		Assert.assertFalse( this.tupleIntInt.getLeft() == 9);
-		Assert.assertTrue( this.tupleIntInt.getLeft() == 8);
-		
-		this.tupleStrStr.setLeft("BB");
-		Assert.assertEquals("BB", this.tupleStrStr.getLeft());
-		Assert.assertNotEquals("BB", this.tupleStrStr.getRight());
-	}
-	
-	@Test
-	public void setRightTest(){
-		this.tupleIntInt.setRight(0);
-		Assert.assertFalse( this.tupleIntInt.getRight() == 7);
-		Assert.assertTrue( this.tupleIntInt.getRight() == 0);
-		
-		this.tupleIntInt.setRight(7);
-		Assert.assertFalse( this.tupleIntInt.getRight() == 0);
-		Assert.assertTrue( this.tupleIntInt.getRight() == 7);
-		
-		this.tupleStrStr.setRight("HI");
-		Assert.assertEquals("HI", this.tupleStrStr.getRight());
-		Assert.assertNotEquals("a", this.tupleStrStr.getRight());
-	}
-	
-	@Test
-	public void equalsTest(){
-		Assert.assertFalse(this.tupleStrStr.equals(this.tupleStrInt));
-		Assert.assertFalse(this.tupleStrInt.equals(this.tupleIntInt));
-		Assert.assertTrue(this.tupleStrInt.equals(this.tupleStrInt));
-		
-		Tuple<String, String> newTuple = new Tuple<>("A", "a");
-		Assert.assertTrue(this.tupleStrStr.equals(newTuple));
-		Assert.assertTrue(newTuple.equals(this.tupleStrStr));
-		
-		newTuple.setLeft("changed");
-		Assert.assertFalse(this.tupleStrStr.equals(newTuple));
-		
-		
-		
-		
-	}
-	
+  @Test public void getLeftTest() {
+    Assert.assertEquals("A", tupleStrStr.getLeft());
+    Assert.assertTrue(tupleIntInt.getLeft() == 8);
+    Assert.assertNotEquals(7, tupleStrInt.getLeft());
+  }
+
+  @Test public void getRightTest() {
+    Assert.assertEquals("a", tupleStrStr.getRight());
+    Assert.assertTrue(tupleIntInt.getRight() == 7);
+    Assert.assertNotEquals("A", tupleStrInt.getRight());
+  }
+
+  @Test public void setLeftTest() {
+    tupleIntInt.setLeft(9);
+    Assert.assertFalse(tupleIntInt.getLeft() == 8);
+    Assert.assertTrue(tupleIntInt.getLeft() == 9);
+    tupleIntInt.setLeft(8);
+    Assert.assertFalse(tupleIntInt.getLeft() == 9);
+    Assert.assertTrue(tupleIntInt.getLeft() == 8);
+    tupleStrStr.setLeft("BB");
+    Assert.assertEquals("BB", tupleStrStr.getLeft());
+    Assert.assertNotEquals("BB", tupleStrStr.getRight());
+  }
+
+  @Test public void setRightTest() {
+    tupleIntInt.setRight(0);
+    Assert.assertFalse(tupleIntInt.getRight() == 7);
+    Assert.assertTrue(tupleIntInt.getRight() == 0);
+    tupleIntInt.setRight(7);
+    Assert.assertFalse(tupleIntInt.getRight() == 0);
+    Assert.assertTrue(tupleIntInt.getRight() == 7);
+    tupleStrStr.setRight("HI");
+    Assert.assertEquals("HI", tupleStrStr.getRight());
+    Assert.assertNotEquals("a", tupleStrStr.getRight());
+  }
+
+  @Test public void equalsTest() {
+    Assert.assertFalse(tupleStrStr.equals(tupleStrInt));
+    Assert.assertFalse(tupleStrInt.equals(tupleIntInt));
+    Assert.assertTrue(tupleStrInt.equals(tupleStrInt));
+    final Tuple<String, String> newTuple = new Tuple<>("A", "a");
+    Assert.assertTrue(tupleStrStr.equals(newTuple));
+    Assert.assertTrue(newTuple.equals(tupleStrStr));
+    newTuple.setLeft("changed");
+    Assert.assertFalse(tupleStrStr.equals(newTuple));
+  }
 }
-
-

@@ -1,5 +1,5 @@
 package system;
 
 public class MainSystem {
-	public MainSystem(){}
+  public MainSystem() {}
 }

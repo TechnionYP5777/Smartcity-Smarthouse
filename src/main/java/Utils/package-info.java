@@ -1,8 +1,5 @@
 /**
- * 
- */
-/**
- * @author sinbalzu
  *
  */
+/** @author sinbalzu */
 package Utils;
