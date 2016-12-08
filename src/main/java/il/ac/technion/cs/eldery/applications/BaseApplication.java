@@ -19,7 +19,7 @@ public abstract class BaseApplication {
    * installs the app in the il.ac.technion.cs.eldery.system */
   public abstract void onInstall();
 
-  /** The main loop of the application. Will be runed on a thread in the main
+  /** The main loop of the application. Will be ruined on a thread in the main
    * il.ac.technion.cs.eldery.system */
   public abstract void main();
 
