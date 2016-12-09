@@ -10,6 +10,7 @@ import il.ac.technion.cs.eldery.utils.Tuple;
  */
 public class sensorInformationDatabase<L,R> {
   
+  private final String sensorId;
   private final LinkedList<Tuple<L,R>> information;
   private int maxCapacity;
 
@@ -19,7 +20,8 @@ public class sensorInformationDatabase<L,R> {
    * 
    *  This method creates the new database for information from the sensor
    */
-  public sensorInformationDatabase(final int maxCapacity) {
+  public sensorInformationDatabase(final String sensorId, final int maxCapacity) {
+    this.sensorId = sensorId;
     this.maxCapacity = maxCapacity == 0 ? 1 : maxCapacity;
     this.information = new LinkedList<> ();
   }
@@ -79,7 +81,9 @@ public class sensorInformationDatabase<L,R> {
     return this.information.indexOf(info) != -1;
   }
   
-  
+  public String getSensorId() {
+    return sensorId;
+  }
   
  
 }

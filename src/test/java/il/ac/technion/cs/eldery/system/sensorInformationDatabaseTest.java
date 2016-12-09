@@ -18,8 +18,8 @@ public class sensorInformationDatabaseTest {
   private final Tuple<String, Integer> infoTemp2 = new Tuple<>("Temp", 18);
   private final Tuple<String, Integer> infoPulse = new Tuple<>( "Pulse", 68);
   
-  private final sensorInformationDatabase<String, Integer> tempInfoDB = new sensorInformationDatabase<>(5);
-  private final sensorInformationDatabase<String, Integer> pulseInfoDB = new sensorInformationDatabase<>(10);
+  private final sensorInformationDatabase<String, Integer> tempInfoDB = new sensorInformationDatabase<>("temperature", 5);
+  private final sensorInformationDatabase<String, Integer> pulseInfoDB = new sensorInformationDatabase<>("pulse", 10);
   
   
   @Test
@@ -96,6 +96,12 @@ public class sensorInformationDatabaseTest {
     Assert.assertEquals(2, lastUpdates.size());
     
     
+  }
+  
+  @Test
+  public void sensorIdTest(){
+    Assert.assertEquals("temperature", tempInfoDB.getSensorId());
+    Assert.assertEquals("pulse", pulseInfoDB.getSensorId());
   }
   
 }
