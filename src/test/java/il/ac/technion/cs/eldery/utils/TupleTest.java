@@ -1,6 +1,7 @@
 package il.ac.technion.cs.eldery.utils;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** @author Inbal Zukerman
  * @since 8.12.2016 */
@@ -12,25 +13,23 @@ public class TupleTest {
 
   @Test public void getLeftTest() {
     Assert.assertEquals("A", tupleStrStr.getLeft());
-    // TODO: Convert into assertEquals
-    Assert.assertTrue(tupleIntInt.getLeft() == 8);
+    Assert.assertEquals(8, (int)tupleIntInt.getLeft());
     Assert.assertNotEquals(7, tupleStrInt.getLeft());
   }
 
   @Test public void getRightTest() {
     Assert.assertEquals("a", tupleStrStr.getRight());
-    // TODO: Convert into assertEquals here and further down
-    Assert.assertTrue(tupleIntInt.getRight() == 7);
+    Assert.assertEquals(7, (int)tupleIntInt.getRight());
     Assert.assertNotEquals("A", tupleStrInt.getRight());
   }
 
   @Test public void setLeftTest() {
     tupleIntInt.setLeft(9);
-    Assert.assertFalse(tupleIntInt.getLeft() == 8);
-    Assert.assertTrue(tupleIntInt.getLeft() == 9);
+    Assert.assertNotEquals(8, (int)tupleIntInt.getLeft());
+    Assert.assertEquals(9, (int) tupleIntInt.getLeft());
     tupleIntInt.setLeft(8);
-    Assert.assertFalse(tupleIntInt.getLeft() == 9);
-    Assert.assertTrue(tupleIntInt.getLeft() == 8);
+    Assert.assertNotEquals(9, (int)tupleIntInt.getLeft());
+    Assert.assertEquals(8, (int) tupleIntInt.getLeft());
     tupleStrStr.setLeft("BB");
     Assert.assertEquals("BB", tupleStrStr.getLeft());
     Assert.assertNotEquals("BB", tupleStrStr.getRight());
@@ -38,11 +37,11 @@ public class TupleTest {
 
   @Test public void setRightTest() {
     tupleIntInt.setRight(0);
-    Assert.assertFalse(tupleIntInt.getRight() == 7);
-    Assert.assertTrue(tupleIntInt.getRight() == 0);
+    Assert.assertNotEquals(9, (int)tupleIntInt.getRight());
+    Assert.assertEquals( 0, (int)tupleIntInt.getRight());
     tupleIntInt.setRight(7);
-    Assert.assertFalse(tupleIntInt.getRight() == 0);
-    Assert.assertTrue(tupleIntInt.getRight() == 7);
+    Assert.assertNotEquals(0, (int) tupleIntInt.getRight());
+    Assert.assertEquals(7, (int) tupleIntInt.getRight());
     tupleStrStr.setRight("HI");
     Assert.assertEquals("HI", tupleStrStr.getRight());
     Assert.assertNotEquals("a", tupleStrStr.getRight());
