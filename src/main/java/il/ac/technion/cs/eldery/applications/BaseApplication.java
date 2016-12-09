@@ -1,8 +1,10 @@
 package il.ac.technion.cs.eldery.applications;
 
 import il.ac.technion.cs.eldery.system.*;
+import jdk.nashorn.api.scripting.JSObject;
 
-/** @author roysh
+/** This will be the API for the apps/modules developers
+ * @author roysh
  * @since 8.12.2016 */
 public abstract class BaseApplication {
   MainSystem mainSystem;
@@ -27,6 +29,7 @@ public abstract class BaseApplication {
    * @param sensorID
    * @return true if successful or false if failed */
   @SuppressWarnings("static-method") public boolean subscribeToSensor(final String sensorID) {
+    // TODO: RON and ROY - implement this class
     return true;
   }
 
@@ -35,6 +38,24 @@ public abstract class BaseApplication {
    * @return true if the main il.ac.technion.cs.eldery.system has this sensor or
    *         false otherwise */
   @SuppressWarnings("static-method") public boolean checkIfSensorExists(final String sensorID) {
+    // TODO: RON and ROY - implement this class
     return true;
+  }
+
+  /** Saves the app's data to the system's database
+   * @author RON
+   * @param data
+   * @return true if the data was saved to the system, or false otherwise */
+  @SuppressWarnings("static-method") public boolean saveToDatabase(final JSObject data) {
+    // TODO: RON and ROY - implement this class
+    return data != null;
+  }
+
+  /** Loads the app's data from the system's database
+   * @author RON
+   * @return a JSObject with the data */
+  @SuppressWarnings("static-method") public JSObject loadFromDatabase() {
+    // TODO: RON and ROY - implement this class
+    return null;
   }
 }
