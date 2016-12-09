@@ -32,7 +32,7 @@ public class Tuple<L, R> {
   }
 
   @Override public boolean equals(final Object ¢) {
-    return ¢ == this || ¢ != null && getClass() == ¢.getClass() && equals((Tuple<?,?>) ¢);
+    return ¢ == this || ¢ != null && getClass() == ¢.getClass() && equals((Tuple<?, ?>) ¢);
   }
 
   public boolean equals(final Tuple<?, ?> ¢) {
@@ -48,5 +48,4 @@ public class Tuple<L, R> {
       return false;
     return true;
   }
-
 }
