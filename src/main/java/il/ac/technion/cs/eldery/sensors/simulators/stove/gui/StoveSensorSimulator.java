@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/** @author Sharon
+ * @since 9.12.16 */
 public class StoveSensorSimulator extends Application {
   public static void main(String[] args) {
     launch(args);
