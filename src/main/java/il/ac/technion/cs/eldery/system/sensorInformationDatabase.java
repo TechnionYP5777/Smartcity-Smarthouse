@@ -13,8 +13,14 @@ public class sensorInformationDatabase<L,R> {
   private final LinkedList<Tuple<L,R>> information;
   private int maxCapacity;
 
+  /**
+   * @param maxCapacity - the maximal capacity required for this database.
+   * If maxCapacity is 0, the database will be initialized with maxCapacity=1.
+   * 
+   *  This method creates the new database for information from the sensor
+   */
   public sensorInformationDatabase(final int maxCapacity) {
-    this.maxCapacity = maxCapacity;
+    this.maxCapacity = maxCapacity == 0 ? 1 : maxCapacity;
     this.information = new LinkedList<> ();
   }
   
@@ -28,7 +34,13 @@ public class sensorInformationDatabase<L,R> {
     this.information.addLast(info);
   }
   
+  public int getMaxCapacity(){
+    return this.maxCapacity;
+  }
   
+  public int getCurrentCapacity(){
+    return this.information.size();
+  }
 
   /**
    * @param newCapacity
@@ -51,15 +63,23 @@ public class sensorInformationDatabase<L,R> {
     
     final LinkedList<Tuple<L, R>> $ = new LinkedList<>();
     final int position = numOfUpdates > this.information.size() ? 0 : this.information.size() - numOfUpdates;
-    $.addAll(position, this.information);
+    
+    for(int ¢ = position; ¢< this.information.size(); ++¢)
+      $.addLast(this.information.get(¢));
+    
     return $;
     
   }
   
   public Tuple<L,R> getLastUpdate(){
-    
-    return this.information.getLast();
+    return this.information.isEmpty() ? null : this.information.getLast();
   }
+  
+  public boolean doesExists(final Tuple<L,R> info){
+    return this.information.indexOf(info) != -1;
+  }
+  
+  
   
  
 }
