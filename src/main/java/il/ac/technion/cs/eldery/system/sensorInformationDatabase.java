@@ -1,8 +1,8 @@
 package il.ac.technion.cs.eldery.system;
 
-import java.util.*;
+import java.util.ArrayList;
 
-import il.ac.technion.cs.eldery.utils.*;
+import il.ac.technion.cs.eldery.utils.Tuple;
 
 /** @author Inbal Zukeran
  * @since 9.12.2016 */
@@ -25,8 +25,8 @@ public class sensorInformationDatabase<L, R> {
    *        removing the oldest information received */
   public void addInfo(final Tuple<L, R> info) {
     if (this.information.size() == this.maxCapacity)
-      this.information.removeFirst();
-    this.information.addLast(info);
+      this.information.remove(0);
+    this.information.add(info);
   }
 
   public int getMaxCapacity() {
@@ -43,7 +43,7 @@ public class sensorInformationDatabase<L, R> {
     if (this.information.size() >= newCapacity) {
       final int cutOff = this.information.size() - newCapacity;
       for (int ¢ = 0; ¢ < cutOff; ++¢)
-        this.information.removeFirst();
+        this.information.remove(0);
     }
     this.maxCapacity = newCapacity;
   }
@@ -54,12 +54,12 @@ public class sensorInformationDatabase<L, R> {
     final ArrayList<Tuple<L, R>> $ = new ArrayList<>();
     final int position = numOfUpdates > this.information.size() ? 0 : this.information.size() - numOfUpdates;
     for (int ¢ = position; ¢ < this.information.size(); ++¢)
-      $.addLast(this.information.get(¢));
+      $.add(this.information.get(¢));
     return $;
   }
 
   public Tuple<L, R> getLastUpdate() {
-    return this.information.isEmpty() ? null : this.information.getLast();
+    return this.information.isEmpty() ? null : this.information.get(this.information.size()-1);
   }
 
   public boolean doesExists(final Tuple<L, R> info) {

@@ -1,10 +1,11 @@
 package il.ac.technion.cs.eldery.system;
 
-import java.util.*;
+import java.util.ArrayList;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
-import il.ac.technion.cs.eldery.utils.*;
+import il.ac.technion.cs.eldery.utils.Tuple;
 
 /** @author Inbal Zukerman
  * @since 9.12.2016 */
@@ -64,7 +65,7 @@ public class sensorInformationDatabaseTest {
     Assert.assertEquals(null, lastUpdates);
     lastUpdates = tempInfoDB.recievceLastUpdates(1);
     Assert.assertEquals(1, lastUpdates.size());
-    Assert.assertEquals(infoTemp2, lastUpdates.getFirst());
+    Assert.assertEquals(infoTemp2, lastUpdates.get(0));
     lastUpdates = tempInfoDB.recievceLastUpdates(2);
     Assert.assertEquals(2, lastUpdates.size());
   }
