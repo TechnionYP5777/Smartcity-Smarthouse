@@ -16,6 +16,14 @@ public abstract class Sensor {
     this.id = id;
   }
 
+  /** Registers the sensor to the system.
+   * @return <code>true</code> if registration was successful,
+   *         <code>false</code> otherwise */
+  @SuppressWarnings("static-method") protected boolean register() {
+    // TODO: Sharon/Yarden
+    return true;
+  }
+
   /** Returns the names of the parameters that will be sent to the system. These
    * names will be used to pass data to system as a dictionary of (type, value)
    * tuples.
@@ -27,14 +35,14 @@ public abstract class Sensor {
     return name;
   }
 
-  /** @return id of the sensor */
-  public String getId() {
-    return id;
-  }
-
   /** Sets a new name for the sensor.
    * @param name new name of the sensor */
   public void setName(final String name) {
     this.name = name;
+  }
+
+  /** @return id of the sensor */
+  public String getId() {
+    return id;
   }
 }
