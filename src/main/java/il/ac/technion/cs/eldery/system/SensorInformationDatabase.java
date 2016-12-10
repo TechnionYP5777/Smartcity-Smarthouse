@@ -6,7 +6,7 @@ import il.ac.technion.cs.eldery.utils.*;
 
 /** @author Inbal Zukeran
  * @since 9.12.2016 */
-public class sensorInformationDatabase<L, R> {
+public class SensorInformationDatabase<L, R> {
   private final String sensorId;
   private final ArrayList<Tuple<L, R>> information = new ArrayList<>();
   private int maxCapacity;
@@ -15,7 +15,7 @@ public class sensorInformationDatabase<L, R> {
    *        maxCapacity is 0, the database will be initialized with
    *        maxCapacity=1. This method creates the new database for information
    *        from the sensor */
-  public sensorInformationDatabase(final String sensorId, final int maxCapacity) {
+  public SensorInformationDatabase(final String sensorId, final int maxCapacity) {
     this.sensorId = sensorId;
     this.maxCapacity = maxCapacity <= 0 ? 1 : maxCapacity;
   }

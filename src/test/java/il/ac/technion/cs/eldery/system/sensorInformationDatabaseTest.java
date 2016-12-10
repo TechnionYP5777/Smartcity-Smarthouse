@@ -11,8 +11,8 @@ public class sensorInformationDatabaseTest {
   private final Tuple<String, Integer> infoTemp = new Tuple<>("Temp", 20);
   private final Tuple<String, Integer> infoTemp2 = new Tuple<>("Temp", 18);
   private final Tuple<String, Integer> infoPulse = new Tuple<>("Pulse", 68);
-  private final sensorInformationDatabase<String, Integer> tempInfoDB = new sensorInformationDatabase<>("temperature", 5);
-  private final sensorInformationDatabase<String, Integer> pulseInfoDB = new sensorInformationDatabase<>("pulse", 10);
+  private final SensorInformationDatabase<String, Integer> tempInfoDB = new SensorInformationDatabase<>("temperature", 5);
+  private final SensorInformationDatabase<String, Integer> pulseInfoDB = new SensorInformationDatabase<>("pulse", 10);
 
   @Test public void initializationTest() {
     Assert.assertEquals(5, tempInfoDB.getMaxCapacity());
