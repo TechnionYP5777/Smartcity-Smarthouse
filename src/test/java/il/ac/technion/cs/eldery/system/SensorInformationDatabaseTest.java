@@ -7,7 +7,7 @@ import il.ac.technion.cs.eldery.utils.*;
 /** @author Inbal Zukerman
  * @since 9.12.2016 */
 @SuppressWarnings("boxing")
-public class sensorInformationDatabaseTest {
+public class SensorInformationDatabaseTest {
   private final Tuple<String, Integer> infoTemp = new Tuple<>("Temp", 20);
   private final Tuple<String, Integer> infoTemp2 = new Tuple<>("Temp", 18);
   private final Tuple<String, Integer> infoPulse = new Tuple<>("Pulse", 68);
