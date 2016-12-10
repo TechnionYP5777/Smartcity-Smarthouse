@@ -8,7 +8,7 @@ import il.ac.technion.cs.eldery.utils.*;
  * @since 9.12.2016 */
 public class sensorInformationDatabase<L, R> {
   private final String sensorId;
-  private final LinkedList<Tuple<L, R>> information;
+  private final ArrayList<Tuple<L, R>> information;
   private int maxCapacity;
 
   /** @param maxCapacity - the maximal capacity required for this database. If
@@ -17,8 +17,8 @@ public class sensorInformationDatabase<L, R> {
    *        from the sensor */
   public sensorInformationDatabase(final String sensorId, final int maxCapacity) {
     this.sensorId = sensorId;
-    this.maxCapacity = maxCapacity == 0 ? 1 : maxCapacity;
-    this.information = new LinkedList<>();
+    this.maxCapacity = maxCapacity <= 0 ? 1 : maxCapacity;
+    this.information = new ArrayList<>();
   }
 
   /** @param info- a tuple representing information received from a sensor This
@@ -49,10 +49,10 @@ public class sensorInformationDatabase<L, R> {
     this.maxCapacity = newCapacity;
   }
 
-  public LinkedList<Tuple<L, R>> recievceLastUpdates(final int numOfUpdates) {
+  public ArrayList<Tuple<L, R>> recievceLastUpdates(final int numOfUpdates) {
     if (numOfUpdates <= 0)
       return null;
-    final LinkedList<Tuple<L, R>> $ = new LinkedList<>();
+    final ArrayList<Tuple<L, R>> $ = new ArrayList<>();
     final int position = numOfUpdates > this.information.size() ? 0 : this.information.size() - numOfUpdates;
     for (int ¢ = position; ¢ < this.information.size(); ++¢)
       $.addLast(this.information.get(¢));

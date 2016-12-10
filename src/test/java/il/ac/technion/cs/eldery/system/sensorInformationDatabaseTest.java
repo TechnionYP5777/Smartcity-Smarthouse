@@ -60,7 +60,7 @@ public class sensorInformationDatabaseTest {
     tempInfoDB.addInfo(infoTemp);
     tempInfoDB.addInfo(infoTemp2);
     Assert.assertEquals(2, tempInfoDB.getCurrentCapacity());
-    LinkedList<Tuple<String, Integer>> lastUpdates = tempInfoDB.recievceLastUpdates(0);
+    ArrayList<Tuple<String, Integer>> lastUpdates = tempInfoDB.recievceLastUpdates(0);
     Assert.assertEquals(null, lastUpdates);
     lastUpdates = tempInfoDB.recievceLastUpdates(1);
     Assert.assertEquals(1, lastUpdates.size());
