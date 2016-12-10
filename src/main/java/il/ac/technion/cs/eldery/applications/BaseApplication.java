@@ -35,7 +35,7 @@ public abstract class BaseApplication {
 
   /** Check if the sensor specified is active in the house
    * @param sensorID
-   * @return true if the main il.ac.technion.cs.eldery.system has this sensor or
+   * @return true if the system has this sensor or
    *         false otherwise */
   @SuppressWarnings("static-method") public boolean checkIfSensorExists(final String sensorID) {
     // TODO: RON and ROY - implement this class
