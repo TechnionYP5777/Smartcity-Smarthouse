@@ -8,7 +8,7 @@ import il.ac.technion.cs.eldery.utils.*;
  * @since 9.12.2016 */
 public class sensorInformationDatabase<L, R> {
   private final String sensorId;
-  private final ArrayList<Tuple<L, R>> information;
+  private final ArrayList<Tuple<L, R>> information = new ArrayList<>();
   private int maxCapacity;
 
   /** @param maxCapacity - the maximal capacity required for this database. If
@@ -18,7 +18,6 @@ public class sensorInformationDatabase<L, R> {
   public sensorInformationDatabase(final String sensorId, final int maxCapacity) {
     this.sensorId = sensorId;
     this.maxCapacity = maxCapacity <= 0 ? 1 : maxCapacity;
-    this.information = new ArrayList<>();
   }
 
   /** @param info- a tuple representing information received from a sensor This
