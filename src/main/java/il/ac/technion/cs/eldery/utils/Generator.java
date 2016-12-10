@@ -1,6 +1,6 @@
 package il.ac.technion.cs.eldery.utils;
 
-import java.util.UUID;
+import java.util.*;
 
 /** @author RON
  * @since 09-12-16 */

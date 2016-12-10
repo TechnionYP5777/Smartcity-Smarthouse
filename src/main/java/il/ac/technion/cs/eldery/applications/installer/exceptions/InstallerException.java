@@ -1,6 +1,6 @@
 package il.ac.technion.cs.eldery.applications.installer.exceptions;
 
-import il.ac.technion.cs.eldery.applications.BaseApplication;
+import il.ac.technion.cs.eldery.applications.*;
 
 /** @author RON
  * @since 09-12-16 */
@@ -9,7 +9,7 @@ public class InstallerException extends Exception {
   public static final String MORE_THAN_ONE_IMPL = "Only one class can extend " + BaseApplication.class.getName();
   private int value;
 
-  public InstallerException(String msg, int value) {
+  public InstallerException(final String msg, final int value) {
     super(msg);
     this.value = value;
   }
@@ -18,7 +18,7 @@ public class InstallerException extends Exception {
     return value;
   }
 
-  public void setValue(int value) {
+  public void setValue(final int value) {
     this.value = value;
   }
 }

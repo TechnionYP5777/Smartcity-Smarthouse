@@ -1,7 +1,6 @@
 package il.ac.technion.cs.eldery.utils;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 
 /** @author Inbal Zukerman
  * @since 8.12.2016 */
@@ -13,22 +12,22 @@ public class TupleTest {
 
   @Test public void getLeftTest() {
     Assert.assertEquals("A", tupleStrStr.getLeft());
-    Assert.assertEquals(8, (int)tupleIntInt.getLeft());
+    Assert.assertEquals(8, (int) tupleIntInt.getLeft());
     Assert.assertNotEquals(7, tupleStrInt.getLeft());
   }
 
   @Test public void getRightTest() {
     Assert.assertEquals("a", tupleStrStr.getRight());
-    Assert.assertEquals(7, (int)tupleIntInt.getRight());
+    Assert.assertEquals(7, (int) tupleIntInt.getRight());
     Assert.assertNotEquals("A", tupleStrInt.getRight());
   }
 
   @Test public void setLeftTest() {
     tupleIntInt.setLeft(9);
-    Assert.assertNotEquals(8, (int)tupleIntInt.getLeft());
+    Assert.assertNotEquals(8, (int) tupleIntInt.getLeft());
     Assert.assertEquals(9, (int) tupleIntInt.getLeft());
     tupleIntInt.setLeft(8);
-    Assert.assertNotEquals(9, (int)tupleIntInt.getLeft());
+    Assert.assertNotEquals(9, (int) tupleIntInt.getLeft());
     Assert.assertEquals(8, (int) tupleIntInt.getLeft());
     tupleStrStr.setLeft("BB");
     Assert.assertEquals("BB", tupleStrStr.getLeft());
@@ -37,8 +36,8 @@ public class TupleTest {
 
   @Test public void setRightTest() {
     tupleIntInt.setRight(0);
-    Assert.assertNotEquals(9, (int)tupleIntInt.getRight());
-    Assert.assertEquals( 0, (int)tupleIntInt.getRight());
+    Assert.assertNotEquals(9, (int) tupleIntInt.getRight());
+    Assert.assertEquals(0, (int) tupleIntInt.getRight());
     tupleIntInt.setRight(7);
     Assert.assertNotEquals(0, (int) tupleIntInt.getRight());
     Assert.assertEquals(7, (int) tupleIntInt.getRight());

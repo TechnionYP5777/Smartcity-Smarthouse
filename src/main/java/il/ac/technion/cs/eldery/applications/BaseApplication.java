@@ -1,7 +1,7 @@
 package il.ac.technion.cs.eldery.applications;
 
 import il.ac.technion.cs.eldery.system.*;
-import jdk.nashorn.api.scripting.JSObject;
+import jdk.nashorn.api.scripting.*;
 
 /** This will be the API for the apps/modules developers
  * @author roysh
