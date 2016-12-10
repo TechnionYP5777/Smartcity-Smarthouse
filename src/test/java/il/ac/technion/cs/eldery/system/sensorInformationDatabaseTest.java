@@ -1,11 +1,8 @@
 package il.ac.technion.cs.eldery.system;
 
-import java.util.ArrayList;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import il.ac.technion.cs.eldery.utils.Tuple;
+import java.util.*;
+import org.junit.*;
+import il.ac.technion.cs.eldery.utils.*;
 
 /** @author Inbal Zukerman
  * @since 9.12.2016 */

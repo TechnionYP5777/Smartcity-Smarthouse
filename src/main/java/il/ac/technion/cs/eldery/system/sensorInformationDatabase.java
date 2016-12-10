@@ -1,8 +1,8 @@
 package il.ac.technion.cs.eldery.system;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import il.ac.technion.cs.eldery.utils.Tuple;
+import il.ac.technion.cs.eldery.utils.*;
 
 /** @author Inbal Zukeran
  * @since 9.12.2016 */
