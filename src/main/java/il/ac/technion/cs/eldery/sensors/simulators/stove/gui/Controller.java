@@ -20,9 +20,8 @@ public class Controller implements Initializable {
     onOffButton.setOnAction(event -> {
       // TODO: Implement button logic
     });
-    
     tempSlider.valueProperty().addListener((ov, oldVal, newVal) -> {
-      // TODO: Implement slider logic
+      tempLabel.setText("Temperature: " + Math.round(newVal.doubleValue()));
     });
   }
 }
