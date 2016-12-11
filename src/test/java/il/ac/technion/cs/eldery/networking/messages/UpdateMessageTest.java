@@ -10,6 +10,8 @@ import com.google.gson.JsonParser;
 
 import il.ac.technion.cs.eldery.sensors.simulators.stove.StoveSensor;
 
+/** @author Sharon
+ * @since 11.12.16 */
 @SuppressWarnings("static-method")
 public class UpdateMessageTest {
   @Test public void basicUpdateMessageTest() {

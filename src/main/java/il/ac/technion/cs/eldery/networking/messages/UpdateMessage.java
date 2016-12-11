@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 
 import il.ac.technion.cs.eldery.sensors.Sensor;
 
+/** @author Sharon
+ * @since 11.12.16 */
 public class UpdateMessage implements Message {
   Sensor sensor;
   Map<Object, Object> data;
