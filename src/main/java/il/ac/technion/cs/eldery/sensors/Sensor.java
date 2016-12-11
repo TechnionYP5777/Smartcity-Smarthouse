@@ -1,5 +1,9 @@
 package il.ac.technion.cs.eldery.sensors;
 
+import java.util.Map;
+
+import il.ac.technion.cs.eldery.networking.messages.MessageType;
+
 /** @author Sharon
  * @author Yarden
  * @since 7.12.16 */
@@ -20,6 +24,11 @@ public abstract class Sensor {
    * @return <code>true</code> if registration was successful,
    *         <code>false</code> otherwise */
   @SuppressWarnings("static-method") public boolean register() {
+    // TODO: Sharon/Yarden
+    return true;
+  }
+
+  @SuppressWarnings("static-method") public boolean updateSystem(@SuppressWarnings("unused") Map<Object, Object> __) {
     // TODO: Sharon/Yarden
     return true;
   }
