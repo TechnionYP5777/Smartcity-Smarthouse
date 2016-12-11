@@ -6,6 +6,7 @@ import java.util.List;
 import il.ac.technion.cs.eldery.sensors.Sensor;
 
 /** @author Yarden
+ * @author Sharon
  * @since 10.12.16 */
 public class StoveSensor extends Sensor {
   private static final List<String> TYPES = new ArrayList<>();
