@@ -28,6 +28,12 @@ public abstract class Sensor {
     return true;
   }
 
+  /** Sends an update message to the system with the given observations. The
+   * observations are represented as a map from the names of the observations,
+   * to their values.
+   * @param __ observations to send to the system
+   * @return <code>true</code> if message was sent successfully,
+   *         <code>false</code> otherwise */
   @SuppressWarnings("static-method") public boolean updateSystem(@SuppressWarnings("unused") Map<Object, Object> __) {
     // TODO: Sharon/Yarden
     return true;
