@@ -8,9 +8,6 @@ public class StoveSensor extends Sensor {
   }
 
   @Override protected String[] getObservationsNames() {
-    String[] $ = new String[2];
-    $[0] = "on / off";
-    $[1] = "temperature";
-    return $;
+    return new String[] { "on / off", "temperature" };
   }
 }
