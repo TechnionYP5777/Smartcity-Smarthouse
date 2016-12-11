@@ -1,4 +1,6 @@
-package il.ac.technion.cs.eldery.sensors;
+package il.ac.technion.cs.eldery.sensors.simulators.stove;
+
+import il.ac.technion.cs.eldery.sensors.Sensor;
 
 /** @author Yarden
  * @since 10.12.16 */
