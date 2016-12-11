@@ -15,15 +15,17 @@ import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEven
 import il.ac.technion.cs.eldery.utils.Tuple;
 
 /**
+ * This class will hold, run and manage the dynamic loaded code of the application. Using this class 
+ * will allow us to mimic the context switch of an OS on its programs.
  * @author Elia
  * @since Dec 11, 2016
  */
 public class AppThread {
   private class EventInfo<L,R>{
+    //TODO: ELIA consider moving the beauty that is Consumer<List<Tuple<L,R>>> into the closest thing to typedef
     final Consumer<List<Tuple<L,R>>> consumer;
     List<Tuple<L,R>> data = new ArrayList<>();
     
-    @SuppressWarnings("unused")
     public EventInfo(Consumer<List<Tuple<L,R>>> $){
       consumer = $;
     }
@@ -37,7 +39,7 @@ public class AppThread {
   @SuppressWarnings("rawtypes") 
   Map<Long, EventInfo> callOnEvent = new HashMap<>();
   Boolean timeout = Boolean.FALSE, dontTerminate = Boolean.TRUE;
-  Long interuptingSensor = null;
+  Long interuptingSensor;
   
   BaseApplication app;
   Thread thread = new Thread(){
@@ -80,10 +82,14 @@ public class AppThread {
     app = $;
   }
   
+  /** same as Thread::start
+   * */
   public void start(){
     thread.start();
   }
-  
+
+  /** same as Thread::join
+   * */
   public void join() throws InterruptedException{
     dontTerminate = Boolean.FALSE;
     thread.join();
@@ -100,7 +106,20 @@ public class AppThread {
       timeout.notify();
     }
   }
+  
+  /** Adds a consumer to the application, that can process infotmation from a specific sensor
+   *  @return The id of the consumer in the system, needed for any activation action of the consumer.
+   * */
+  public <L,R> Long registerEventConsumer(Consumer<List<Tuple<L,R>>> $){
+    Long id = Long.valueOf(callOnEvent.size() + 1); //TODO: change id calc if removal is allowed
+    callOnEvent.put(id, new EventInfo<>($));
+    return id;
+  }
 
+  /** Gives the AppThread the new info and forces it to process it
+   * @param eventId: The id returned at the registration of the consumer that can process the data
+   * @param data: The new information from the sensor
+   * */
   public <L,R> void notifyOnEvent(final Long eventId, final List<Tuple<L,R>> data) 
                                           throws ApplicationNotRegisteredToEvent{
     @SuppressWarnings("unchecked") final EventInfo<L, R> $ = Optional.ofNullable(callOnEvent.get(eventId))

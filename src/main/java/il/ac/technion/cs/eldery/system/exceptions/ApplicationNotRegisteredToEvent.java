@@ -4,7 +4,7 @@
 package il.ac.technion.cs.eldery.system.exceptions;
 
 /**
- * @author elia
+ * @author Elia
  * @since Dec 11, 2016
  */
 public class ApplicationNotRegisteredToEvent extends Exception{
