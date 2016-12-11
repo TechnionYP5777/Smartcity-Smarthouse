@@ -7,6 +7,7 @@ import java.util.Map;
  * @author Yarden
  * @since 7.12.16 */
 // TODO Add some interesting functionality
+
 public abstract class Sensor {
   protected String name;
   protected String id;
