@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
  * @since 9.12.16 */
 public class Controller implements Initializable {
   private boolean on;
-  
   @FXML public Button onOffButton;
   @FXML public Label tempLabel;
   @FXML public Slider tempSlider;
@@ -22,6 +21,8 @@ public class Controller implements Initializable {
     onOffButton.setOnAction(event -> {
       on = !on;
       onOffButton.setText("Turn " + (on ? "off" : "on"));
+      tempLabel.setDisable(!on);
+      tempSlider.setDisable(!on);
     });
     tempSlider.valueProperty().addListener((ov, oldVal, newVal) -> {
       tempLabel.setText("Temperature: " + Math.round(newVal.doubleValue()));

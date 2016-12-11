@@ -26,8 +26,8 @@
             </HBox>
             <VBox spacing="10.0">
                <children>
-                  <Label fx:id="tempLabel" text="Temperature: 100" />
-                  <Slider fx:id="tempSlider" max="150.0" value="100.0" />
+                  <Label fx:id="tempLabel" disable="true" text="Temperature: 100" />
+                  <Slider fx:id="tempSlider" disable="true" max="150.0" value="100.0" />
                </children>
                <opaqueInsets>
                   <Insets />
