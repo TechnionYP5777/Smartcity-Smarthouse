@@ -4,7 +4,7 @@ import java.util.*;
 
 import il.ac.technion.cs.eldery.utils.*;
 
-/** @author Inbal Zukeran
+/** @author Inbal Zukerman
  * @since 9.12.2016 */
 public class SensorInformationDatabase<L, R> {
   private final String sensorId;
