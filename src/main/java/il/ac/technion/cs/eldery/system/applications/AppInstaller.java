@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.applications.installer;
+package il.ac.technion.cs.eldery.system.applications;
 
 import java.io.*;
 import java.net.*;
@@ -6,8 +6,8 @@ import java.util.*;
 import java.util.jar.*;
 import java.util.stream.*;
 
-import il.ac.technion.cs.eldery.applications.*;
-import il.ac.technion.cs.eldery.applications.installer.exceptions.*;
+import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.exceptions.InstallerException;
 
 /** @author RON
  * @since 09-12-16 */
@@ -22,15 +22,15 @@ public class AppInstaller {
    *         that extends BaseApplication
    * @throws InstantiationException
    * @throws IllegalAccessException */
-  public static BaseApplication install(final String jarFilePath)
+  public static SmartHouseApplication install(final String jarFilePath)
       throws IOException, ClassNotFoundException, InstallerException, InstantiationException, IllegalAccessException {
     final URL[] urls = { new URL("jar:file:" + jarFilePath + "!/") };
     try (JarFile jarFile = new JarFile(jarFilePath); URLClassLoader cl = URLClassLoader.newInstance(urls)) {
       final Enumeration<JarEntry> e = jarFile.entries();
-      final List<Class<?>> baseAppClasses = getClassBySuperclass(loadAllClasses(cl, e), BaseApplication.class);
+      final List<Class<?>> baseAppClasses = getClassBySuperclass(loadAllClasses(cl, e), SmartHouseApplication.class);
       if (baseAppClasses.size() != 1)
         throw new InstallerException(InstallerException.MORE_THAN_ONE_IMPL, baseAppClasses.size());
-      return (BaseApplication) baseAppClasses.get(0).newInstance();
+      return (SmartHouseApplication) baseAppClasses.get(0).newInstance();
     }
   }
 

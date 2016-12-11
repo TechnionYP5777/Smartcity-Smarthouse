@@ -1,12 +1,16 @@
-package il.ac.technion.cs.eldery.applications;
+package il.ac.technion.cs.eldery.system.applications;
+
+import com.google.gson.JsonObject;
 
 import il.ac.technion.cs.eldery.system.*;
-import jdk.nashorn.api.scripting.*;
+import javafx.application.Application;
 
-/** This will be the API for the apps/modules developers
+/** The API for the apps/modules developers
+ * Every app that wants to be installed on the system, MUST extend this class
+ * @author RON
  * @author roysh
  * @since 8.12.2016 */
-public abstract class BaseApplication {
+public abstract class SmartHouseApplication extends Application {
   MainSystem mainSystem;
 
   /** Adds the mainSystem Object to the app
@@ -19,11 +23,7 @@ public abstract class BaseApplication {
 
   /** the function that will run when the il.ac.technion.cs.eldery.system
    * installs the app in the il.ac.technion.cs.eldery.system */
-  public abstract void onInstall();
-
-  /** The main loop of the application. Will be ruined on a thread in the main
-   * il.ac.technion.cs.eldery.system */
-  public abstract void main();
+  public abstract void onLoad();
 
   /** Adds the app to the listener list of a specific sensor
    * @param sensorID
@@ -37,24 +37,22 @@ public abstract class BaseApplication {
    * @param sensorID
    * @return true if the system has this sensor or
    *         false otherwise */
-  @SuppressWarnings("static-method") public boolean checkIfSensorExists(final String sensorID) {
+  @SuppressWarnings("static-method") public boolean checkIfSensorExists(final String sensorCommercialName) {
     // TODO: RON and ROY - implement this class
-    return true;
+    return sensorCommercialName != null;
   }
 
   /** Saves the app's data to the system's database
-   * @author RON
    * @param data
    * @return true if the data was saved to the system, or false otherwise */
-  @SuppressWarnings("static-method") public boolean saveToDatabase(final JSObject data) {
+  @SuppressWarnings("static-method") public boolean saveToDatabase(final JsonObject data) {
     // TODO: RON and ROY - implement this class
     return data != null;
   }
 
   /** Loads the app's data from the system's database
-   * @author RON
    * @return a JSObject with the data */
-  @SuppressWarnings("static-method") public JSObject loadFromDatabase() {
+  @SuppressWarnings("static-method") public JsonObject loadFromDatabase() {
     // TODO: RON and ROY - implement this class
     return null;
   }

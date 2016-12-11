@@ -1,12 +1,12 @@
-package il.ac.technion.cs.eldery.applications.installer.exceptions;
+package il.ac.technion.cs.eldery.system.exceptions;
 
-import il.ac.technion.cs.eldery.applications.*;
+import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 
 /** @author RON
  * @since 09-12-16 */
 public class InstallerException extends Exception {
   private static final long serialVersionUID = 4633789134305606432L;
-  public static final String MORE_THAN_ONE_IMPL = "Only one class can extend " + BaseApplication.class.getName();
+  public static final String MORE_THAN_ONE_IMPL = "Only one class can extend " + SmartHouseApplication.class.getName();
   private int value;
 
   public InstallerException(final String msg, final int value) {

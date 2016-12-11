@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.applications;
+package il.ac.technion.cs.eldery.system.applications;
 
 /** A class that stores information about the app
  * @author RON

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import il.ac.technion.cs.eldery.applications.BaseApplication;
+import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
 import il.ac.technion.cs.eldery.utils.Tuple;
 
@@ -41,7 +41,7 @@ public class AppThread {
   Boolean timeout = Boolean.FALSE, dontTerminate = Boolean.TRUE;
   Long interuptingSensor;
   
-  BaseApplication app;
+  SmartHouseApplication app;
   Thread thread = new Thread(){
     @SuppressWarnings({ "boxing", "rawtypes", "unchecked" })
     @Override
@@ -78,7 +78,7 @@ public class AppThread {
     }
   };
   
-  AppThread(final BaseApplication $){
+  AppThread(final SmartHouseApplication $){
     app = $;
   }
   
