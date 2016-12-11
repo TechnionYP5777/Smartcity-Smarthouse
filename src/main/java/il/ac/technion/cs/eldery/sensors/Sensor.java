@@ -1,8 +1,7 @@
 package il.ac.technion.cs.eldery.sensors;
 
+import java.util.List;
 import java.util.Map;
-
-import il.ac.technion.cs.eldery.networking.messages.MessageType;
 
 /** @author Sharon
  * @author Yarden
@@ -11,13 +10,16 @@ import il.ac.technion.cs.eldery.networking.messages.MessageType;
 public abstract class Sensor {
   protected String name;
   protected String id;
+  protected List<String> types;
 
   /** Initializes a new sensor given its name and id.
    * @param name name of the sensor
-   * @param id id of the sensor */
-  public Sensor(final String name, final String id) {
+   * @param id id of the sensor
+   * @param types types this sensor qualifies for */
+  public Sensor(final String name, final String id, final List<String> types) {
     this.name = name;
     this.id = id;
+    this.types = types;
   }
 
   /** Registers the sensor to the system.
@@ -34,7 +36,7 @@ public abstract class Sensor {
    * @param __ observations to send to the system
    * @return <code>true</code> if message was sent successfully,
    *         <code>false</code> otherwise */
-  @SuppressWarnings("static-method") public boolean updateSystem(@SuppressWarnings("unused") Map<Object, Object> __) {
+  @SuppressWarnings("static-method") public boolean updateSystem(Map<Object, Object> __) {
     // TODO: Sharon/Yarden
     return true;
   }
@@ -54,6 +56,11 @@ public abstract class Sensor {
    * @param name new name of the sensor */
   public void setName(final String name) {
     this.name = name;
+  }
+
+  /** @return list of types this sensor qualifies for */
+  public List<String> getTypes() {
+    return this.types;
   }
 
   /** @return id of the sensor */

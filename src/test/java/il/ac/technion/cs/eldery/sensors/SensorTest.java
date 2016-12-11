@@ -1,5 +1,7 @@
 package il.ac.technion.cs.eldery.sensors;
 
+import java.util.ArrayList;
+
 import org.junit.*;
 
 /** @author Sharon
@@ -9,7 +11,7 @@ public class SensorTest {
   private Sensor sensor;
 
   @Before public void initSensor() {
-    sensor = new Sensor("Default Sensor", "1") {
+    sensor = new Sensor("Default Sensor", "1", new ArrayList<>()) {
       @Override protected String[] getObservationsNames() {
         return new String[] { "name", "last name" };
       }
