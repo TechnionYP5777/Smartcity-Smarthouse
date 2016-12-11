@@ -69,11 +69,11 @@ public class AppThread {
       }
     }
     
-    private boolean gotNewEvent(){
+    boolean gotNewEvent(){
       return interuptingSensor != null;
     }
     
-    private void clearAfterEventHandled(){
+    void clearAfterEventHandled(){
       interuptingSensor = null;
     }
   };
