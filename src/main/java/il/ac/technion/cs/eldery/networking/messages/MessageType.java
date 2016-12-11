@@ -1,4 +1,4 @@
-package networking.messages;
+package il.ac.technion.cs.eldery.networking.messages;
 
 /** @author Yarden
  * @since 11.12.16 */
