@@ -9,16 +9,15 @@ import il.ac.technion.cs.eldery.sensors.Sensor;
  * @since 10.12.16 */
 public class StoveSensor extends Sensor {
   private static final List<String> TYPES = new ArrayList<>();
-  
   static {
     TYPES.add("Stove");
   }
-  
+
   public StoveSensor(final String name, final String id) {
     super(name, id, TYPES);
   }
 
-  @Override protected String[] getObservationsNames() {
+  @Override public String[] getObservationsNames() {
     return new String[] { "on / off", "temperature" };
   }
 }

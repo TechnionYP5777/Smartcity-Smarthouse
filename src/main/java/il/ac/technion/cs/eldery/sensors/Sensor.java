@@ -45,7 +45,7 @@ public abstract class Sensor {
    * names will be used to pass data to system as a dictionary of (type, value)
    * tuples.
    * @return array of names of the data this sensor observers */
-  protected abstract String[] getObservationsNames();
+  public abstract String[] getObservationsNames();
 
   /** @return name of the sensor */
   public String getName() {
