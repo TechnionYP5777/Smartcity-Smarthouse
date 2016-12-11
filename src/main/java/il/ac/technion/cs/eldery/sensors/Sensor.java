@@ -19,7 +19,7 @@ public abstract class Sensor {
   /** Registers the sensor to the system.
    * @return <code>true</code> if registration was successful,
    *         <code>false</code> otherwise */
-  @SuppressWarnings("static-method") protected boolean register() {
+  @SuppressWarnings("static-method") public boolean register() {
     // TODO: Sharon/Yarden
     return true;
   }
