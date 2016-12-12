@@ -1,7 +1,9 @@
 package il.ac.technion.cs.eldery.sensors.simulators.stove;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import il.ac.technion.cs.eldery.sensors.Sensor;
 
@@ -18,6 +20,13 @@ public class StoveSensor extends Sensor {
         super(name, id, TYPES, systemIP, systemPort);
     }
 
+    public boolean updateSystem(boolean on, int temperature) {
+        Map<Object, Object> data = new HashMap<>();
+        data.put("on / off", on + "");
+        data.put("temperature", temperature + "");
+        return super.updateSystem(data);
+    }
+    
     @Override public String[] getObservationsNames() {
         return new String[] { "on / off", "temperature" };
     }
