@@ -1,7 +1,17 @@
 package il.ac.technion.cs.eldery.sensors;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.List;
 import java.util.Map;
+
+import com.google.gson.JsonParser;
+
+import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
 
 /** @author Sharon
  * @author Yarden
@@ -11,23 +21,33 @@ public abstract class Sensor {
     protected String name;
     protected String id;
     protected List<String> types;
+    protected String systemIP;
+    protected int systemPort;
 
     /** Initializes a new sensor given its name and id.
      * @param name name of the sensor
      * @param id id of the sensor
      * @param types types this sensor qualifies for */
-    public Sensor(final String name, final String id, final List<String> types) {
+    public Sensor(final String name, final String id, final List<String> types, final String systemIP, final int systemPort) {
         this.name = name;
         this.id = id;
         this.types = types;
+        this.systemIP = systemIP;
+        this.systemPort = systemPort;
     }
 
     /** Registers the sensor to the system.
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise */
-    @SuppressWarnings("static-method") public boolean register() {
-        // TODO: Sharon/Yarden
-        return true;
+    public boolean register() {
+        try (Socket socket = new Socket(InetAddress.getByName(systemIP), systemPort);
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
+            out.println((new RegisterMessage(this)).toJson());
+            return "true".equals((new JsonParser()).parse(in.readLine()).getAsJsonObject().get("response"));
+        } catch (@SuppressWarnings("unused") IOException e) {
+            return false;
+        }
     }
 
     /** Sends an update message to the system with the given observations. The

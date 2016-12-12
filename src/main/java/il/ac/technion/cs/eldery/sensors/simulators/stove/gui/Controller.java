@@ -13,23 +13,23 @@ import javafx.scene.control.Label;
 /** @author Sharon
  * @since 9.12.16 */
 public class Controller implements Initializable {
-  private StoveSensor sensor;
-  private boolean on;
-  @FXML public Button onOffButton;
-  @FXML public Label tempLabel;
-  @FXML public Slider tempSlider;
+    private StoveSensor sensor;
+    private boolean on;
+    @FXML public Button onOffButton;
+    @FXML public Label tempLabel;
+    @FXML public Slider tempSlider;
 
-  @Override public void initialize(final URL location, final ResourceBundle __) {
-    sensor = new StoveSensor("Stove Sensor Simulator", "00:00:00:00:00:00");
-    sensor.register();
-    onOffButton.setOnAction(event -> {
-      on = !on;
-      onOffButton.setText("Turn " + (on ? "off" : "on"));
-      tempLabel.setDisable(!on);
-      tempSlider.setDisable(!on);
-    });
-    tempSlider.valueProperty().addListener((ov, oldVal, newVal) -> {
-      tempLabel.setText("Temperature: " + Math.round(newVal.doubleValue()));
-    });
-  }
+    @Override public void initialize(final URL location, final ResourceBundle __) {
+        sensor = new StoveSensor("Stove Sensor Simulator", "00:00:00:00:00:00", "1:1:1:1", 80);
+        sensor.register();
+        onOffButton.setOnAction(event -> {
+            on = !on;
+            onOffButton.setText("Turn " + (on ? "off" : "on"));
+            tempLabel.setDisable(!on);
+            tempSlider.setDisable(!on);
+        });
+        tempSlider.valueProperty().addListener((ov, oldVal, newVal) -> {
+            tempLabel.setText("Temperature: " + Math.round(newVal.doubleValue()));
+        });
+    }
 }
