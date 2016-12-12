@@ -12,6 +12,8 @@ import javafx.application.Application;
  * @since 8.12.2016 */
 public abstract class SmartHouseApplication extends Application {
     MainSystem mainSystem;
+    
+    public SmartHouseApplication() {}
 
     /** Adds the mainSystem Object to the app
      * @param mainSystem
@@ -28,15 +30,15 @@ public abstract class SmartHouseApplication extends Application {
     /** Adds the app to the listener list of a specific sensor
      * @param sensorID
      * @return true if successful or false if failed */
-    @SuppressWarnings("static-method") public boolean subscribeToSensor(final String sensorID) {
+    @SuppressWarnings("static-method") public final boolean subscribeToSensor(final String sensorCommercialName) {
         // TODO: RON and ROY - implement this class
-        return true;
+        return sensorCommercialName != null;
     }
 
     /** Check if the sensor specified is active in the house
      * @param sensorID
      * @return true if the system has this sensor or false otherwise */
-    @SuppressWarnings("static-method") public boolean checkIfSensorExists(final String sensorCommercialName) {
+    @SuppressWarnings("static-method") public final boolean checkIfSensorExists(final String sensorCommercialName) {
         // TODO: RON and ROY - implement this class
         return sensorCommercialName != null;
     }

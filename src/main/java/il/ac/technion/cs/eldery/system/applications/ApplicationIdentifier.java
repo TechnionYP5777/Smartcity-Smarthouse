@@ -1,12 +1,18 @@
 package il.ac.technion.cs.eldery.system.applications;
 
-/** A class that stores information about the app
+/** A class that stores information about the installed application
  * @author RON
- * @since 09-12-16 */
-// TODO: RON and ROY - implement this class
+ * @since 09-12-2016 */
+// TODO: RON and ROY - implement this class. Should this class store an instance
+// of the SmartHouseApplication
 public class ApplicationIdentifier {
     String id;
-    String path;
+    String jarPath;
+
+    public ApplicationIdentifier(String id, String jarPath) {
+        this.id = id;
+        this.jarPath = jarPath;
+    }
 
     public String getId() {
         return id;
@@ -16,16 +22,16 @@ public class ApplicationIdentifier {
         this.id = id;
     }
 
-    public String getPath() {
-        return path;
+    public String getJarPath() {
+        return jarPath;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setJarPath(String path) {
+        this.jarPath = path;
     }
 
     @Override public int hashCode() {
-        return 31 * (((id == null) ? 0 : id.hashCode()) + 31) + ((path == null) ? 0 : path.hashCode());
+        return 31 * (((id == null) ? 0 : id.hashCode()) + 31) + ((jarPath == null) ? 0 : jarPath.hashCode());
     }
 
     @Override public boolean equals(Object o) {
@@ -39,15 +45,15 @@ public class ApplicationIdentifier {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (path == null) {
-            if (other.path != null)
+        if (jarPath == null) {
+            if (other.jarPath != null)
                 return false;
-        } else if (!path.equals(other.path))
+        } else if (!jarPath.equals(other.jarPath))
             return false;
         return true;
     }
 
     @Override public String toString() {
-        return "ApplicationIdentifier [id=" + id + ", path=" + path + "]";
+        return "ApplicationIdentifier [id=" + id + ", path=" + jarPath + "]";
     }
 }
