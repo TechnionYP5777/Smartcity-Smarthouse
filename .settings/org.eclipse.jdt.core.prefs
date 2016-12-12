@@ -385,7 +385,6 @@ org.eclipse.jdt.core.formatter.lineSplit=150
 org.eclipse.jdt.core.formatter.never_indent_block_comments_on_first_column=false
 org.eclipse.jdt.core.formatter.never_indent_line_comments_on_first_column=false
 org.eclipse.jdt.core.formatter.number_of_blank_lines_at_beginning_of_method_body=0
-org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve=0
 org.eclipse.jdt.core.formatter.parentheses_positions_in_annotation=common_lines
 org.eclipse.jdt.core.formatter.parentheses_positions_in_catch_clause=common_lines
 org.eclipse.jdt.core.formatter.parentheses_positions_in_enum_constant_declaration=common_lines
