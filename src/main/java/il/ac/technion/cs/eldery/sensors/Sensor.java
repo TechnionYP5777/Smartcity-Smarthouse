@@ -1,48 +1,78 @@
 package il.ac.technion.cs.eldery.sensors;
 
+import java.util.List;
+import java.util.Map;
+
+import com.google.gson.JsonParser;
+
+import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
+import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
+
 /** @author Sharon
  * @author Yarden
  * @since 7.12.16 */
-// TODO Add some interesting functionality
 public abstract class Sensor {
-  protected String name;
-  protected String id;
+    protected String name;
+    protected String id;
+    protected List<String> types;
+    protected String systemIP;
+    protected int systemPort;
 
-  /** Initializes a new sensor given its name and id.
-   * @param name name of the sensor
-   * @param id id of the sensor */
-  public Sensor(final String name, final String id) {
-    this.name = name;
-    this.id = id;
-  }
+    /** Initializes a new sensor given its name and id.
+     * @param name name of the sensor
+     * @param id id of the sensor
+     * @param types types this sensor qualifies for */
+    public Sensor(final String name, final String id, final List<String> types, final String systemIP, final int systemPort) {
+        this.name = name;
+        this.id = id;
+        this.types = types;
+        this.systemIP = systemIP;
+        this.systemPort = systemPort;
+    }
 
-  /** Registers the sensor to the system.
-   * @return <code>true</code> if registration was successful,
-   *         <code>false</code> otherwise */
-  @SuppressWarnings("static-method") protected boolean register() {
-    // TODO: Sharon/Yarden
-    return true;
-  }
+    /** Registers the sensor to the system.
+     * @return <code>true</code> if registration was successful,
+     *         <code>false</code> otherwise */
+    public boolean register() {
+        String response = (new RegisterMessage(this)).send(systemIP, systemPort);
+        return response != null && "success".equals((new JsonParser()).parse(response).getAsJsonObject().get("response"));
+    }
 
-  /** Returns the names of the parameters that will be sent to the system. These
-   * names will be used to pass data to system as a dictionary of (type, value)
-   * tuples.
-   * @return array of names of the data this sensor observers */
-  protected abstract String[] getObservationsNames();
+    /** Sends an update message to the system with the given observations. The
+     * observations are represented as a map from the names of the observations,
+     * to their values.
+     * @param data observations to send to the system
+     * @return <code>true</code> if message was sent successfully,
+     *         <code>false</code> otherwise */
+    public boolean updateSystem(Map<Object, Object> data) {
+        String response = (new UpdateMessage(this, data)).send(systemIP, systemPort);
+        return response != null && "success".equals((new JsonParser()).parse(response).getAsJsonObject().get("response"));
+    }
 
-  /** @return name of the sensor */
-  public String getName() {
-    return name;
-  }
+    /** Returns the names of the parameters that will be sent to the system.
+     * These names will be used to pass data to system as a dictionary of (type,
+     * value) tuples.
+     * @return array of names of the data this sensor observers */
+    public abstract String[] getObservationsNames();
 
-  /** Sets a new name for the sensor.
-   * @param name new name of the sensor */
-  public void setName(final String name) {
-    this.name = name;
-  }
+    /** @return name of the sensor */
+    public String getName() {
+        return name;
+    }
 
-  /** @return id of the sensor */
-  public String getId() {
-    return id;
-  }
+    /** @return list of types this sensor qualifies for */
+    public List<String> getTypes() {
+        return this.types;
+    }
+
+    /** @return id of the sensor */
+    public String getId() {
+        return id;
+    }
+
+    /** Sets a new name for the sensor.
+     * @param name new name of the sensor */
+    public void setName(final String name) {
+        this.name = name;
+    }
 }

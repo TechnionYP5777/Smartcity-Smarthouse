@@ -12,34 +12,21 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.sensors.simulators.stove.gui.Controller">
    <children>
-      <VBox>
+      <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="200.0">
+            <Label fx:id="tempLabel" disable="true" text="Temperature: 100" />
+            <Slider fx:id="tempSlider" disable="true" max="150.0" value="100.0" />
+            <AnchorPane>
                <children>
-                  <Button fx:id="onOffButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="238.0" text="Button" />
+                  <Button fx:id="onOffButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Turn on" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </HBox>
-            <VBox spacing="10.0">
-               <children>
-                  <Label fx:id="tempLabel" text="Temperature: 100" />
-                  <Slider fx:id="tempSlider" max="150.0" value="100.0" />
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </VBox>
+            </AnchorPane>
          </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
       </VBox>
    </children>
-</Pane>
+</AnchorPane>
