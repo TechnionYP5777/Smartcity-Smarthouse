@@ -7,7 +7,7 @@ import il.ac.technion.cs.eldery.sensors.Sensor;
 
 /** @author Yarden
  * @since 11.12.16 */
-public class RegisterMessage implements Message {
+public class RegisterMessage extends Message {
     private Sensor sensor;
 
     public RegisterMessage(Sensor sensor) {
