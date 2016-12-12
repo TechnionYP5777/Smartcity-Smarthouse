@@ -1,17 +1,12 @@
 package il.ac.technion.cs.eldery.sensors;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonParser;
 
 import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
+import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 
 /** @author Sharon
  * @author Yarden
@@ -40,25 +35,19 @@ public abstract class Sensor {
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise */
     public boolean register() {
-        try (Socket socket = new Socket(InetAddress.getByName(systemIP), systemPort);
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
-            out.println((new RegisterMessage(this)).toJson());
-            return "true".equals((new JsonParser()).parse(in.readLine()).getAsJsonObject().get("response"));
-        } catch (@SuppressWarnings("unused") IOException e) {
-            return false;
-        }
+        String response = (new RegisterMessage(this)).send(systemIP, systemPort);
+        return response != null && "success".equals((new JsonParser()).parse(response).getAsJsonObject().get("response"));
     }
 
     /** Sends an update message to the system with the given observations. The
      * observations are represented as a map from the names of the observations,
      * to their values.
-     * @param __ observations to send to the system
+     * @param data observations to send to the system
      * @return <code>true</code> if message was sent successfully,
      *         <code>false</code> otherwise */
-    @SuppressWarnings("static-method") public boolean updateSystem(Map<Object, Object> __) {
-        // TODO: Sharon/Yarden
-        return true;
+    public boolean updateSystem(Map<Object, Object> data) {
+        String response = (new UpdateMessage(this, data)).send(systemIP, systemPort);
+        return response != null && "success".equals((new JsonParser()).parse(response).getAsJsonObject().get("response"));
     }
 
     /** Returns the names of the parameters that will be sent to the system.
