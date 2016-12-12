@@ -11,7 +11,6 @@ import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 /** @author Sharon
  * @author Yarden
  * @since 7.12.16 */
-// TODO Add some interesting functionality
 public abstract class Sensor {
     protected String name;
     protected String id;
