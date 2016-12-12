@@ -27,9 +27,12 @@ public class Controller implements Initializable {
             onOffButton.setText("Turn " + (on ? "off" : "on"));
             tempLabel.setDisable(!on);
             tempSlider.setDisable(!on);
+            sensor.updateSystem(on, (int) Math.round(tempSlider.getValue()));
         });
         tempSlider.valueProperty().addListener((ov, oldVal, newVal) -> {
-            tempLabel.setText("Temperature: " + Math.round(newVal.doubleValue()));
+            int temp = (int) Math.round(newVal.doubleValue());
+            tempLabel.setText("Temperature: " + temp);
+            sensor.updateSystem(true, temp);
         });
     }
 }
