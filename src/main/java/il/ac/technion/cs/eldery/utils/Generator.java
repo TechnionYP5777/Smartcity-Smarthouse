@@ -5,10 +5,10 @@ import java.util.*;
 /** @author RON
  * @since 09-12-16 */
 public enum Generator {
-  ;
-  /** Generates a Universally Unique IDentifier (UUID)
-   * @return the new UUID */
-  public static UUID GenerateUniqueID() {
-    return UUID.randomUUID();
-  }
+    ;
+    /** Generates a Universally Unique IDentifier (UUID)
+     * @return the new UUID */
+    public static UUID GenerateUniqueID() {
+        return UUID.randomUUID();
+    }
 }
