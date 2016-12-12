@@ -17,6 +17,7 @@ public class UpdateMessage extends Message {
         this.data = data;
     }
 
+    
     @Override public String toJson() {
         JsonObject json = new JsonObject();
         json.addProperty("type", MessageType.UPDATE + "");
