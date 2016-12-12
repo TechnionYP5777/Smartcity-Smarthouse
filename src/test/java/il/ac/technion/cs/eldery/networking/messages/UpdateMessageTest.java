@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.google.gson.JsonParser;
 
-import il.ac.technion.cs.eldery.sensors.simulators.stove.StoveSensor;
+import il.ac.technion.cs.eldery.sensors.stove.StoveSensor;
 
 /** @author Sharon
  * @since 11.12.16 */
