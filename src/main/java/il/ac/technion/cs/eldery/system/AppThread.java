@@ -21,8 +21,7 @@ import il.ac.technion.cs.eldery.utils.Tuple;
  * @since Dec 11, 2016 */
 public class AppThread {
     private class EventInfo<L, R> {
-        // TODO: ELIA consider moving the beauty that is
-        // Consumer<List<Tuple<L,R>>> into the closest thing to typedef
+        // TODO: ELIA consider moving the beauty that is Consumer<List<Tuple<L,R>>> into the closest thing to typedef
         final Consumer<List<Tuple<L, R>>> consumer;
         List<Tuple<L, R>> data = new ArrayList<>();
 
