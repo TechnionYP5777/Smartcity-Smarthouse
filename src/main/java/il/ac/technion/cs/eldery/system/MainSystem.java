@@ -12,6 +12,17 @@ import il.ac.technion.cs.eldery.utils.Tuple;
  *  in the environment
  * */
 public class MainSystem {
+    /** The level of emergency, defined by the level of expertise needed to take care of it. Includes the following options:
+     * {@link #NOTIFY_ELDERLY}, {@link #SMS_EMERGENCY_CONTACT}, {@link #CALL_EMERGENCY_CONTACT}, {@link #CONTACT_POLICE},
+     * {@link #CONTACT_HOSPITAL}, {@link #CONTACT_FIRE_FIGHTERS}
+     * */
+    enum EMERGENCY_LEVEL {/**Low level of emergency, requires a reminder to the elderly*/ NOTIFY_ELDERLY,
+                          /**Medium level of emergency, requires texting a previously defined contact*/ SMS_EMERGENCY_CONTACT,
+                          /**Medium-high level of emergency, requires calling a previously defined contact*/ CALL_EMERGENCY_CONTACT, 
+                          /**High level of emergency, requires police assistance*/ CONTACT_POLICE, 
+                          /**High level of emergency, requires help from medical personnel*/ CONTACT_HOSPITAL, 
+                          /**High level of emergency, requires fire fighters assistance*/ CONTACT_FIRE_FIGHTERS};
+                          
   /** API allowing smart house applications to register for information and notify on emergencies
    * */
   static class ApplicationHandler {
@@ -26,7 +37,8 @@ public class MainSystem {
           return Boolean.FALSE; //TODO: ELIA implement
       }
       
-      /** Allows registration to a sensor. on time, the sensor will be polled and the data will be given to the consumer for farther processing 
+      /** Allows registration to a sensor. on time, the sensor will be polled and the data will be given to the consumer for 
+       * farther processing 
        * @param sensorCommercialName The name of sensor, agreed upon in an external platform
        * @param t the time when a polling is requested
        * @param notifee A consumer that will receive the new data from the sensor
@@ -36,12 +48,21 @@ public class MainSystem {
           return Boolean.FALSE; //TODO: ELIA implement
       }
       
-      /** request for the latest data received by a sensor
+      /** Request for the latest data received by a sensor
        *  @param sensorCommercialName The name of sensor, agreed upon in an external platform
        *  @return the latest data (or Optional.empty() if the query failed in any point)
        * */
       public static <L,R> Optional<Tuple<L,R>> querySensor(String sensorCommercialName){
           return Optional.empty(); //TODO: ELIA implement
+      }
+      
+      /** Report an abnormality in the expected schedule. The system will contact the needed personal, according to the 
+       *  urgency level
+       *  @param message Specify the abnormality, will be presented to the contacted personal
+       *  @param eLevel The level of personnel needed in the situation
+       * */
+      public static void alertOnAbnormalState(String message, EMERGENCY_LEVEL eLevel){
+          
       }
   }
   
