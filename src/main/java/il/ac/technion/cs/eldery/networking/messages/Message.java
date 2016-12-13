@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import com.google.gson.Gson;
+
 /** @author Sharon
  * @author Yarden
  * @since 11.12.16 */
@@ -19,7 +21,9 @@ public abstract class Message {
 
     /** Converts the contents of this message into JSON format.
      * @return JSON formatted string */
-    protected abstract String toJson();
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
 
     /** Sends the message to the specified destination.
      * @param ip the IP address of the destination

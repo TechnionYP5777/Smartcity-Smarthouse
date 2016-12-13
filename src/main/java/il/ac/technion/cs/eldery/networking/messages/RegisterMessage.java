@@ -1,8 +1,5 @@
 package il.ac.technion.cs.eldery.networking.messages;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import il.ac.technion.cs.eldery.sensors.Sensor;
 
 /** @author Yarden
@@ -17,18 +14,14 @@ public class RegisterMessage extends Message {
         this.sensor = sensor;
     }
 
-    @Override public String toJson() {
-        JsonObject json = new JsonObject();
-        json.addProperty("type", MessageType.REGISTRATION + "");
-        json.addProperty("id", sensor.getId());
-        JsonArray types = new JsonArray();
-        for (String type : sensor.getTypes())
-            types.add(type);
-        json.add("sensor_types", types);
-        JsonArray observations = new JsonArray();
-        for (String observation : sensor.getObservationsNames())
-            observations.add(observation);
-        json.add("observations", observations);
-        return json + "";
+    /** @return the sensor this message represents */
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    /** Sets a new sensor for this registration message
+     * @param ¢ new sensor */
+    public void setSensor(Sensor ¢) {
+        this.sensor = ¢;
     }
 }
