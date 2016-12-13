@@ -101,7 +101,9 @@ public class StoveModuleGui extends Application{
         Button btnOpenNewWindow = new Button();
         btnOpenNewWindow.setText("Stove Config");
         btnOpenNewWindow.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
+            @SuppressWarnings("static-access")
+            @Override
+            public void handle(ActionEvent __) {
                    StoveModuleGui.this.openNewWindow();
             }
         });
