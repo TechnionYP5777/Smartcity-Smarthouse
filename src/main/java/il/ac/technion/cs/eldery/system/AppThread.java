@@ -75,16 +75,16 @@ public class AppThread {
         }
     };
 
-    AppThread(final SmartHouseApplication $) {
+    public AppThread(final SmartHouseApplication $) {
         app = $;
     }
 
-    /** same as Thread::start */
+    /** @see java.lang.Thread#start */
     public void start() {
         thread.start();
     }
 
-    /** same as Thread::join */
+    /** @see java.lang.Thread#join */
     public void join() throws InterruptedException {
         dontTerminate = Boolean.FALSE;
         thread.join();

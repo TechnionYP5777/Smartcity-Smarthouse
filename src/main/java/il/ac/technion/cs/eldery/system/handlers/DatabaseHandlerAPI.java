@@ -14,5 +14,5 @@ import il.ac.technion.cs.eldery.utils.Tuple;
  */
 public interface DatabaseHandlerAPI {
     <L,R> Boolean addListener(String sensorCommercialName, Consumer<Tuple<L,R>> notifee);
-    <L,R> Optional<Tuple<L,R>> querySensor(final String sensorCommercialName);
+    <L,R> Optional<Tuple<L,R>> getLastEntryOf(final String sensorCommercialName);
 }
