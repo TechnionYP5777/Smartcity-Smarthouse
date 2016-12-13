@@ -3,7 +3,7 @@
  * @since Dec 13, 2016
  */
 
-package il.ac.technion.cs.eldery.system.handlers;
+package il.ac.technion.cs.eldery.system.applications;
 
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -13,9 +13,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import il.ac.technion.cs.eldery.system.AppThread;
+import il.ac.technion.cs.eldery.system.DatabaseHandlerAPI;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
-import il.ac.technion.cs.eldery.system.applications.ApplicationIdentifier;
-import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
 import il.ac.technion.cs.eldery.utils.Tuple;
 
