@@ -1,5 +1,8 @@
 package il.ac.technion.cs.eldery.system.applications;
 
+import il.ac.technion.cs.eldery.system.MainSystem;
+import il.ac.technion.cs.eldery.utils.Generator;
+
 /** A class that stores information about the installed application
  * @author RON
  * @since 09-12-2016 */
@@ -28,6 +31,21 @@ public class ApplicationIdentifier {
 
     public void setJarPath(String path) {
         this.jarPath = path;
+    }
+
+    /** installs the application, and generates the ApplicationIdentifier for it
+     * @param jarFilePath
+     * @return the ApplicationIdentifier for the application */
+    public static ApplicationIdentifier installApplication(final String jarFilePath) {
+        // TODO: Ron and Roy - do we need to do more stuff here?
+        return new ApplicationIdentifier(Generator.GenerateUniqueID() + "", jarFilePath);
+    }
+
+    @SuppressWarnings("unused") private static SmartHouseApplication initiateApplication(SmartHouseApplication a, MainSystem s) {
+        // TODO: Ron and Roy - ?
+        a.setMainSystemInstance(s);
+        a.onLoad();
+        return a;
     }
 
     @Override public int hashCode() {

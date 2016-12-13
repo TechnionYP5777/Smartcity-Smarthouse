@@ -6,34 +6,23 @@ import java.util.*;
 import java.util.jar.*;
 import java.util.stream.*;
 
-import il.ac.technion.cs.eldery.system.MainSystem;
 import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
-import il.ac.technion.cs.eldery.system.exceptions.InstallerException;
-import il.ac.technion.cs.eldery.utils.Generator;
+import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 
-/** This class handles installing and loading SmartHouseApplications
+/** This class contains static functions that handle loading
+ * SmartHouseApplications using ClassLoaders
  * @author RON
  * @since 09-12-2016 */
-public class AppInstaller {
-    /** installs the application, and generates the ApplicationIdentifier for it
-     * @param jarFilePath
-     * @return the ApplicationIdentifier for the application */
-    public static ApplicationIdentifier installApplication(final String jarFilePath) {
-        // TODO: Ron and Roy - do we need to do more stuff here?
-        return new ApplicationIdentifier(Generator.GenerateUniqueID() + "", jarFilePath);
-    }
+public class AppInstallHelper {
 
     /** Dynamically loads the classes from the jar file to the JVM. Finds the
      * one class that extends SmartHouseApplication, and returns an instance of
      * it.
      * @param i
      * @return an instance of SmartHouseApplication
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InstallerException
+     * @throws AppInstallerException
      * @throws IOException */
-    public static SmartHouseApplication loadApplication(final ApplicationIdentifier i)
-            throws InstantiationException, IllegalAccessException, InstallerException, IOException {
+    public static SmartHouseApplication loadApplication(final ApplicationIdentifier i) throws AppInstallerException, IOException {
         String jarFilePath = i.getJarPath();
         final URL[] urls = { new URL("jar:file:" + jarFilePath + "!/") };
         try (URLClassLoader cl = URLClassLoader.newInstance(urls)) {
@@ -45,37 +34,28 @@ public class AppInstaller {
      * extends SmartHouseApplication, and returns an instance of it.
      * @param classNames
      * @return an instance of SmartHouseApplication
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InstallerException */
-    public static SmartHouseApplication loadApplication(List<String> classNames)
-            throws InstantiationException, IllegalAccessException, InstallerException {
+     * @throws AppInstallerException */
+    public static SmartHouseApplication loadApplication(List<String> classNames) throws AppInstallerException {
         return loadApplication_aux(classNames, ClassLoader.getSystemClassLoader());
-    }
-
-    @SuppressWarnings("unused") private static SmartHouseApplication initiateApplication(SmartHouseApplication a, MainSystem s) {
-        // TODO: Ron and Roy - ?
-        a.setMainSystemInstance(s);
-        a.onLoad();
-        return a;
     }
 
     /** loads the classes with the ClassLoader and finds the class that extends
      * SmartHouseApplication, instantiates it, and returns it
      * @param classNames
-     * @param l
+     * @param l - the ClassLoader
      * @return an instance of SmartHouseApplication
-     * @throws InstallerException
-     * @throws InstantiationException
-     * @throws IllegalAccessException */
-    private static SmartHouseApplication loadApplication_aux(List<String> classNames, ClassLoader l)
-            throws InstallerException, InstantiationException, IllegalAccessException {
-        // TODO: Ron and Roy - do we really need to throw all of these
-        // exceptions? maybe we should handle them here
+     * @throws AppInstallerException */
+    private static SmartHouseApplication loadApplication_aux(List<String> classNames, ClassLoader l) throws AppInstallerException {
         final List<Class<?>> applicationClasses = getClassesBySuperclass(loadAllClasses(l, classNames), SmartHouseApplication.class);
         if (applicationClasses.size() != 1)
-            throw new InstallerException(InstallerException.MORE_THAN_ONE_IMPL, applicationClasses.size());
-        return (SmartHouseApplication) applicationClasses.get(0).newInstance();
+            throw new AppInstallerException(AppInstallerException.MORE_THAN_ONE_IMPL, applicationClasses.size());
+
+        try {
+            return (SmartHouseApplication) applicationClasses.get(0).newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            // TODO: @RonGatenio - handle exceptions in a better way
+            throw new AppInstallerException(e.getMessage(), 0);
+        }
     }
 
     /** finds all the classes in cs that extend filterClass
