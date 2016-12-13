@@ -35,6 +35,10 @@ public class MainSystem {
     public void addListener(Consumer<Tuple<L,R>> $){
         listeners.add($);
     }
+    
+    public Tuple<L,R> getLastUpdate(){
+        return database.getLastUpdate();
+    }
   }
   
   @SuppressWarnings("rawtypes")
@@ -105,7 +109,7 @@ public class MainSystem {
        *  @return the latest data (or Optional.empty() if the query failed in any point)
        * */
       public <L,R> Optional<Tuple<L,R>> querySensor(String sensorCommercialName){
-          return Optional.empty(); //TODO: ELIA implement
+          return Optional.ofNullable(sensors.get(sensorCommercialName)).map(SensorInfo::getLastUpdate);
       }
       
       /** Report an abnormality in the expected schedule. The system will contact the needed personal, according to the 
