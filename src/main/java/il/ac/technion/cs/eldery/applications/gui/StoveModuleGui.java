@@ -28,6 +28,24 @@ public class StoveModuleGui extends Application{
     DoubleProperty timeSeconds = new SimpleDoubleProperty();
     Duration time = Duration.ZERO;
     
+    static void openNewWindow(){
+        Stage stage = new Stage();
+        Scene scene = new Scene(new Group());
+        stage.setWidth(450);
+        stage.setHeight(250);
+        stage.setTitle("Stove Config");
+        final Label label = new Label("Stove Config");
+        label.setFont(new Font("Arial", 20));
+        
+        final VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 0, 0, 10));
+        vbox.getChildren().addAll(label);
+ 
+        ((Group) scene.getRoot()).getChildren().addAll(vbox);
+        stage.setScene(scene);
+        stage.show();
+    }
     public static void main(final String[] args) {
         launch(args);
     }
@@ -37,7 +55,7 @@ public class StoveModuleGui extends Application{
         Scene scene = new Scene(new Group());
         primaryStage.setTitle("Stove configuration");
         primaryStage.setWidth(450);
-        primaryStage.setHeight(550);
+        primaryStage.setHeight(250);
  
         final Label label = new Label("Stove Feed");
         label.setFont(new Font("Arial", 20));
@@ -79,13 +97,21 @@ public class StoveModuleGui extends Application{
                 }
             }
         });
+        
+        Button btnOpenNewWindow = new Button();
+        btnOpenNewWindow.setText("Stove Config");
+        btnOpenNewWindow.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                   StoveModuleGui.this.openNewWindow();
+            }
+        });
         final HBox hbox = new HBox();
         hbox.getChildren().addAll(timePref,this.timerLabel);
         
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label,hbox,button);
+        vbox.getChildren().addAll(label,hbox,button,btnOpenNewWindow);
  
         ((Group) scene.getRoot()).getChildren().addAll(vbox);
 
