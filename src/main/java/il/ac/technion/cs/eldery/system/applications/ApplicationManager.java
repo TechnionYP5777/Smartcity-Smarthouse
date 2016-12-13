@@ -8,11 +8,11 @@ import il.ac.technion.cs.eldery.utils.Generator;
  * @since 09-12-2016 */
 // TODO: RON and ROY - implement this class. Should this class store an instance
 // of the SmartHouseApplication
-public class ApplicationIdentifier {
+public class ApplicationManager {
     String id;
     String jarPath;
 
-    public ApplicationIdentifier(String id, String jarPath) {
+    public ApplicationManager(String id, String jarPath) {
         this.id = id;
         this.jarPath = jarPath;
     }
@@ -36,9 +36,9 @@ public class ApplicationIdentifier {
     /** installs the application, and generates the ApplicationIdentifier for it
      * @param jarFilePath
      * @return the ApplicationIdentifier for the application */
-    public static ApplicationIdentifier installApplication(final String jarFilePath) {
+    public static ApplicationManager installApplication(final String jarFilePath) {
         // TODO: Ron and Roy - do we need to do more stuff here?
-        return new ApplicationIdentifier(Generator.GenerateUniqueID() + "", jarFilePath);
+        return new ApplicationManager(Generator.GenerateUniqueID() + "", jarFilePath);
     }
 
     @SuppressWarnings("unused") private static SmartHouseApplication initiateApplication(SmartHouseApplication a, MainSystem s) {
@@ -57,7 +57,7 @@ public class ApplicationIdentifier {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        ApplicationIdentifier other = (ApplicationIdentifier) o;
+        ApplicationManager other = (ApplicationManager) o;
         if (id == null) {
             if (other.id != null)
                 return false;

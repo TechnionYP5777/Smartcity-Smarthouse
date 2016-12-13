@@ -22,7 +22,7 @@ import il.ac.technion.cs.eldery.utils.Tuple;
 /** API allowing smart house applications to register for information and notify on emergencies
  * */
 public class ApplicationHandler {
-    Map<String, Tuple<ApplicationIdentifier, AppThread>> apps = new HashMap<>();//TODO: change to ApplicationIdentifier only, when wanted behavior is implemented
+    Map<String, Tuple<ApplicationManager, AppThread>> apps = new HashMap<>();//TODO: change to ApplicationIdentifier only, when wanted behavior is implemented
     DatabaseHandlerAPI databaseHandler;
     
     /**
@@ -35,7 +35,7 @@ public class ApplicationHandler {
     /** Adds a new application to the system.
      *  @return The id of the application in the system
      * */
-    public String addApplication(final ApplicationIdentifier appid, final SmartHouseApplication app){
+    public String addApplication(final ApplicationManager appid, final SmartHouseApplication app){
         //TODO: ELIA remove the app param, after ApplicationIdentifier is completed
         apps.put(appid.getId(), new Tuple<>(appid, new AppThread(app)));
         return appid.getId();

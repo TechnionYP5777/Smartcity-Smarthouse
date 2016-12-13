@@ -3,8 +3,6 @@ package il.ac.technion.cs.eldery.system.applications;
 import org.junit.*;
 
 import il.ac.technion.cs.eldery.system.*;
-import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
-import javafx.stage.Stage;
 
 /** @author Roy
  * @author RON

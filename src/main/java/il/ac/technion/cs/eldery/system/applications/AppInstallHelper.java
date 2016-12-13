@@ -22,7 +22,7 @@ public class AppInstallHelper {
      * @return an instance of SmartHouseApplication
      * @throws AppInstallerException
      * @throws IOException */
-    public static SmartHouseApplication loadApplication(final ApplicationIdentifier i) throws AppInstallerException, IOException {
+    public static SmartHouseApplication loadApplication(final ApplicationManager i) throws AppInstallerException, IOException {
         String jarFilePath = i.getJarPath();
         final URL[] urls = { new URL("jar:file:" + jarFilePath + "!/") };
         try (URLClassLoader cl = URLClassLoader.newInstance(urls)) {
