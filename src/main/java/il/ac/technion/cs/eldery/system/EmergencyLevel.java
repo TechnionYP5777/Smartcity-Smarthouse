@@ -6,10 +6,16 @@ package il.ac.technion.cs.eldery.system;
  * {@link #CONTACT_HOSPITAL}, {@link #CONTACT_FIRE_FIGHTERS}
  * */
 public enum EmergencyLevel {
-    NOTIFY_ELDERLY,           /**Low level of emergency, requires a reminder to the elderly*/
-    SMS_EMERGENCY_CONTACT,    /**Medium level of emergency, requires texting a previously defined contact*/
-    CALL_EMERGENCY_CONTACT,   /**Medium-high level of emergency, requires calling a previously defined contact*/
-    CONTACT_POLICE,           /**High level of emergency, requires police assistance*/ 
-    CONTACT_HOSPITAL,         /**High level of emergency, requires help from medical personnel*/
-    CONTACT_FIRE_FIGHTERS     /**High level of emergency, requires fire fighters assistance*/
+    /**Low level of emergency, requires a reminder to the elderly*/
+    NOTIFY_ELDERLY,
+    /**Medium level of emergency, requires texting a previously defined contact*/
+    SMS_EMERGENCY_CONTACT,
+    /**Medium-high level of emergency, requires calling a previously defined contact*/
+    CALL_EMERGENCY_CONTACT,   
+    /**High level of emergency, requires police assistance*/ 
+    CONTACT_POLICE,           
+    /**High level of emergency, requires help from medical personnel*/
+    CONTACT_HOSPITAL, 
+    /**High level of emergency, requires fire fighters assistance*/
+    CONTACT_FIRE_FIGHTERS     
 }
