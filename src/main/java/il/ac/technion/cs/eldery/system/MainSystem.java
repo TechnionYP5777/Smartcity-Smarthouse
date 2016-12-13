@@ -49,7 +49,7 @@ public class MainSystem {
        * */
       public static <L,R> Boolean registerToSensor(ApplicationIdentifier id, String sensorCommercialName, 
               Predicate<Tuple<L,R>> notifyWhen, Consumer<Tuple<L,R>> notifee){
-          return Boolean.FALSE; //TODO: ELIA implement
+          return Boolean.FALSE; //TODO: ELIA implement!
       }
       
       /** Allows registration to a sensor. on time, the sensor will be polled and the data will be given to the consumer for 
