@@ -38,7 +38,7 @@ public class ApplicationHandler {
      * */
     public String addApplication(final ApplicationIdentifier appid, final SmartHouseApplication app){
         //TODO: ELIA remove the app param, after ApplicationIdentifier is completed
-        apps.put(appid.getId(), new Tuple<ApplicationIdentifier, AppThread>(appid, new AppThread(app)));
+        apps.put(appid.getId(), new Tuple<>(appid, new AppThread(app)));
         return appid.getId();
     }
     
