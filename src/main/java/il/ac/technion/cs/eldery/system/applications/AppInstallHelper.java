@@ -18,12 +18,11 @@ public class AppInstallHelper {
     /** Dynamically loads the classes from the jar file to the JVM. Finds the
      * one class that extends SmartHouseApplication, and returns an instance of
      * it.
-     * @param i
+     * @param jarFilePath - a path to the .jar file
      * @return an instance of SmartHouseApplication
      * @throws AppInstallerException
      * @throws IOException */
-    public static SmartHouseApplication loadApplication(final ApplicationManager i) throws AppInstallerException, IOException {
-        String jarFilePath = i.getJarPath();
+    public static SmartHouseApplication loadApplication(final String jarFilePath) throws AppInstallerException, IOException {
         final URL[] urls = { new URL("jar:file:" + jarFilePath + "!/") };
         try (URLClassLoader cl = URLClassLoader.newInstance(urls)) {
             return loadApplication_aux(getClassNamesFromJar(jarFilePath), cl);
@@ -32,11 +31,11 @@ public class AppInstallHelper {
 
     /** Dynamically loads the classes to the JVM. Finds the one class that
      * extends SmartHouseApplication, and returns an instance of it.
-     * @param classNames
+     * @param classesNames
      * @return an instance of SmartHouseApplication
      * @throws AppInstallerException */
-    public static SmartHouseApplication loadApplication(List<String> classNames) throws AppInstallerException {
-        return loadApplication_aux(classNames, ClassLoader.getSystemClassLoader());
+    public static SmartHouseApplication loadApplication(List<String> classesNames) throws AppInstallerException {
+        return loadApplication_aux(classesNames, ClassLoader.getSystemClassLoader());
     }
 
     /** loads the classes with the ClassLoader and finds the class that extends
