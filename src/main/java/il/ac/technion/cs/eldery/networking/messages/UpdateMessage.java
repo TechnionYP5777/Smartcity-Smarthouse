@@ -13,11 +13,12 @@ public class UpdateMessage extends Message {
     Map<Object, Object> data;
 
     public UpdateMessage(Sensor sensor, Map<Object, Object> data) {
+        super(MessageType.UPDATE);
+
         this.sensor = sensor;
         this.data = data;
     }
 
-    
     @Override public String toJson() {
         JsonObject json = new JsonObject();
         json.addProperty("type", MessageType.UPDATE + "");

@@ -11,6 +11,12 @@ import java.net.Socket;
  * @author Yarden
  * @since 11.12.16 */
 public abstract class Message {
+    @SuppressWarnings("unused") private MessageType type;
+
+    public Message(MessageType type) {
+        this.type = type;
+    }
+
     /** Converts the contents of this message into JSON format.
      * @return JSON formatted string */
     protected abstract String toJson();

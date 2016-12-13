@@ -6,11 +6,14 @@ import com.google.gson.JsonObject;
 import il.ac.technion.cs.eldery.sensors.Sensor;
 
 /** @author Yarden
+ * @author Sharon
  * @since 11.12.16 */
 public class RegisterMessage extends Message {
     private Sensor sensor;
 
     public RegisterMessage(Sensor sensor) {
+        super(MessageType.REGISTRATION);
+
         this.sensor = sensor;
     }
 
