@@ -22,14 +22,14 @@ import il.ac.technion.cs.eldery.utils.Tuple;
 public class AppThread {
     private class EventInfo<L, R> {
         // TODO: ELIA consider moving the beauty that is Consumer<List<Tuple<L,R>>> into the closest thing to typedef
-        final Consumer<List<Tuple<L, R>>> consumer;
-        List<Tuple<L, R>> data = new ArrayList<>();
+        final Consumer<Tuple<L, R>> consumer;
+        Tuple<L, R> data = null;
 
-        public EventInfo(Consumer<List<Tuple<L, R>>> $) {
+        public EventInfo(Consumer<Tuple<L, R>> $) {
             consumer = $;
         }
 
-        public void setData(final List<Tuple<L, R>> $) {
+        public void setData(final Tuple<L, R> $) {
             data = $;
         }
     }
@@ -108,7 +108,7 @@ public class AppThread {
      * specific sensor
      * @return The id of the consumer in the system, needed for any activation
      *         action of the consumer. */
-    public <L, R> Long registerEventConsumer(Consumer<List<Tuple<L, R>>> $) {
+    public <L, R> Long registerEventConsumer(Consumer<Tuple<L, R>> $) {
         Long id = Long.valueOf(callOnEvent.size() + 1); // TODO: change id calc
                                                         // if removal is allowed
         callOnEvent.put(id, new EventInfo<>($));
@@ -119,7 +119,7 @@ public class AppThread {
      * @param eventId: The id returned at the registration of the consumer that
      *        can process the data
      * @param data: The new information from the sensor */
-    public <L, R> void notifyOnEvent(final Long eventId, final List<Tuple<L, R>> data) throws ApplicationNotRegisteredToEvent {
+    public <L, R> void notifyOnEvent(final Long eventId, final Tuple<L, R> data) throws ApplicationNotRegisteredToEvent {
         @SuppressWarnings("unchecked") final EventInfo<L, R> $ = Optional.ofNullable(callOnEvent.get(eventId))
                 .orElseThrow(ApplicationNotRegisteredToEvent::new);
         $.setData(data);
