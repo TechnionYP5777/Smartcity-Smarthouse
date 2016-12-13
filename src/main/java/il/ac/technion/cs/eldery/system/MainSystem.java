@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 
 import il.ac.technion.cs.eldery.utils.Tuple;
 
-/** hold the databases of the smart house, and allow sensors and applications to store and read information about the changes
+/** Hold the databases of the smart house, and allow sensors and applications to store and read information about the changes
  *  in the environment
  * */
 public class MainSystem {
