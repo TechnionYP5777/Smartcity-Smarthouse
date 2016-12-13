@@ -54,7 +54,7 @@ public class MainSystem {
                         /**Medium-high level of emergency, requires calling a previously defined contact*/ CALL_EMERGENCY_CONTACT, 
                         /**High level of emergency, requires police assistance*/ CONTACT_POLICE, 
                         /**High level of emergency, requires help from medical personnel*/ CONTACT_HOSPITAL, 
-                        /**High level of emergency, requires fire fighters assistance*/ CONTACT_FIRE_FIGHTERS};
+                        /**High level of emergency, requires fire fighters assistance*/ CONTACT_FIRE_FIGHTERS}
                         
   /** API allowing smart house applications to register for information and notify on emergencies
    * */
@@ -86,7 +86,7 @@ public class MainSystem {
               };
               sensor.addListener($);
               return Boolean.TRUE;
-          }catch(Exception e){
+          }catch(Exception __){
               return Boolean.FALSE;
           }
       }

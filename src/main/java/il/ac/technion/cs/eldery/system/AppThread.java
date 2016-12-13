@@ -3,9 +3,7 @@
  */
 package il.ac.technion.cs.eldery.system;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -23,7 +21,7 @@ public class AppThread {
     private class EventInfo<L, R> {
         // TODO: ELIA consider moving the beauty that is Consumer<List<Tuple<L,R>>> into the closest thing to typedef
         final Consumer<Tuple<L, R>> consumer;
-        Tuple<L, R> data = null;
+        Tuple<L, R> data;
 
         public EventInfo(Consumer<Tuple<L, R>> $) {
             consumer = $;
