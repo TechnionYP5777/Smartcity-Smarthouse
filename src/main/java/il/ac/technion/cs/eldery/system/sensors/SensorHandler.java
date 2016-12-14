@@ -30,8 +30,10 @@ public class SensorHandler implements Runnable {
 
                 Message message = MessageFactory.create(json);
 
-                if (message == null)
+                if (message == null) {
+                    new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort());
                     continue;
+                }
 
                 switch (message.getType()) {
                     case REGISTRATION:
