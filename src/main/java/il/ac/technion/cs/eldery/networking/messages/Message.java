@@ -13,10 +13,15 @@ import com.google.gson.Gson;
  * @author Yarden
  * @since 11.12.16 */
 public abstract class Message {
-    @SuppressWarnings("unused") private MessageType type;
+    private MessageType type;
 
     public Message(MessageType type) {
         this.type = type;
+    }
+
+    /** @return type of this message */
+    public MessageType getType() {
+        return this.type;
     }
 
     /** Converts the contents of this message into JSON format.
