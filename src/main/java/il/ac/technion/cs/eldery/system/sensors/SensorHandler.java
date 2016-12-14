@@ -6,10 +6,12 @@ import java.net.DatagramSocket;
 import java.util.HashMap;
 import java.util.Map;
 
+import il.ac.technion.cs.eldery.networking.messages.AnswerMessage;
 import il.ac.technion.cs.eldery.networking.messages.Message;
 import il.ac.technion.cs.eldery.networking.messages.MessageFactory;
 import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
 import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
+import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 
 public class SensorHandler implements Runnable {
     @SuppressWarnings("rawtypes") private Map<String, SensorInfo> sensors = new HashMap<>();
@@ -47,10 +49,11 @@ public class SensorHandler implements Runnable {
         }
     }
 
-    private void handleRegisterMessage(DatagramPacket packet, RegisterMessage ¢) {
-        sensors.put(¢.getSensor().getId(), new SensorInfo<>(¢.getSensor().getId(), 100));
-        
-        // TODO: Sharon, send back a success message
+    private void handleRegisterMessage(DatagramPacket p, RegisterMessage ¢) {
+        if (!sensors.containsKey(¢.getSensor().getId()))
+            sensors.put(¢.getSensor().getId(), new SensorInfo<>(¢.getSensor().getId(), 100));
+
+        new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort());
     }
 
     @SuppressWarnings("unused") private void handleUpdateMessage(DatagramPacket packet, UpdateMessage m) {
