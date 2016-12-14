@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.sensors.simulators.stove.gui;
+package il.ac.technion.cs.eldery.sensors.stove.gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

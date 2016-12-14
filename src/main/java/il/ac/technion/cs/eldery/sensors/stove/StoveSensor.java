@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.sensors.simulators.stove;
+package il.ac.technion.cs.eldery.sensors.stove;
 
 import java.util.ArrayList;
 import java.util.HashMap;

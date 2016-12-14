@@ -1,9 +1,9 @@
-package il.ac.technion.cs.eldery.sensors.simulators.stove.gui;
+package il.ac.technion.cs.eldery.sensors.stove.gui;
 
 import java.net.*;
 import java.util.*;
 
-import il.ac.technion.cs.eldery.sensors.simulators.stove.StoveSensor;
+import il.ac.technion.cs.eldery.sensors.stove.StoveSensor;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Slider;
