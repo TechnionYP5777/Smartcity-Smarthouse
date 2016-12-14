@@ -4,19 +4,25 @@ import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 import javafx.stage.Stage;
 
 public class MyTestClass1 extends SmartHouseApplication {
+    private boolean isLoaded;
+    private boolean isStarted;
 
-    public MyTestClass1() {
-        // TODO Auto-generated constructor stub
-    }
+    public MyTestClass1() {}
 
     @Override public void onLoad() {
-        // TODO Auto-generated method stub
-
+        isLoaded = true;
     }
 
     @Override public void start(Stage primaryStage) throws Exception {
-        // TODO Auto-generated method stub
+        isStarted = true;
+    }
 
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
     }
 
 }

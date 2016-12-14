@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.*;
 
+import il.ac.technion.cs.eldery.system.applications.examples.MyTestClass1;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 
 public class AppInstallHelperTest {
@@ -37,7 +38,14 @@ public class AppInstallHelperTest {
 
     @Test public void testLoadGoodApp() {
         try {
-            AppInstallHelper.loadApplication(classesNames_app1);
+            SmartHouseApplication a = AppInstallHelper.loadApplication(classesNames_app1);
+            Assert.assertTrue(a instanceof MyTestClass1);
+
+            MyTestClass1 t = (MyTestClass1) a;
+            Assert.assertFalse(t.isLoaded());
+            t.onLoad();
+            Assert.assertTrue(t.isLoaded());
+
         } catch (AppInstallerException e) {
             Assert.fail(e.getMessage());
         }
