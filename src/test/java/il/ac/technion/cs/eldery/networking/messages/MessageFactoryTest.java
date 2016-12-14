@@ -5,14 +5,14 @@ import org.junit.Test;
 
 public class MessageFactoryTest {
     @Test public void recognizeRegistrationMessages() {
-        Assert.assertTrue(MessageFactory.craete("{\"type\": \"registration\"}") instanceof RegisterMessage);
+        Assert.assertTrue(MessageFactory.create("{\"type\": \"registration\"}") instanceof RegisterMessage);
     }
 
     @Test public void recognizeUpdateMessages() {
-        Assert.assertTrue(MessageFactory.craete("{\"type\": \"update\"}") instanceof UpdateMessage);
+        Assert.assertTrue(MessageFactory.create("{\"type\": \"update\"}") instanceof UpdateMessage);
     }
 
     @Test public void recognizeUnknownMessages() {
-        Assert.assertNull(MessageFactory.craete("{\"type\": \":<\"}"));
+        Assert.assertNull(MessageFactory.create("{\"type\": \":<\"}"));
     }
 }

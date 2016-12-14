@@ -7,7 +7,7 @@ import com.google.gson.JsonParser;
 public enum MessageFactory {
     ;
 
-    public static Message craete(String json) {
+    public static Message create(String json) {
         JsonParser parser = new JsonParser();
         JsonObject element = parser.parse(json).getAsJsonObject();
 
