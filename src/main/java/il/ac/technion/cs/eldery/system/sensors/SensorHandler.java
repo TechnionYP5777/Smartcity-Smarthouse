@@ -33,10 +33,10 @@ public class SensorHandler implements Runnable {
 
                 switch (message.getType()) {
                     case REGISTRATION:
-                        handleRegisterMessage((RegisterMessage) message);
+                        handleRegisterMessage(packet, (RegisterMessage) message);
                         break;
                     case UPDATE:
-                        handleUpdateMessage((UpdateMessage) message);
+                        handleUpdateMessage(packet, (UpdateMessage) message);
                         break;
                     default:
                         break;
@@ -47,11 +47,13 @@ public class SensorHandler implements Runnable {
         }
     }
 
-    @SuppressWarnings("unused") private void handleRegisterMessage(RegisterMessage m) {
-        // TODO: Sharon, implement
+    private void handleRegisterMessage(DatagramPacket packet, RegisterMessage ¢) {
+        sensors.put(¢.getSensor().getId(), new SensorInfo<>(¢.getSensor().getId(), 100));
+        
+        // TODO: Sharon, send back a success message
     }
 
-    @SuppressWarnings("unused") private void handleUpdateMessage(UpdateMessage m) {
+    @SuppressWarnings("unused") private void handleUpdateMessage(DatagramPacket packet, UpdateMessage m) {
         // TODO: Sharon, implement
     }
 }
