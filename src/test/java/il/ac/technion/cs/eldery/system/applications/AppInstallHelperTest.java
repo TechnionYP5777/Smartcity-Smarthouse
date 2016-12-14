@@ -55,7 +55,7 @@ public class AppInstallHelperTest {
         try {
             AppInstallHelper.loadApplication(classesNames_app2);
         } catch (AppInstallerException e) {
-            Assert.assertEquals(e.getValue(), 2);
+            Assert.assertEquals(e.getErrorCode(), AppInstallerException.ErrorCode.MORE_THAN_ONE_IMPL_ERROR);
         }
     }
 }
