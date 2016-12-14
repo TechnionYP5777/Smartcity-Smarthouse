@@ -3,6 +3,7 @@ package il.ac.technion.cs.eldery.networking.messages;
 import org.junit.Assert;
 import org.junit.Test;
 
+@SuppressWarnings("static-method")
 public class MessageFactoryTest {
     @Test public void recognizeRegistrationMessages() {
         Assert.assertTrue(MessageFactory.create("{\"type\": \"registration\"}") instanceof RegisterMessage);
