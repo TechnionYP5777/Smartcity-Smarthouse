@@ -20,6 +20,8 @@ public enum MessageFactory {
                 return gson.fromJson(json, RegisterMessage.class);
             case "update":
                 return gson.fromJson(json, UpdateMessage.class);
+            case "answer":
+                return gson.fromJson(json, AnswerMessage.class);
             default:
                 break;
         }
