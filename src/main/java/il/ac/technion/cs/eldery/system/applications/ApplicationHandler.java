@@ -31,9 +31,9 @@ public class ApplicationHandler {
         Boolean repeat;
         String sensorCommercialName;
         LocalTime t;
-        Consumer<Optional<Table>> notifee;
+        Consumer<Table> notifee;
         
-        QueryTimerTask(final String sensorCommercialName, final LocalTime t, final Consumer<Optional<Table>> notifee, 
+        QueryTimerTask(final String sensorCommercialName, final LocalTime t, final Consumer<Table> notifee, 
                 Boolean repeat){
             this.repeat = repeat;
             this.notifee = notifee;
@@ -50,7 +50,7 @@ public class ApplicationHandler {
          */
         @SuppressWarnings("boxing")
         @Override public void run() {
-            notifee.accept(querySensor(sensorCommercialName));
+            notifee.accept(querySensor(sensorCommercialName).orElse(new Table()));
             if(repeat)
                 new Timer().schedule(this, localTimeToDate(t));
         }
@@ -111,11 +111,11 @@ public class ApplicationHandler {
      * farther processing 
      * @param sensorCommercialName The name of sensor, agreed upon in an external platform
      * @param t the time when a polling is requested
-     * @param notifee A consumer that will receive the new data from the sensor
+     * @param notifee A consumer that will receive the new data from the sensor, or an empty table if the was no new information.
      * @param repeat <code>false</code> if you want to query the sensor only once, <code>true</code> otherwise (query at this time FOREVER)
      * @return The registration id if the action was successful, otherwise <code>null</code>
      * */
-    public String registerToSensor(final String sensorCommercialName, final LocalTime t, final Consumer<Optional<Table>> notifee, 
+    public String registerToSensor(final String sensorCommercialName, final LocalTime t, final Consumer<Table> notifee, 
             Boolean repeat){
         QueryTimerTask task = new QueryTimerTask(sensorCommercialName, t, notifee, repeat);
         String $ = Generator.GenerateUniqueIDstring();
