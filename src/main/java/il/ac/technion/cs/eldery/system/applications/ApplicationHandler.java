@@ -27,7 +27,7 @@ import il.ac.technion.cs.eldery.utils.Tuple;
  * @since Dec 13, 2016
  * */
 public class ApplicationHandler {
-    class QueryTimerTask extends TimerTask{
+    private class QueryTimerTask extends TimerTask{
         Boolean repeat;
         String sensorCommercialName;
         LocalTime t;
