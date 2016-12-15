@@ -1,9 +1,14 @@
 package il.ac.technion.cs.eldery.system.applications;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -66,17 +71,30 @@ public class ApplicationHandler {
         }
     }
     
+    static Date localTimeToDate(final LocalTime ¢){
+        return Date.from(¢.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
+    }
     /** Allows registration to a sensor. on time, the sensor will be polled and the data will be given to the consumer for 
      * farther processing 
-     * @param id The id given to the app when added to the system
      * @param sensorCommercialName The name of sensor, agreed upon in an external platform
      * @param t the time when a polling is requested
      * @param notifee A consumer that will receive the new data from the sensor
+     * @param repeat <code>false</code> if you want to query the sensor only once, <code>true</code> otherwise (query at this time FOREVER)
      * @return True if the registration was successful, false otherwise
      * */
-    public Boolean registerToSensor(final String id,final String sensorCommercialName, final LocalTime t, 
-            final Consumer<Table> notifee){
-        return Boolean.FALSE; //TODO: ELIA implement
+    public Boolean registerToSensor(final String sensorCommercialName, final LocalTime t, final Consumer<Optional<Table>> notifee, 
+            Boolean repeat){
+        TimerTask task = new TimerTask() {
+            @SuppressWarnings("boxing")
+            @Override public void run() {
+                notifee.accept(querySensor(sensorCommercialName));
+                if(repeat)
+                    new Timer().schedule(this, localTimeToDate(t));
+            }
+        };
+        
+        new Timer().schedule(task, localTimeToDate(t));
+        return Boolean.TRUE;
     }
     
     /** Request for the latest data received by a sensor
