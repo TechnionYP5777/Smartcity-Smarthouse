@@ -11,4 +11,8 @@ public enum Generator {
     public static UUID GenerateUniqueID() {
         return UUID.randomUUID();
     }
+    
+    public static String GenerateUniqueIDstring(){
+        return "" + GenerateUniqueID();
+    }
 }
