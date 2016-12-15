@@ -1,6 +1,7 @@
 package il.ac.technion.cs.eldery.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -8,9 +9,13 @@ import java.util.Map;
  * @since 15.12.2016
  */
 
-public class Table {
+
+
+public class Table<L extends Object, R extends Object> {
     
-    private final ArrayList<Map<Object, Object>> data = new ArrayList<>();
+    public static final int UNLIMITED_CAPACITY =-1;
+    
+    private final ArrayList<HashMap<L, R>> data = new ArrayList<>();
     boolean limitedSize;    
     private int maxCapacity;
 
@@ -35,17 +40,17 @@ public class Table {
      * @param info - the new entry to add
      * Adds an entry to the table
      */
-    public void addEntry(final Map<Object, Object> info) {
+    public void addEntry(final HashMap<L, R> info) {
         if (limitedSize && data.size() == maxCapacity)
             data.remove(0);
         data.add(info);
     }
 
     /**
-     * @return the max capacity limit if exists, -1 otherwise
+     * @return the max capacity limit if exists, UNLIMITED_CAPACITY otherwise
      */
     public int getMaxCapacity() {
-        return !limitedSize ? -1 : maxCapacity;
+        return limitedSize ? maxCapacity : UNLIMITED_CAPACITY;
     }
 
     /**
@@ -56,7 +61,6 @@ public class Table {
     }
 
     /**
-     * 
      * @param newCapacity - the new capacity limit to enforce. 
      */
    public void changeMaxCapacity(final int newCapacity) {
@@ -78,14 +82,13 @@ public class Table {
    }
 
    /**
-    * 
     * @param numOfEntries- how many entries (from the newest to oldest) to return
     * @return A new table with the required entries
     */
-    public Table receiveKLastEntries(final int numOfEntries) {
+    public Table<L,R> receiveKLastEntries(final int numOfEntries) {
         if (numOfEntries <= 0)
             return null;
-        final Table $ = new Table(numOfEntries);
+        final Table<L,R> $ = new Table<>(numOfEntries);
         final int position = numOfEntries > data.size() ? 0 : data.size() - numOfEntries;
         for (int ¢ = position; ¢ < data.size(); ++¢)
             $.addEntry(data.get(¢));
@@ -93,11 +96,20 @@ public class Table {
     }
 
     /**
-     * 
      * @return the last entry added to the table
      */
-    public Table getLastEntry() {
-        return receiveKLastEntries(1);
+    public Map<L, R> getLastEntry() {
+        return data.isEmpty() ? null : data.get(data.size()- 1);
+    }
+    
+    
+    /**
+     * @param key - the key for the value wanted
+     * @return the value co-respond with the key of the last entry which is required
+     * or null if it doesn't exist
+     */
+    public R getLastEntryAtCol( final L key){
+        return data.isEmpty() ? null : data.get(data.size()).get(key);
     }
 
 }
