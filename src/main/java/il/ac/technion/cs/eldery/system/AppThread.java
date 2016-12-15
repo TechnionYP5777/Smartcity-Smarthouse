@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 
 import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
+import il.ac.technion.cs.eldery.utils.Generator;
 import il.ac.technion.cs.eldery.utils.Table;
 
 /** This class will hold, run and manage the dynamic loaded code of the
@@ -31,7 +32,7 @@ public class AppThread {
         }
     }
 
-    Map<Long, EventInfo> callOnEvent = new HashMap<>();
+    Map<String, EventInfo> callOnEvent = new HashMap<>();
     Boolean timeout = Boolean.FALSE, dontTerminate = Boolean.TRUE;
     Long interuptingSensor;
     SmartHouseApplication app;
@@ -101,8 +102,8 @@ public class AppThread {
      * specific sensor
      * @return The id of the consumer in the system, needed for any activation
      *         action of the consumer. */
-    public Long registerEventConsumer(final Consumer<Table> $) {
-        Long id = Long.valueOf(callOnEvent.size() + 1); // TODO: change id calc if removal is allowed
+    public String registerEventConsumer(final Consumer<Table> $) {
+        String id = Generator.GenerateUniqueID().toString();
         callOnEvent.put(id, new EventInfo($));
         return id;
     }
