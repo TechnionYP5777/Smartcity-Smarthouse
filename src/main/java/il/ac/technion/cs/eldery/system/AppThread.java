@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 
 import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
+import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.utils.Tuple;
 
 /** This class will hold, run and manage the dynamic loaded code of the
@@ -18,28 +19,26 @@ import il.ac.technion.cs.eldery.utils.Tuple;
  * @author Elia
  * @since Dec 11, 2016 */
 public class AppThread {
-    private class EventInfo<L, R> {
-        // TODO: ELIA consider moving the beauty that is Consumer<List<Tuple<L,R>>> into the closest thing to typedef
-        final Consumer<Tuple<L, R>> consumer;
-        Tuple<L, R> data;
+    private class EventInfo {
+        final Consumer<Table> consumer;
+        Table data;
 
-        public EventInfo(Consumer<Tuple<L, R>> $) {
+        public EventInfo(Consumer<Table> $) {
             consumer = $;
         }
 
-        public void setData(final Tuple<L, R> $) {
+        public void setData(final Table $) {
             data = $;
         }
     }
 
-    // Different sensors => different entry types => different consumers. we
-    // want to have them in the same map
-    @SuppressWarnings("rawtypes") Map<Long, EventInfo> callOnEvent = new HashMap<>();
+    Map<Long, EventInfo> callOnEvent = new HashMap<>();
     Boolean timeout = Boolean.FALSE, dontTerminate = Boolean.TRUE;
     Long interuptingSensor;
     SmartHouseApplication app;
     Thread thread = new Thread() {
-        @SuppressWarnings({ "boxing", "rawtypes", "unchecked" }) @Override public void run() {
+        @SuppressWarnings("boxing")
+        @Override public void run() {
             while (dontTerminate) {
                 while (!interrupted()) {
                     // very dynamic much loading TODO: normal run of app. RON?
@@ -54,12 +53,9 @@ public class AppThread {
                         try {
                             timeout.wait();
                         } catch (final InterruptedException e) {
-                            // yo Dawg, I herd you like interrupts, so I put an
-                            // interrupt in your interrupt-case so you can
-                            // take care of interrupts while you take care of
-                            // interrupts #tbt
-                            // seriously tho TODO: ELIA, what is the desired
-                            // behavior?
+                            // yo Dawg, I herd you like interrupts, so I put an interrupt in your interrupt-case so you can
+                            // take care of interrupts while you take care of interrupts 
+                            // seriously tho TODO: ELIA, what is the desired behavior?
                             e.printStackTrace();
                         }
                     }
@@ -106,10 +102,9 @@ public class AppThread {
      * specific sensor
      * @return The id of the consumer in the system, needed for any activation
      *         action of the consumer. */
-    public <L, R> Long registerEventConsumer(Consumer<Tuple<L, R>> $) {
-        Long id = Long.valueOf(callOnEvent.size() + 1); // TODO: change id calc
-                                                        // if removal is allowed
-        callOnEvent.put(id, new EventInfo<>($));
+    public Long registerEventConsumer(final Consumer<Table> $) {
+        Long id = Long.valueOf(callOnEvent.size() + 1); // TODO: change id calc if removal is allowed
+        callOnEvent.put(id, new EventInfo($));
         return id;
     }
 
@@ -117,8 +112,8 @@ public class AppThread {
      * @param eventId: The id returned at the registration of the consumer that
      *        can process the data
      * @param data: The new information from the sensor */
-    public <L, R> void notifyOnEvent(final Long eventId, final Tuple<L, R> data) throws ApplicationNotRegisteredToEvent {
-        @SuppressWarnings("unchecked") final EventInfo<L, R> $ = Optional.ofNullable(callOnEvent.get(eventId))
+    public void notifyOnEvent(final Long eventId, final Table data) throws ApplicationNotRegisteredToEvent {
+        final EventInfo $ = Optional.ofNullable(callOnEvent.get(eventId))
                 .orElseThrow(ApplicationNotRegisteredToEvent::new);
         $.setData(data);
         interuptingSensor = eventId;
