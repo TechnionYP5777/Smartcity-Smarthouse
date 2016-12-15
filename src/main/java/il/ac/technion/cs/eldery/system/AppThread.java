@@ -34,7 +34,7 @@ public class AppThread {
 
     Map<String, EventInfo> callOnEvent = new HashMap<>();
     Boolean timeout = Boolean.FALSE, dontTerminate = Boolean.TRUE;
-    Long interuptingSensor;
+    String interuptingSensor;
     SmartHouseApplication app;
     Thread thread = new Thread() {
         @SuppressWarnings("boxing")
@@ -103,7 +103,7 @@ public class AppThread {
      * @return The id of the consumer in the system, needed for any activation
      *         action of the consumer. */
     public String registerEventConsumer(final Consumer<Table> $) {
-        String id = Generator.GenerateUniqueID().toString();
+        String id = Generator.GenerateUniqueIDstring();
         callOnEvent.put(id, new EventInfo($));
         return id;
     }
@@ -112,7 +112,7 @@ public class AppThread {
      * @param eventId: The id returned at the registration of the consumer that
      *        can process the data
      * @param data: The new information from the sensor */
-    public void notifyOnEvent(final Long eventId, final Table data) throws ApplicationNotRegisteredToEvent {
+    public void notifyOnEvent(final String eventId, final Table data) throws ApplicationNotRegisteredToEvent {
         final EventInfo $ = Optional.ofNullable(callOnEvent.get(eventId))
                 .orElseThrow(ApplicationNotRegisteredToEvent::new);
         $.setData(data);
