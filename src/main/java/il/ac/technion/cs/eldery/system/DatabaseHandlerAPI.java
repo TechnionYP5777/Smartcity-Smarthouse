@@ -17,9 +17,14 @@ public interface DatabaseHandlerAPI {
     /** Adds a listener to a certain sensor, to be called on <strong>any</strong> update from that sensor
      *  @param sensorCommercialName The name of sensor, agreed upon in an external platform
      *  @param notifee The consumer to be called on a change, with the new data
-     *  @return <code>true</code> if the registration was successful, <code>false</code> otherwise
+     *  @return The id of the listener, to be used in any future refernce to it
      * */
-    Boolean addListener(String sensorCommercialName, Consumer<Table> notifee);
+    String addListener(String sensorCommercialName, Consumer<Table> notifee);
+    
+    /** Remove a previously added listener
+     * @param listenerId The id given when the listener was added to the system
+     * */
+    void removeListener(String listenerId);
     
     /**Queries the info of a sensor. 
      * @param sensorCommercialName The name of sensor, agreed upon in an external platform
