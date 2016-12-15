@@ -5,6 +5,11 @@ import java.util.HashMap;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * @author Inbal Zukerman
+ * @since 15.12.2016
+ *
+ */
 public class TableTest {
 
     private final HashMap<String, Integer> info1 = new HashMap<>();
@@ -15,6 +20,7 @@ public class TableTest {
 
     private final Table<String, Integer> limitedTable = new Table<>(5);
     private final Table<String, String> unlimitedTable = new Table<>();
+
 
     @Test public void initializationTest() {
         Assert.assertEquals(5, limitedTable.getMaxCapacity());

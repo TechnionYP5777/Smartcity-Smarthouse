@@ -14,9 +14,9 @@ import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 
 public class SensorHandler implements Runnable {
-    @SuppressWarnings("rawtypes") private Map<String, SensorInfo> sensors = new HashMap<>();
+    private Map<String, SensorInfo> sensors = new HashMap<>();
 
-    @SuppressWarnings("rawtypes") public Map<String, SensorInfo> getSensors() {
+    public Map<String, SensorInfo> getSensors() {
         return sensors;
     }
 
@@ -53,7 +53,7 @@ public class SensorHandler implements Runnable {
 
     private void handleRegisterMessage(DatagramPacket p, RegisterMessage ¢) {
         if (!sensors.containsKey(¢.getSensor().getId()))
-            sensors.put(¢.getSensor().getId(), new SensorInfo<>(¢.getSensor().getId(), 100));
+            sensors.put(¢.getSensor().getId(), new SensorInfo(¢.getSensor().getId(), 100));
 
         new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort(), false);
     }
