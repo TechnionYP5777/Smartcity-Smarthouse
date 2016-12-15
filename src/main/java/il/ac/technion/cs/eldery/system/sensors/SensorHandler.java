@@ -31,7 +31,7 @@ public class SensorHandler implements Runnable {
                 Message message = MessageFactory.create(json);
 
                 if (message == null) {
-                    new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort());
+                    new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort(), false);
                     continue;
                 }
 
@@ -55,7 +55,7 @@ public class SensorHandler implements Runnable {
         if (!sensors.containsKey(¢.getSensor().getId()))
             sensors.put(¢.getSensor().getId(), new SensorInfo<>(¢.getSensor().getId(), 100));
 
-        new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort());
+        new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort(), false);
     }
 
     @SuppressWarnings("unused") private void handleUpdateMessage(DatagramPacket packet, UpdateMessage m) {
