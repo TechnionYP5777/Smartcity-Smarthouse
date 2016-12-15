@@ -1,8 +1,3 @@
-/**
- * @author Elia
- * @since Dec 13, 2016
- */
-
 package il.ac.technion.cs.eldery.system.applications;
 
 import java.time.LocalTime;
@@ -16,13 +11,17 @@ import il.ac.technion.cs.eldery.system.AppThread;
 import il.ac.technion.cs.eldery.system.DatabaseHandlerAPI;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
+import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.utils.Tuple;
 
 
 /** API allowing smart house applications to register for information and notify on emergencies
+ * 
+ * @author Elia
+ * @since Dec 13, 2016
  * */
 public class ApplicationHandler {
-    Map<String, Tuple<ApplicationManager, AppThread>> apps = new HashMap<>();//TODO: change to ApplicationIdentifier only, when wanted behavior is implemented
+    Map<String, Tuple<ApplicationManager, AppThread>> apps = new HashMap<>();//TODO: change to ApplicationManager only, when wanted behavior is implemented
     DatabaseHandlerAPI databaseHandler;
     
     /**
@@ -46,17 +45,18 @@ public class ApplicationHandler {
      * @param sensorCommercialName The name of sensor, agreed upon in an external platform
      * @param notifyWhen A predicate that will be called every time the sensor updates the date. If it returns true the consumer will be called
      * @param notifee A consumer that will receive the new data from the sensor
+     * @param numOfEntries The number of entries the application want to receive from the sensor upon update 
      * @return True if the registration was successful, false otherwise
      * */
-    public <L,R> Boolean registerToSensor(final String id, final String sensorCommercialName, 
-            final Predicate<Tuple<L,R>> notifyWhen, final Consumer<Tuple<L,R>> notifee){
+    public Boolean registerToSensor(final String id, final String sensorCommercialName, final Predicate<Table> notifyWhen, 
+            final Consumer<Table> notifee, int numOfEntries){
         try{
             AppThread app = apps.get(id).getRight();
             final Long eventId = app.registerEventConsumer(notifee);
             return databaseHandler.addListener(sensorCommercialName, t -> {
                 if (notifyWhen.test(t))
                     try {
-                        app.notifyOnEvent(eventId, t);
+                        app.notifyOnEvent(eventId, t.receiveKLastEntries(numOfEntries));
                     } catch (final ApplicationNotRegisteredToEvent e) {
                         e.printStackTrace();
                     }
@@ -74,8 +74,8 @@ public class ApplicationHandler {
      * @param notifee A consumer that will receive the new data from the sensor
      * @return True if the registration was successful, false otherwise
      * */
-    public <L,R> Boolean registerToSensor(final String id,final String sensorCommercialName, final LocalTime t, 
-            final Consumer<Tuple<L,R>> notifee){
+    public Boolean registerToSensor(final String id,final String sensorCommercialName, final LocalTime t, 
+            final Consumer<Table> notifee){
         return Boolean.FALSE; //TODO: ELIA implement
     }
     
@@ -83,7 +83,7 @@ public class ApplicationHandler {
      *  @param sensorCommercialName The name of sensor, agreed upon in an external platform
      *  @return the latest data (or Optional.empty() if the query failed in any point)
      * */
-    public <L,R> Optional<Tuple<L,R>> querySensor(final String sensorCommercialName){
+    public Optional<Table> querySensor(final String sensorCommercialName){
         return databaseHandler.getLastEntryOf(sensorCommercialName);
     }
     

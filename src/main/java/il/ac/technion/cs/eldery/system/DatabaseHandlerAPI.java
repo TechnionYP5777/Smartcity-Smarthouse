@@ -7,9 +7,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import il.ac.technion.cs.eldery.utils.Table;
-import il.ac.technion.cs.eldery.utils.Tuple;
 
 /**
+ * The API required by ApplicationHandler in order to allow it desired functionalities.
  * @author Elia
  * @since Dec 13, 2016
  */

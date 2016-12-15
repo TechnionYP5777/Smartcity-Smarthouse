@@ -82,7 +82,7 @@ public class Table {
     * @param numOfEntries- how many entries (from the newest to oldest) to return
     * @return A new table with the required entries
     */
-    public Table recievceKLastEntries(final int numOfEntries) {
+    public Table receiveKLastEntries(final int numOfEntries) {
         if (numOfEntries <= 0)
             return null;
         final Table $ = new Table(numOfEntries);
@@ -97,7 +97,7 @@ public class Table {
      * @return the last entry added to the table
      */
     public Table getLastEntry() {
-        return recievceKLastEntries(1);
+        return receiveKLastEntries(1);
     }
 
 }

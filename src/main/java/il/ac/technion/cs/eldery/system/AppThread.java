@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
 import il.ac.technion.cs.eldery.utils.Table;
-import il.ac.technion.cs.eldery.utils.Tuple;
 
 /** This class will hold, run and manage the dynamic loaded code of the
  * application. Using this class will allow us to mimic the context switch of an
