@@ -53,15 +53,14 @@ public class ApplicationHandler {
         try{
             AppThread app = apps.get(id).getRight();
             final Long eventId = app.registerEventConsumer(notifee);
-            final Consumer<Tuple<L,R>> $ = t -> {
-                  if(notifyWhen.test(t))
-                      try {
-                          app.notifyOnEvent(eventId, t);
-                      } catch (final ApplicationNotRegisteredToEvent e) {
-                          e.printStackTrace();
-                      }                
-              };
-            return databaseHandler.addListener(sensorCommercialName, $);
+            return databaseHandler.addListener(sensorCommercialName, t -> {
+                if (notifyWhen.test(t))
+                    try {
+                        app.notifyOnEvent(eventId, t);
+                    } catch (final ApplicationNotRegisteredToEvent e) {
+                        e.printStackTrace();
+                    }
+            });
         }catch(@SuppressWarnings("unused") final Exception __){
             return Boolean.FALSE;
         }
