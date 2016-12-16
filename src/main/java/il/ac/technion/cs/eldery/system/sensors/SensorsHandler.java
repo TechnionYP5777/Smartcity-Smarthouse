@@ -13,7 +13,7 @@ import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
 import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 
-public class SensorHandler implements Runnable {
+public class SensorsHandler implements Runnable {
     @SuppressWarnings("rawtypes") private Map<String, SensorInfo> sensors = new HashMap<>();
 
     @SuppressWarnings("rawtypes") public Map<String, SensorInfo> getSensors() {
@@ -26,9 +26,7 @@ public class SensorHandler implements Runnable {
 
             for (DatagramPacket packet = new DatagramPacket(buffer, buffer.length);;) {
                 socket.receive(packet);
-                String json = new String(buffer, 0, packet.getLength());
-
-                Message message = MessageFactory.create(json);
+                Message message = MessageFactory.create(new String(buffer, 0, packet.getLength()));
 
                 if (message == null) {
                     new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort());
@@ -43,11 +41,10 @@ public class SensorHandler implements Runnable {
                         handleUpdateMessage(packet, (UpdateMessage) message);
                         break;
                     default:
-                        break;
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ¢) {
+            ¢.printStackTrace();
         }
     }
 
