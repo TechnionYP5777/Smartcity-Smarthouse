@@ -1,12 +1,9 @@
 package il.ac.technion.cs.eldery.networking.messages;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
-
 import com.google.gson.Gson;
 
 /** @author Sharon
@@ -33,14 +30,24 @@ public abstract class Message {
     /** Sends the message to the specified destination.
      * @param ip the IP address of the destination
      * @param port the port of the destination
-     * @return the response from the destination. If an error occurred, null
-     *         will be returned. */
-    public String send(String ip, int port) {
-        try (Socket socket = new Socket(InetAddress.getByName(ip), port);
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
-            out.println(this.toJson());
-            return in.readLine();
+     * @param waitForResponse <code> true </code> if the sender expects a
+     *        response, <code> false </code> otherwise
+     * @return the response from the destination, if requested. If an error
+     *         occurred or if a response was not requested, null will be
+     *         returned. */
+    public String send(String ip, int port, boolean waitForResponse) {
+        // TODO: Yarden, receive a socket
+        try (DatagramSocket socket = new DatagramSocket()) {
+            byte[] buffer = this.toJson().getBytes();
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(ip), port);
+            socket.send(packet);
+            if (!waitForResponse)
+                return null;
+            // TODO: Yarden, add timeout
+            byte[] responseBuffer = new byte[2048];
+            DatagramPacket receivedPacket = new DatagramPacket(responseBuffer, responseBuffer.length);
+            socket.receive(receivedPacket);
+            return new String(receivedPacket.getData(), 0, receivedPacket.getLength());
         } catch (@SuppressWarnings("unused") IOException e) {
             return null;
         }

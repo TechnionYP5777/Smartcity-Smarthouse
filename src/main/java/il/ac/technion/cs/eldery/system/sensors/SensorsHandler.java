@@ -14,9 +14,9 @@ import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 
 public class SensorsHandler implements Runnable {
-    @SuppressWarnings("rawtypes") private Map<String, SensorInfo> sensors = new HashMap<>();
+    private Map<String, SensorInfo> sensors = new HashMap<>();
 
-    @SuppressWarnings("rawtypes") public Map<String, SensorInfo> getSensors() {
+    public Map<String, SensorInfo> getSensors() {
         return sensors;
     }
 
@@ -29,7 +29,7 @@ public class SensorsHandler implements Runnable {
                 Message message = MessageFactory.create(new String(buffer, 0, packet.getLength()));
 
                 if (message == null) {
-                    new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort());
+                    new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort(), false);
                     continue;
                 }
 
@@ -50,9 +50,9 @@ public class SensorsHandler implements Runnable {
 
     private void handleRegisterMessage(DatagramPacket p, RegisterMessage ¢) {
         if (!sensors.containsKey(¢.getSensor().getId()))
-            sensors.put(¢.getSensor().getId(), new SensorInfo<>(¢.getSensor().getId(), 100));
+            sensors.put(¢.getSensor().getId(), new SensorInfo(100));
 
-        new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort());
+        new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort(), false);
     }
 
     @SuppressWarnings("unused") private void handleUpdateMessage(DatagramPacket packet, UpdateMessage m) {

@@ -17,7 +17,6 @@ import il.ac.technion.cs.eldery.system.DatabaseHandlerAPI;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
 import il.ac.technion.cs.eldery.utils.Generator;
-import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.utils.Tuple;
 
 
@@ -31,9 +30,9 @@ public class ApplicationHandler {
         Boolean repeat;
         String sensorCommercialName;
         LocalTime t;
-        Consumer<Table> notifee;
+        Consumer<SamplesTable> notifee;
         
-        QueryTimerTask(final String sensorCommercialName, final LocalTime t, final Consumer<Table> notifee, 
+        QueryTimerTask(final String sensorCommercialName, final LocalTime t, final Consumer<SamplesTable> notifee, 
                 Boolean repeat){
             this.repeat = repeat;
             this.notifee = notifee;
@@ -50,7 +49,7 @@ public class ApplicationHandler {
          */
         @SuppressWarnings("boxing")
         @Override public void run() {
-            notifee.accept(querySensor(sensorCommercialName).orElse(new Table()));
+            notifee.accept(querySensor(sensorCommercialName).orElse(new SamplesTable()));
             if(repeat)
                 new Timer().schedule(this, localTimeToDate(t));
         }
@@ -85,15 +84,15 @@ public class ApplicationHandler {
      * @param numOfEntries The number of entries the application want to receive from the sensor upon update 
      * @return The registration id if the action was successful, otherwise <code>null</code>
      * */
-    public String registerToSensor(final String id, final String sensorCommercialName, final Predicate<Table> notifyWhen, 
-            final Consumer<Table> notifee, int numOfEntries){
+    public String registerToSensor(final String id, final String sensorCommercialName, final Predicate<SamplesTable> notifyWhen, 
+            final Consumer<SamplesTable> notifee, int numOfEntries){
         try{
             AppThread app = apps.get(id).getRight();
             final String eventId = app.registerEventConsumer(notifee);
             return databaseHandler.addListener(sensorCommercialName, t -> {
                 if (notifyWhen.test(t))
                     try {
-                        app.notifyOnEvent(eventId, t.receiveKLastEntries(numOfEntries));
+                        app.notifyOnEvent(eventId, (SamplesTable)t.receiveKLastEntries(numOfEntries));
                     } catch (final ApplicationNotRegisteredToEvent e) {
                         e.printStackTrace();
                     }
@@ -115,7 +114,7 @@ public class ApplicationHandler {
      * @param repeat <code>false</code> if you want to query the sensor only once, <code>true</code> otherwise (query at this time FOREVER)
      * @return The registration id if the action was successful, otherwise <code>null</code>
      * */
-    public String registerToSensor(final String sensorCommercialName, final LocalTime t, final Consumer<Table> notifee, 
+    public String registerToSensor(final String sensorCommercialName, final LocalTime t, final Consumer<SamplesTable> notifee, 
             Boolean repeat){
         QueryTimerTask task = new QueryTimerTask(sensorCommercialName, t, notifee, repeat);
         String $ = Generator.GenerateUniqueIDstring();
@@ -138,7 +137,7 @@ public class ApplicationHandler {
      *  @param sensorCommercialName The name of sensor, agreed upon in an external platform
      *  @return the latest data (or Optional.empty() if the query failed in any point)
      * */
-    public Optional<Table> querySensor(final String sensorCommercialName){
+    public Optional<SamplesTable> querySensor(final String sensorCommercialName){
         return databaseHandler.getLastEntryOf(sensorCommercialName);
     }
     
