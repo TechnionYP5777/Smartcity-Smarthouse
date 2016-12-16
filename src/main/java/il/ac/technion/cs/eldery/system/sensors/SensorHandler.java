@@ -53,7 +53,7 @@ public class SensorHandler implements Runnable {
 
     private void handleRegisterMessage(DatagramPacket p, RegisterMessage ¢) {
         if (!sensors.containsKey(¢.getSensor().getId()))
-            sensors.put(¢.getSensor().getId(), new SensorInfo(¢.getSensor().getId(), 100));
+            sensors.put(¢.getSensor().getId(), new SensorInfo(100));
 
         new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort(), false);
     }
