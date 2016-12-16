@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import il.ac.technion.cs.eldery.system.applications.SamplesTable;
 import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
 import il.ac.technion.cs.eldery.utils.Generator;
-import il.ac.technion.cs.eldery.utils.Table;
 
 /** This class will hold, run and manage the dynamic loaded code of the
  * application. Using this class will allow us to mimic the context switch of an
@@ -20,14 +20,14 @@ import il.ac.technion.cs.eldery.utils.Table;
  * @since Dec 11, 2016 */
 public class AppThread {
     private class EventInfo {
-        final Consumer<Table> consumer;
-        Table data;
+        final Consumer<SamplesTable> consumer;
+        SamplesTable data;
 
-        public EventInfo(Consumer<Table> $) {
+        public EventInfo(Consumer<SamplesTable> $) {
             consumer = $;
         }
 
-        public void setData(final Table $) {
+        public void setData(final SamplesTable $) {
             data = $;
         }
     }
@@ -102,7 +102,7 @@ public class AppThread {
      * specific sensor
      * @return The id of the consumer in the system, needed for any activation
      *         action of the consumer. */
-    public String registerEventConsumer(final Consumer<Table> $) {
+    public String registerEventConsumer(final Consumer<SamplesTable> $) {
         String id = Generator.GenerateUniqueIDstring();
         callOnEvent.put(id, new EventInfo($));
         return id;
@@ -112,7 +112,7 @@ public class AppThread {
      * @param eventId: The id returned at the registration of the consumer that
      *        can process the data
      * @param data: The new information from the sensor */
-    public void notifyOnEvent(final String eventId, final Table data) throws ApplicationNotRegisteredToEvent {
+    public void notifyOnEvent(final String eventId, final SamplesTable data) throws ApplicationNotRegisteredToEvent {
         final EventInfo $ = Optional.ofNullable(callOnEvent.get(eventId))
                 .orElseThrow(ApplicationNotRegisteredToEvent::new);
         $.setData(data);

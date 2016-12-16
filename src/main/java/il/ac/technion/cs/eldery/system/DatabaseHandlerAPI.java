@@ -6,7 +6,8 @@ package il.ac.technion.cs.eldery.system;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import il.ac.technion.cs.eldery.utils.Table;
+import il.ac.technion.cs.eldery.system.applications.SamplesTable;
+
 
 /**
  * The API required by ApplicationHandler in order to allow it desired functionalities.
@@ -19,7 +20,7 @@ public interface DatabaseHandlerAPI {
      *  @param notifee The consumer to be called on a change, with the new data
      *  @return The id of the listener, to be used in any future refernce to it
      * */
-    String addListener(String sensorCommercialName, Consumer<Table> notifee);
+    String addListener(String sensorCommercialName, Consumer<SamplesTable> notifee);
     
     /** Remove a previously added listener
      * @param listenerId The id given when the listener was added to the system
@@ -30,5 +31,5 @@ public interface DatabaseHandlerAPI {
      * @param sensorCommercialName The name of sensor, agreed upon in an external platform
      * @return the most updated data of the sensor, or Optional.empty() if the request couldn't be completed for any reason
      * */
-    Optional<Table> getLastEntryOf(final String sensorCommercialName);
+    Optional<SamplesTable> getLastEntryOf(final String sensorCommercialName);
 }
