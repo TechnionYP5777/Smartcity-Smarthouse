@@ -87,7 +87,7 @@ public class ApplicationHandler {
     public String registerToSensor(final String id, final String sensorCommercialName, final Predicate<SamplesTable> notifyWhen, 
             final Consumer<SamplesTable> notifee, int numOfEntries){
         try{
-            AppThread app = apps.get(id).getRight();
+            AppThread app = apps.get(id).right;
             final String eventId = app.registerEventConsumer(notifee);
             return databaseHandler.addListener(sensorCommercialName, t -> {
                 if (notifyWhen.test(t))
