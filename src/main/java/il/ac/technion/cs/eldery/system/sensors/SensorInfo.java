@@ -1,11 +1,10 @@
 package il.ac.technion.cs.eldery.system.sensors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import il.ac.technion.cs.eldery.utils.Generator;
 import il.ac.technion.cs.eldery.utils.Table;
 
 /**
@@ -16,7 +15,7 @@ import il.ac.technion.cs.eldery.utils.Table;
 public class SensorInfo{
     
     private Table<Object, Object> information = new Table<>();
-    List<Consumer<HashMap<Object, Object>>> listeners = new ArrayList<>();
+    HashMap<String, Consumer<HashMap<Object, Object>>> listeners = new HashMap<>();
     
     /*
      * Creates SensorInfo without information capacity limit
@@ -35,8 +34,14 @@ public class SensorInfo{
     }
     
     
-    public void addListener(final Consumer<HashMap<Object, Object>> listener){
-        listeners.add(listener);
+    public String addListener(final Consumer<HashMap<Object, Object>> listener){
+        final String $ = Generator.GenerateUniqueIDstring();
+        listeners.put($, listener);
+        return $;
+    }
+    
+    public void removeListener(final String listenerId){
+        listeners.remove(listenerId);
     }
     
     public void addRecord(final HashMap<Object, Object> record){
