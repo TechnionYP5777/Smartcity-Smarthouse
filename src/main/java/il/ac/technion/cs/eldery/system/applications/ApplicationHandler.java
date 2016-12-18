@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import il.ac.technion.cs.eldery.system.AppThread;
-import il.ac.technion.cs.eldery.system.DatabaseHandlerAPI;
+import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
 import il.ac.technion.cs.eldery.utils.Generator;
@@ -40,8 +40,8 @@ public class ApplicationHandler {
             this.sensorCommercialName = sensorCommercialName;
         }
         
-        void setRepeat(Boolean b){
-            repeat = b;
+        void setRepeat(Boolean ¢){
+            repeat = ¢;
         }
         
         /* (non-Javadoc)
@@ -58,21 +58,21 @@ public class ApplicationHandler {
     
     Map<String, Tuple<ApplicationManager, AppThread>> apps = new HashMap<>();//TODO: change to ApplicationManager only, when wanted behavior is implemented
     Map<String, QueryTimerTask> timedQuerires = new HashMap<>();
-    DatabaseHandlerAPI databaseHandler;
+    DatabaseHandler databaseHandler;
     
     /**
      * Initialize the applicationHandler with the database responsible of managing the data in the current session
      */
-    public ApplicationHandler(final DatabaseHandlerAPI databaseHandler) {
+    public ApplicationHandler(final DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
     }
     
     /** Adds a new application to the system.
      *  @return The id of the application in the system
      * */
-    public String addApplication(final ApplicationManager appid, final SmartHouseApplication app){
+    public String addApplication(final ApplicationManager appid, final SmartHouseApplication a){
         //TODO: ELIA remove the app param, after ApplicationIdentifier is completed
-        apps.put(appid.getId(), new Tuple<>(appid, new AppThread(app)));
+        apps.put(appid.getId(), new Tuple<>(appid, new AppThread(a)));
         return appid.getId();
     }
     
