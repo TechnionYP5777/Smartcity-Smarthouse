@@ -38,13 +38,13 @@ public class DatabaseHandler {
     }
 
     /** Remove a previously added listener
-     * @param sensorId is the id of the sensor which it's listener is to be
+     * @param sensorID is the id of the sensor which it's listener is to be
      *        removed
      * @param listenerId The id given when the listener was added to the system
      * @throws SensorNotFoundException */
-    public void removeListener(String sensorId, String listenerId) throws SensorNotFoundException {
+    public void removeListener(String sensorID, String listenerId) throws SensorNotFoundException {
         try {
-            this.sensors.get(sensorId).removeListener(listenerId);
+            this.sensors.get(sensorID).removeListener(listenerId);
         } catch (@SuppressWarnings("unused") Exception e) {
             throw new SensorNotFoundException();
         }
