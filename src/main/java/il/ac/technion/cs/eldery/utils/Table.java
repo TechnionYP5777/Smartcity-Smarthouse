@@ -1,7 +1,6 @@
 package il.ac.technion.cs.eldery.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import il.ac.technion.cs.eldery.utils.exceptions.OutOfTableLimit;
@@ -12,7 +11,7 @@ public class Table<L, R> {
     public static final int UNLIMITED_CAPACITY = -1;
     public static final int OLDEST_DATA_INDEX = 0;
 
-    private final ArrayList<HashMap<L, R>> data = new ArrayList<>();
+    private final ArrayList<Map<L, R>> data = new ArrayList<>();
     boolean limitedSize;
     private int maxCapacity;
 
@@ -29,7 +28,7 @@ public class Table<L, R> {
     }
 
     /** @param info - the new entry to add Adds an entry to the table */
-    public void addEntry(final HashMap<L, R> info) {
+    public void addEntry(final Map<L, R> info) {
         if (limitedSize && data.size() == maxCapacity)
             data.remove(0);
         data.add(info);

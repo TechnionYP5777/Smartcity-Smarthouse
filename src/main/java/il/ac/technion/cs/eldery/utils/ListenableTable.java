@@ -31,7 +31,7 @@ public class ListenableTable<T, S> extends Table<T, S> {
         listeners.remove(id);
     }
 
-    @Override public void addEntry(HashMap<T, S> info) {
+    @Override public void addEntry(Map<T, S> info) {
         super.addEntry(info);
 
         listeners.values().forEach(listener -> listener.accept(receiveKLastEntries(1)));
