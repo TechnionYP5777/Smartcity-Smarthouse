@@ -7,9 +7,11 @@ import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -33,25 +35,6 @@ public class Controller implements Initializable {
     DoubleProperty timeSeconds = new SimpleDoubleProperty();
     Duration time = Duration.ZERO;
     
-    static void openNewWindow(){
-        Stage stage = new Stage();
-        Scene scene = new Scene(new Group());
-        stage.setWidth(450);
-        stage.setHeight(250);
-        stage.setTitle("Stove Config");
-        final Label label = new Label("Stove Config");
-        label.setFont(new Font("Arial", 20));
-        
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label);
- 
-        ((Group) scene.getRoot()).getChildren().addAll(vbox);
-        stage.setScene(scene);
-        stage.show();
-    }
-
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override public void initialize(final URL location, final ResourceBundle __) {
         onOffButton.setOnAction(new EventHandler() {
@@ -88,10 +71,18 @@ public class Controller implements Initializable {
         });
         
         stoveConfigButton.setOnAction(new EventHandler<ActionEvent>() {
-            @SuppressWarnings({ "static-access", "hiding" })
+            @SuppressWarnings({ "hiding" })
             @Override
             public void handle(ActionEvent __) {
-                   Controller.this.openNewWindow();
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_config.fxml"));
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(root1));  
+                            stage.show();
+                    } catch(Exception e) {
+                       e.printStackTrace();
+                     }
             }
         });
     }
