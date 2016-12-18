@@ -22,6 +22,7 @@ import il.ac.technion.cs.eldery.utils.*;
 /** API allowing smart house applications to register for information and notify on emergencies
  * 
  * @author Elia
+ * @author Inbal Zukerman
  * @since Dec 13, 2016
  * */
 public class ApplicationHandler {
@@ -29,9 +30,9 @@ public class ApplicationHandler {
         Boolean repeat;
         String sensorCommercialName;
         LocalTime t;
-        Consumer<Table> notifee;
+        Consumer<Table<String, String>> notifee;
         
-        QueryTimerTask(final String sensorCommercialName, final LocalTime t, final Consumer<Table> notifee, 
+        QueryTimerTask(final String sensorCommercialName, final LocalTime t, final Consumer<Table<String, String>> notifee, 
                 Boolean repeat){
             this.repeat = repeat;
             this.notifee = notifee;
@@ -46,9 +47,9 @@ public class ApplicationHandler {
         /* (non-Javadoc)
          * @see java.util.TimerTask#run()
          */
-        @SuppressWarnings("boxing")
+        @SuppressWarnings({ "boxing"})
         @Override public void run() {
-            notifee.accept(querySensor(sensorCommercialName).orElse(new Table()));
+            notifee.accept(querySensor(sensorCommercialName).orElse(new Table<String, String>()));
             if(repeat)
                 new Timer().schedule(this, localTimeToDate(t));
         }
@@ -83,7 +84,7 @@ public class ApplicationHandler {
      * @param numOfEntries The number of entries the application want to receive from the sensor upon update 
      * @return The registration id if the action was successful, otherwise <code>null</code>
      * */
-    @SuppressWarnings("unchecked")
+    
     public String registerToSensor(final String id, final String sensorCommercialName, final Predicate<Table<String, String>> notifyWhen, 
             final Consumer<Table<String, String>> notifee, int numOfEntries){
         try{
@@ -114,7 +115,7 @@ public class ApplicationHandler {
      * @param repeat <code>false</code> if you want to query the sensor only once, <code>true</code> otherwise (query at this time FOREVER)
      * @return The registration id if the action was successful, otherwise <code>null</code>
      * */
-    public String registerToSensor(final String sensorCommercialName, final LocalTime t, final Consumer<Table> notifee, 
+    public String registerToSensor(final String sensorCommercialName, final LocalTime t, final Consumer<Table<String, String>> notifee, 
             Boolean repeat){
         QueryTimerTask task = new QueryTimerTask(sensorCommercialName, t, notifee, repeat);
         String $ = Generator.GenerateUniqueIDstring();
