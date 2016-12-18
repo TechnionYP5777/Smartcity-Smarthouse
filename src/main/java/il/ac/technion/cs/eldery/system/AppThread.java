@@ -15,7 +15,7 @@ import il.ac.technion.cs.eldery.utils.*;
 /** This class will hold, run and manage the dynamic loaded code of the
  * application. Using this class will allow us to mimic the context switch of an
  * OS on its programs.
- * @author Elia
+ * @author Elia Traore
  * @since Dec 11, 2016 */
 public class AppThread {
     private class EventInfo {
