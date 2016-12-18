@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import il.ac.technion.cs.eldery.utils.exceptions.OutOfTableLimit;
+
 /** @author Inbal Zukerman
  * @since 15.12.2016 */
-public class Table<L extends Object, R extends Object> {
+public class Table<L , R> {
     public static final int UNLIMITED_CAPACITY = -1;
-
+    public static final int OLDEST_DATA_INDEX = 0;
+    
     private final ArrayList<HashMap<L, R>> data = new ArrayList<>();
     boolean limitedSize;
     private int maxCapacity;
@@ -83,5 +86,17 @@ public class Table<L extends Object, R extends Object> {
      *         required or null if it doesn't exist */
     public R getLastEntryAtCol(final L key) {
         return data.isEmpty() ? null : data.get(data.size()).get(key);
+    }
+    
+    /**
+     * @param row - number of row, starts at index 0. index 0 is the OLDEST data
+     * @param col - which column to retrieved data from
+     * @return the R object in the row and column of the parameters
+     * @throws OutOfTableLimit
+     */
+    public R get(int row, L col) throws OutOfTableLimit{
+        if(row < 0 || (this.limitedSize && row > this.maxCapacity))
+            throw new OutOfTableLimit();
+        return this.data.get(row).get(col);
     }
 }
