@@ -17,8 +17,8 @@ import il.ac.technion.cs.eldery.sensors.stove.StoveSensor;
 public class UpdateMessageTest {
     @Test public void basicUpdateMessageTest() {
         StoveSensor sensor = new StoveSensor("Stove Sensor", "00:11:22:33:44:55", "1:1:1:1", 80);
-        Map<Object, Object> data = new HashMap<>();
-        data.put("on", Boolean.FALSE);
+        Map<String, String> data = new HashMap<>();
+        data.put("on", Boolean.FALSE + "");
         data.put("temperature", "100");
         UpdateMessage message = new UpdateMessage(sensor, data);
         JsonParser parser = new JsonParser();

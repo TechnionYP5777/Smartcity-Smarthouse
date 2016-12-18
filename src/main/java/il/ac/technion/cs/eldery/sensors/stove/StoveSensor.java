@@ -21,7 +21,7 @@ public class StoveSensor extends Sensor {
     }
 
     public void updateSystem(boolean on, int temperature) {
-        Map<Object, Object> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
         data.put("on / off", on + "");
         data.put("temperature", temperature + "");
         super.updateSystem(data);

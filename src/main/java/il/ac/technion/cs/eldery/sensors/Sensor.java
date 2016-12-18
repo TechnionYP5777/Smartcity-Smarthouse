@@ -43,7 +43,7 @@ public abstract class Sensor {
      * observations are represented as a map from the names of the observations,
      * to their values.
      * @param data observations to send to the system */
-    public void updateSystem(Map<Object, Object> data) {
+    public void updateSystem(Map<String, String> data) {
         (new UpdateMessage(this, data)).send(systemIP, systemPort, false);
     }
 

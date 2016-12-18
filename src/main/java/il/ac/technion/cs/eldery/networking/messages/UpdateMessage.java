@@ -9,13 +9,13 @@ import il.ac.technion.cs.eldery.sensors.Sensor;
  * @since 11.12.16 */
 public class UpdateMessage extends Message {
     private Sensor sensor;
-    private Map<Object, Object> data;
+    private Map<String, String> data;
 
     public UpdateMessage(Sensor sensor) {
         this(sensor, new HashMap<>());
     }
 
-    public UpdateMessage(Sensor sensor, Map<Object, Object> data) {
+    public UpdateMessage(Sensor sensor, Map<String, String> data) {
         super(MessageType.UPDATE);
 
         this.sensor = sensor;
@@ -33,23 +33,29 @@ public class UpdateMessage extends Message {
         this.sensor = ¢;
     }
 
+    /** Returns the data this message stores.
+     * @return a map from the observation types to the actual observations */
+    public Map<String, String> getData() {
+        return this.data;
+    }
+
     /** Returns an observation value given its type.
      * @param key type of the observation
      * @return value of the observation */
-    public Object getObservation(Object key) {
+    public String getObservation(String key) {
         return data.get(key);
     }
 
     /** Removes an observation from the data this message contains
      * @param key observation to remove */
-    public void removeObservation(Object key) {
+    public void removeObservation(String key) {
         data.remove(key);
     }
 
     /** Adds a new observation to this message.
      * @param key observation type
      * @param value observation value */
-    public void addObservation(Object key, Object value) {
+    public void addObservation(String key, String value) {
         data.put(key, value);
     }
 }
