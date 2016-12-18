@@ -11,6 +11,7 @@ import il.ac.technion.cs.eldery.networking.messages.Message;
 import il.ac.technion.cs.eldery.networking.messages.MessageFactory;
 import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
 import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
+import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 
 public class SensorsHandler implements Runnable {
@@ -55,7 +56,9 @@ public class SensorsHandler implements Runnable {
         new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort(), false);
     }
 
-    @SuppressWarnings("unused") private void handleUpdateMessage(DatagramPacket packet, UpdateMessage m) {
-        // TODO: Sharon, implement
+    @SuppressWarnings("unused") private void handleUpdateMessage(DatagramPacket p, UpdateMessage m) {
+        Table<String, String> table = new Table<>(); // TODO: dummy for now, replace with real table
+        
+        // table.addEntry(m.getData()); // TODO: Uncomment when input types are more abstracted
     }
 }
