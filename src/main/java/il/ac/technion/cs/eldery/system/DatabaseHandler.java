@@ -26,7 +26,7 @@ public class DatabaseHandler {
      * <strong>any</strong> update from that sensor
      * @param sensorCommercialName The name of sensor, agreed upon in an
      *        external platform
-     * @param notifee The consumer to be called on a change, with the new data
+     * @param notifee The consumer to be called on a change, with the whole table of the sensor
      * @return The id of the listener, to be used in any future reference to it
      * @throws SensorNotFoundException */
     public String addListener(String sensorID, Consumer<Table<String, String>> notifee) throws SensorNotFoundException {
