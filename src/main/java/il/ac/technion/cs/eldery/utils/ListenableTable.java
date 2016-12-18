@@ -11,10 +11,10 @@ import java.util.function.Consumer;
 public class ListenableTable<T, S> extends Table<T, S> {
     private Map<String, Consumer<Table<T, S>>> listeners = new HashMap<>();
 
-    public ListenableTable(final int maxCapacity){
+    public ListenableTable(final int maxCapacity) {
         super(maxCapacity);
     }
-    
+
     /** Adds a new listener to the table
      * @param listener listener to be added
      * @return id of the new listener */
