@@ -1,0 +1,98 @@
+package il.ac.technion.cs.eldery.applications.gui;
+
+import java.net.*;
+import java.util.*;
+
+import javafx.animation.Timeline;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+
+/** @author Roy
+ * @since 19.12.16 */
+public class Controller implements Initializable {
+    @FXML public Button onOffButton;
+    @FXML public Label timeLabel;
+    @FXML public Button stoveConfigButton;
+    Timeline timeline;
+    DoubleProperty timeSeconds = new SimpleDoubleProperty();
+    Duration time = Duration.ZERO;
+    
+    static void openNewWindow(){
+        Stage stage = new Stage();
+        Scene scene = new Scene(new Group());
+        stage.setWidth(450);
+        stage.setHeight(250);
+        stage.setTitle("Stove Config");
+        final Label label = new Label("Stove Config");
+        label.setFont(new Font("Arial", 20));
+        
+        final VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 0, 0, 10));
+        vbox.getChildren().addAll(label);
+ 
+        ((Group) scene.getRoot()).getChildren().addAll(vbox);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override public void initialize(final URL location, final ResourceBundle __) {
+        onOffButton.setOnAction(new EventHandler() {
+            boolean start = true;
+            @SuppressWarnings("hiding")
+            @Override
+            public void handle(Event __) {
+                if (!start) {
+                    timeline.stop();
+                    this.start = true;
+                    time = Duration.ZERO;
+                    timeSeconds.set(time.toSeconds());
+                    timeLabel.setText("The Stove is Off");
+                    onOffButton.setText("Turn On");
+                } else {
+                    onOffButton.setText("Turn Off");
+                    timeline = new Timeline(
+                        new KeyFrame(Duration.millis(100),
+                        new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent e) {
+                                Duration duration = ((KeyFrame)e.getSource()).getTime();
+                                time = time.add(duration);
+                                timeSeconds.set(time.toSeconds());
+                                timeLabel.setText("The Stove is Running for "+ timeSeconds.get()+" (Secs)");
+                            }
+                        })
+                    );
+                    timeline.setCycleCount(Animation.INDEFINITE);
+                    timeline.play();
+                    this.start=false;
+                }
+            }
+        });
+        
+        stoveConfigButton.setOnAction(new EventHandler<ActionEvent>() {
+            @SuppressWarnings({ "static-access", "hiding" })
+            @Override
+            public void handle(ActionEvent __) {
+                   Controller.this.openNewWindow();
+            }
+        });
+    }
+}
