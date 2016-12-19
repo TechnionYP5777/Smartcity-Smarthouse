@@ -17,6 +17,14 @@
       <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="Head" text="Stove Configure" />
+            <GridPane alignment="center" hgap="10" vgap="10">
+            	<children>
+            		 <Label  text="Alert after(seconds):" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            		 <TextField fx:id="secs" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.hgrow="always" GridPane.vgrow="always"/>
+    				 <Label text="Alert at(degrees celsius):" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+ 					 <TextField fx:id="cels" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.hgrow="always" GridPane.vgrow="always"/>
+            	</children>
+            </GridPane>
             <HBox fx:id="ButtonBox">
                <children>
                   <Button fx:id="Apply" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Apply" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

@@ -16,7 +16,7 @@
    <children>
       <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="timeLabel" text="The Stove is Off" />
+            <Label fx:id="timeLabel" text="The Stove is Off"/>
             <AnchorPane>
                <children>
                   <Button fx:id="onOffButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Turn on" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
