@@ -3,8 +3,6 @@ package il.ac.technion.cs.eldery.system.sensors;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.util.HashMap;
-import java.util.Map;
 
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage;
 import il.ac.technion.cs.eldery.networking.messages.Message;
@@ -13,12 +11,18 @@ import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
 import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
-import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 
+/** A sensors handler is a class dedicated to listening for incoming messages
+ * from sensors. The class can parse the different message and handle them
+ * accordingly.
+ * @author Sharon
+ * @since 17.12.16 */
 public class SensorsHandler implements Runnable {
     private DatabaseHandler databaseHandler;
-    
+
+    /** Initializes a new sensors handler object.
+     * @param databaseHandler database handler of the system */
     public SensorsHandler(DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
     }
