@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 public class Controller implements Initializable {
     @FXML public Button onOffButton;
     @FXML public Label timeLabel;
+    @FXML public Label tempLabel;
     @FXML public Button stoveConfigButton;
     Timeline timeline;
     DoubleProperty timeSeconds = new SimpleDoubleProperty();
@@ -52,6 +53,8 @@ public class Controller implements Initializable {
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override public void initialize(final URL location, final ResourceBundle __) {
+        //label.setFont(new Font("Arial", 20));
+        //label.setFont(new Font("Arial", 20));
         onOffButton.setOnAction(new EventHandler() {
             boolean start = true;
             @SuppressWarnings("hiding")
@@ -63,7 +66,7 @@ public class Controller implements Initializable {
                     time = Duration.ZERO;
                     timeLabel.setTextFill(Color.BLACK);
                     timeSeconds.set(time.toSeconds());
-                    timeLabel.setText("The Stove is Off");
+                    timeLabel.setText("The Stove is: Off");
                     onOffButton.setText("Turn On");
                 } else {
                     onOffButton.setText("Turn Off");
@@ -75,9 +78,8 @@ public class Controller implements Initializable {
                                 Duration duration = ((KeyFrame)e.getSource()).getTime();
                                 time = time.add(duration);
                                 timeSeconds.set(time.toSeconds());
-                                if(timeSeconds.get()>Controller.this.get_seconds())
-                                    timeLabel.setTextFill(Color.RED);
-                                timeLabel.setText("The Stove is Running for "+ timeSeconds.get()+" (Secs)");
+                                timeLabel.setTextFill(timeSeconds.get() > Controller.this.get_seconds() ? Color.RED : Color.BLACK);
+                                timeLabel.setText("The Stove is Running for: "+ timeSeconds.get()+" (Secs)");
                             }
                         })
                     );
