@@ -18,8 +18,6 @@ public class StoveSensor extends Sensor {
 
     public StoveSensor(final String name, final String id, final String systemIP, final int systemPort) {
         super(name, id, TYPES, systemIP, systemPort);
-        for (boolean res = false; !res;)
-            res = this.register();
     }
 
     public void updateSystem(boolean on, int temperature) {

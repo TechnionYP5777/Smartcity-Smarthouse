@@ -21,7 +21,8 @@ public class Controller implements Initializable {
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
         sensor = new StoveSensor("Stove Sensor Simulator", "00:00:00:00:00:00", "1:1:1:1", 80);
-        sensor.register();
+        for (boolean res = false; !res;)
+            res = sensor.register();
         onOffButton.setOnAction(event -> {
             on = !on;
             onOffButton.setText("Turn " + (on ? "off" : "on"));
