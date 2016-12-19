@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
+
 import com.google.gson.Gson;
 
 /** @author Sharon
@@ -36,7 +38,6 @@ public abstract class Message {
      *         occurred or if a response was not requested, null will be
      *         returned. */
     public String send(String ip, int port, boolean waitForResponse) {
-        // TODO: Yarden, receive a socket
         try (DatagramSocket socket = new DatagramSocket()) {
             byte[] buffer = this.toJson().getBytes();
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(ip), port);
@@ -46,7 +47,12 @@ public abstract class Message {
             // TODO: Yarden, add timeout
             byte[] responseBuffer = new byte[2048];
             DatagramPacket receivedPacket = new DatagramPacket(responseBuffer, responseBuffer.length);
-            socket.receive(receivedPacket);
+            socket.setSoTimeout(10000);
+            try {
+                socket.receive(receivedPacket);
+            } catch (@SuppressWarnings("unused") SocketTimeoutException e) {
+                return null;
+            }
             return new String(receivedPacket.getData(), 0, receivedPacket.getLength());
         } catch (@SuppressWarnings("unused") IOException e) {
             return null;

@@ -27,7 +27,7 @@ public class UpdateMessage extends Message {
         return sensor;
     }
 
-    /** Sets a new sensor for this registration message
+    /** Sets a new sensor for this update message
      * @param ¢ new sensor */
     public void setSensor(Sensor ¢) {
         this.sensor = ¢;
