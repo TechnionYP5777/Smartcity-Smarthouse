@@ -11,14 +11,15 @@ import il.ac.technion.cs.eldery.networking.messages.Message;
 import il.ac.technion.cs.eldery.networking.messages.MessageFactory;
 import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
 import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
+import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 
 public class SensorsHandler implements Runnable {
-    private Map<String, SensorInfo> sensors = new HashMap<>();
-
-    public Map<String, SensorInfo> getSensors() {
-        return sensors;
+    private DatabaseHandler databaseHandler;
+    
+    public SensorsHandler(DatabaseHandler databaseHandler) {
+        this.databaseHandler = databaseHandler;
     }
 
     @Override public void run() {
@@ -50,8 +51,8 @@ public class SensorsHandler implements Runnable {
     }
 
     private void handleRegisterMessage(DatagramPacket p, RegisterMessage ¢) {
-        if (!sensors.containsKey(¢.getSensor().getId()))
-            sensors.put(¢.getSensor().getId(), new SensorInfo(100));
+//        if (!sensors.containsKey(¢.getSensor().getId()))
+//            sensors.put(¢.getSensor().getId(), new SensorInfo(100));
 
         new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort(), false);
     }
