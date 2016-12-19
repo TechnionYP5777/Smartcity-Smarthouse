@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.Animation;
@@ -30,6 +31,24 @@ public class Controller implements Initializable {
     Timeline timeline;
     DoubleProperty timeSeconds = new SimpleDoubleProperty();
     Duration time = Duration.ZERO;
+    int degrees=150;
+    int seconds=30;
+    
+    public int get_temperture(){
+        return degrees;
+    }
+    
+    public int get_seconds(){
+        return seconds;
+    }
+    
+    public void set_temperture(int degrees){
+        this.degrees=degrees;
+    }
+    
+    public void set_seconds(int seconds){
+        this.seconds=seconds;
+    }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override public void initialize(final URL location, final ResourceBundle __) {
@@ -42,6 +61,7 @@ public class Controller implements Initializable {
                     timeline.stop();
                     this.start = true;
                     time = Duration.ZERO;
+                    timeLabel.setTextFill(Color.BLACK);
                     timeSeconds.set(time.toSeconds());
                     timeLabel.setText("The Stove is Off");
                     onOffButton.setText("Turn On");
@@ -55,6 +75,8 @@ public class Controller implements Initializable {
                                 Duration duration = ((KeyFrame)e.getSource()).getTime();
                                 time = time.add(duration);
                                 timeSeconds.set(time.toSeconds());
+                                if(timeSeconds.get()>Controller.this.get_seconds())
+                                    timeLabel.setTextFill(Color.RED);
                                 timeLabel.setText("The Stove is Running for "+ timeSeconds.get()+" (Secs)");
                             }
                         })
@@ -72,13 +94,15 @@ public class Controller implements Initializable {
             public void handle(ActionEvent __) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_config.fxml"));
-                            Parent root1 = (Parent) fxmlLoader.load();
-                            Stage stage = new Stage();
-                            stage.setScene(new Scene(root1));  
-                            stage.show();
+                    Parent root1 = (Parent) fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root1));  
+                    stage.show();
+                    ConfigController configController = fxmlLoader.getController();
+                    configController.subscribe(Controller.this);
                     } catch(Exception e) {
                        e.printStackTrace();
-                     }
+                    }
             }
         });
     }
