@@ -1,8 +1,5 @@
 package il.ac.technion.cs.eldery.applications.gui;
 
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -12,8 +9,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
@@ -28,46 +27,44 @@ public class ConfigController implements Initializable {
     @FXML public TextField cels;
     Controller mainController;
 
-    static boolean validateInput(String time, String degrees) {
+    static boolean validateInput(final String time, final String degrees) {
         return time != null && degrees != null && !"".equals(degrees) && !"".equals(time) && time.chars().allMatch(Character::isDigit)
                 && degrees.chars().allMatch(Character::isDigit);
     }
 
-    public void subscribe(Controller mainContr) {
-        this.mainController = mainContr;
+    public void subscribe(final Controller mainContr) {
+        mainController = mainContr;
     }
 
-    @SuppressWarnings("static-access") @Override public void initialize(URL location, ResourceBundle __) {
+    @Override public void initialize(final URL location, final ResourceBundle __) {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("stove_app_ui.fxml"));
-        mainController = loader.getController();
+        mainController = new FXMLLoader(getClass().getResource("stove_app_ui.fxml")).getController();
 
-        ButtonBox.setHgrow(Apply, Priority.ALWAYS);
-        ButtonBox.setHgrow(Cancel, Priority.ALWAYS);
+        HBox.setHgrow(Apply, Priority.ALWAYS);
+        HBox.setHgrow(Cancel, Priority.ALWAYS);
 
-        int btnCount = ButtonBox.getChildren().size();
+        final int btnCount = ButtonBox.getChildren().size();
         Apply.prefWidthProperty().bind(ButtonBox.widthProperty().divide(btnCount));
         Cancel.prefWidthProperty().bind(ButtonBox.widthProperty().divide(btnCount));
 
         Cancel.setOnAction(new EventHandler<ActionEvent>() {
 
-            @SuppressWarnings("hiding") @Override public void handle(ActionEvent __) {
-                Stage stage = (Stage) Cancel.getScene().getWindow();
+            @Override @SuppressWarnings("hiding") public void handle(final ActionEvent __) {
                 // do what you have to do
-                stage.close();
+                ((Stage) Cancel.getScene().getWindow()).close();
             }
         });
         Apply.setOnAction(new EventHandler<ActionEvent>() {
-            @SuppressWarnings("hiding") @Override public void handle(ActionEvent __) {
-                Stage stage = (Stage) Apply.getScene().getWindow();
-                String time = secs.getText();
-                String degrees = cels.getText();
+            @Override @SuppressWarnings("hiding") public void handle(final ActionEvent __) {
+                final Stage stage = (Stage) Apply.getScene().getWindow();
+                final String time = secs.getText();
+                final String degrees = cels.getText();
                 if (validateInput(time, degrees)) {
                     mainController.set_seconds(Integer.parseInt(secs.getText()));
                     mainController.set_temperture(Integer.parseInt(cels.getText()));
                     stage.close();
                 } else {
-                    Alert alert = new Alert(AlertType.ERROR);
+                    final Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error Dialog");
                     alert.setHeaderText("Bad Input");
                     alert.setContentText("Make sure to enter only numbers");

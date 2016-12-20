@@ -1,6 +1,5 @@
 package il.ac.technion.cs.eldery.system.applications;
 
-import il.ac.technion.cs.eldery.system.MainSystem;
 import il.ac.technion.cs.eldery.utils.Generator;
 
 /** A class that stores information about the installed application
@@ -12,7 +11,7 @@ public class ApplicationManager {
     String id;
     String jarPath;
 
-    public ApplicationManager(String id, String jarPath) {
+    public ApplicationManager(final String id, final String jarPath) {
         this.id = id;
         this.jarPath = jarPath;
     }
@@ -21,7 +20,7 @@ public class ApplicationManager {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -29,8 +28,8 @@ public class ApplicationManager {
         return jarPath;
     }
 
-    public void setJarPath(String path) {
-        this.jarPath = path;
+    public void setJarPath(final String path) {
+        jarPath = path;
     }
 
     /** installs the application, and generates the ApplicationIdentifier for it
@@ -41,23 +40,16 @@ public class ApplicationManager {
         return new ApplicationManager(Generator.generateUniqueID() + "", jarFilePath);
     }
 
-    @SuppressWarnings("unused") private static SmartHouseApplication initiateApplication(SmartHouseApplication a, MainSystem s) {
-        // TODO: Ron and Roy - ?
-        a.setMainSystemInstance(s);
-        a.onLoad();
-        return a;
-    }
-
     @Override public int hashCode() {
-        return 31 * (((id == null) ? 0 : id.hashCode()) + 31) + ((jarPath == null) ? 0 : jarPath.hashCode());
+        return 31 * ((id == null ? 0 : id.hashCode()) + 31) + (jarPath == null ? 0 : jarPath.hashCode());
     }
 
-    @Override public boolean equals(Object o) {
+    @Override public boolean equals(final Object o) {
         if (o == this)
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        ApplicationManager other = (ApplicationManager) o;
+        final ApplicationManager other = (ApplicationManager) o;
         if (id == null) {
             if (other.id != null)
                 return false;

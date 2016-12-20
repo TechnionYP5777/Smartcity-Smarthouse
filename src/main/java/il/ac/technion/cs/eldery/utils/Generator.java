@@ -1,6 +1,6 @@
 package il.ac.technion.cs.eldery.utils;
 
-import java.util.*;
+import java.util.UUID;
 
 /** @author RON
  * @since 09-12-16 */
@@ -11,8 +11,8 @@ public enum Generator {
     public static UUID generateUniqueID() {
         return UUID.randomUUID();
     }
-    
-    public static String GenerateUniqueIDstring(){
+
+    public static String GenerateUniqueIDstring() {
         return generateUniqueID() + "";
     }
 }

@@ -35,16 +35,16 @@ public abstract class Sensor {
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise */
     public boolean register() {
-        String response = (new RegisterMessage(this)).send(systemIP, systemPort, true);
-        return response != null && ((AnswerMessage) MessageFactory.create(response)).getAnswer() == Answer.SUCCESS;
+        final String $ = new RegisterMessage(this).send(systemIP, systemPort, true);
+        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
     }
 
     /** Sends an update message to the system with the given observations. The
      * observations are represented as a map from the names of the observations,
      * to their values.
      * @param data observations to send to the system */
-    public void updateSystem(Map<String, String> data) {
-        (new UpdateMessage(this, data)).send(systemIP, systemPort, false);
+    public void updateSystem(final Map<String, String> data) {
+        new UpdateMessage(this, data).send(systemIP, systemPort, false);
     }
 
     /** Returns the names of the parameters that will be sent to the system.
@@ -60,7 +60,7 @@ public abstract class Sensor {
 
     /** @return list of types this sensor qualifies for */
     public List<String> getTypes() {
-        return this.types;
+        return types;
     }
 
     /** @return id of the sensor */

@@ -2,7 +2,9 @@ package il.ac.technion.cs.eldery.sensors;
 
 import java.util.ArrayList;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /** @author Sharon
  * @author Yarden

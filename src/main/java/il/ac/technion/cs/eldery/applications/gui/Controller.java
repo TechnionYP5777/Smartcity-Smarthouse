@@ -1,11 +1,16 @@
 package il.ac.technion.cs.eldery.applications.gui;
 
-import java.net.*;
-import java.util.*;
+import java.net.URL;
+import java.util.ResourceBundle;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,11 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 
 /** @author Roy
  * @since 19.12.16 */
@@ -43,11 +43,11 @@ public class Controller implements Initializable {
         return seconds;
     }
 
-    public void set_temperture(int degrees) {
+    public void set_temperture(final int degrees) {
         this.degrees = degrees;
     }
 
-    public void set_seconds(int seconds) {
+    public void set_seconds(final int seconds) {
         this.seconds = seconds;
     }
 
@@ -55,10 +55,10 @@ public class Controller implements Initializable {
         onOffButton.setOnAction(new EventHandler() {
             boolean start = true;
 
-            @SuppressWarnings("hiding") @Override public void handle(Event __) {
+            @Override @SuppressWarnings("hiding") public void handle(final Event __) {
                 if (!start) {
                     timeline.stop();
-                    this.start = true;
+                    start = true;
                     time = Duration.ZERO;
                     timeLabel.setTextFill(Color.BLACK);
                     timeSeconds.set(time.toSeconds());
@@ -66,34 +66,31 @@ public class Controller implements Initializable {
                     onOffButton.setText("Turn On");
                 } else {
                     onOffButton.setText("Turn Off");
-                    timeline = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
-                        @Override public void handle(ActionEvent e) {
-                            Duration duration = ((KeyFrame) e.getSource()).getTime();
-                            time = time.add(duration);
-                            timeSeconds.set(time.toSeconds());
-                            timeLabel.setTextFill(timeSeconds.get() > Controller.this.get_seconds() ? Color.RED : Color.BLACK);
-                            timeLabel.setText("The Stove is Running for: " + timeSeconds.get() + " (Secs)");
-                        }
+                    timeline = new Timeline(new KeyFrame(Duration.millis(100), ¢ -> {
+                        time = time.add(((KeyFrame) ¢.getSource()).getTime());
+                        timeSeconds.set(time.toSeconds());
+                        timeLabel.setTextFill(timeSeconds.get() > Controller.this.get_seconds() ? Color.RED : Color.BLACK);
+                        timeLabel.setText("The Stove is Running for: " + timeSeconds.get() + " (Secs)");
                     }));
                     timeline.setCycleCount(Animation.INDEFINITE);
                     timeline.play();
-                    this.start = false;
+                    start = false;
                 }
             }
         });
 
         stoveConfigButton.setOnAction(new EventHandler<ActionEvent>() {
-            @SuppressWarnings({ "hiding" }) @Override public void handle(ActionEvent __) {
+            @SuppressWarnings({ "hiding" }) @Override public void handle(final ActionEvent __) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_config.fxml"));
-                    Parent root1 = (Parent) fxmlLoader.load();
-                    Stage stage = new Stage();
+                    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_config.fxml"));
+                    final Parent root1 = (Parent) fxmlLoader.load();
+                    final Stage stage = new Stage();
                     stage.setScene(new Scene(root1));
                     stage.show();
-                    ConfigController configController = fxmlLoader.getController();
+                    final ConfigController configController = fxmlLoader.getController();
                     configController.subscribe(Controller.this);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (final Exception ¢) {
+                    ¢.printStackTrace();
                 }
             }
         });

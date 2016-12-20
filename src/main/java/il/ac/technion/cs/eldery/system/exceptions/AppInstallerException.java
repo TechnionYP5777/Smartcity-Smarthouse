@@ -14,24 +14,24 @@ public class AppInstallerException extends Exception {
         private final int id;
         private final String msg;
 
-        ErrorCode(int id, String msg) {
+        ErrorCode(final int id, final String msg) {
             this.id = id;
             this.msg = msg;
         }
 
         public int getId() {
-            return this.id;
+            return id;
         }
 
         public String getMsg() {
-            return this.msg;
+            return msg;
         }
     }
 
     private static final long serialVersionUID = 4633789134305606432L;
 
-    private ErrorCode errorCode;
-    private String moreInfo;
+    private final ErrorCode errorCode;
+    private final String moreInfo;
 
     public AppInstallerException(final ErrorCode errorCode) {
         this(errorCode, "");
