@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class StoveModuleGui extends Application{
+public class StoveModuleGui extends Application {
     public static void main(final String[] args) {
         launch(args);
     }

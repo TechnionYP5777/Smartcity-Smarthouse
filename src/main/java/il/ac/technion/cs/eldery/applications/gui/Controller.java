@@ -32,34 +32,32 @@ public class Controller implements Initializable {
     Timeline timeline;
     DoubleProperty timeSeconds = new SimpleDoubleProperty();
     Duration time = Duration.ZERO;
-    int degrees=150;
-    int seconds=30;
-    
-    public int get_temperture(){
+    int degrees = 150;
+    int seconds = 30;
+
+    public int get_temperture() {
         return degrees;
     }
-    
-    public int get_seconds(){
+
+    public int get_seconds() {
         return seconds;
     }
-    
-    public void set_temperture(int degrees){
-        this.degrees=degrees;
+
+    public void set_temperture(int degrees) {
+        this.degrees = degrees;
     }
-    
-    public void set_seconds(int seconds){
-        this.seconds=seconds;
+
+    public void set_seconds(int seconds) {
+        this.seconds = seconds;
     }
-    
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override public void initialize(final URL location, final ResourceBundle __) {
-        //label.setFont(new Font("Arial", 20));
-        //label.setFont(new Font("Arial", 20));
+
+    @SuppressWarnings({ "unchecked", "rawtypes" }) @Override public void initialize(final URL location, final ResourceBundle __) {
+        // label.setFont(new Font("Arial", 20));
+        // label.setFont(new Font("Arial", 20));
         onOffButton.setOnAction(new EventHandler() {
             boolean start = true;
-            @SuppressWarnings("hiding")
-            @Override
-            public void handle(Event __) {
+
+            @SuppressWarnings("hiding") @Override public void handle(Event __) {
                 if (!start) {
                     timeline.stop();
                     this.start = true;
@@ -70,41 +68,35 @@ public class Controller implements Initializable {
                     onOffButton.setText("Turn On");
                 } else {
                     onOffButton.setText("Turn Off");
-                    timeline = new Timeline(
-                        new KeyFrame(Duration.millis(100),
-                        new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent e) {
-                                Duration duration = ((KeyFrame)e.getSource()).getTime();
-                                time = time.add(duration);
-                                timeSeconds.set(time.toSeconds());
-                                timeLabel.setTextFill(timeSeconds.get() > Controller.this.get_seconds() ? Color.RED : Color.BLACK);
-                                timeLabel.setText("The Stove is Running for: "+ timeSeconds.get()+" (Secs)");
-                            }
-                        })
-                    );
+                    timeline = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+                        @Override public void handle(ActionEvent e) {
+                            Duration duration = ((KeyFrame) e.getSource()).getTime();
+                            time = time.add(duration);
+                            timeSeconds.set(time.toSeconds());
+                            timeLabel.setTextFill(timeSeconds.get() > Controller.this.get_seconds() ? Color.RED : Color.BLACK);
+                            timeLabel.setText("The Stove is Running for: " + timeSeconds.get() + " (Secs)");
+                        }
+                    }));
                     timeline.setCycleCount(Animation.INDEFINITE);
                     timeline.play();
-                    this.start=false;
+                    this.start = false;
                 }
             }
         });
-        
+
         stoveConfigButton.setOnAction(new EventHandler<ActionEvent>() {
-            @SuppressWarnings({ "hiding" })
-            @Override
-            public void handle(ActionEvent __) {
+            @SuppressWarnings({ "hiding" }) @Override public void handle(ActionEvent __) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_config.fxml"));
                     Parent root1 = (Parent) fxmlLoader.load();
                     Stage stage = new Stage();
-                    stage.setScene(new Scene(root1));  
+                    stage.setScene(new Scene(root1));
                     stage.show();
                     ConfigController configController = fxmlLoader.getController();
                     configController.subscribe(Controller.this);
-                    } catch(Exception e) {
-                       e.printStackTrace();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
