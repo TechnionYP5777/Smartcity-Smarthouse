@@ -52,8 +52,6 @@ public class Controller implements Initializable {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" }) @Override public void initialize(final URL location, final ResourceBundle __) {
-        // label.setFont(new Font("Arial", 20));
-        // label.setFont(new Font("Arial", 20));
         onOffButton.setOnAction(new EventHandler() {
             boolean start = true;
 
