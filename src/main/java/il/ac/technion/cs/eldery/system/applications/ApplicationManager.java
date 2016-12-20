@@ -38,7 +38,7 @@ public class ApplicationManager {
      * @return the ApplicationIdentifier for the application */
     public static ApplicationManager installApplication(final String jarFilePath) {
         // TODO: Ron and Roy - do we need to do more stuff here?
-        return new ApplicationManager(Generator.GenerateUniqueID() + "", jarFilePath);
+        return new ApplicationManager(Generator.generateUniqueID() + "", jarFilePath);
     }
 
     @SuppressWarnings("unused") private static SmartHouseApplication initiateApplication(SmartHouseApplication a, MainSystem s) {
