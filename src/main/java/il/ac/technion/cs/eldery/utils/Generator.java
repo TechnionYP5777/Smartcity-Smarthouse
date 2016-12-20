@@ -8,7 +8,11 @@ public enum Generator {
     ;
     /** Generates a Universally Unique IDentifier (UUID)
      * @return the new UUID */
-    public static UUID GenerateUniqueID() {
+    public static UUID generateUniqueID() {
         return UUID.randomUUID();
+    }
+    
+    public static String GenerateUniqueIDstring(){
+        return generateUniqueID() + "";
     }
 }

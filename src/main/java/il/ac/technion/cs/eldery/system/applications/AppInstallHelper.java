@@ -46,14 +46,17 @@ public class AppInstallHelper {
      * @throws AppInstallerException */
     private static SmartHouseApplication loadApplication_aux(List<String> classNames, ClassLoader l) throws AppInstallerException {
         final List<Class<?>> applicationClasses = getClassesBySuperclass(loadAllClasses(l, classNames), SmartHouseApplication.class);
-        if (applicationClasses.size() != 1)
-            throw new AppInstallerException(AppInstallerException.MORE_THAN_ONE_IMPL, applicationClasses.size());
-
+        if (applicationClasses.isEmpty())
+            throw new AppInstallerException(AppInstallerException.ErrorCode.NO_IMPL_ERROR);
+        if (applicationClasses.size() > 1)
+            throw new AppInstallerException(AppInstallerException.ErrorCode.MORE_THAN_ONE_IMPL_ERROR,
+                    "number of classes that extend is " + applicationClasses.size());
         try {
             return (SmartHouseApplication) applicationClasses.get(0).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            // TODO: @RonGatenio - handle exceptions in a better way
-            throw new AppInstallerException(e.getMessage(), 0);
+        } catch (InstantiationException e) {
+            throw new AppInstallerException(AppInstallerException.ErrorCode.INSTANTIATION_ERROR, e.getMessage());
+        } catch (IllegalAccessException e) {
+            throw new AppInstallerException(AppInstallerException.ErrorCode.ILLEGAL_ACCESS_ERROR, e.getMessage());
         }
     }
 

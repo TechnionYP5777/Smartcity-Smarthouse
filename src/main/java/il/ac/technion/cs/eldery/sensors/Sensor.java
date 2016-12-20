@@ -3,8 +3,9 @@ package il.ac.technion.cs.eldery.sensors;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.JsonParser;
-
+import il.ac.technion.cs.eldery.networking.messages.AnswerMessage;
+import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
+import il.ac.technion.cs.eldery.networking.messages.MessageFactory;
 import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
 import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 
@@ -34,19 +35,16 @@ public abstract class Sensor {
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise */
     public boolean register() {
-        String response = (new RegisterMessage(this)).send(systemIP, systemPort);
-        return response != null && "success".equals((new JsonParser()).parse(response).getAsJsonObject().get("response"));
+        String response = (new RegisterMessage(this)).send(systemIP, systemPort, true);
+        return response != null && ((AnswerMessage) MessageFactory.create(response)).getAnswer() == Answer.SUCCESS;
     }
 
     /** Sends an update message to the system with the given observations. The
      * observations are represented as a map from the names of the observations,
      * to their values.
-     * @param data observations to send to the system
-     * @return <code>true</code> if message was sent successfully,
-     *         <code>false</code> otherwise */
-    public boolean updateSystem(Map<Object, Object> data) {
-        String response = (new UpdateMessage(this, data)).send(systemIP, systemPort);
-        return response != null && "success".equals((new JsonParser()).parse(response).getAsJsonObject().get("response"));
+     * @param data observations to send to the system */
+    public void updateSystem(Map<String, String> data) {
+        (new UpdateMessage(this, data)).send(systemIP, systemPort, false);
     }
 
     /** Returns the names of the parameters that will be sent to the system.
