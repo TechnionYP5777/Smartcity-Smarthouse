@@ -27,7 +27,7 @@ import il.ac.technion.cs.eldery.utils.Tuple;
  * @author Elia Traore
  * @author Inbal Zukerman
  * @since Dec 13, 2016 */
-public class ApplicationHandler {
+public class ApplicationsHandler {
     private class QueryTimerTask extends TimerTask {
         Boolean repeat;
         String sensorCommercialName;
@@ -73,7 +73,7 @@ public class ApplicationHandler {
 
     /** Initialize the applicationHandler with the database responsible of
      * managing the data in the current session */
-    public ApplicationHandler(final DatabaseHandler databaseHandler) {
+    public ApplicationsHandler(final DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
     }
 
