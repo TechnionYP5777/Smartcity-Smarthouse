@@ -6,11 +6,11 @@ import org.junit.Test;
 @SuppressWarnings("static-method")
 public class MessageFactoryTest {
     @Test public void recognizeRegistrationMessages() {
-        Assert.assertTrue(MessageFactory.create("{\"type\": \"registration\"}") instanceof RegisterMessage);
+        assert MessageFactory.create("{\"type\": \"registration\"}") instanceof RegisterMessage;
     }
 
     @Test public void recognizeUpdateMessages() {
-        Assert.assertTrue(MessageFactory.create("{\"type\": \"update\"}") instanceof UpdateMessage);
+        assert MessageFactory.create("{\"type\": \"update\"}") instanceof UpdateMessage;
     }
 
     @Test public void recognizeUnknownMessages() {

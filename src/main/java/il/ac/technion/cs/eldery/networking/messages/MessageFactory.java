@@ -1,31 +1,26 @@
 package il.ac.technion.cs.eldery.networking.messages;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public enum MessageFactory {
     ;
 
-    public static Message create(String json) {
-        JsonParser parser = new JsonParser();
-        JsonObject element = parser.parse(json).getAsJsonObject();
+    public static Message create(final String json) {
+        final String type = new JsonParser().parse(json).getAsJsonObject().get("type").getAsString().toLowerCase();
 
-        String type = element.get("type").getAsString().toLowerCase();
-
-        Gson gson = new Gson();
+        final Gson $ = new Gson();
 
         switch (type) {
             case "registration":
-                return gson.fromJson(json, RegisterMessage.class);
+                return $.fromJson(json, RegisterMessage.class);
             case "update":
-                return gson.fromJson(json, UpdateMessage.class);
+                return $.fromJson(json, UpdateMessage.class);
             case "answer":
-                return gson.fromJson(json, AnswerMessage.class);
+                return $.fromJson(json, AnswerMessage.class);
             default:
-                break;
+                return null;
         }
 
-        return null;
     }
 }

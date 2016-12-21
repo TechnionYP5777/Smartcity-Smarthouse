@@ -16,12 +16,12 @@ import il.ac.technion.cs.eldery.sensors.stove.StoveSensor;
 @SuppressWarnings("static-method")
 public class UpdateMessageTest {
     @Test public void basicUpdateMessageTest() {
-        StoveSensor sensor = new StoveSensor("Stove Sensor", "00:11:22:33:44:55", "1:1:1:1", 80);
-        Map<String, String> data = new HashMap<>();
+        final StoveSensor sensor = new StoveSensor("Stove Sensor", "00:11:22:33:44:55", "1:1:1:1", 80);
+        final Map<String, String> data = new HashMap<>();
         data.put("on", Boolean.FALSE + "");
         data.put("temperature", "100");
-        UpdateMessage message = new UpdateMessage(sensor, data);
-        JsonParser parser = new JsonParser();
+        final UpdateMessage message = new UpdateMessage(sensor, data);
+        final JsonParser parser = new JsonParser();
         Assert.assertEquals(parser.parse(message.toJson()), parser.parse(new Gson().toJson(message)));
     }
 }

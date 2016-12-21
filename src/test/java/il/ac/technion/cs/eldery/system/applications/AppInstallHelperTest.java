@@ -3,7 +3,10 @@ package il.ac.technion.cs.eldery.system.applications;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import il.ac.technion.cs.eldery.system.applications.examples.MyTestClass1;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
@@ -11,16 +14,16 @@ import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 public class AppInstallHelperTest {
     private static String testClassesPathPrefix;
 
-    private List<String> classesNames_app1 = new ArrayList<>();
-    private List<String> classesNames_app2 = new ArrayList<>();
-    private List<String> classesNames_app3 = new ArrayList<>();
-    private List<String> classesNames_app4 = new ArrayList<>();
+    private final List<String> classesNames_app1 = new ArrayList<>();
+    private final List<String> classesNames_app2 = new ArrayList<>();
+    private final List<String> classesNames_app3 = new ArrayList<>();
+    private final List<String> classesNames_app4 = new ArrayList<>();
 
     @BeforeClass public static void setup_findPackageName() {
         testClassesPathPrefix = AppInstallHelperTest.class.getPackage().getName() + ".examples.MyTestClass";
     }
 
-    private static String getTestClassName(int index) {
+    private static String getTestClassName(final int index) {
         return testClassesPathPrefix + index;
     }
 
@@ -38,24 +41,24 @@ public class AppInstallHelperTest {
 
     @Test public void testLoadGoodApp() {
         try {
-            SmartHouseApplication a = AppInstallHelper.loadApplication(classesNames_app1);
-            Assert.assertTrue(a instanceof MyTestClass1);
+            final SmartHouseApplication a = AppInstallHelper.loadApplication(classesNames_app1);
+            assert a instanceof MyTestClass1;
 
-            MyTestClass1 t = (MyTestClass1) a;
-            Assert.assertFalse(t.isLoaded());
+            final MyTestClass1 t = (MyTestClass1) a;
+            assert !t.isLoaded();
             t.onLoad();
-            Assert.assertTrue(t.isLoaded());
+            assert t.isLoaded();
 
-        } catch (AppInstallerException e) {
-            Assert.fail(e.getMessage());
+        } catch (final AppInstallerException ¢) {
+            Assert.fail(¢.getMessage());
         }
     }
 
     @Test public void testLoadBadApp() {
         try {
             AppInstallHelper.loadApplication(classesNames_app2);
-        } catch (AppInstallerException e) {
-            Assert.assertEquals(e.getErrorCode(), AppInstallerException.ErrorCode.MORE_THAN_ONE_IMPL_ERROR);
+        } catch (final AppInstallerException ¢) {
+            Assert.assertEquals(¢.getErrorCode(), AppInstallerException.ErrorCode.MORE_THAN_ONE_IMPL_ERROR);
         }
     }
 }

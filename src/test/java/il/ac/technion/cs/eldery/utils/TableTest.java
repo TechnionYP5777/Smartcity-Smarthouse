@@ -5,11 +5,8 @@ import java.util.HashMap;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * @author Inbal Zukerman
- * @since 15.12.2016
- *
- */
+/** @author Inbal Zukerman
+ * @since 15.12.2016 */
 public class TableTest {
 
     private final HashMap<String, Integer> info1 = new HashMap<>();
@@ -20,7 +17,6 @@ public class TableTest {
 
     private final Table<String, Integer> limitedTable = new Table<>(5);
     private final Table<String, String> unlimitedTable = new Table<>();
-
 
     @Test public void initializationTest() {
         Assert.assertEquals(5, limitedTable.getMaxCapacity());
@@ -63,12 +59,12 @@ public class TableTest {
     }
 
     @Test public void getLastKEntriesTest() {
-        
+
         limitedTable.addEntry(info1);
         limitedTable.addEntry(moreInfo);
         limitedTable.addEntry(moreInfo2);
-        
-        Table<String, Integer> twoEntries = limitedTable.receiveKLastEntries(2);
+
+        final Table<String, Integer> twoEntries = limitedTable.receiveKLastEntries(2);
         Assert.assertEquals(2, twoEntries.getMaxCapacity());
         Assert.assertEquals(2, twoEntries.getCurrentCapacity());
         Assert.assertEquals(moreInfo2, twoEntries.getLastEntry());

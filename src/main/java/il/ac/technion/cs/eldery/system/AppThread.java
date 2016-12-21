@@ -10,7 +10,8 @@ import java.util.function.Consumer;
 
 import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
-import il.ac.technion.cs.eldery.utils.*;
+import il.ac.technion.cs.eldery.utils.Generator;
+import il.ac.technion.cs.eldery.utils.Table;
 
 /** This class will hold, run and manage the dynamic loaded code of the
  * application. Using this class will allow us to mimic the context switch of an
@@ -22,7 +23,7 @@ public class AppThread {
         final Consumer<Table<String, String>> consumer;
         Table<String, String> data;
 
-        public EventInfo(Consumer<Table<String, String>> $) {
+        public EventInfo(final Consumer<Table<String, String>> $) {
             consumer = $;
         }
 
@@ -36,8 +37,7 @@ public class AppThread {
     String interuptingSensor;
     SmartHouseApplication app;
     Thread thread = new Thread() {
-        @SuppressWarnings("boxing")
-        @Override public void run() {
+        @Override @SuppressWarnings("boxing") public void run() {
             while (dontTerminate) {
                 while (!interrupted()) {
                     // very dynamic much loading TODO: normal run of app. RON?
@@ -51,11 +51,14 @@ public class AppThread {
                     synchronized (timeout) {
                         try {
                             timeout.wait();
-                        } catch (final InterruptedException e) {
-                            // yo Dawg, I herd you like interrupts, so I put an interrupt in your interrupt-case so you can
-                            // take care of interrupts while you take care of interrupts 
-                            // seriously tho TODO: ELIA, what is the desired behavior?
-                            e.printStackTrace();
+                        } catch (final InterruptedException ¢) {
+                            // yo Dawg, I herd you like interrupts, so I put an
+                            // interrupt in your interrupt-case so you can
+                            // take care of interrupts while you take care of
+                            // interrupts
+                            // seriously tho TODO: ELIA, what is the desired
+                            // behavior?
+                            ¢.printStackTrace();
                         }
                     }
             }
@@ -102,7 +105,7 @@ public class AppThread {
      * @return The id of the consumer in the system, needed for any activation
      *         action of the consumer. */
     public String registerEventConsumer(final Consumer<Table<String, String>> $) {
-        String id = Generator.GenerateUniqueIDstring();
+        final String id = Generator.GenerateUniqueIDstring();
         callOnEvent.put(id, new EventInfo($));
         return id;
     }
@@ -112,9 +115,7 @@ public class AppThread {
      *        can process the data
      * @param data: The new information from the sensor */
     public void notifyOnEvent(final String eventId, final Table<String, String> data) throws ApplicationNotRegisteredToEvent {
-        final EventInfo $ = Optional.ofNullable(callOnEvent.get(eventId))
-                .orElseThrow(ApplicationNotRegisteredToEvent::new);
-        $.setData(data);
+        Optional.ofNullable(callOnEvent.get(eventId)).orElseThrow(ApplicationNotRegisteredToEvent::new).setData(data);
         interuptingSensor = eventId;
         thread.interrupt();
     }

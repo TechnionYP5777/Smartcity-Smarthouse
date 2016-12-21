@@ -1,8 +1,9 @@
 package il.ac.technion.cs.eldery.system.applications;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import il.ac.technion.cs.eldery.system.*;
+import il.ac.technion.cs.eldery.system.MainSystem;
 
 /** @author Roy
  * @author RON

@@ -1,12 +1,15 @@
 package il.ac.technion.cs.eldery.system.applications;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.jar.*;
-import java.util.stream.*;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
-import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 
 /** This class contains static functions that handle loading
@@ -24,8 +27,8 @@ public class AppInstallHelper {
      * @throws IOException */
     public static SmartHouseApplication loadApplication(final String jarFilePath) throws AppInstallerException, IOException {
         final URL[] urls = { new URL("jar:file:" + jarFilePath + "!/") };
-        try (URLClassLoader cl = URLClassLoader.newInstance(urls)) {
-            return loadApplication_aux(getClassNamesFromJar(jarFilePath), cl);
+        try (URLClassLoader $ = URLClassLoader.newInstance(urls)) {
+            return loadApplication_aux(getClassNamesFromJar(jarFilePath), $);
         }
     }
 
@@ -34,7 +37,7 @@ public class AppInstallHelper {
      * @param classesNames
      * @return an instance of SmartHouseApplication
      * @throws AppInstallerException */
-    public static SmartHouseApplication loadApplication(List<String> classesNames) throws AppInstallerException {
+    public static SmartHouseApplication loadApplication(final List<String> classesNames) throws AppInstallerException {
         return loadApplication_aux(classesNames, ClassLoader.getSystemClassLoader());
     }
 
@@ -44,19 +47,18 @@ public class AppInstallHelper {
      * @param l - the ClassLoader
      * @return an instance of SmartHouseApplication
      * @throws AppInstallerException */
-    private static SmartHouseApplication loadApplication_aux(List<String> classNames, ClassLoader l) throws AppInstallerException {
-        final List<Class<?>> applicationClasses = getClassesBySuperclass(loadAllClasses(l, classNames), SmartHouseApplication.class);
-        if (applicationClasses.isEmpty())
+    private static SmartHouseApplication loadApplication_aux(final List<String> classNames, final ClassLoader l) throws AppInstallerException {
+        final List<Class<?>> $ = getClassesBySuperclass(loadAllClasses(l, classNames), SmartHouseApplication.class);
+        if ($.isEmpty())
             throw new AppInstallerException(AppInstallerException.ErrorCode.NO_IMPL_ERROR);
-        if (applicationClasses.size() > 1)
-            throw new AppInstallerException(AppInstallerException.ErrorCode.MORE_THAN_ONE_IMPL_ERROR,
-                    "number of classes that extend is " + applicationClasses.size());
+        if ($.size() > 1)
+            throw new AppInstallerException(AppInstallerException.ErrorCode.MORE_THAN_ONE_IMPL_ERROR, "number of classes that extend is " + $.size());
         try {
-            return (SmartHouseApplication) applicationClasses.get(0).newInstance();
-        } catch (InstantiationException e) {
-            throw new AppInstallerException(AppInstallerException.ErrorCode.INSTANTIATION_ERROR, e.getMessage());
-        } catch (IllegalAccessException e) {
-            throw new AppInstallerException(AppInstallerException.ErrorCode.ILLEGAL_ACCESS_ERROR, e.getMessage());
+            return (SmartHouseApplication) $.get(0).newInstance();
+        } catch (final InstantiationException ¢) {
+            throw new AppInstallerException(AppInstallerException.ErrorCode.INSTANTIATION_ERROR, ¢.getMessage());
+        } catch (final IllegalAccessException ¢) {
+            throw new AppInstallerException(AppInstallerException.ErrorCode.ILLEGAL_ACCESS_ERROR, ¢.getMessage());
         }
     }
 
@@ -76,10 +78,10 @@ public class AppInstallHelper {
      * @return a list of the loaded classes */
     private static List<Class<?>> loadAllClasses(final ClassLoader l, final List<String> classNames) {
         final List<Class<?>> $ = new ArrayList<>();
-        for (String className : classNames)
+        for (final String className : classNames)
             try {
                 $.add(l.loadClass(className));
-            } catch (ClassNotFoundException e1) {
+            } catch (final ClassNotFoundException e1) {
                 e1.printStackTrace();
             }
         return $;

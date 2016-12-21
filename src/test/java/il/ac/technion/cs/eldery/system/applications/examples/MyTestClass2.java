@@ -14,7 +14,7 @@ public class MyTestClass2 extends SmartHouseApplication {
 
     }
 
-    @Override public void start(Stage primaryStage) throws Exception {
+    @Override public void start(final Stage primaryStage) throws Exception {
         // TODO Auto-generated method stub
 
     }

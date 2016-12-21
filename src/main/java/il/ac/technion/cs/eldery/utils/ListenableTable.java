@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * @author Sharon
  * @since 17.12.16 */
 public class ListenableTable<T, S> extends Table<T, S> {
-    private Map<String, Consumer<Table<T, S>>> listeners = new HashMap<>();
+    private final Map<String, Consumer<Table<T, S>>> listeners = new HashMap<>();
 
     public ListenableTable(final int maxCapacity) {
         super(maxCapacity);
@@ -18,8 +18,8 @@ public class ListenableTable<T, S> extends Table<T, S> {
     /** Adds a new listener to the table
      * @param listener listener to be added
      * @return id of the new listener */
-    public String addListener(Consumer<Table<T, S>> listener) {
-        String $ = Generator.GenerateUniqueIDstring();
+    public String addListener(final Consumer<Table<T, S>> listener) {
+        final String $ = Generator.GenerateUniqueIDstring();
         listeners.put($, listener);
 
         return $;
@@ -27,11 +27,11 @@ public class ListenableTable<T, S> extends Table<T, S> {
 
     /** Removes a listener from the table
      * @param id id of the listener to be removed */
-    public void removeListener(String id) {
+    public void removeListener(final String id) {
         listeners.remove(id);
     }
 
-    @Override public void addEntry(Map<T, S> info) {
+    @Override public void addEntry(final Map<T, S> info) {
         super.addEntry(info);
 
         listeners.values().forEach(listener -> listener.accept(receiveKLastEntries(1)));

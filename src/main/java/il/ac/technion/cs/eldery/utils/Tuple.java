@@ -10,7 +10,7 @@ public class Tuple<L, R> {
         this.left = left;
         this.right = right;
     }
-    
+
     @Override public int hashCode() {
         return 31 * ((left == null ? 0 : left.hashCode()) + 31) + (right == null ? 0 : right.hashCode());
     }

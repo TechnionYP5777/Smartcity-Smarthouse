@@ -13,7 +13,7 @@ public class MyTestClass1 extends SmartHouseApplication {
         isLoaded = true;
     }
 
-    @Override public void start(Stage primaryStage) throws Exception {
+    @Override public void start(final Stage primaryStage) throws Exception {
         isStarted = true;
     }
 

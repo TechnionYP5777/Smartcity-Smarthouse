@@ -8,7 +8,7 @@ import il.ac.technion.cs.eldery.sensors.Sensor;
 public class RegisterMessage extends Message {
     private Sensor sensor;
 
-    public RegisterMessage(Sensor sensor) {
+    public RegisterMessage(final Sensor sensor) {
         super(MessageType.REGISTRATION);
 
         this.sensor = sensor;
@@ -21,7 +21,7 @@ public class RegisterMessage extends Message {
 
     /** Sets a new sensor for this registration message
      * @param ¢ new sensor */
-    public void setSensor(Sensor ¢) {
-        this.sensor = ¢;
+    public void setSensor(final Sensor ¢) {
+        sensor = ¢;
     }
 }
