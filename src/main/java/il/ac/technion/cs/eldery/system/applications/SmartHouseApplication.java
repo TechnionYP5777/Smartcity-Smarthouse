@@ -2,7 +2,7 @@ package il.ac.technion.cs.eldery.system.applications;
 
 import com.google.gson.JsonObject;
 
-import il.ac.technion.cs.eldery.system.MainSystem;
+import il.ac.technion.cs.eldery.system.SystemCore;
 import javafx.application.Application;
 
 /** The API for the apps/modules developers Every app that wants to be installed
@@ -11,14 +11,14 @@ import javafx.application.Application;
  * @author roysh
  * @since 8.12.2016 */
 public abstract class SmartHouseApplication extends Application {
-    MainSystem mainSystem;
+    SystemCore mainSystem;
 
     public SmartHouseApplication() {}
 
     /** Adds the mainSystem Object to the app
      * @param mainSystem
      * @return true if successful or false if failed */
-    public boolean setMainSystemInstance(final MainSystem ¢) {
+    public boolean setMainSystemInstance(final SystemCore ¢) {
         mainSystem = ¢;
         return true;
     }

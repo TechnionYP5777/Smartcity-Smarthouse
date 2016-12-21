@@ -18,13 +18,13 @@ public class SosController implements Initializable {
     @FXML public Button killerButton;
     @FXML public AnchorPane mainPane;
 
-    @Override public void initialize(URL arg0, ResourceBundle arg1) {
+    @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
         stateLabel.setFont(new Font("Arial", 20));
         mainPane.setStyle("-fx-background-color: green");
         killerButton.setOnAction(new EventHandler<ActionEvent>() {
             boolean isDead;
 
-            @Override public void handle(ActionEvent __) {
+            @Override public void handle(final ActionEvent __) {
                 if (!isDead) {
                     stateLabel.setText("Elderly is DEAD!!!");
                     killerButton.setText("Respawn");

@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class SosAppGui extends Application{
+public class SosAppGui extends Application {
     public static void main(final String[] args) {
         launch(args);
     }
