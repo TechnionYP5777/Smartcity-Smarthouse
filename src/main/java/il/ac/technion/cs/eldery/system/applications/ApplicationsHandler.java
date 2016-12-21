@@ -86,10 +86,10 @@ public class ApplicationsHandler {
         return appid.getId();
     }
 
-    /** Ask for the list of sensorIDs registered by a specific commercial name
+    /** Ask for the list of sensorIds registered by a specific commercial name
      * @param sensorCommercialName the sensor in question
      * @return a list of IDs of those sensors in the system. They can be used in
-     *         any "sensorID" field in any method */
+     *         any "sensorId" field in any method */
     @SuppressWarnings({ "static-method" }) public List<String> InqireAbout(final String sensorCommercialName) {
         return Collections.emptyList(); // TODO: implement in bunny
     }
@@ -97,7 +97,7 @@ public class ApplicationsHandler {
     /** Allows registration to a sensor. on update, the data will be given to
      * the consumer for farther processing
      * @param id The id given to the application when added to the system
-     * @param sensorID The ID of the sensor, returned from
+     * @param sensorId The ID of the sensor, returned from
      *        inquireAbout(sensorCommercialName)
      * @param notifyWhen A predicate that will be called every time the sensor
      *        updates the date. If it returns true the consumer will be called
@@ -106,12 +106,12 @@ public class ApplicationsHandler {
      *        from the sensor upon update
      * @return The registration id if the action was successful, otherwise
      *         <code>null</code> */
-    public String registerToSensor(final String id, final String sensorID, final Predicate<Table<String, String>> notifyWhen,
+    public String registerToSensor(final String id, final String sensorId, final Predicate<Table<String, String>> notifyWhen,
             final Consumer<Table<String, String>> notifee, final int numOfEntries) {
         try {
             final AppThread $ = apps.get(id).right;
             final String eventId = $.registerEventConsumer(notifee);
-            return databaseHandler.addListener(sensorID, t -> {
+            return databaseHandler.addListener(sensorId, t -> {
                 if (notifyWhen.test(t))
                     try {
                         $.notifyOnEvent(eventId, t.receiveKLastEntries(numOfEntries));
@@ -130,7 +130,7 @@ public class ApplicationsHandler {
 
     /** Allows registration to a sensor. on time, the sensor will be polled and
      * the data will be given to the consumer for farther processing
-     * @param sensorID The ID of the sensor, returned from
+     * @param sensorId The ID of the sensor, returned from
      *        inquireAbout(sensorCommercialName)
      * @param t the time when a polling is requested
      * @param notifee A consumer that will receive the new data from the sensor,
@@ -139,8 +139,8 @@ public class ApplicationsHandler {
      *        once, <code>true</code> otherwise (query at this time FOREVER)
      * @return The registration id if the action was successful, otherwise
      *         <code>null</code> */
-    public String registerToSensor(final String sensorID, final LocalTime t, final Consumer<Table<String, String>> notifee, final Boolean repeat) {
-        final QueryTimerTask task = new QueryTimerTask(sensorID, t, notifee, repeat);
+    public String registerToSensor(final String sensorId, final LocalTime t, final Consumer<Table<String, String>> notifee, final Boolean repeat) {
+        final QueryTimerTask task = new QueryTimerTask(sensorId, t, notifee, repeat);
         final String $ = Generator.GenerateUniqueIDstring();
         timedQuerires.put($, task);
         new Timer().schedule(task, localTimeToDate(t));
@@ -149,27 +149,27 @@ public class ApplicationsHandler {
 
     /** Removes an existing registration. The consumer given at registration
      * will not be called again.
-     * @param sensorID The ID of the sensor that is being listened to, returned
+     * @param sensorId The ID of the sensor that is being listened to, returned
      *        from inquireAbout(sensorCommercialName)
      * @param id The id given at registration */
-    public void cancelRegistration(final String sensorID, final String id) {
+    public void cancelRegistration(final String sensorId, final String id) {
         if (timedQuerires.get(id) != null)
             timedQuerires.get(id).setRepeat(Boolean.FALSE);
         else
             try {
-                databaseHandler.removeListener(sensorID, id);
+                databaseHandler.removeListener(sensorId, id);
             } catch (final Exception __) {
                 __.printStackTrace();
             }
     }
 
     /** Request for the latest data received by a sensor
-     * @param sensorID The ID of the sensor, returned from
+     * @param sensorId The ID of the sensor, returned from
      *        inquireAbout(sensorCommercialName)
      * @return the latest data (or Optional.empty() if the query failed in any
      *         point) */
-    public Optional<Table<String, String>> querySensor(final String sensorID) {
-        return databaseHandler.getLastEntryOf(sensorID);
+    public Optional<Table<String, String>> querySensor(final String sensorId) {
+        return databaseHandler.getLastEntryOf(sensorId);
     }
 
     /** Report an abnormality in the expected schedule. The system will contact

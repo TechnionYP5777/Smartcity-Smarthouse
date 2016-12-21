@@ -11,15 +11,15 @@ import javafx.application.Application;
  * @author roysh
  * @since 8.12.2016 */
 public abstract class SmartHouseApplication extends Application {
-    SystemCore mainSystem;
+    SystemCore systemCore;
 
     public SmartHouseApplication() {}
 
     /** Adds the mainSystem Object to the app
-     * @param mainSystem
+     * @param systemCore
      * @return true if successful or false if failed */
     public boolean setMainSystemInstance(final SystemCore ¢) {
-        mainSystem = ¢;
+        systemCore = ¢;
         return true;
     }
 

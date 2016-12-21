@@ -18,8 +18,8 @@ public class DatabaseHandler {
 
     private final Map<String, ListenableTable<String, String>> sensors = new HashMap<>();
 
-    public void addSensor(final String sensorID, final int sizeLimit) {
-        sensors.put(sensorID, new ListenableTable<String, String>(sizeLimit));
+    public void addSensor(final String sensorId, final int sizeLimit) {
+        sensors.put(sensorId, new ListenableTable<String, String>(sizeLimit));
     }
 
     /** Adds a listener to a certain sensor, to be called on
