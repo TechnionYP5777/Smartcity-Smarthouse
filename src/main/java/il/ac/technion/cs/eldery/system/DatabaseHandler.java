@@ -30,7 +30,7 @@ public class DatabaseHandler {
         if (commNames.containsKey(commName))
             commNames.get(commName).add(sensorId);
         else
-            commNames.put(commName, Arrays.asList(sensorId));
+            commNames.put(commName, new ArrayList<>(Arrays.asList(sensorId)));
 
         sensors.put(sensorId, new ListenableTable<String, String>(sizeLimit));
     }
