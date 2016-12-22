@@ -7,11 +7,10 @@ import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
  * store and read information about the changes in the environment */
 public class SystemCore {
     private final DatabaseHandler databaseHandler = new DatabaseHandler();
-    private final SensorsHandler sensorsHandler;
-    private final ApplicationsHandler applicationsHandler;
+    private final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
+    private final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler);
 
     public SystemCore() {
-        sensorsHandler = new SensorsHandler(databaseHandler);
-        applicationsHandler = new ApplicationsHandler(databaseHandler);
+
     }
 }

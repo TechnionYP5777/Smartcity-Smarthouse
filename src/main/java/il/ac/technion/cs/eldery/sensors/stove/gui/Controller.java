@@ -11,9 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBuilder;
 import javafx.scene.text.TextFlow;
 
 /** @author Sharon
@@ -55,7 +53,7 @@ public class Controller implements Initializable {
     }
 
     private void printUpdateMessage() {
-        ObservableList<Node> children = console.getChildren();
+        final ObservableList<Node> children = console.getChildren();
 
         Text text = new Text("Sending update message: {on: ");
         text.setStyle(STYLE_REG);
