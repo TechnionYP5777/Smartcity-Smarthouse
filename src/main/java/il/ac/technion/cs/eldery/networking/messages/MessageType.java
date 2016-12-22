@@ -6,6 +6,7 @@ public enum MessageType {
     REGISTRATION,
     UPDATE,
     ANSWER;
+
     public static MessageType fromString(final String ¢) {
         return "registration".equals(¢) ? REGISTRATION : "update".equals(¢) ? UPDATE : "answer".equals(¢) ? MessageType.ANSWER : null;
     }

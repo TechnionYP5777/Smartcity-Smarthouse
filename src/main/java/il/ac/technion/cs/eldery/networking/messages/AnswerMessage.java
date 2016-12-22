@@ -3,6 +3,8 @@ package il.ac.technion.cs.eldery.networking.messages;
 public class AnswerMessage extends Message {
     private Answer answer;
 
+    /** Creates a new answer message.
+     * @param answer the answer of this message, look at {@link Answer} */
     public AnswerMessage(final Answer answer) {
         super(MessageType.ANSWER);
 

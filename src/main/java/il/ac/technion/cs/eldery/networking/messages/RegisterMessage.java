@@ -8,6 +8,8 @@ import il.ac.technion.cs.eldery.sensors.Sensor;
 public class RegisterMessage extends Message {
     private Sensor sensor;
 
+    /** Creates a new register message.
+     * @param sensor sensor to register */
     public RegisterMessage(final Sensor sensor) {
         super(MessageType.REGISTRATION);
 

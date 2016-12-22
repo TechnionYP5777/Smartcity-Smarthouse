@@ -11,10 +11,15 @@ public class UpdateMessage extends Message {
     private Sensor sensor;
     private final Map<String, String> data;
 
+    /** Creates a new update message without any data.
+     * @param sensor sensor represented by this update message */
     public UpdateMessage(final Sensor sensor) {
         this(sensor, new HashMap<>());
     }
 
+    /** Creates a new update message with initial data.
+     * @param sensor sensor represented by this update message
+     * @param data data to be sent in this update message */
     public UpdateMessage(final Sensor sensor, final Map<String, String> data) {
         super(MessageType.UPDATE);
 

@@ -14,6 +14,8 @@ import com.google.gson.Gson;
 public abstract class Message {
     private final MessageType type;
 
+    /** Creates a new message object.
+     * @param type type of this message */
     public Message(final MessageType type) {
         this.type = type;
     }

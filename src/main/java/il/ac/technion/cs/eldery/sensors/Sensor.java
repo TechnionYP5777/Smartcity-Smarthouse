@@ -23,7 +23,11 @@ public abstract class Sensor {
     /** Initializes a new sensor given its name and id.
      * @param name name of the sensor
      * @param id id of the sensor
-     * @param types types this sensor qualifies for */
+     * @param commName sensor's commercial name
+     * @param types types this sensor qualifies for
+     * @param systemIP IP address of the system
+     * @param systemPort port on which the system listens to incoming
+     *        messages */
     public Sensor(final String name, final String id, final String commName, final List<String> types, final String systemIP, final int systemPort) {
         this.name = name;
         this.id = id;
