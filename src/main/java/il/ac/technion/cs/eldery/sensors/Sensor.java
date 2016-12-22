@@ -74,6 +74,11 @@ public abstract class Sensor {
         return id;
     }
 
+    /** @return sensor's commercial name */
+    public String getCommName() {
+        return commName;
+    }
+
     /** Sets a new name for the sensor.
      * @param name new name of the sensor */
     public void setName(final String name) {

@@ -1,6 +1,9 @@
 package il.ac.technion.cs.eldery.system;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -11,15 +14,33 @@ import il.ac.technion.cs.eldery.utils.Table;
 
 /** The API required by ApplicationHandler in order to allow it desired
  * functionalities.
+ * @author Sharon
  * @author Elia
  * @author Inbal Zukerman
  * @since Dec 13, 2016 */
 public class DatabaseHandler {
-
+    private final Map<String, List<String>> commNames = new HashMap<>();
     private final Map<String, ListenableTable<String, String>> sensors = new HashMap<>();
 
-    public void addSensor(final String sensorId, final int sizeLimit) {
+    /** Adds a new sensor to the system, initializing its information table.
+     * @param sensorId sensor'd id
+     * @param commName sensor's commercial name
+     * @param sizeLimit limit of the information table for this sensor */
+    public void addSensor(final String sensorId, final String commName, final int sizeLimit) {
+        if (commNames.containsKey(commName))
+            commNames.get(commName).add(sensorId);
+        else
+            commNames.put(commName, Arrays.asList(sensorId));
+
         sensors.put(sensorId, new ListenableTable<String, String>(sizeLimit));
+    }
+
+    /** Fetches a list of all the sensor IDs registered to the system with the
+     * given commercial name.
+     * @param commName commercial name
+     * @return list of sensor IDs with the given commercial name */
+    public List<String> getSensors(String commName) {
+        return !commNames.containsKey(commName) ? new ArrayList<>() : commNames.get(commName);
     }
 
     /** Adds a listener to a certain sensor, to be called on

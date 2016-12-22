@@ -52,7 +52,7 @@ public class SensorsHandler implements Runnable {
     }
 
     private void handleRegisterMessage(final DatagramPacket p, final RegisterMessage ¢) {
-        databaseHandler.addSensor(¢.getSensor().getId(), 100);
+        databaseHandler.addSensor(¢.getSensor().getId(), ¢.getSensor().getCommName(), 100);
 
         new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort(), false);
     }
