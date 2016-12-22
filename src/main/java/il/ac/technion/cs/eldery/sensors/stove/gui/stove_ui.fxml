@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -14,23 +15,27 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox prefHeight="400.0" prefWidth="400.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.sensors.stove.gui.Controller">
+<VBox prefHeight="400.0" prefWidth="550.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.sensors.stove.gui.Controller">
    <children>
       <Label fx:id="tempLabel" disable="true" text="Temperature: 100" />
       <Slider fx:id="tempSlider" disable="true" max="150.0" value="100.0" />
       <Button fx:id="onOffButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Turn on" />
-      <Separator prefWidth="200.0">
+      <Separator>
          <VBox.margin>
             <Insets />
          </VBox.margin>
       </Separator>
       <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Console">
          <content>
-            <TextArea fx:id="console" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="4096.0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </TextArea>
+            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="4000.0" prefViewportHeight="139.0" prefViewportWidth="501.0">
+               <content>
+                  <TextFlow fx:id="console" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="4000.0" prefWidth="4000.0" style="-fx-background-color: #efefef;">
+                     <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </padding>
+                  </TextFlow>
+               </content>
+            </ScrollPane>
          </content>
       </TitledPane>
    </children>
