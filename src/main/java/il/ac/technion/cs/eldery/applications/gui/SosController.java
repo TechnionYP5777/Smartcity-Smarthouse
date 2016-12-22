@@ -29,13 +29,13 @@ public class SosController implements Initializable {
                     stateLabel.setText("Elderly is DEAD!!!");
                     killerButton.setText("Respawn");
                     mainPane.setStyle("-fx-background-color: red");
-                    isDead = true;
+                    
                 } else {
                     stateLabel.setText("Elderly is OK");
                     killerButton.setText("Kill Elderly");
                     mainPane.setStyle("-fx-background-color: green");
-                    isDead = false;
                 }
+                isDead = !isDead;
 
             }
 
