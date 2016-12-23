@@ -1,12 +1,11 @@
 package il.ac.technion.cs.eldery.networking.messages;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-
+import java.net.Socket;
 import com.google.gson.Gson;
 
 /** @author Sharon
@@ -35,28 +34,14 @@ public abstract class Message {
     /** Sends the message to the specified destination.
      * @param ip the IP address of the destination
      * @param port the port of the destination
-     * @param waitForResponse <code> true </code> if the sender expects a
-     *        response, <code> false </code> otherwise
-     * @return the response from the destination, if requested. If an error
-     *         occurred or if a response was not requested, null will be
-     *         returned. */
-    public String send(final String ip, final int port, final boolean waitForResponse) {
-        InetSocketAddress serverAddr;
-        try {
-            serverAddr = new InetSocketAddress(InetAddress.getByName(ip), port);
-        } catch (@SuppressWarnings("unused") final UnknownHostException e1) {
-            return null;
-        }
-        try (SocketChannel client = SocketChannel.open(serverAddr)) {
-            final byte[] data = toJson().getBytes();
-            final ByteBuffer buffer = ByteBuffer.wrap(data);
-            client.write(buffer);
-            if (!waitForResponse)
-                return null;
-            final byte[] responseBuffer = new byte[2048];
-            final ByteBuffer dst = ByteBuffer.wrap(responseBuffer);
-            client.read(dst);
-            return new String(dst.array(), 0, dst.array().length);
+     * @return the response from the destination, if exists. If an error
+     *         occurred or if there was no response, null will be returned. */
+    public String send(final String ip, final int port) {
+        try (Socket socket = new Socket(InetAddress.getByName(ip), port);
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
+            out.println(this.toJson());
+            return in.readLine();
         } catch (@SuppressWarnings("unused") final IOException e) {
             return null;
         }

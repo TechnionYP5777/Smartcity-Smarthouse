@@ -33,7 +33,7 @@ public class SensorsHandler implements Runnable {
                 socket.receive(packet);
                 final Message message = MessageFactory.create(new String(packet.getData(), 0, packet.getLength()));
                 if (message == null) {
-                    new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort(), false);
+                    new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort());
                     continue;
                 }
                 System.out.println("Received message: " + message + "\n");
@@ -55,7 +55,7 @@ public class SensorsHandler implements Runnable {
     private void handleRegisterMessage(final DatagramPacket p, final RegisterMessage ¢) {
         databaseHandler.addSensor(¢.getSensor().getId(), ¢.getSensor().getCommName(), 100);
 
-        new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort(), false);
+        new AnswerMessage(Answer.SUCCESS).send(p.getAddress().getHostAddress(), p.getPort());
     }
 
     private void handleUpdateMessage(final UpdateMessage m) {

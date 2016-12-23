@@ -41,7 +41,7 @@ public abstract class Sensor {
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise */
     public boolean register() {
-        final String $ = new RegisterMessage(this).send(systemIP, systemPort, true);
+        final String $ = new RegisterMessage(this).send(systemIP, systemPort);
         return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
     }
 
@@ -50,7 +50,7 @@ public abstract class Sensor {
      * to their values.
      * @param data observations to send to the system */
     public void updateSystem(final Map<String, String> data) {
-        new UpdateMessage(id, data).send(systemIP, systemPort, false);
+        new UpdateMessage(id, data).send(systemIP, systemPort);
     }
 
     /** Returns the names of the parameters that will be sent to the system.
