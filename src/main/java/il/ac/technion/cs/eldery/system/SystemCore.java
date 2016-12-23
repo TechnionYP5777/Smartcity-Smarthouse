@@ -15,8 +15,8 @@ public class SystemCore {
         System.out.println("Initializing system...");
         new Thread(sensorsHandler).start();
     }
-    
-    public static void main(String[] args) {
+
+    public static void main(final String[] args) {
         new SystemCore();
     }
 }

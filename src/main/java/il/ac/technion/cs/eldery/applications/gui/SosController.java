@@ -29,7 +29,7 @@ public class SosController implements Initializable {
                     stateLabel.setText("Elderly is DEAD!!!");
                     killerButton.setText("Respawn");
                     mainPane.setStyle("-fx-background-color: red");
-                    
+
                 } else {
                     stateLabel.setText("Elderly is OK");
                     killerButton.setText("Kill Elderly");
