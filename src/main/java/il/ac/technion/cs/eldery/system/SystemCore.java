@@ -12,12 +12,11 @@ public class SystemCore {
     private final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler);
 
     public SystemCore() {
+        System.out.println("Initializing system...");
         new Thread(sensorsHandler).start();
     }
     
     public static void main(String[] args) {
-        System.out.println("FSAFSA");
         new SystemCore();
-        System.out.println("AAAAA");
     }
 }

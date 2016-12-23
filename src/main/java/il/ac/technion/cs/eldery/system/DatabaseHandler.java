@@ -85,10 +85,8 @@ public class DatabaseHandler {
      * @return the Table with the information of the wanted sensor
      * @throws SensorNotFoundException */
     public Table<String, String> getTable(final String $) throws SensorNotFoundException {
-        try {
-            return sensors.get($);
-        } catch (@SuppressWarnings("unused") final Exception e) {
+        if (!sensors.containsKey($))
             throw new SensorNotFoundException();
-        }
+        return sensors.get($);
     }
 }

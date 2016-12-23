@@ -62,7 +62,7 @@ public class SensorsHandler implements Runnable {
         try {
             databaseHandler.getTable(m.sensorId).addEntry(m.getData());
         } catch (final SensorNotFoundException ¢) {
-            ¢.printStackTrace();
+            // ¢.printStackTrace();
         }
     }
 }
