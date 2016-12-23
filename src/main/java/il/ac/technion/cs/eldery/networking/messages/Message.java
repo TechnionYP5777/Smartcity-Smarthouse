@@ -1,10 +1,11 @@
 package il.ac.technion.cs.eldery.networking.messages;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketTimeoutException;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 
 import com.google.gson.Gson;
 
@@ -40,21 +41,22 @@ public abstract class Message {
      *         occurred or if a response was not requested, null will be
      *         returned. */
     public String send(final String ip, final int port, final boolean waitForResponse) {
-        try (DatagramSocket socket = new DatagramSocket()) {
-            final byte[] buffer = toJson().getBytes();
-            socket.send(new DatagramPacket(buffer, buffer.length, InetAddress.getByName(ip), port));
+        InetSocketAddress serverAddr;
+        try {
+            serverAddr = new InetSocketAddress(InetAddress.getByName(ip), port);
+        } catch (@SuppressWarnings("unused") UnknownHostException e1) {
+            return null;
+        }
+        try (SocketChannel client = SocketChannel.open(serverAddr)) {
+            final byte[] data = toJson().getBytes();
+            ByteBuffer buffer = ByteBuffer.wrap(data);
+            client.write(buffer);
             if (!waitForResponse)
                 return null;
-            // TODO: Yarden, add timeout
             final byte[] responseBuffer = new byte[2048];
-            final DatagramPacket $ = new DatagramPacket(responseBuffer, responseBuffer.length);
-            socket.setSoTimeout(10000);
-            try {
-                socket.receive($);
-            } catch (@SuppressWarnings("unused") final SocketTimeoutException e) {
-                return null;
-            }
-            return new String($.getData(), 0, $.getLength());
+            ByteBuffer dst = ByteBuffer.wrap(responseBuffer);
+            client.read(dst);
+            return new String(dst.array(), 0, dst.array().length);
         } catch (@SuppressWarnings("unused") final IOException e) {
             return null;
         }
