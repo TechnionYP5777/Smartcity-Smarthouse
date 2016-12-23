@@ -36,6 +36,7 @@ public class SensorsHandler implements Runnable {
                     new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort(), false);
                     continue;
                 }
+                System.out.println("Received message: " + message + "\n");
                 switch (message.getType()) {
                     case REGISTRATION:
                         handleRegisterMessage(packet, (RegisterMessage) message);

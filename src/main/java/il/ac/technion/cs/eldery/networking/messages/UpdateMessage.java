@@ -50,4 +50,8 @@ public class UpdateMessage extends Message {
     public void addObservation(final String key, final String value) {
         data.put(key, value);
     }
+
+    @Override public String toString() {
+        return "UpdateMessage [sensorId=" + sensorId + ", data=" + data + "]";
+    }
 }

@@ -26,4 +26,8 @@ public class RegisterMessage extends Message {
     public void setSensor(final Sensor ¢) {
         sensor = ¢;
     }
+
+    @Override public String toString() {
+        return "RegisterMessage [sensor=" + sensor + "]";
+    }
 }
