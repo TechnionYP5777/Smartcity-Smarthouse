@@ -21,6 +21,7 @@ import il.ac.technion.cs.eldery.utils.Table;
 public class DatabaseHandler {
     private final Map<String, List<String>> commNames = new HashMap<>();
     private final Map<String, ListenableTable<String, String>> sensors = new HashMap<>();
+    private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
 
     /** Adds a new sensor to the system, initializing its information table.
      * @param sensorId sensor'd id
@@ -33,13 +34,14 @@ public class DatabaseHandler {
             commNames.put(commName, new ArrayList<>(Arrays.asList(sensorId)));
 
         sensors.put(sensorId, new ListenableTable<String, String>(sizeLimit));
+        sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
     }
 
     /** Fetches a list of all the sensor IDs registered to the system with the
      * given commercial name.
      * @param commName commercial name
      * @return list of sensor IDs with the given commercial name */
-    public List<String> getSensors(String commName) {
+    public List<String> getSensors(final String commName) {
         return !commNames.containsKey(commName) ? new ArrayList<>() : commNames.get(commName);
     }
 
@@ -89,4 +91,31 @@ public class DatabaseHandler {
             throw new SensorNotFoundException();
         return sensors.get($);
     }
+
+    /** Queries the location of a sensor
+     * @param sensorId the Id of the sensor it's location to be returned
+     * @return the location of the sensor with sensorId
+     * @throws SensorNotFoundException */
+    public SensorLocation getSensorLocation(final String sensorId) throws SensorNotFoundException {
+        try {
+            return sensorsLocations.get(sensorId);
+        } catch (@SuppressWarnings("unused") final Exception e) {
+            throw new SensorNotFoundException();
+        }
+
+    }
+
+    /** Updates the location of a sensor
+     * @param sensorId the Id of the sensor it's location to be changed
+     * @throws SensorNotFoundException */
+    public void setSensorLocation(final String sensorId, final SensorLocation l) throws SensorNotFoundException {
+        try {
+            sensorsLocations.remove(sensorId);
+            sensorsLocations.put(sensorId, l);
+        } catch (@SuppressWarnings("unused") final Exception e) {
+            throw new SensorNotFoundException();
+        }
+
+    }
+
 }

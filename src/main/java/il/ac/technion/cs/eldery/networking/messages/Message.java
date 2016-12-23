@@ -44,17 +44,17 @@ public abstract class Message {
         InetSocketAddress serverAddr;
         try {
             serverAddr = new InetSocketAddress(InetAddress.getByName(ip), port);
-        } catch (@SuppressWarnings("unused") UnknownHostException e1) {
+        } catch (@SuppressWarnings("unused") final UnknownHostException e1) {
             return null;
         }
         try (SocketChannel client = SocketChannel.open(serverAddr)) {
             final byte[] data = toJson().getBytes();
-            ByteBuffer buffer = ByteBuffer.wrap(data);
+            final ByteBuffer buffer = ByteBuffer.wrap(data);
             client.write(buffer);
             if (!waitForResponse)
                 return null;
             final byte[] responseBuffer = new byte[2048];
-            ByteBuffer dst = ByteBuffer.wrap(responseBuffer);
+            final ByteBuffer dst = ByteBuffer.wrap(responseBuffer);
             client.read(dst);
             return new String(dst.array(), 0, dst.array().length);
         } catch (@SuppressWarnings("unused") final IOException e) {

@@ -61,7 +61,7 @@ public class SensorsHandler implements Runnable {
     private void handleUpdateMessage(final UpdateMessage m) {
         try {
             databaseHandler.getTable(m.sensorId).addEntry(m.getData());
-        } catch (final SensorNotFoundException ¢) {
+        } catch (@SuppressWarnings("unused") final SensorNotFoundException ¢) {
             // ¢.printStackTrace();
         }
     }
