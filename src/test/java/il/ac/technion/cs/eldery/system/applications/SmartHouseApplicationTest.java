@@ -15,7 +15,7 @@ public class SmartHouseApplicationTest {
     public SmartHouseApplicationTest() {}
 
     @Before public void createApplication() {
-        mainSystem = new SystemCore();
+        // mainSystem = new SystemCore();
     }
 
     @Test public void testSetMainSystem() {

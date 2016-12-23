@@ -28,10 +28,10 @@ public class SensorsHandler implements Runnable {
     }
 
     @Override public void run() {
-        try (DatagramSocket socket = new DatagramSocket(100)) {
+        try (DatagramSocket socket = new DatagramSocket(40000)) {
             for (final DatagramPacket packet = new DatagramPacket(new byte[2048], new byte[2048].length);;) {
                 socket.receive(packet);
-                final Message message = MessageFactory.create(new String(new byte[2048], 0, packet.getLength()));
+                final Message message = MessageFactory.create(new String(packet.getData(), 0, packet.getLength()));
                 if (message == null) {
                     new AnswerMessage(Answer.FAILURE).send(packet.getAddress().getHostAddress(), packet.getPort(), false);
                     continue;
@@ -59,7 +59,7 @@ public class SensorsHandler implements Runnable {
 
     private void handleUpdateMessage(final UpdateMessage m) {
         try {
-            databaseHandler.getTable(m.getSensor().getId()).addEntry(m.getData());
+            databaseHandler.getTable(m.sensorId).addEntry(m.getData());
         } catch (final SensorNotFoundException ¢) {
             ¢.printStackTrace();
         }

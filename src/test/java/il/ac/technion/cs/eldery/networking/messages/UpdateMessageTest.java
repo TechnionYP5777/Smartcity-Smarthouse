@@ -20,7 +20,7 @@ public class UpdateMessageTest {
         final Map<String, String> data = new HashMap<>();
         data.put("on", Boolean.FALSE + "");
         data.put("temperature", "100");
-        final UpdateMessage message = new UpdateMessage(sensor, data);
+        final UpdateMessage message = new UpdateMessage(sensor.getId(), data);
         final JsonParser parser = new JsonParser();
         Assert.assertEquals(parser.parse(message.toJson()), parser.parse(new Gson().toJson(message)));
     }

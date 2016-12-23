@@ -42,6 +42,8 @@ public abstract class Message {
     public String send(final String ip, final int port, final boolean waitForResponse) {
         try (DatagramSocket socket = new DatagramSocket()) {
             final byte[] buffer = toJson().getBytes();
+            System.out.println("DSAFSA: " + new String(buffer));
+            System.out.println(buffer.length);
             socket.send(new DatagramPacket(buffer, buffer.length, InetAddress.getByName(ip), port));
             if (!waitForResponse)
                 return null;

@@ -12,11 +12,12 @@ import il.ac.technion.cs.eldery.sensors.Sensor;
  * @since 10.12.16 */
 public class StoveSensor extends Sensor {
     private static final List<String> TYPES = new ArrayList<>();
+
     static {
         TYPES.add("Stove");
     }
 
-    public StoveSensor(final String name, final String commName, final String id, final String systemIP, final int systemPort) {
+    public StoveSensor(final String name, final String id, final String commName, final String systemIP, final int systemPort) {
         super(name, id, commName, TYPES, systemIP, systemPort);
     }
 

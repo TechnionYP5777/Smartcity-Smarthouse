@@ -3,39 +3,26 @@ package il.ac.technion.cs.eldery.networking.messages;
 import java.util.HashMap;
 import java.util.Map;
 
-import il.ac.technion.cs.eldery.sensors.Sensor;
-
 /** @author Sharon
  * @since 11.12.16 */
 public class UpdateMessage extends Message {
-    private Sensor sensor;
+    public final String sensorId;
     private final Map<String, String> data;
 
     /** Creates a new update message without any data.
      * @param sensor sensor represented by this update message */
-    public UpdateMessage(final Sensor sensor) {
-        this(sensor, new HashMap<>());
+    public UpdateMessage(final String sensorId) {
+        this(sensorId, new HashMap<>());
     }
 
     /** Creates a new update message with initial data.
      * @param sensor sensor represented by this update message
      * @param data data to be sent in this update message */
-    public UpdateMessage(final Sensor sensor, final Map<String, String> data) {
+    public UpdateMessage(final String sensorId, final Map<String, String> data) {
         super(MessageType.UPDATE);
 
-        this.sensor = sensor;
+        this.sensorId = sensorId;
         this.data = data;
-    }
-
-    /** @return the sensor this message represents */
-    public Sensor getSensor() {
-        return sensor;
-    }
-
-    /** Sets a new sensor for this update message
-     * @param ¢ new sensor */
-    public void setSensor(final Sensor ¢) {
-        sensor = ¢;
     }
 
     /** Returns the data this message stores.

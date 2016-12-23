@@ -50,7 +50,7 @@ public abstract class Sensor {
      * to their values.
      * @param data observations to send to the system */
     public void updateSystem(final Map<String, String> data) {
-        new UpdateMessage(this, data).send(systemIP, systemPort, false);
+        new UpdateMessage(id, data).send(systemIP, systemPort, false);
     }
 
     /** Returns the names of the parameters that will be sent to the system.
