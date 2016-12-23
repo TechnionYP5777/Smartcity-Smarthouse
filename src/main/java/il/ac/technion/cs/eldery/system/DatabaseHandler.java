@@ -97,25 +97,19 @@ public class DatabaseHandler {
      * @return the location of the sensor with sensorId
      * @throws SensorNotFoundException */
     public SensorLocation getSensorLocation(final String sensorId) throws SensorNotFoundException {
-        try {
-            return sensorsLocations.get(sensorId);
-        } catch (@SuppressWarnings("unused") final Exception e) {
+        if (sensorsLocations.get(sensorId) == null)
             throw new SensorNotFoundException();
-        }
-
+        return this.sensorsLocations.get(sensorId);
     }
 
     /** Updates the location of a sensor
      * @param sensorId the Id of the sensor it's location to be changed
      * @throws SensorNotFoundException */
     public void setSensorLocation(final String sensorId, final SensorLocation l) throws SensorNotFoundException {
-        try {
-            sensorsLocations.remove(sensorId);
-            sensorsLocations.put(sensorId, l);
-        } catch (@SuppressWarnings("unused") final Exception e) {
+        if (!this.sensorsLocations.containsKey(sensorId))
             throw new SensorNotFoundException();
-        }
-
+        sensorsLocations.remove(sensorId);
+        sensorsLocations.put(sensorId, l);
     }
 
 }
