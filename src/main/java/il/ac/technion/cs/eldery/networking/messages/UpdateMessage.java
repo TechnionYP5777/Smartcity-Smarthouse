@@ -7,16 +7,17 @@ import java.util.Map;
  * @since 11.12.16 */
 public class UpdateMessage extends Message {
     public final String sensorId;
+
     private final Map<String, String> data;
 
-    /** Creates a new update message without any data.
-     * @param sensor sensor represented by this update message */
+    /** Creates a new update message for the given sensor without any data.
+     * @param sensorId sensor'd id */
     public UpdateMessage(final String sensorId) {
         this(sensorId, new HashMap<>());
     }
 
     /** Creates a new update message with initial data.
-     * @param sensor sensor represented by this update message
+     * @param sensorId sensor's id
      * @param data data to be sent in this update message */
     public UpdateMessage(final String sensorId, final Map<String, String> data) {
         super(MessageType.UPDATE);

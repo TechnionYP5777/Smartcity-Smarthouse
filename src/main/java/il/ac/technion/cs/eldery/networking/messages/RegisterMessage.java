@@ -8,12 +8,23 @@ import il.ac.technion.cs.eldery.sensors.Sensor;
 public class RegisterMessage extends Message {
     public final String sensorId;
     public final String sensorCommName;
-    
-    /** Creates a new register message.
+
+    /** Creates a new registration message for the given sensor.
      * @param sensor sensor to register */
+    public RegisterMessage(final Sensor sensor) {
+        super(MessageType.REGISTRATION);
+
+        this.sensorId = sensor.getId();
+        this.sensorCommName = sensor.getCommName();
+    }
+
+    /** Creates a new registration message given the sensor's id and commercial
+     * name.
+     * @param sensorId sensor'd id
+     * @param sensorCommName sensor'd commercial name */
     public RegisterMessage(final String sensorId, final String sensorCommName) {
         super(MessageType.REGISTRATION);
-        
+
         this.sensorId = sensorId;
         this.sensorCommName = sensorCommName;
     }
