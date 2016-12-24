@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+
 import com.google.gson.Gson;
 
 /** @author Sharon
@@ -40,7 +41,7 @@ public abstract class Message {
         try (Socket socket = new Socket(InetAddress.getByName(ip), port);
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
-            out.println(this.toJson());
+            out.println(toJson());
             return in.readLine();
         } catch (@SuppressWarnings("unused") final IOException e) {
             return null;

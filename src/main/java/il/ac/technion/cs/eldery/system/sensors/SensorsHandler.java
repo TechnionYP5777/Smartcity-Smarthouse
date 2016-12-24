@@ -59,7 +59,7 @@ public class SensorsHandler implements Runnable {
         }
     }
 
-    private void handleRegisterMessage(PrintWriter out, final RegisterMessage ¢) {
+    private void handleRegisterMessage(final PrintWriter out, final RegisterMessage ¢) {
         databaseHandler.addSensor(¢.getSensor().getId(), ¢.getSensor().getCommName(), 100);
 
         out.println(new AnswerMessage(Answer.SUCCESS).toJson());
