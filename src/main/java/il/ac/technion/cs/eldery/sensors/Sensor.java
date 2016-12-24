@@ -41,7 +41,7 @@ public abstract class Sensor {
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise */
     public boolean register() {
-        final String $ = new RegisterMessage(this).send(systemIP, systemPort);
+        final String $ = new RegisterMessage(id, commName).send(systemIP, systemPort);
         return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
     }
 

@@ -13,7 +13,7 @@ import il.ac.technion.cs.eldery.sensors.stove.StoveSensor;
 public class RegisterMessageTest {
     @Test @SuppressWarnings("static-method") public void basicRegisterMessageTest() {
         final StoveSensor sensor = new StoveSensor("Stove Sensor", "iStoves", "00:11:22:33:44:55", "1:1:1:1", 80);
-        final RegisterMessage message = new RegisterMessage(sensor);
+        final RegisterMessage message = new RegisterMessage(sensor.getId(), sensor.getCommName());
         final JsonParser parser = new JsonParser();
         Assert.assertEquals(parser.parse(message.toJson()), parser.parse(new Gson().toJson(message)));
     }
