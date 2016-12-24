@@ -40,9 +40,9 @@ public abstract class Message {
     public String send(final String ip, final int port) {
         try (Socket socket = new Socket(InetAddress.getByName(ip), port);
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
+                BufferedReader $ = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
             out.println(toJson());
-            return in.readLine();
+            return $.readLine();
         } catch (@SuppressWarnings("unused") final IOException e) {
             return null;
         }
