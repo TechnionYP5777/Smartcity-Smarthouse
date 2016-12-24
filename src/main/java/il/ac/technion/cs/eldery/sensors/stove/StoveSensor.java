@@ -17,8 +17,8 @@ public class StoveSensor extends Sensor {
         TYPES.add("Stove");
     }
 
-    public StoveSensor(final String name, final String id, final String commName, final String systemIP, final int systemPort) {
-        super(name, id, commName, TYPES, systemIP, systemPort);
+    public StoveSensor(final String id, final String commName, final String systemIP, final int systemPort) {
+        super(id, commName, TYPES, systemIP, systemPort);
     }
 
     public void updateSystem(final boolean on, final int temperature) {

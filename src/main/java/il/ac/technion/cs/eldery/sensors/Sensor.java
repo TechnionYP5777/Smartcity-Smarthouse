@@ -13,7 +13,6 @@ import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
  * @author Yarden
  * @since 7.12.16 */
 public abstract class Sensor {
-    protected String name;
     protected String id;
     protected String commName;
     protected List<String> types;
@@ -21,15 +20,13 @@ public abstract class Sensor {
     protected int systemPort;
 
     /** Initializes a new sensor given its name and id.
-     * @param name name of the sensor
      * @param id id of the sensor
      * @param commName sensor's commercial name
      * @param types types this sensor qualifies for
      * @param systemIP IP address of the system
      * @param systemPort port on which the system listens to incoming
      *        messages */
-    public Sensor(final String name, final String id, final String commName, final List<String> types, final String systemIP, final int systemPort) {
-        this.name = name;
+    public Sensor(final String id, final String commName, final List<String> types, final String systemIP, final int systemPort) {
         this.id = id;
         this.commName = commName;
         this.types = types;
@@ -59,11 +56,6 @@ public abstract class Sensor {
      * @return array of names of the data this sensor observers */
     public abstract String[] getObservationsNames();
 
-    /** @return name of the sensor */
-    public String getName() {
-        return name;
-    }
-
     /** @return list of types this sensor qualifies for */
     public List<String> getTypes() {
         return types;
@@ -77,11 +69,5 @@ public abstract class Sensor {
     /** @return sensor's commercial name */
     public String getCommName() {
         return commName;
-    }
-
-    /** Sets a new name for the sensor.
-     * @param name new name of the sensor */
-    public void setName(final String name) {
-        this.name = name;
     }
 }

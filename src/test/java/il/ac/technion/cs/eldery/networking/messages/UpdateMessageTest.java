@@ -16,7 +16,7 @@ import il.ac.technion.cs.eldery.sensors.stove.StoveSensor;
 @SuppressWarnings("static-method")
 public class UpdateMessageTest {
     @Test public void basicUpdateMessageTest() {
-        final StoveSensor sensor = new StoveSensor("Stove Sensor", "00:11:22:33:44:55", "iStoves", "1:1:1:1", 80);
+        final StoveSensor sensor = new StoveSensor("00:11:22:33:44:55", "iStoves", "1:1:1:1", 80);
         final Map<String, String> data = new HashMap<>();
         data.put("on", Boolean.FALSE + "");
         data.put("temperature", "100");
