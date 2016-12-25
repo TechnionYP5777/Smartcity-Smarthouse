@@ -14,8 +14,8 @@ public class RegisterMessage extends Message {
     public RegisterMessage(final Sensor sensor) {
         super(MessageType.REGISTRATION);
 
-        this.sensorId = sensor.getId();
-        this.sensorCommName = sensor.getCommName();
+        sensorId = sensor.getId();
+        sensorCommName = sensor.getCommName();
     }
 
     /** Creates a new registration message given the sensor's id and commercial

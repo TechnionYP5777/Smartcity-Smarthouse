@@ -7,11 +7,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage;
+import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.eldery.networking.messages.Message;
 import il.ac.technion.cs.eldery.networking.messages.MessageFactory;
 import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
 import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
-import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 
@@ -21,10 +21,10 @@ import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
  * @author Yarden
  * @since 24.12.16 */
 public class SensorsHandlerThread extends Thread {
-    private Socket client;
+    private final Socket client;
     private final DatabaseHandler databaseHandler;
 
-    public SensorsHandlerThread(Socket client, DatabaseHandler databaseHandler) {
+    public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler) {
         this.client = client;
         this.databaseHandler = databaseHandler;
     }
