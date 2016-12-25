@@ -2,11 +2,7 @@ package il.ac.technion.cs.eldery.networking.messages;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
-
 import com.google.gson.Gson;
 
 /** @author Sharon
@@ -35,15 +31,19 @@ public abstract class Message {
     /** Sends the message to the specified destination.
      * @param ip the IP address of the destination
      * @param port the port of the destination
-     * @return the response from the destination, if exists. If an error
-     *         occurred or if there was no response, null will be returned. */
-    public String send(final String ip, final int port) {
-        try (Socket socket = new Socket(InetAddress.getByName(ip), port);
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader $ = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
-            out.println(toJson());
-            return $.readLine();
-        } catch (@SuppressWarnings("unused") final IOException e) {
+     * @param waitForResponse <code> true </code> if the sender expects a
+     *        response, <code> false </code> otherwise.
+     * @return the response from the destination, if requested. If an error
+     *         occurred or if a response was not requested, null will be
+     *         returned. */
+    public String send(PrintWriter out, BufferedReader in, boolean waitForResponse) {
+        out.println(toJson());
+        if (!waitForResponse)
+            return null;
+        try {
+            return in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }

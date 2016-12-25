@@ -30,9 +30,13 @@ public class SensorsHandlerThread extends Thread {
     }
 
     @Override public void run() {
-        try (PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));) {
+        PrintWriter out = null;
+        BufferedReader in = null;
+        try {
+            out = new PrintWriter(client.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             for (String input = in.readLine(); input != null;) {
+                System.out.println(input);
                 final Message message = MessageFactory.create(input);
                 if (message == null) {
                     out.println(new AnswerMessage(Answer.FAILURE).toJson());
@@ -52,20 +56,29 @@ public class SensorsHandlerThread extends Thread {
             }
         } catch (final IOException ¢) {
             ¢.printStackTrace();
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+
+                if (in != null)
+                    in.close();
+            } catch (final IOException ¢) {
+                ¢.printStackTrace();
+            }
         }
     }
 
     private void handleRegisterMessage(final PrintWriter out, final RegisterMessage ¢) {
         databaseHandler.addSensor(¢.sensorId, ¢.sensorCommName, 100);
-
         out.println(new AnswerMessage(Answer.SUCCESS).toJson());
     }
 
     private void handleUpdateMessage(final UpdateMessage m) {
         try {
             databaseHandler.getTable(m.sensorId).addEntry(m.getData());
-        } catch (@SuppressWarnings("unused") final SensorNotFoundException ¢) {
-            // ¢.printStackTrace();
+        } catch (final SensorNotFoundException ¢) {
+            ¢.printStackTrace();
         }
     }
 

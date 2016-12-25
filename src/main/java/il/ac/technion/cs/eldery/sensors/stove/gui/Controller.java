@@ -30,9 +30,9 @@ public class Controller implements Initializable {
     @FXML public TextFlow console;
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
-        sensor = new StoveSensor("00:00:00:00:00:00", "iStoves", "127.0.0.1", 40000);
-        // for (boolean res = false; !res;)
-        // res = sensor.register();
+        sensor = new StoveSensor("00:00:00:00:00:00", "iStoves", "127.0.0.1", 40001);
+         for (boolean res = false; !res;)
+             res = sensor.register();
         onOffButton.setOnAction(event -> {
             on = !on;
             onOffButton.setText("Turn " + (on ? "off" : "on"));

@@ -13,7 +13,7 @@ public class SensorTest {
     private Sensor sensor;
 
     @Before public void initSensor() {
-        sensor = new Sensor("1", "iStoves", new ArrayList<>(), "1:1:1:1", 80) {
+        sensor = new Sensor("1", "iStoves", new ArrayList<>(), "127.0.0.1", 40001) {
             @Override public String[] getObservationsNames() {
                 return new String[] { "name", "last name" };
             }

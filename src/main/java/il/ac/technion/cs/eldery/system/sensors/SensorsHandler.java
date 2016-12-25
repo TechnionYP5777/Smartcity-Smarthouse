@@ -22,9 +22,10 @@ public class SensorsHandler implements Runnable {
     }
 
     @Override public void run() {
-        try (ServerSocket server = new ServerSocket(40000)) {
+        try (ServerSocket server = new ServerSocket(40001)) {
             while (true)
-                try (Socket client = server.accept()) {
+                try {
+                    @SuppressWarnings("resource") Socket client = server.accept();
                     new SensorsHandlerThread(client, databaseHandler).start();
                 } catch (final IOException ¢) {
                     ¢.printStackTrace();

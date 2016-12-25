@@ -1,5 +1,11 @@
 package il.ac.technion.cs.eldery.sensors;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +24,9 @@ public abstract class Sensor {
     protected List<String> types;
     protected String systemIP;
     protected int systemPort;
+    protected Socket socket;
+    protected PrintWriter out;
+    protected BufferedReader in;
 
     /** Initializes a new sensor given its name and id.
      * @param id id of the sensor
@@ -34,11 +43,19 @@ public abstract class Sensor {
         this.systemPort = systemPort;
     }
 
-    /** Registers the sensor to the system.
+    /** Registers the sensor to the system. This method must be called before
+     * any calls to the updateSystem method.
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise */
     public boolean register() {
-        final String $ = new RegisterMessage(id, commName).send(systemIP, systemPort);
+        try {
+            socket = new Socket(InetAddress.getByName(systemIP), systemPort);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+        final String $ = new RegisterMessage(id, commName).send(out, in, true);
         return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
     }
 
@@ -47,7 +64,7 @@ public abstract class Sensor {
      * to their values.
      * @param data observations to send to the system */
     public void updateSystem(final Map<String, String> data) {
-        new UpdateMessage(id, data).send(systemIP, systemPort);
+        new UpdateMessage(id, data).send(out, in, false);
     }
 
     /** Returns the names of the parameters that will be sent to the system.
