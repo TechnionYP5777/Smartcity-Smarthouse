@@ -82,7 +82,7 @@ public class DatabaseHandlerTest {
     }
 
     @Test public void listenerIsCalledWhenAddingEntryToSensorTable() throws SensorNotFoundException {
-        @SuppressWarnings("unchecked") Consumer<Table<String, String>> listener = Mockito.mock(Consumer.class);
+        @SuppressWarnings("unchecked") final Consumer<Table<String, String>> listener = Mockito.mock(Consumer.class);
 
         handler.addSensor("00:22:44:66:88:00", "iStoves", 100);
         handler.addListener("00:22:44:66:88:00", listener);
@@ -92,7 +92,7 @@ public class DatabaseHandlerTest {
     }
 
     @Test public void listenerIsCalledMultipleTimesWhenAddingMultipleEntries() throws SensorNotFoundException {
-        @SuppressWarnings("unchecked") Consumer<Table<String, String>> listener = Mockito.mock(Consumer.class);
+        @SuppressWarnings("unchecked") final Consumer<Table<String, String>> listener = Mockito.mock(Consumer.class);
 
         handler.addSensor("00:22:44:66:88:00", "iStoves", 100);
         handler.addListener("00:22:44:66:88:00", listener);
