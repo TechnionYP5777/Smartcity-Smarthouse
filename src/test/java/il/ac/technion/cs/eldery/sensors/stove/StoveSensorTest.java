@@ -10,7 +10,6 @@ import il.ac.technion.cs.eldery.sensors.SensorTest;
 @SuppressWarnings("static-method")
 public class StoveSensorTest extends SensorTest {
     @Test public void observationsAreCorrect() {
-        Assert.assertArrayEquals(new String[] { "on", "temperature" },
-                new StoveSensor("1:1:1:1", "iStoves", "2:2:2:2", 80).getObservationsNames());
+        Assert.assertArrayEquals(new String[] { "on", "temperature" }, new StoveSensor("1:1:1:1", "iStoves", "2:2:2:2", 80).getObservationsNames());
     }
 }

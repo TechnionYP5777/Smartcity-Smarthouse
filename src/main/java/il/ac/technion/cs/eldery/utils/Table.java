@@ -84,7 +84,7 @@ public class Table<L, R> {
      * @return the value co-respond with the key of the last entry which is
      *         required or null if it doesn't exist */
     public R getLastEntryAtCol(final L key) {
-        return data.isEmpty() ? null : data.get(data.size()).get(key);
+        return data.isEmpty() ? null : data.get(data.size() - 1).get(key);
     }
 
     /** @param row - number of row, starts at index 0. index 0 is the OLDEST
@@ -93,6 +93,8 @@ public class Table<L, R> {
      * @return the R object in the row and column of the parameters
      * @throws OutOfTableLimit */
     public R get(final int row, final L col) throws OutOfTableLimit {
+        if (data.isEmpty())
+            return null;
         if (row < 0 || this.limitedSize && row > this.maxCapacity)
             throw new OutOfTableLimit();
         return this.data.get(row).get(col);

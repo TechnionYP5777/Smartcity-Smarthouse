@@ -1,19 +1,22 @@
 package il.ac.technion.cs.eldery.utils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import il.ac.technion.cs.eldery.utils.exceptions.OutOfTableLimit;
 
 /** @author Inbal Zukerman
  * @since 15.12.2016 */
 public class TableTest {
 
-    private final HashMap<String, Integer> info1 = new HashMap<>();
-    private final HashMap<String, String> info2 = new HashMap<>();
+    private final Map<String, Integer> info1 = new HashMap<>();
+    private final Map<String, String> info2 = new HashMap<>();
 
-    private final HashMap<String, Integer> moreInfo = new HashMap<>();
-    private final HashMap<String, Integer> moreInfo2 = new HashMap<>();
+    private final Map<String, Integer> moreInfo = new HashMap<>();
+    private final Map<String, Integer> moreInfo2 = new HashMap<>();
 
     private final Table<String, Integer> limitedTable = new Table<>(5);
     private final Table<String, String> unlimitedTable = new Table<>();
@@ -51,6 +54,10 @@ public class TableTest {
         Assert.assertEquals(2, limitedTable.getCurrentCapacity());
         Assert.assertEquals(moreInfo2, limitedTable.getLastEntry());
 
+        limitedTable.changeMaxCapacity(1);
+        Assert.assertEquals(1, limitedTable.getCurrentCapacity());
+        Assert.assertEquals(moreInfo2, limitedTable.getLastEntry());
+
         unlimitedTable.changeMaxCapacity(3);
         Assert.assertEquals(3, unlimitedTable.getMaxCapacity());
 
@@ -60,6 +67,9 @@ public class TableTest {
 
     @Test public void getLastKEntriesTest() {
 
+        Assert.assertEquals(0, limitedTable.getCurrentCapacity());
+        final Table<String, Integer> noEntries = limitedTable.receiveKLastEntries(0);
+        Assert.assertNull(noEntries);
         limitedTable.addEntry(info1);
         limitedTable.addEntry(moreInfo);
         limitedTable.addEntry(moreInfo2);
@@ -69,6 +79,42 @@ public class TableTest {
         Assert.assertEquals(2, twoEntries.getCurrentCapacity());
         Assert.assertEquals(moreInfo2, twoEntries.getLastEntry());
 
+        final Table<String, Integer> allEntries = limitedTable.receiveKLastEntries(5);
+        Assert.assertEquals(5, allEntries.getMaxCapacity());
+        Assert.assertEquals(3, allEntries.getCurrentCapacity());
+
     }
 
+    @SuppressWarnings("boxing") @Test public void getLastEntryAtColTest() {
+        Assert.assertNull(unlimitedTable.getLastEntryAtCol("A"));
+        info1.put("A", 1);
+        info1.put("B", 2);
+        limitedTable.addEntry(info1);
+
+        Assert.assertEquals(2, (int) limitedTable.getLastEntryAtCol("B"));
+    }
+
+    @SuppressWarnings("boxing") @Test public void getTest() {
+
+        try {
+            Assert.assertNull(unlimitedTable.get(1, "A"));
+        } catch (@SuppressWarnings("unused") final OutOfTableLimit e) {
+            assert false; // should never get here
+        }
+
+        info1.put("A", 1);
+        info1.put("B", 2);
+        moreInfo.put("X", 3);
+        moreInfo.put("Y", 4);
+        limitedTable.addEntry(info1);
+        limitedTable.addEntry(moreInfo);
+
+        try {
+            Assert.assertEquals(1, (int) limitedTable.get(Table.OLDEST_DATA_INDEX, "A"));
+            Assert.assertEquals(2, (int) limitedTable.get(Table.OLDEST_DATA_INDEX, "B"));
+            Assert.assertEquals(3, (int) limitedTable.get(1, "X"));
+        } catch (@SuppressWarnings("unused") final OutOfTableLimit e) {
+            assert false; // should never get here
+        }
+    }
 }
