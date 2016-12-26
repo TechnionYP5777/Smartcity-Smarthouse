@@ -20,14 +20,15 @@ public class Table<L, R> {
         limitedSize = false;
     }
 
-    /** @param maxCapacity - the capacity limit required Initializes a new Table
-     *        without capacity limit */
+    /** Initializes a new Table with a capacity limit
+     * @param maxCapacity - the capacity limit required */
     public Table(final int maxCapacity) {
         limitedSize = true;
         this.maxCapacity = maxCapacity <= 0 ? 1 : maxCapacity;
     }
 
-    /** @param info - the new entry to add Adds an entry to the table */
+    /** Adds an entry to the table
+     * @param info - the new entry to add */
     public void addEntry(final Map<L, R> info) {
         if (limitedSize && data.size() == maxCapacity)
             data.remove(0);
