@@ -9,8 +9,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
-import il.ac.technion.cs.eldery.utils.ListenableTable;
-import il.ac.technion.cs.eldery.utils.Table;
+import il.ac.technion.cs.eldery.utils.ListenableList;
 
 /** The API required by ApplicationHandler in order to allow it desired
  * functionalities.
@@ -20,7 +19,7 @@ import il.ac.technion.cs.eldery.utils.Table;
  * @since Dec 13, 2016 */
 public class DatabaseHandler {
     private final Map<String, List<String>> commNames = new HashMap<>();
-    private final Map<String, ListenableTable<String, String>> sensors = new HashMap<>();
+    private final Map<String, ListenableList<String>> sensors = new HashMap<>();
     private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
 
     /** Adds a new sensor to the system, initializing its information table.
@@ -33,7 +32,7 @@ public class DatabaseHandler {
         else
             commNames.put(commName, new ArrayList<>(Arrays.asList(sensorId)));
 
-        sensors.put(sensorId, new ListenableTable<String, String>(sizeLimit));
+        sensors.put(sensorId, new ListenableList<String>(sizeLimit));
         sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
     }
 
@@ -53,7 +52,7 @@ public class DatabaseHandler {
      *        table of the sensor
      * @return The id of the listener, to be used in any future reference to it
      * @throws SensorNotFoundException */
-    public String addListener(final String $, final Consumer<Table<String, String>> notifee) throws SensorNotFoundException {
+    public String addListener(final String $, final Consumer<String> notifee) throws SensorNotFoundException {
         try {
             return sensors.get($).addListener(notifee);
         } catch (@SuppressWarnings("unused") final Exception e) {
@@ -79,14 +78,14 @@ public class DatabaseHandler {
      *        external platform
      * @return the most updated data of the sensor, or Optional.empty() if the
      *         request couldn't be completed for any reason */
-    public Optional<Table<String, String>> getLastEntryOf(final String sensorID) {
-        return Optional.ofNullable(sensors.get(sensorID)).map(t -> t.receiveKLastEntries(1));
+    public Optional<String> getLastEntryOf(final String sensorID) {
+        return Optional.ofNullable(sensors.get(sensorID)).map(t -> t.get(t.size() - 1));
     }
 
     /** @param sensorID the ID of the sensor's who's Table is required
      * @return the Table with the information of the wanted sensor
      * @throws SensorNotFoundException */
-    public Table<String, String> getTable(final String $) throws SensorNotFoundException {
+    public ListenableList<String> getList(final String $) throws SensorNotFoundException {
         if (!sensors.containsKey($))
             throw new SensorNotFoundException();
         return sensors.get($);

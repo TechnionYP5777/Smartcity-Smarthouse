@@ -11,7 +11,6 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
-import il.ac.technion.cs.eldery.utils.Table;
 
 public class DatabaseHandlerTest {
     private DatabaseHandler handler;
@@ -73,33 +72,33 @@ public class DatabaseHandlerTest {
     }
 
     @Test(expected = SensorNotFoundException.class) public void throwsExceptionWhenGettingTableForNonExistingSensor() throws SensorNotFoundException {
-        handler.getTable("Some id");
+        handler.getList("Some id");
     }
 
     @Test public void getTableOfExistingSensorWithoutException() throws SensorNotFoundException {
         handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
-        handler.getTable("00:11:22:33:44:55");
+        handler.getList("00:11:22:33:44:55");
     }
 
     @Test public void listenerIsCalledWhenAddingEntryToSensorTable() throws SensorNotFoundException {
-        @SuppressWarnings("unchecked") final Consumer<Table<String, String>> listener = Mockito.mock(Consumer.class);
+        @SuppressWarnings("unchecked") final Consumer<String> listener = Mockito.mock(Consumer.class);
 
         handler.addSensor("00:22:44:66:88:00", "iStoves", 100);
         handler.addListener("00:22:44:66:88:00", listener);
-        handler.getTable("00:22:44:66:88:00").addEntry(null);
+        handler.getList("00:22:44:66:88:00").add(null);
 
         Mockito.verify(listener, Mockito.times(1)).accept(Matchers.any());
     }
 
     @Test public void listenerIsCalledMultipleTimesWhenAddingMultipleEntries() throws SensorNotFoundException {
-        @SuppressWarnings("unchecked") final Consumer<Table<String, String>> listener = Mockito.mock(Consumer.class);
+        @SuppressWarnings("unchecked") final Consumer<String> listener = Mockito.mock(Consumer.class);
 
         handler.addSensor("00:22:44:66:88:00", "iStoves", 100);
         handler.addListener("00:22:44:66:88:00", listener);
-        handler.getTable("00:22:44:66:88:00").addEntry(null);
-        handler.getTable("00:22:44:66:88:00").addEntry(null);
-        handler.getTable("00:22:44:66:88:00").addEntry(null);
-        handler.getTable("00:22:44:66:88:00").addEntry(null);
+        handler.getList("00:22:44:66:88:00").add(null);
+        handler.getList("00:22:44:66:88:00").add(null);
+        handler.getList("00:22:44:66:88:00").add(null);
+        handler.getList("00:22:44:66:88:00").add(null);
 
         Mockito.verify(listener, Mockito.times(4)).accept(Matchers.any());
     }

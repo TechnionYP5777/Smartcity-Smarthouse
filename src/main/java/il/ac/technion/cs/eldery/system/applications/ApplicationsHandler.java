@@ -17,7 +17,6 @@ import java.util.function.Predicate;
 import il.ac.technion.cs.eldery.system.AppThread;
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
-import il.ac.technion.cs.eldery.system.exceptions.ApplicationNotRegisteredToEvent;
 import il.ac.technion.cs.eldery.utils.Generator;
 import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.utils.Tuple;
@@ -49,7 +48,10 @@ public class ApplicationsHandler {
          * 
          * @see java.util.TimerTask#run() */
         @Override @SuppressWarnings({ "boxing" }) public void run() {
-            notifee.accept(querySensor(sensorCommercialName).orElse(new Table<String, String>()));
+            /* TODO: ELIA- this code should be changed according to the changes
+             * in DatabaseHandler
+             * notifee.accept(querySensor(sensorCommercialName).orElse(new
+             * Table<String, String>())); */
             if (repeat)
                 new Timer().schedule(this, localTimeToDate(t));
         }
@@ -111,17 +113,16 @@ public class ApplicationsHandler {
         try {
             final AppThread $ = apps.get(id).right;
             final String eventId = $.registerEventConsumer(notifee);
-            return databaseHandler.addListener(sensorId, t -> {
-                if (notifyWhen.test(t))
-                    try {
-                        $.notifyOnEvent(eventId, t.receiveKLastEntries(numOfEntries));
-                    } catch (final ApplicationNotRegisteredToEvent ¢) {
-                        ¢.printStackTrace();
-                    }
-            });
+            /* TODO: ELIA- this code should be changed according to the changes
+             * in DatabaseHandler return databaseHandler.addListener(sensorId, t
+             * -> { if (notifyWhen.test(t)) try { $.notifyOnEvent(eventId,
+             * t.receiveKLastEntries(numOfEntries)); } catch (final
+             * ApplicationNotRegisteredToEvent ¢) { ¢.printStackTrace(); }
+             * }); */
         } catch (@SuppressWarnings("unused") final Exception __) {
             return null;
         }
+        return null; // Added temporary until bug is fixed
     }
 
     static Date localTimeToDate(final LocalTime ¢) {
@@ -168,7 +169,7 @@ public class ApplicationsHandler {
      *        inquireAbout(sensorCommercialName)
      * @return the latest data (or Optional.empty() if the query failed in any
      *         point) */
-    public Optional<Table<String, String>> querySensor(final String sensorId) {
+    public Optional<String> querySensor(final String sensorId) {
         return databaseHandler.getLastEntryOf(sensorId);
     }
 

@@ -25,7 +25,7 @@ public class SensorsHandler implements Runnable {
         try (ServerSocket server = new ServerSocket(40001)) {
             while (true)
                 try {
-                    @SuppressWarnings("resource") Socket client = server.accept();
+                    @SuppressWarnings("resource") final Socket client = server.accept();
                     new SensorsHandlerThread(client, databaseHandler).start();
                 } catch (final IOException ¢) {
                     ¢.printStackTrace();

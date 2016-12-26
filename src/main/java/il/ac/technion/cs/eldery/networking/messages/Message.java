@@ -3,6 +3,7 @@ package il.ac.technion.cs.eldery.networking.messages;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import com.google.gson.Gson;
 
 /** @author Sharon
@@ -36,13 +37,13 @@ public abstract class Message {
      * @return the response from the destination, if requested. If an error
      *         occurred or if a response was not requested, null will be
      *         returned. */
-    public String send(PrintWriter out, BufferedReader in, boolean waitForResponse) {
+    public String send(final PrintWriter out, final BufferedReader in, final boolean waitForResponse) {
         out.println(toJson());
         if (!waitForResponse)
             return null;
         try {
             return in.readLine();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
             return null;
         }

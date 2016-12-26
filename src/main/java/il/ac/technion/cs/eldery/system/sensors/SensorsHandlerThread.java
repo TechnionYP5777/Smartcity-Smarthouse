@@ -76,7 +76,7 @@ public class SensorsHandlerThread extends Thread {
 
     private void handleUpdateMessage(final UpdateMessage m) {
         try {
-            databaseHandler.getTable(m.sensorId).addEntry(m.getData());
+            databaseHandler.getList(m.sensorId).add(m.toJson());
         } catch (final SensorNotFoundException ¢) {
             ¢.printStackTrace();
         }
