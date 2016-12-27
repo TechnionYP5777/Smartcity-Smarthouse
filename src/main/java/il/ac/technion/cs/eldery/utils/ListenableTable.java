@@ -11,6 +11,8 @@ import java.util.function.Consumer;
 public class ListenableTable<T, S> extends Table<T, S> {
     private final Map<String, Consumer<Table<T, S>>> listeners = new HashMap<>();
 
+    public ListenableTable() {}
+
     public ListenableTable(final int maxCapacity) {
         super(maxCapacity);
     }
