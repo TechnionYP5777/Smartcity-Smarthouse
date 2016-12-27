@@ -71,6 +71,33 @@ public class DatabaseHandlerTest {
         handler.addListener("00:11:22:33:44:55", null);
     }
 
+    @Test(expected = SensorNotFoundException.class) public void removeNotAddedListenerAndGetException() throws SensorNotFoundException {
+        handler.removeListener("1111", "2222");
+    }
+
+    @Test public void addAndRemoveOneListener() throws SensorNotFoundException {
+        @SuppressWarnings("unchecked") final Consumer<String> listener = Mockito.mock(Consumer.class);
+
+        handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
+        handler.removeListener("00:11:22:33:44:55", handler.addListener("00:11:22:33:44:55", listener));
+
+        handler.getList("00:11:22:33:44:55").add("sup");
+        Mockito.verify(listener, Mockito.never()).accept(Matchers.any());
+    }
+
+    @Test public void addTwoListenersAndRemoveOne() throws SensorNotFoundException {
+        @SuppressWarnings("unchecked") final Consumer<String> listener = Mockito.mock(Consumer.class);
+        @SuppressWarnings("unchecked") final Consumer<String> listener2 = Mockito.mock(Consumer.class);
+
+        handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
+        handler.removeListener("00:11:22:33:44:55", handler.addListener("00:11:22:33:44:55", listener));
+        handler.addListener("00:11:22:33:44:55", listener2);
+
+        handler.getList("00:11:22:33:44:55").add("sup");
+        Mockito.verify(listener, Mockito.never()).accept(Matchers.any());
+        Mockito.verify(listener2, Mockito.times(1)).accept("sup");
+    }
+
     @Test(expected = SensorNotFoundException.class) public void throwsExceptionWhenGettingTableForNonExistingSensor() throws SensorNotFoundException {
         handler.getList("Some id");
     }

@@ -66,11 +66,10 @@ public class DatabaseHandler {
      * @param listenerId The id given when the listener was added to the system
      * @throws SensorNotFoundException */
     public void removeListener(final String sensorID, final String listenerId) throws SensorNotFoundException {
-        try {
-            sensors.get(sensorID).removeListener(listenerId);
-        } catch (@SuppressWarnings("unused") final Exception e) {
+        if (!sensors.containsKey(sensorID))
             throw new SensorNotFoundException();
-        }
+
+        sensors.get(sensorID).removeListener(listenerId);
     }
 
     /** Queries the info of a sensor.
