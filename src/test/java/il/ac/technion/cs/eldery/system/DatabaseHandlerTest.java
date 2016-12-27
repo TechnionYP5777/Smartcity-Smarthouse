@@ -129,4 +129,23 @@ public class DatabaseHandlerTest {
 
         Mockito.verify(listener, Mockito.times(4)).accept(Matchers.any());
     }
+
+    @Test @SuppressWarnings("boxing") public void lastEntryIsNullIfThereIsNoSensor() {
+        Assert.assertEquals(false, handler.getLastEntryOf("0000").isPresent());
+    }
+
+    @Test @SuppressWarnings("boxing") public void lastEntryIsNullIfThereAreNoEntries() {
+        handler.addSensor("0000", "yes", 100);
+        
+        Assert.assertEquals(false, handler.getLastEntryOf("0000").isPresent());
+    }
+    
+    @Test public void getLastEntryOfSomeSensor() throws SensorNotFoundException {
+        handler.addSensor("0000", "yes", 100);
+        handler.getList("0000").add("sup");
+        handler.getList("0000").add("sup2");
+        handler.getList("0000").add("sup3");
+        
+        Assert.assertEquals("sup3", handler.getLastEntryOf("0000").get());
+    }
 }

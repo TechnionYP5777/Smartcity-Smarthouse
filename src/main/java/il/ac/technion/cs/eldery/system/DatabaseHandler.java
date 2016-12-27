@@ -78,7 +78,7 @@ public class DatabaseHandler {
      * @return the most updated data of the sensor, or Optional.empty() if the
      *         request couldn't be completed for any reason */
     public Optional<String> getLastEntryOf(final String sensorID) {
-        return Optional.ofNullable(sensors.get(sensorID)).map(t -> t.get(t.size() - 1));
+        return Optional.ofNullable(sensors.get(sensorID)).filter(t -> !t.isEmpty()).map(t -> t.get(t.size() - 1));
     }
 
     /** @param sensorID the ID of the sensor's who's Table is required
