@@ -136,16 +136,35 @@ public class DatabaseHandlerTest {
 
     @Test @SuppressWarnings("boxing") public void lastEntryIsNullIfThereAreNoEntries() {
         handler.addSensor("0000", "yes", 100);
-        
+
         Assert.assertEquals(false, handler.getLastEntryOf("0000").isPresent());
     }
-    
+
     @Test public void getLastEntryOfSomeSensor() throws SensorNotFoundException {
         handler.addSensor("0000", "yes", 100);
         handler.getList("0000").add("sup");
         handler.getList("0000").add("sup2");
         handler.getList("0000").add("sup3");
-        
+
         Assert.assertEquals("sup3", handler.getLastEntryOf("0000").get());
+    }
+
+    @Test(expected = SensorNotFoundException.class) public void getLocationOfNotAddedSensorThrows() throws SensorNotFoundException {
+        handler.getSensorLocation("00");
+    }
+
+    @Test(expected = SensorNotFoundException.class) public void setLocationOfNotAddedSensorThrows() throws SensorNotFoundException {
+        handler.setSensorLocation("00", SensorLocation.BASEMENT);
+    }
+
+    @Test public void newSensorLocationIsUndefined() throws SensorNotFoundException {
+        handler.addSensor("00", "yes", 100);
+        Assert.assertEquals(SensorLocation.UNDEFINED, handler.getSensorLocation("00"));
+    }
+
+    @Test public void correctlySetSensorLocation() throws SensorNotFoundException {
+        handler.addSensor("00", "yes", 100);
+        handler.setSensorLocation("00", SensorLocation.BATHROOM);
+        Assert.assertEquals(SensorLocation.BATHROOM, handler.getSensorLocation("00"));
     }
 }
