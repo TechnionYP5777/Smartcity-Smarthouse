@@ -1,9 +1,9 @@
 package il.ac.technion.cs.eldery.system.applications;
 
-import com.google.gson.JsonObject;
-
 import il.ac.technion.cs.eldery.system.SystemCore;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
 /** The API for the apps/modules developers Every app that wants to be installed
  * on the system, MUST extend this class
@@ -11,21 +11,32 @@ import javafx.application.Application;
  * @author roysh
  * @since 8.12.2016 */
 public abstract class SmartHouseApplication extends Application {
-    SystemCore systemCore;
+    private SystemCore systemCore;
+    private Stage firstStage;
 
     public SmartHouseApplication() {}
 
     /** Adds the mainSystem Object to the app
-     * @param systemCore
-     * @return true if successful or false if failed */
-    public boolean setMainSystemInstance(final SystemCore ¢) {
+     * @param systemCore */
+    public final void setSystemCoreInstance(final SystemCore ¢) {
         systemCore = ¢;
-        return true;
     }
 
-    /** the function that will run when the il.ac.technion.cs.eldery.system
-     * installs the app in the il.ac.technion.cs.eldery.system */
+    /** This will run when the system loads the app.
+     * Here all of the sensors subscriptions must occur */
     public abstract void onLoad();
+    
+    @Override public void start(Stage s) throws Exception {
+        firstStage = s;
+        firstStage.setOnCloseRequest(event -> {
+            event.consume();
+            ((Stage)event.getSource()).setIconified(true);
+            });
+    }
+
+    public final void reopen() {
+        Platform.runLater(() -> firstStage.setIconified(false));
+    }
 
     /** Adds the app to the listener list of a specific sensor
      * @param sensorID
@@ -46,14 +57,14 @@ public abstract class SmartHouseApplication extends Application {
     /** Saves the app's data to the system's database
      * @param data
      * @return true if the data was saved to the system, or false otherwise */
-    @SuppressWarnings("static-method") public boolean saveToDatabase(final JsonObject data) {
+    @SuppressWarnings("static-method") public final boolean saveToDatabase(final String data) {
         // TODO: RON and ROY - implement this class
         return data != null;
     }
 
     /** Loads the app's data from the system's database
      * @return a JSObject with the data */
-    @SuppressWarnings("static-method") public JsonObject loadFromDatabase() {
+    @SuppressWarnings("static-method") public final String loadFromDatabase() {
         // TODO: RON and ROY - implement this class
         return null;
     }

@@ -1,15 +1,23 @@
 package il.ac.technion.cs.eldery.system.applications;
 
-import il.ac.technion.cs.eldery.utils.Generator;
+import java.io.IOException;
+
+import com.google.gson.annotations.Expose;
+
+import il.ac.technion.cs.eldery.system.SystemCore;
+import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
 /** A class that stores information about the installed application
  * @author RON
  * @since 09-12-2016 */
-// TODO: RON and ROY - implement this class. Should this class store an instance
-// of the SmartHouseApplication
+// TODO: RON and ROY - implement this class.
 public class ApplicationManager {
-    String id;
-    String jarPath;
+    private String id;
+    private String jarPath;
+    @Expose private SystemCore referenceToSystemCore;
+    @Expose private SmartHouseApplication application;
 
     public ApplicationManager(final String id, final String jarPath) {
         this.id = id;
@@ -32,12 +40,32 @@ public class ApplicationManager {
         jarPath = path;
     }
 
-    /** installs the application, and generates the ApplicationIdentifier for it
-     * @param jarFilePath
-     * @return the ApplicationIdentifier for the application */
-    public static ApplicationManager installApplication(final String jarFilePath) {
-        // TODO: Ron and Roy - do we need to do more stuff here?
-        return new ApplicationManager(Generator.generateUniqueID() + "", jarFilePath);
+    public void setReferenceToSystemCore(SystemCore referenceToSystemCore) {
+        this.referenceToSystemCore = referenceToSystemCore;
+    }
+
+    public boolean initialize() throws AppInstallerException, IOException {
+        if (application != null)
+            return false;
+
+        application = AppInstallHelper.loadApplication(jarPath);
+        application.setSystemCoreInstance(referenceToSystemCore);
+        application.onLoad();
+
+        Platform.runLater(() -> {
+            try {
+                application.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        return true;
+    }
+
+    public void reopen() {
+        if (application != null)
+            application.reopen();
     }
 
     @Override public int hashCode() {
