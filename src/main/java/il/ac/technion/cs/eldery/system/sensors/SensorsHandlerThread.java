@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.security.KeyStore.Entry;
+
+import com.google.gson.JsonObject;
 
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
@@ -75,8 +78,11 @@ public class SensorsHandlerThread extends Thread {
     }
 
     private void handleUpdateMessage(final UpdateMessage m) {
+        JsonObject json = new JsonObject();
+        m.getData().entrySet().forEach(entry -> json.addProperty(entry.getKey(), entry.getValue()));
+
         try {
-            databaseHandler.getList(m.sensorId).add(m.toJson());
+            databaseHandler.getList(m.sensorId).add((json + ""));
         } catch (final SensorNotFoundException ¢) {
             ¢.printStackTrace();
         }
