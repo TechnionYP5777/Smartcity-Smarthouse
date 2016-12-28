@@ -7,7 +7,7 @@ package il.ac.technion.cs.eldery.system.exceptions;
  * @author Elia Traore
  * @since Dec 28, 2016
  */
-public class FailedApplicationInitializationException extends Exception {
+public class ApplicationInitializationException extends Exception {
     /**
      * 
      */

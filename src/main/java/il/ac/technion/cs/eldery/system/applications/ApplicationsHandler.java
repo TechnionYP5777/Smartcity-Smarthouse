@@ -18,7 +18,7 @@ import il.ac.technion.cs.eldery.system.AppThread;
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
-import il.ac.technion.cs.eldery.system.exceptions.FailedApplicationInitializationException;
+import il.ac.technion.cs.eldery.system.exceptions.ApplicationInitializationException;
 import il.ac.technion.cs.eldery.utils.Generator;
 import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.utils.Tuple;
@@ -68,24 +68,24 @@ public class ApplicationsHandler {
     public ApplicationsHandler(final DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
     }
-
-    /** Adds a new application to the system, and presents it to the screen
-     * @throws FailedApplicationInitializationException 
-     */
-    public void addApplication(final String appId, final String jarPath) throws FailedApplicationInitializationException {
-        ApplicationManager $ = new ApplicationManager(appId, jarPath, this);
-        if(!$.initialize()){
-            throw new FailedApplicationInitializationException();
-        }
-        $.initialize();
-        $.minimize();
-        apps.put(appId, $);
-    }
     
     public DatabaseHandler getDatabaseHandler(){
         return databaseHandler;
     }
-
+    
+    /** Adds a new application to the system, and presents it to the screen
+     * @throws ApplicationInitializationException 
+     */
+    public void addApplication(final String appId, final String jarPath) throws ApplicationInitializationException {
+        ApplicationManager $ = new ApplicationManager(appId, jarPath, this);
+        if(!$.initialize()){
+            throw new ApplicationInitializationException();
+        }
+        $.initialize();
+//        $.minimize();
+        apps.put(appId, $);
+    }
+    
     /** Allows registration to a sensor. on update, the data will be given to
      * the consumer for farther processing
      * @param id The id given to the application when added to the system
@@ -100,18 +100,18 @@ public class ApplicationsHandler {
      *         <code>null</code> */
     public String registerToSensor(final String id, final String sensorId, final Predicate<Table<String, String>> notifyWhen,
             final Consumer<Table<String, String>> notifee, final int numOfEntries) {
-        try {
-//            final AppThread $ = apps.get(id).right;
-            final String eventId = $.registerEventConsumer(notifee);
-            /* TODO: ELIA- this code should be changed according to the changes
-             * in DatabaseHandler return databaseHandler.addListener(sensorId, t
-             * -> { if (notifyWhen.test(t)) try { $.notifyOnEvent(eventId,
-             * t.receiveKLastEntries(numOfEntries)); } catch (final
-             * ApplicationNotRegisteredToEvent ¢) { ¢.printStackTrace(); }
-             * }); */
-        } catch (@SuppressWarnings("unused") final Exception __) {
-            return null;
-        }
+//        try {
+////            final AppThread $ = apps.get(id).right;
+////            final String eventId = $.registerEventConsumer(notifee);
+//            /* TODO: ELIA- this code should be changed according to the changes
+//             * in DatabaseHandler return databaseHandler.addListener(sensorId, t
+//             * -> { if (notifyWhen.test(t)) try { $.notifyOnEvent(eventId,
+//             * t.receiveKLastEntries(numOfEntries)); } catch (final
+//             * ApplicationNotRegisteredToEvent ¢) { ¢.printStackTrace(); }
+//             * }); */
+//        } catch (@SuppressWarnings("unused") final Exception __) {
+//            return null;
+//        }
         return null; // Added temporary until bug is fixed
     }
 
