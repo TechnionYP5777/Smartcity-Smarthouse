@@ -1,6 +1,6 @@
 package il.ac.technion.cs.eldery.system.applications.examples;
 
-import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import javafx.stage.Stage;
 
 public class MyTestClass1 extends SmartHouseApplication {

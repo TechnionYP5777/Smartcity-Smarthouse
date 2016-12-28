@@ -1,6 +1,6 @@
 package il.ac.technion.cs.eldery.system.exceptions;
 
-import il.ac.technion.cs.eldery.system.applications.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 
 /** @author RON
  * @since 09-12-2016 */
