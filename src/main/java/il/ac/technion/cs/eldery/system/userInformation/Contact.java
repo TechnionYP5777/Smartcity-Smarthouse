@@ -6,12 +6,12 @@ import il.ac.technion.cs.eldery.system.EmergencyLevel;
  * @since Dec 28, 2016 */
 public class Contact {
 
-    private String id;
-    private String name;
+    private final String id;
+    private final String name;
     private String phoneNumber;
     private EmergencyLevel eLevelToInform;
 
-    public Contact(String id, String name, String phoneNumber, EmergencyLevel eLevelToInform) {
+    public Contact(final String id, final String name, final String phoneNumber, final EmergencyLevel eLevelToInform) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -30,7 +30,7 @@ public class Contact {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -38,7 +38,7 @@ public class Contact {
         return eLevelToInform;
     }
 
-    public void seteLevelToInform(EmergencyLevel eLevelToInform) {
+    public void seteLevelToInform(final EmergencyLevel eLevelToInform) {
         this.eLevelToInform = eLevelToInform;
     }
 
