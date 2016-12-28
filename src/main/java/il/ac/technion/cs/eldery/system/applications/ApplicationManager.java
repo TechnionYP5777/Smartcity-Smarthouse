@@ -89,6 +89,12 @@ public class ApplicationManager {
         return true;
     }
 
+    /** If the application is installed, but currently open (for display), this will minimize it.
+     * */
+    public void minimize(){
+        //TODO: RON implement
+    }
+    
     /** If the application is installed, but currently closed, this will reopen it.
      */
     public void reopen() {
