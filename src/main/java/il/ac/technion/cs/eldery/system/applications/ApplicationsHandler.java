@@ -1,4 +1,4 @@
- package il.ac.technion.cs.eldery.system.applications;
+package il.ac.technion.cs.eldery.system.applications;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -54,77 +54,80 @@ public class ApplicationsHandler {
 
     Map<String, ApplicationManager> apps = new HashMap<>();
     DatabaseHandler databaseHandler;
-    
-    // ----------- not-public methods ---------------   
-    static <T extends SensorData> Consumer<String> generateSensorListener( final Class<T> sensorClass, 
-            final Consumer<T> functionToRun){
-        return jsonData ->{T data = null;
-                              try {
-                                  data = new ObjectMapper().readValue(jsonData, sensorClass);
-                              } catch (final IOException e) {
-                                  // TODO: Auto-generated catch block 
-                                  //TODO: RON - what is the desired behavior in this case?
-                                  e.printStackTrace();
-                              }
-                              functionToRun.accept(data);
-                           };
+
+    // ----------- not-public methods ---------------
+    static <T extends SensorData> Consumer<String> generateSensorListener(final Class<T> sensorClass, final Consumer<T> functionToRun) {
+        return jsonData -> {
+            T data = null;
+            try {
+                data = new ObjectMapper().readValue(jsonData, sensorClass);
+            } catch (final IOException e) {
+                // TODO: Auto-generated catch block
+                // TODO: RON - what is the desired behavior in this case?
+                e.printStackTrace();
+            }
+            functionToRun.accept(data);
+        };
     }
-    
+
     static Date localTimeToDate(final LocalTime ¢) {
         return Date.from(¢.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
     }
-    
-    
+
     // ----------- public methods -------------------
-    
-    /** Initialize the applicationHandler with the database responsible of managing the data in the current session */
+
+    /** Initialize the applicationHandler with the database responsible of
+     * managing the data in the current session */
     public ApplicationsHandler(final DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
     }
-    
-    public DatabaseHandler getDatabaseHandler(){
+
+    public DatabaseHandler getDatabaseHandler() {
         return databaseHandler;
     }
-    
+
     /** Adds a new application to the system, and presents it to the screen
-     * @throws ApplicationInitializationException 
-     */
+     * @throws ApplicationInitializationException */
     public void addApplication(final String appId, final String jarPath) throws ApplicationInitializationException {
         final ApplicationManager $ = new ApplicationManager(appId, jarPath, this);
-        if(!$.initialize())
+        if (!$.initialize())
             throw new ApplicationInitializationException();
         $.initialize();
-//        $.minimize();
+        // $.minimize();
         apps.put(appId, $);
     }
 
-    /** See {@link SmartHouseApplication#subscribeToSensor(String, Class, Consumer)}
-     * */
-    public final <T extends SensorData> void subscribeToSensor(final String sensorId, final Class<T> sensorClass, 
-            final Consumer<T> functionToRun) throws SensorNotFoundException{
+    /** See
+     * {@link SmartHouseApplication#subscribeToSensor(String, Class, Consumer)} */
+    public final <T extends SensorData> void subscribeToSensor(final String sensorId, final Class<T> sensorClass, final Consumer<T> functionToRun)
+            throws SensorNotFoundException {
         databaseHandler.addListener(sensorId, generateSensorListener(sensorClass, functionToRun));
     }
 
-    /** See {@link SmartHouseApplication#subscribeToSensor(String, LocalTime, Class, Consumer, Boolean)}
-     * */
-    public final <T extends SensorData> void subscribeToSensor(final String sensorId, final LocalTime t, final Class<T> sensorClass, 
+    /** See
+     * {@link SmartHouseApplication#subscribeToSensor(String, LocalTime, Class, Consumer, Boolean)} */
+    public final <T extends SensorData> void subscribeToSensor(final String sensorId, final LocalTime t, final Class<T> sensorClass,
             final Consumer<T> functionToRun, final Boolean repeat) {
         new Timer().schedule(new QueryTimerTask(sensorId, t, generateSensorListener(sensorClass, functionToRun), repeat), localTimeToDate(t));
     }
 
-    /** See {@link SmartHouseApplication#receiveLastEntries(String, Class, int)}
-     * */
-    public final <T extends SensorData> List<T> querySensor(final String sensorId, final Class<T> sensorClass, final int numOfEntries) throws SensorNotFoundException {
+    /** See
+     * {@link SmartHouseApplication#receiveLastEntries(String, Class, int)} */
+    public final <T extends SensorData> List<T> querySensor(final String sensorId, final Class<T> sensorClass, final int numOfEntries)
+            throws SensorNotFoundException {
         final List<T> $ = new LinkedList<>();
         final List<String> $_raw = databaseHandler.getList(sensorId);
-        final Consumer<String> adder = generateSensorListener(sensorClass,x -> $.add(x));
-        for(int i=0; i< numOfEntries && i < $_raw.size(); ++i)//TODO: ELIA varify assumption - newest entry at 0
+        final Consumer<String> adder = generateSensorListener(sensorClass, x -> $.add(x));
+        for (int i = 0; i < numOfEntries && i < $_raw.size(); ++i)// TODO: ELIA
+                                                                  // varify
+                                                                  // assumption
+                                                                  // - newest
+                                                                  // entry at 0
             adder.accept($_raw.get(i));
         return $;
     }
 
-    /** See {@link SmartHouseApplication#sendAlert(String, EmergencyLevel)}
-     * */
+    /** See {@link SmartHouseApplication#sendAlert(String, EmergencyLevel)} */
     public void alertOnAbnormalState(final String message, final EmergencyLevel eLevel) {
         // TODO: ELIA implement
     }

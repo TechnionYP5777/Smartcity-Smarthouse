@@ -44,26 +44,21 @@ public class ApplicationManager {
     public void setReferenceToApplicationsHandler(final ApplicationsHandler referenceToApplicationsHandler) {
         this.referenceToApplicationsHandler = referenceToApplicationsHandler;
     }
-    
-    /**
-     * @return the path to the application's icon
-     */
+
+    /** @return the path to the application's icon */
     public String getIcon() {
-        //TODO: 4Ron - might not be string at some point later
+        // TODO: 4Ron - might not be string at some point later
         return application.getIcon();
     }
 
-    /**
-     * Installs the jar file (by dynamically loading it to the system's run-time).
-     * Initializes the SmartHouseApplication from the jar.
-     * 
-     * This function should be used once (when the application is installed or when the system is initialized).
-     * 
-     * If the application is already installed, false will be returned and nothing will happen.
-     * If the jar file can't be found, or doesn't contain the correct classes, false will be returned and nothing will happen. 
-     * 
-     * @return true if initialization was successful, false otherwise
-     */
+    /** Installs the jar file (by dynamically loading it to the system's
+     * run-time). Initializes the SmartHouseApplication from the jar. This
+     * function should be used once (when the application is installed or when
+     * the system is initialized). If the application is already installed,
+     * false will be returned and nothing will happen. If the jar file can't be
+     * found, or doesn't contain the correct classes, false will be returned and
+     * nothing will happen.
+     * @return true if initialization was successful, false otherwise */
     public boolean initialize() {
         if (application != null)
             return false;
@@ -89,14 +84,14 @@ public class ApplicationManager {
         return true;
     }
 
-    /** If the application is installed, but currently open (for display), this will minimize it.
-     * */
-    public void minimize(){
-        //TODO: RON implement
+    /** If the application is installed, but currently open (for display), this
+     * will minimize it. */
+    public void minimize() {
+        // TODO: RON implement
     }
-    
-    /** If the application is installed, but currently closed, this will reopen it.
-     */
+
+    /** If the application is installed, but currently closed, this will reopen
+     * it. */
     public void reopen() {
         if (application != null)
             application.reopen();
