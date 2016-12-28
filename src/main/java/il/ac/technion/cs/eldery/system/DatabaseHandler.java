@@ -60,15 +60,15 @@ public class DatabaseHandler {
     }
 
     /** Remove a previously added listener
-     * @param sensorID is the id of the sensor which it's listener is to be
+     * @param sensorId is the id of the sensor which it's listener is to be
      *        removed
      * @param listenerId The id given when the listener was added to the system
      * @throws SensorNotFoundException */
-    public void removeListener(final String sensorID, final String listenerId) throws SensorNotFoundException {
-        if (!sensors.containsKey(sensorID))
+    public void removeListener(final String sensorId, final String listenerId) throws SensorNotFoundException {
+        if (!sensors.containsKey(sensorId))
             throw new SensorNotFoundException();
 
-        sensors.get(sensorID).removeListener(listenerId);
+        sensors.get(sensorId).removeListener(listenerId);
     }
 
     /** Queries the info of a sensor.
@@ -76,8 +76,8 @@ public class DatabaseHandler {
      *        external platform
      * @return the most updated data of the sensor, or Optional.empty() if the
      *         request couldn't be completed for any reason */
-    public Optional<String> getLastEntryOf(final String sensorID) {
-        return Optional.ofNullable(sensors.get(sensorID)).filter(t -> !t.isEmpty()).map(t -> t.get(t.size() - 1));
+    public Optional<String> getLastEntryOf(final String sensorId) {
+        return Optional.ofNullable(sensors.get(sensorId)).filter(t -> !t.isEmpty()).map(t -> t.get(t.size() - 1));
     }
 
     /** @param sensorId the ID of the sensor's who's Table is required
