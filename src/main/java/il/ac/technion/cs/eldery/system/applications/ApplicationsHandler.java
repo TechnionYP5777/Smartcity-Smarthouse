@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.system.applications;
+ package il.ac.technion.cs.eldery.system.applications;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -59,19 +59,7 @@ public class ApplicationsHandler {
 
     }
 
-    Map<String, Tuple<ApplicationManager, AppThread>> apps = new HashMap<>();// TODO:
-                                                                             // change
-                                                                             // to
-                                                                             // ApplicationManager
-                                                                             // only
-                                                                             // when
-                                                                             // the
-                                                                             // wanted
-                                                                             // behaviour
-                                                                             // there
-                                                                             // is
-                                                                             // implemented
-    Map<String, QueryTimerTask> timedQuerires = new HashMap<>();
+    Map<String, ApplicationManager> apps = new HashMap<>();
     DatabaseHandler databaseHandler;
 
     /** Initialize the applicationHandler with the database responsible of
@@ -83,10 +71,7 @@ public class ApplicationsHandler {
     /** Adds a new application to the system.
      * @return The id of the application in the system */
     public String addApplication(final ApplicationManager appid, final SmartHouseApplication a) {
-        // TODO: ELIA remove the app param, after ApplicationIdentifier is
-        // completed
-        apps.put(appid.getId(), new Tuple<>(appid, new AppThread(a)));
-        return appid.getId();
+        return null; //todo: ELIA implement
     }
 
     /** Ask for the list of sensorIds registered by a specific commercial name
@@ -149,21 +134,6 @@ public class ApplicationsHandler {
         return $;
     }
 
-    /** Removes an existing registration. The consumer given at registration
-     * will not be called again.
-     * @param sensorId The ID of the sensor that is being listened to, returned
-     *        from inquireAbout(sensorCommercialName)
-     * @param id The id given at registration */
-    public void cancelRegistration(final String sensorId, final String id) {
-        if (timedQuerires.get(id) != null)
-            timedQuerires.get(id).setRepeat(Boolean.FALSE);
-        else
-            try {
-                databaseHandler.removeListener(sensorId, id);
-            } catch (final Exception __) {
-                __.printStackTrace();
-            }
-    }
 
     /** Request for the latest data received by a sensor
      * @param sensorId The ID of the sensor, returned from
