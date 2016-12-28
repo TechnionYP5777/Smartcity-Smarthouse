@@ -30,22 +30,23 @@ public abstract class Message {
     }
 
     /** Sends the message to the specified destination.
-     * @param ip the IP address of the destination
-     * @param port the port of the destination
-     * @param waitForResponse <code> true </code> if the sender expects a
-     *        response, <code> false </code> otherwise.
+     * @param out a PrintWrite object that was created from a socket connected
+     *        to the destination
+     * @param in a BufferedReader object that was created from a socket
+     *        connected to the destination.If a response from the destination is
+     *        not requested, <code> null </code> should be sent.
      * @return the response from the destination, if requested. If an error
-     *         occurred or if a response was not requested, null will be
-     *         returned. */
-    public String send(final PrintWriter out, final BufferedReader in, final boolean waitForResponse) {
+     *         occurred or if a response was not requested, <code> null </code>
+     *         will be returned. */
+    public String send(final PrintWriter out, final BufferedReader in) {
         out.println(toJson());
-        if (!waitForResponse)
-            return null;
-        try {
-            return in.readLine();
-        } catch (final IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        if (in != null)
+            try {
+                return in.readLine();
+            } catch (final IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        return null;
     }
 }

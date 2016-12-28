@@ -55,7 +55,7 @@ public abstract class Sensor {
         } catch (final IOException e) {
             e.printStackTrace();
         }
-        final String $ = new RegisterMessage(id, commName).send(out, in, true);
+        final String $ = new RegisterMessage(id, commName).send(out, in);
         return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
     }
 
@@ -64,7 +64,7 @@ public abstract class Sensor {
      * to their values.
      * @param data observations to send to the system */
     public void updateSystem(final Map<String, String> data) {
-        new UpdateMessage(id, data).send(out, in, false);
+        new UpdateMessage(id, data).send(out, null);
     }
 
     /** Returns the names of the parameters that will be sent to the system.

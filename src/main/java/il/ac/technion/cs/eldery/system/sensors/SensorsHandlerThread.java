@@ -42,6 +42,7 @@ public class SensorsHandlerThread extends Thread {
                 System.out.println(input);
                 final Message message = MessageFactory.create(input);
                 if (message == null) {
+                    new AnswerMessage(Answer.FAILURE).send(out, null);
                     out.println(new AnswerMessage(Answer.FAILURE).toJson());
                     continue;
                 }
@@ -74,7 +75,7 @@ public class SensorsHandlerThread extends Thread {
 
     private void handleRegisterMessage(final PrintWriter out, final RegisterMessage ¢) {
         databaseHandler.addSensor(¢.sensorId, ¢.sensorCommName, 100);
-        out.println(new AnswerMessage(Answer.SUCCESS).toJson());
+        new AnswerMessage(Answer.SUCCESS).send(out, null);
     }
 
     private void handleUpdateMessage(final UpdateMessage m) {
