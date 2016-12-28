@@ -2,6 +2,7 @@ package il.ac.technion.cs.eldery.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -79,5 +80,21 @@ public class ListenableList<T> extends ArrayList<T> {
      * @param id id of the listener to be removed */
     public void removeListener(final String id) {
         listeners.remove(id);
+    }
+
+    public T getLastEntry() {
+        return super.isEmpty() ? null : get(size() - 1);
+    }
+
+    public List<T> getLastKEntries(final int k) {
+        if (super.isEmpty())
+            return null;
+
+        final List<T> $ = new ArrayList<>();
+        final int position = k > super.size() ? 0 : super.size() - k;
+        for (int ¢ = position; ¢ < super.size(); ++¢)
+            $.add(super.get(¢));
+        return $;
+
     }
 }
