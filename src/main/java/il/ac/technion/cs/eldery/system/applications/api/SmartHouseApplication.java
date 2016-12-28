@@ -60,12 +60,12 @@ public abstract class SmartHouseApplication extends Application {
         return null;
     }
     
-    public <T extends SensorData> T receiveLastEntry(final String sensorId, final Class<T> sensorClass) {
+    public final <T extends SensorData> T receiveLastEntry(final String sensorId, final Class<T> sensorClass) {
       //TODO: Elia - call some applicationsHandler function
         return null;
     }
 
-    public void sendAlert(String msg) {
+    public final void sendAlert(String msg) {
       //TODO: call some applicationsHandler function
     }
     
