@@ -28,7 +28,9 @@ public abstract class SmartHouseApplication extends Application {
      * Here all of the sensors subscriptions must occur */
     public abstract void onLoad();
     
-    public abstract String getIcon();
+    public String getIcon() {
+        return "";
+    }
     
     @Override public void start(Stage s) throws Exception {
         firstStage = s;
