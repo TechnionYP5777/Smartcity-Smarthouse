@@ -28,6 +28,7 @@ public abstract class SmartHouseApplication extends Application {
      * Here all of the sensors subscriptions must occur */
     public abstract void onLoad();
     
+    @SuppressWarnings("static-method")
     public String getIcon() {
         return "";
     }
@@ -44,11 +45,13 @@ public abstract class SmartHouseApplication extends Application {
         Platform.runLater(() -> firstStage.setIconified(false));
     }
     
-    
-    
-    
-    
-    
+    /** Ask for the list of sensorIds registered by a specific commercial name
+     * @param sensorCommercialName the sensor in question
+     * @return a list of IDs of those sensors in the system. They can be used in
+     *         any "sensorId" field in any method */
+    public List<String> InqireAbout(final String sensorCommercialName) {
+        return applicationsHandler.getDatabaseHandler().getSensors(sensorCommercialName);
+    }
     
     public final <T extends SensorData> void subscribeToSensor(final String sensorId, 
             final Class<T> sensorClass, final Consumer<T> functionToRun) {

@@ -18,6 +18,7 @@ import il.ac.technion.cs.eldery.system.AppThread;
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.exceptions.FailedApplicationInitializationException;
 import il.ac.technion.cs.eldery.utils.Generator;
 import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.utils.Tuple;
@@ -68,18 +69,21 @@ public class ApplicationsHandler {
         this.databaseHandler = databaseHandler;
     }
 
-    /** Adds a new application to the system.
-     * @return The id of the application in the system */
-    public String addApplication(final ApplicationManager appid, final SmartHouseApplication a) {
-        return null; //todo: ELIA implement
+    /** Adds a new application to the system, and presents it to the screen
+     * @throws FailedApplicationInitializationException 
+     */
+    public void addApplication(final String appId, final String jarPath) throws FailedApplicationInitializationException {
+        ApplicationManager $ = new ApplicationManager(appId, jarPath, this);
+        if(!$.initialize()){
+            throw new FailedApplicationInitializationException();
+        }
+        $.initialize();
+        $.minimize();
+        apps.put(appId, $);
     }
-
-    /** Ask for the list of sensorIds registered by a specific commercial name
-     * @param sensorCommercialName the sensor in question
-     * @return a list of IDs of those sensors in the system. They can be used in
-     *         any "sensorId" field in any method */
-    @SuppressWarnings({ "static-method" }) public List<String> InqireAbout(final String sensorCommercialName) {
-        return Collections.emptyList(); // TODO: implement in bunny
+    
+    public DatabaseHandler getDatabaseHandler(){
+        return databaseHandler;
     }
 
     /** Allows registration to a sensor. on update, the data will be given to
@@ -97,7 +101,7 @@ public class ApplicationsHandler {
     public String registerToSensor(final String id, final String sensorId, final Predicate<Table<String, String>> notifyWhen,
             final Consumer<Table<String, String>> notifee, final int numOfEntries) {
         try {
-            final AppThread $ = apps.get(id).right;
+//            final AppThread $ = apps.get(id).right;
             final String eventId = $.registerEventConsumer(notifee);
             /* TODO: ELIA- this code should be changed according to the changes
              * in DatabaseHandler return databaseHandler.addListener(sensorId, t
@@ -129,7 +133,6 @@ public class ApplicationsHandler {
     public String registerToSensor(final String sensorId, final LocalTime t, final Consumer<Table<String, String>> notifee, final Boolean repeat) {
         final QueryTimerTask task = new QueryTimerTask(sensorId, t, notifee, repeat);
         final String $ = Generator.GenerateUniqueIDstring();
-        timedQuerires.put($, task);
         new Timer().schedule(task, localTimeToDate(t));
         return $;
     }
