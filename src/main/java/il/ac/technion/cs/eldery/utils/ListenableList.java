@@ -59,7 +59,11 @@ public class ListenableList<T> extends ArrayList<T> {
         return super.add(e);
     }
 
+    /** this method fails if the list is limited the given index is bigger than
+     * the list limit. */
     @Override public void add(final int index, final T element) {
+        if (limitedSize && index > this.maxCapacity - 1)
+            return;
         listeners.values().forEach(listener -> listener.accept(element));
         if (this.limitedSize && super.size() == this.getMaxCapacity())
             super.remove(0);

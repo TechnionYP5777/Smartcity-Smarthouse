@@ -1,5 +1,7 @@
 package il.ac.technion.cs.eldery.utils;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,6 +31,22 @@ public class ListenableListTest {
         Assert.assertEquals(3, limitedList.size());
         Assert.assertEquals("B", limitedList.get(ListenableList.OLDEST_DATA_INDEX));
         Assert.assertEquals("D", limitedList.get(limitedList.size() - 1));
+
+        unlimitedList.add(2, "X");
+        Assert.assertEquals("X", unlimitedList.getLastEntry());
+
+        unlimitedList.add(2, "Y");
+        Assert.assertEquals(4, unlimitedList.size());
+        Assert.assertNotEquals("Y", unlimitedList.getLastEntry());
+        Assert.assertEquals("X", unlimitedList.getLastEntry());
+        Assert.assertEquals("Y", unlimitedList.get(2));
+
+        limitedList.add(0, "X");
+        Assert.assertEquals("X", limitedList.get(ListenableList.OLDEST_DATA_INDEX));
+        limitedList.add(4, "OH NO");
+        Assert.assertEquals(3, limitedList.size());
+        Assert.assertNotEquals("OH NO", limitedList.getLastEntry());
+
     }
 
     @Test public void capacityTest() {
@@ -51,4 +69,19 @@ public class ListenableListTest {
 
     }
 
+    @Test public void getLastKEntriesTest() {
+
+        Assert.assertEquals(0, limitedList.size());
+        final List<String> noEntries = limitedList.getLastKEntries(0);
+        Assert.assertNull(noEntries);
+        limitedList.add("info1");
+        limitedList.add("moreInfo");
+        limitedList.add("moreInfo2");
+
+        final List<String> twoEntries = limitedList.getLastKEntries(2);
+        Assert.assertEquals(2, twoEntries.size());
+        Assert.assertEquals("moreInfo2", twoEntries.get(twoEntries.size() - 1));
+
+        Assert.assertEquals(3, limitedList.getLastKEntries(3).size());
+    }
 }
