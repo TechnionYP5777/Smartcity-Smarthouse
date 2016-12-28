@@ -80,13 +80,13 @@ public class DatabaseHandler {
         return Optional.ofNullable(sensors.get(sensorID)).filter(t -> !t.isEmpty()).map(t -> t.get(t.size() - 1));
     }
 
-    /** @param sensorID the ID of the sensor's who's Table is required
+    /** @param sensorId the ID of the sensor's who's Table is required
      * @return the Table with the information of the wanted sensor
      * @throws SensorNotFoundException */
-    public ListenableList<String> getList(final String $) throws SensorNotFoundException {
-        if (!sensors.containsKey($))
+    public ListenableList<String> getList(final String sensorId) throws SensorNotFoundException {
+        if (!sensors.containsKey(sensorId))
             throw new SensorNotFoundException();
-        return sensors.get($);
+        return sensors.get(sensorId);
     }
 
     /** Queries the location of a sensor
