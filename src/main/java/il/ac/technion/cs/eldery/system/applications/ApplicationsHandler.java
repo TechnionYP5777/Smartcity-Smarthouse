@@ -1,5 +1,6 @@
  package il.ac.technion.cs.eldery.system.applications;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -14,11 +15,15 @@ import java.util.TimerTask;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import il.ac.technion.cs.eldery.system.AppThread;
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
+import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationInitializationException;
+import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.eldery.utils.Generator;
 import il.ac.technion.cs.eldery.utils.Table;
 import il.ac.technion.cs.eldery.utils.Tuple;
@@ -31,29 +36,22 @@ import il.ac.technion.cs.eldery.utils.Tuple;
 public class ApplicationsHandler {
     private class QueryTimerTask extends TimerTask {
         Boolean repeat;
-        String sensorCommercialName;
+        String sensorId;
         LocalTime t;
-        Consumer<Table<String, String>> notifee;
+        Consumer<String> notifee;
 
-        QueryTimerTask(final String sensorCommercialName, final LocalTime t, final Consumer<Table<String, String>> notifee, final Boolean repeat) {
+        QueryTimerTask(final String sensorId, final LocalTime t, final Consumer<String> notifee, final Boolean repeat) {
             this.repeat = repeat;
             this.notifee = notifee;
             this.t = t;
-            this.sensorCommercialName = sensorCommercialName;
-        }
-
-        void setRepeat(final Boolean ¢) {
-            repeat = ¢;
+            this.sensorId = sensorId;
         }
 
         /* (non-Javadoc)
          * 
          * @see java.util.TimerTask#run() */
         @Override @SuppressWarnings({ "boxing" }) public void run() {
-            /* TODO: ELIA- this code should be changed according to the changes
-             * in DatabaseHandler
-             * notifee.accept(querySensor(sensorCommercialName).orElse(new
-             * Table<String, String>())); */
+            notifee.accept(databaseHandler.getLastEntryOf(sensorId).orElse(new String()));
             if (repeat)
                 new Timer().schedule(this, localTimeToDate(t));
         }
@@ -62,9 +60,30 @@ public class ApplicationsHandler {
 
     Map<String, ApplicationManager> apps = new HashMap<>();
     DatabaseHandler databaseHandler;
-
-    /** Initialize the applicationHandler with the database responsible of
-     * managing the data in the current session */
+    
+    // ----------- not-public methods ---------------   
+    static <T extends SensorData> Consumer<String> generateSensorListener( final Class<T> sensorClass, 
+            final Consumer<T> functionToRun){
+        return jsonData ->{T data = null;
+                              try {
+                                  data = new ObjectMapper().readValue(jsonData, sensorClass);
+                              } catch (IOException e) {
+                                  // TODO: Auto-generated catch block 
+                                  //TODO: RON - what is the desired behavior in this case?
+                                  e.printStackTrace();
+                              }
+                              functionToRun.accept(data);
+                           };
+    }
+    
+    static Date localTimeToDate(final LocalTime ¢) {
+        return Date.from(¢.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
+    }
+    
+    
+    // ----------- public methods -------------------
+    
+    /** Initialize the applicationHandler with the database responsible of managing the data in the current session */
     public ApplicationsHandler(final DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
     }
@@ -85,56 +104,20 @@ public class ApplicationsHandler {
 //        $.minimize();
         apps.put(appId, $);
     }
-    
-    /** Allows registration to a sensor. on update, the data will be given to
-     * the consumer for farther processing
-     * @param id The id given to the application when added to the system
-     * @param sensorId The ID of the sensor, returned from
-     *        inquireAbout(sensorCommercialName)
-     * @param notifyWhen A predicate that will be called every time the sensor
-     *        updates the date. If it returns true the consumer will be called
-     * @param notifee A consumer that will receive the new data from the sensor
-     * @param numOfEntries The number of entries the application want to receive
-     *        from the sensor upon update
-     * @return The registration id if the action was successful, otherwise
-     *         <code>null</code> */
-    public String registerToSensor(final String id, final String sensorId, final Predicate<Table<String, String>> notifyWhen,
-            final Consumer<Table<String, String>> notifee, final int numOfEntries) {
-//        try {
-////            final AppThread $ = apps.get(id).right;
-////            final String eventId = $.registerEventConsumer(notifee);
-//            /* TODO: ELIA- this code should be changed according to the changes
-//             * in DatabaseHandler return databaseHandler.addListener(sensorId, t
-//             * -> { if (notifyWhen.test(t)) try { $.notifyOnEvent(eventId,
-//             * t.receiveKLastEntries(numOfEntries)); } catch (final
-//             * ApplicationNotRegisteredToEvent ¢) { ¢.printStackTrace(); }
-//             * }); */
-//        } catch (@SuppressWarnings("unused") final Exception __) {
-//            return null;
-//        }
-        return null; // Added temporary until bug is fixed
+
+    /** See {@link SmartHouseApplication#subscribeToSensor(String, Class, Consumer)}
+     * */
+    public final <T extends SensorData> void subscribeToSensor(final String sensorId, final Class<T> sensorClass, 
+            final Consumer<T> functionToRun) throws SensorNotFoundException{
+        databaseHandler.addListener(sensorId, generateSensorListener(sensorClass, functionToRun));
     }
 
-    static Date localTimeToDate(final LocalTime ¢) {
-        return Date.from(¢.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
-    }
-
-    /** Allows registration to a sensor. on time, the sensor will be polled and
-     * the data will be given to the consumer for farther processing
-     * @param sensorId The ID of the sensor, returned from
-     *        inquireAbout(sensorCommercialName)
-     * @param t the time when a polling is requested
-     * @param notifee A consumer that will receive the new data from the sensor,
-     *        or an empty table if the was no new information.
-     * @param repeat <code>false</code> if you want to query the sensor only
-     *        once, <code>true</code> otherwise (query at this time FOREVER)
-     * @return The registration id if the action was successful, otherwise
-     *         <code>null</code> */
-    public String registerToSensor(final String sensorId, final LocalTime t, final Consumer<Table<String, String>> notifee, final Boolean repeat) {
-        final QueryTimerTask task = new QueryTimerTask(sensorId, t, notifee, repeat);
-        final String $ = Generator.GenerateUniqueIDstring();
+    /** See {@link SmartHouseApplication#subscribeToSensor(String, LocalTime, Class, Consumer, Boolean)}
+     * */
+    public final <T extends SensorData> void subscribeToSensor(final String sensorId, final LocalTime t, final Class<T> sensorClass, 
+            final Consumer<T> functionToRun, final Boolean repeat) {
+        final QueryTimerTask task = new QueryTimerTask(sensorId, t, generateSensorListener(sensorClass, functionToRun), repeat);
         new Timer().schedule(task, localTimeToDate(t));
-        return $;
     }
 
 
