@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.function.Consumer;
 
-import il.ac.technion.cs.eldery.system.SystemCore;
+import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 import javafx.application.Application;
@@ -15,6 +15,7 @@ import javafx.stage.Stage;
  * on the system, MUST extend this class
  * @author RON
  * @author roysh
+ * @author Elia Traore
  * @since 8.12.2016 */
 public abstract class SmartHouseApplication extends Application {
     private ApplicationsHandler applicationsHandler;
@@ -22,8 +23,8 @@ public abstract class SmartHouseApplication extends Application {
 
     public SmartHouseApplication() {}
 
-    public void setApplicationsHandler(ApplicationsHandler h) {
-        this.applicationsHandler = h;
+    public void setApplicationsHandler(final ApplicationsHandler h) {
+        applicationsHandler = h;
     }
 
     /** This will run when the system loads the app.
@@ -35,7 +36,7 @@ public abstract class SmartHouseApplication extends Application {
         return "";
     }
     
-    @Override public void start(Stage s) throws Exception {
+    @Override public void start(final Stage s) throws Exception {
         firstStage = s;
         firstStage.setOnCloseRequest(event -> {
             event.consume();
@@ -79,18 +80,35 @@ public abstract class SmartHouseApplication extends Application {
         applicationsHandler.subscribeToSensor(sensorId, t, sensorClass, functionToRun, repeat);
     }
     
+    /** Request for the latest k entries of data received by a sensor
+     * @param sensorId The ID of the sensor, returned from inquireAbout(sensorCommercialName)
+     * @param sensorClass The class representing the sensor being listened to, defined by the developer
+     * @param numOfEntries the number of entries desired
+     * @return the list of the <code> &lt;=k </code> available entries 
+     * @throws SensorNotFoundException */
     public final <T extends SensorData> List<T> receiveLastEntries(final String sensorId, 
-            final Class<T> sensorClass, final int numOfEntries) {
-      //TODO: Elia - call some applicationsHandler function
-        return null;
+            final Class<T> sensorClass, final int numOfEntries) throws SensorNotFoundException {
+        return applicationsHandler.querySensor(sensorId, sensorClass, numOfEntries);
     }
     
-    public final <T extends SensorData> T receiveLastEntry(final String sensorId, final Class<T> sensorClass) {
-        return receiveLastEntries(sensorId, sensorClass, 1);
+    /** Request the latest data received by the sensor in the system
+     * @param sensorId The ID of the sensor, returned from inquireAbout(sensorCommercialName)
+     * @param sensorClass The class representing the sensor being listened to, defined by the developer
+     * @return the latest data or null if none is available 
+     * @throws SensorNotFoundException 
+     * */
+    public final <T extends SensorData> T receiveLastEntry(final String sensorId, final Class<T> sensorClass) throws SensorNotFoundException {
+        final List<T> $ = receiveLastEntries(sensorId, sensorClass, 1);
+        return $.isEmpty() ? null : $.get(0);
     }
 
-    public final void sendAlert(String msg) {
-      //TODO: call some applicationsHandler function
+    /** Report an abnormality in the expected schedule. The system will contact
+     * the needed personal, according to the urgency level
+     * @param message Specify the abnormality, will be presented to the
+     *        contacted personal
+     * @param eLevel The level of personnel needed in the situation */
+    public final void sendAlert(final String message, final EmergencyLevel eLevel) {
+      applicationsHandler.alertOnAbnormalState(message, eLevel);
     }
     
     

@@ -14,7 +14,7 @@ import il.ac.technion.cs.eldery.utils.ListenableList;
 /** The API required by ApplicationHandler in order to allow it desired
  * functionalities.
  * @author Sharon
- * @author Elia
+ * @author Elia Traore
  * @author Inbal Zukerman
  * @since Dec 13, 2016 */
 public class DatabaseHandler {
