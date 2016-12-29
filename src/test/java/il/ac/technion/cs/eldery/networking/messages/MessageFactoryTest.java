@@ -14,7 +14,7 @@ public class MessageFactoryTest {
     }
 
     @Test public void recognizeAnswerMessages() {
-        assert MessageFactory.create("{\"type\": \"answer\"}") instanceof UpdateMessage;
+        assert MessageFactory.create("{\"type\": \"answer\"}") instanceof AnswerMessage;
     }
 
     @Test public void recognizeUnknownMessages() {
