@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.applications.installer.AppInstallHelper;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import javafx.application.Platform;
 import javafx.stage.Stage;

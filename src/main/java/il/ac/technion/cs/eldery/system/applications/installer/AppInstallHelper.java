@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.system.applications;
+package il.ac.technion.cs.eldery.system.applications.installer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +19,7 @@ import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
  * @since 09-12-2016 */
 public class AppInstallHelper {
 
+    // [start] Public - loadApplication functions
     /** Dynamically loads the classes from the jar file to the JVM. Finds the
      * one class that extends SmartHouseApplication, and returns an instance of
      * it.
@@ -41,7 +42,9 @@ public class AppInstallHelper {
     public static SmartHouseApplication loadApplication(final List<String> classesNames) throws AppInstallerException {
         return loadApplication_aux(classesNames, ClassLoader.getSystemClassLoader());
     }
+    // [end]
 
+    // [start] Private - loadApplication aux
     /** loads the classes with the ClassLoader and finds the class that extends
      * SmartHouseApplication, instantiates it, and returns it
      * @param classNames
@@ -62,7 +65,9 @@ public class AppInstallHelper {
             throw new AppInstallerException(AppInstallerException.ErrorCode.ILLEGAL_ACCESS_ERROR, ¢.getMessage());
         }
     }
+    // [end]
 
+    // [start] Private - load from classes names list
     /** finds all the classes in cs that extend filterClass
      * @param cs
      * @param filterClass
@@ -87,7 +92,9 @@ public class AppInstallHelper {
             }
         return $;
     }
+    // [end]
 
+    // [start] Private - jar to classes names list
     /** opens the jar file, and returns the names of its classes
      * @param jarFilePath
      * @return a list of class names from the jar file
@@ -113,4 +120,5 @@ public class AppInstallHelper {
     private static String getClassNameFromJarEntry(final JarEntry $) {
         return $.getName().substring(0, $.getName().length() - 6).replace('/', '.');
     }
+    // [end]
 }

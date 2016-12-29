@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.examples.MyTestClass1;
+import il.ac.technion.cs.eldery.system.applications.installer.AppInstallHelper;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 
 public class AppInstallHelperTest {
