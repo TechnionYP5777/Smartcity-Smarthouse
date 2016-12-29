@@ -3,7 +3,10 @@ package il.ac.technion.cs.eldery.networking.messages;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.naming.InitialContext;
+
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -22,11 +25,78 @@ public class UpdateMessageTest {
         data.put("temperature", "100");
         final UpdateMessage message = new UpdateMessage(sensor.getId(), data);
         final JsonParser parser = new JsonParser();
-        
+
         Assert.assertEquals(parser.parse(message.toJson()), parser.parse(new Gson().toJson(message)));
     }
 
     @Test public void messageTypeIsUpdate() {
-        Assert.assertEquals(MessageType.UPDATE, (new RegisterMessage("00", "a sensor")).getType());
+        Assert.assertEquals(MessageType.UPDATE, (new UpdateMessage("00")).getType());
+    }
+
+    @Test public void initialDataIsEmpty() {
+        Assert.assertEquals(0, (new UpdateMessage("00:11:22:33")).getData().size());
+    }
+
+    @Test public void successfullyAddTwoObservations() {
+        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        message.addObservation("on", "true");
+        message.addObservation("temp", "100");
+
+        Assert.assertEquals(2, message.getData().size());
+        assert message.getData().containsKey("on");
+        assert message.getData().containsValue("true");
+        assert message.getData().containsKey("temp");
+        assert message.getData().containsValue("100");
+    }
+
+    @Test public void successfullyRemoveObservations() {
+        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        message.addObservation("on", "true");
+        message.addObservation("temp", "100");
+        message.addObservation("pulse", "250");
+        message.removeObservation("on");
+        message.removeObservation("pulse");
+
+        Assert.assertEquals(1, message.getData().size());
+        assert message.getData().containsKey("temp");
+        assert message.getData().containsValue("100");
+        assert !message.getData().containsKey("on");
+        assert !message.getData().containsValue("true");
+        assert !message.getData().containsKey("pulse");
+        assert !message.getData().containsValue("250");
+    }
+
+    @Test public void dataReturnedIsCorrect() {
+        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        message.addObservation("on", "true");
+        message.addObservation("temp", "100");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("on", "true");
+        map.put("temp", "100");
+
+        Assert.assertEquals(map, message.getData());
+    }
+
+    @Test public void correctObservationsAreReturned() {
+        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        message.addObservation("on", "true");
+        message.addObservation("temp", "100");
+
+        Assert.assertEquals("true", message.getObservation("on"));
+        Assert.assertEquals("100", message.getObservation("temp"));
+    }
+
+    @Test public void toStringContainsAllNeededData() {
+        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        message.addObservation("on", "true");
+        message.addObservation("temp", "100");
+        String $ = message + "";
+
+        assert $.contains("00:11:22:33");
+        assert $.contains("on");
+        assert $.contains("true");
+        assert $.contains("temp");
+        assert $.contains("100");
     }
 }
