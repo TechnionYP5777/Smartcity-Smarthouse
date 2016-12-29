@@ -22,6 +22,11 @@ public class UpdateMessageTest {
         data.put("temperature", "100");
         final UpdateMessage message = new UpdateMessage(sensor.getId(), data);
         final JsonParser parser = new JsonParser();
+        
         Assert.assertEquals(parser.parse(message.toJson()), parser.parse(new Gson().toJson(message)));
+    }
+
+    @Test public void messageTypeIsUpdate() {
+        Assert.assertEquals(MessageType.UPDATE, (new RegisterMessage("00", "a sensor")).getType());
     }
 }

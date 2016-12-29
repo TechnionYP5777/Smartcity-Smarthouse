@@ -8,13 +8,20 @@ import com.google.gson.JsonParser;
 
 import il.ac.technion.cs.eldery.sensors.stove.StoveSensor;
 
-/** @author Yarden
+/** @author Sharon
+ * @author Yarden
  * @since 11.12.16 */
+@SuppressWarnings("static-method")
 public class RegisterMessageTest {
-    @Test @SuppressWarnings("static-method") public void basicRegisterMessageTest() {
+    @Test public void basicRegisterMessageTest() {
         final StoveSensor sensor = new StoveSensor("00:11:22:33:44:55", "iStoves", "1:1:1:1", 80);
         final RegisterMessage message = new RegisterMessage(sensor.getId(), sensor.getCommName());
         final JsonParser parser = new JsonParser();
+        
         Assert.assertEquals(parser.parse(message.toJson()), parser.parse(new Gson().toJson(message)));
+    }
+
+    @Test public void messageTypeIsRegistration() {
+        Assert.assertEquals(MessageType.REGISTRATION, (new RegisterMessage("00", "a sensor")).getType());
     }
 }
