@@ -23,7 +23,7 @@ public class AnswerMessageTest {
         Assert.assertEquals(parser.parse(message.toJson()), parser.parse(new Gson().toJson(message)));
     }
 
-    @Test public void messageTypeIsUpdate() {
+    @Test public void messageTypeIsAnswer() {
         Assert.assertEquals(MessageType.ANSWER, (new AnswerMessage(Answer.FAILURE)).getType());
         Assert.assertEquals(MessageType.ANSWER, (new AnswerMessage(Answer.SUCCESS)).getType());
     }
