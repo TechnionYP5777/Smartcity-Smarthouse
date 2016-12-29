@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.applications.gui;
+package il.ac.technion.cs.eldery.applications.stove;
 
 import java.net.URL;
 import java.util.ResourceBundle;
