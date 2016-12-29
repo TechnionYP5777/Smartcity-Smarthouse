@@ -46,6 +46,10 @@ public abstract class SmartHouseApplication extends Application {
     public final void reopen() {
         Platform.runLater(() -> firstStage.setIconified(false));
     }
+    
+    public final void minimize() {
+        Platform.runLater(() -> firstStage.setIconified(true));
+    }
 
     /** Ask for the list of sensorIds registered by a specific commercial name
      * @param sensorCommercialName the sensor in question
