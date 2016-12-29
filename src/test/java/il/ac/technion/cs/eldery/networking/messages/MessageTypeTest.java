@@ -27,4 +27,9 @@ public class MessageTypeTest {
         Assert.assertEquals(MessageType.ANSWER, MessageType.fromString("answer".toUpperCase()));
         Assert.assertEquals(MessageType.ANSWER, MessageType.fromString("aNsWeR"));
     }
+
+    @Test public void unknownStringOfMessageTypeReturnsNull() {
+        Assert.assertNull(MessageType.fromString("sup"));
+        Assert.assertNull(MessageType.fromString("this is not a legal message type, I wonder what will be returned?"));
+    }
 }

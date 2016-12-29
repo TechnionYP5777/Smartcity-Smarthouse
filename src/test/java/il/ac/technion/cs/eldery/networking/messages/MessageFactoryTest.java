@@ -13,6 +13,10 @@ public class MessageFactoryTest {
         assert MessageFactory.create("{\"type\": \"update\"}") instanceof UpdateMessage;
     }
 
+    @Test public void recognizeAnswerMessages() {
+        assert MessageFactory.create("{\"type\": \"answer\"}") instanceof UpdateMessage;
+    }
+
     @Test public void recognizeUnknownMessages() {
         Assert.assertNull(MessageFactory.create("{\"type\": \":<\"}"));
     }
