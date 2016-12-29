@@ -4,6 +4,8 @@ import il.ac.technion.cs.eldery.sensors.sos.SosSensor;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -20,14 +22,16 @@ public class SosSensorSimulator extends Application {
         sensor = new SosSensor("00:00:00:00:00:01", "iSOS", "127.0.0.1", 40001);
         for (boolean res = false; !res;)
             res = sensor.register();
+        Image sosImage = new Image(getClass().getResourceAsStream("sos_icon.png"), 320, 0, true, true);
         Button sosButton = new Button();
-        sosButton.setText("SOS");
+        sosButton.setGraphic(new ImageView(sosImage));
+        sosButton.setStyle("-fx-focus-color: transparent;");
         sosButton.setOnAction(event -> {
             sensor.updateSystem();
         });
         StackPane layout = new StackPane();
         layout.getChildren().add(sosButton);
-        Scene scene = new Scene(layout, 300, 300);
+        Scene scene = new Scene(layout, 320, 268);
         s.setScene(scene);
         s.setTitle("SOS Sensor Simulator");
         s.show();
