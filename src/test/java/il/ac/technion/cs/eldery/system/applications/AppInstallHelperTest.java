@@ -55,11 +55,19 @@ public class AppInstallHelperTest {
         }
     }
 
-    @Test public void testLoadBadApp() {
+    @Test public void testLoadBadApp_moreThanOneImplError() {
         try {
             AppInstallHelper.loadApplication(classesNames_app2);
         } catch (final AppInstallerException ¢) {
             Assert.assertEquals(¢.getErrorCode(), AppInstallerException.ErrorCode.MORE_THAN_ONE_IMPL_ERROR);
+        }
+    }
+    
+    @Test public void testLoadBadApp_noImplError() {
+        try {
+            AppInstallHelper.loadApplication(classesNames_app3);
+        } catch (final AppInstallerException ¢) {
+            Assert.assertEquals(¢.getErrorCode(), AppInstallerException.ErrorCode.NO_IMPL_ERROR);
         }
     }
 }
