@@ -20,8 +20,23 @@ public class RegisterMessageTest {
         
         Assert.assertEquals(parser.parse(message.toJson()), parser.parse(new Gson().toJson(message)));
     }
+    
+    @Test public void basicRegisterMessageTest2() {
+        final StoveSensor sensor = new StoveSensor("00:11:22:33:44:55", "iStoves", "1:1:1:1", 80);
+        final RegisterMessage message = new RegisterMessage(sensor);
+        final JsonParser parser = new JsonParser();
+        
+        Assert.assertEquals(parser.parse(message.toJson()), parser.parse(new Gson().toJson(message)));
+    }
 
     @Test public void messageTypeIsRegistration() {
         Assert.assertEquals(MessageType.REGISTRATION, (new RegisterMessage("00", "a sensor")).getType());
+    }
+    
+    @Test public void toStringContainsRelevantData() {
+        final String $ = new RegisterMessage("00:11:22", "iStoves") + "";
+
+        assert $.contains("00:11:22");
+        assert $.contains("iStoves");
     }
 }
