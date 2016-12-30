@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.installer.examples.MyTestClass1;
-import il.ac.technion.cs.eldery.system.applications.installer.AppInstallHelper;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 
 public class AppInstallHelperTest {
@@ -63,7 +62,7 @@ public class AppInstallHelperTest {
             Assert.assertEquals(¢.getErrorCode(), AppInstallerException.ErrorCode.MORE_THAN_ONE_IMPL_ERROR);
         }
     }
-    
+
     @Test public void testLoadBadApp_noImplError() {
         try {
             AppInstallHelper.loadApplication(classesNames_app3);

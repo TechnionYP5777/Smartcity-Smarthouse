@@ -34,7 +34,7 @@ public class RegisterMessageTest extends MessageTest {
     }
 
     @Test public void messageTypeIsRegistration() {
-        Assert.assertEquals(MessageType.REGISTRATION, (new RegisterMessage("00", "a sensor")).getType());
+        Assert.assertEquals(MessageType.REGISTRATION, new RegisterMessage("00", "a sensor").getType());
     }
 
     @Test public void toStringContainsRelevantData() {

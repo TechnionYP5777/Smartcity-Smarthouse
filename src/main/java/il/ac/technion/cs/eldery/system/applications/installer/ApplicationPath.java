@@ -17,18 +17,18 @@ public class ApplicationPath<T> {
         PACKAGE_NAME;
     }
 
-    private PathType pathType;
-    private T path;
+    private final PathType pathType;
+    private final T path;
 
-    public ApplicationPath(PathType pathType, T path) {
+    public ApplicationPath(final PathType pathType, final T path) {
         this.pathType = pathType;
         this.path = path;
     }
-    
+
     public PathType getPathType() {
         return pathType;
     }
-    
+
     public T getPath() {
         return path;
     }
@@ -46,7 +46,7 @@ public class ApplicationPath<T> {
                 return null;
         }
     }
-    
+
     @Override public String toString() {
         return "ApplicationPath [type=" + pathType + ", path=" + path + "]";
     }

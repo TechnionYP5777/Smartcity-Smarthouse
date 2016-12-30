@@ -18,20 +18,20 @@ public class SosSensorSimulator extends Application {
         launch(args);
     }
 
-    @Override public void start(Stage s) throws Exception {
+    @Override public void start(final Stage s) throws Exception {
         sensor = new SosSensor("00:00:00:00:00:01", "iSOS", "127.0.0.1", 40001);
         for (boolean res = false; !res;)
             res = sensor.register();
-        Image sosImage = new Image(getClass().getResourceAsStream("sos_icon.png"), 320, 0, true, true);
-        Button sosButton = new Button();
+        final Image sosImage = new Image(getClass().getResourceAsStream("sos_icon.png"), 320, 0, true, true);
+        final Button sosButton = new Button();
         sosButton.setGraphic(new ImageView(sosImage));
         sosButton.setStyle("-fx-focus-color: transparent;");
         sosButton.setOnAction(event -> {
             sensor.updateSystem();
         });
-        StackPane layout = new StackPane();
+        final StackPane layout = new StackPane();
         layout.getChildren().add(sosButton);
-        Scene scene = new Scene(layout, 320, 268);
+        final Scene scene = new Scene(layout, 320, 268);
         s.setScene(scene);
         s.setTitle("SOS Sensor Simulator");
         s.show();
