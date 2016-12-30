@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 public class SystemCore extends Application {
     private final DatabaseHandler databaseHandler = new DatabaseHandler();
     private final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
-    private final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler);
+    protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler);
 
     public SystemCore() {
         System.out.println("Initializing system...");
@@ -36,6 +36,7 @@ public class SystemCore extends Application {
     }
 
     @Override public void start(Stage primaryStage) {
+        //TODO: Roy, add some GUI magic here
         return;
     }
 }
