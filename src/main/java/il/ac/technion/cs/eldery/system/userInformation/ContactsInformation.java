@@ -19,12 +19,16 @@ public class ContactsInformation {
             data.put(elevel, new HashMap<>());
     }
 
+    /** Adds a contact with a specific emergency level
+     * @param c contact to add
+     * @param elevel emergency level to inform this contact at */
     public void addContact(final Contact c, final EmergencyLevel elevel) {
-
         data.get(elevel).put(c.getId(), c);
 
     }
 
+    /** @param id the id of the contact required
+     * @return the contact with the required id or null if does not exist */
     public Contact getContact(final String id) {
         for (final EmergencyLevel elvl : EmergencyLevel.values())
             if (data.get(elvl).containsKey(id))
@@ -32,6 +36,9 @@ public class ContactsInformation {
         return null;
     }
 
+    /** @param elvl emergency level of the required contacts
+     * @return list of all the contacts to be informed at required emergency
+     *         level */
     public List<Contact> getContacts(final EmergencyLevel elvl) {
         final Map<String, Contact> temp = data.get(elvl);
         final ArrayList<Contact> $ = new ArrayList<>();
@@ -41,6 +48,7 @@ public class ContactsInformation {
         return $;
     }
 
+    /** @return all the contacts saved in this instance */
     public List<Contact> getContacts() {
         final ArrayList<Contact> $ = new ArrayList<>();
         Map<String, Contact> temp;

@@ -113,12 +113,12 @@ public class ApplicationsHandler {
         final List<T> $ = new LinkedList<>();
         final List<String> $_raw = databaseHandler.getList(sensorId);
         final Consumer<String> adder = generateSensorListener(sensorClass, x -> $.add(x));
-        for (int i = 0; i < numOfEntries && i < $_raw.size(); ++i)// TODO: ELIA
+        for (int ¢ = 0; ¢ < numOfEntries && ¢ < $_raw.size(); ++¢)// TODO: ELIA
                                                                   // varify
                                                                   // assumption
                                                                   // - newest
                                                                   // entry at 0
-            adder.accept($_raw.get(i));
+            adder.accept($_raw.get(¢));
         return $;
     }
 

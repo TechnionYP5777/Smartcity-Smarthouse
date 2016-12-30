@@ -23,8 +23,8 @@ public abstract class SmartHouseApplication extends Application {
 
     public SmartHouseApplication() {}
 
-    public void setApplicationsHandler(final ApplicationsHandler h) {
-        applicationsHandler = h;
+    public void setApplicationsHandler(final ApplicationsHandler ¢) {
+        applicationsHandler = ¢;
     }
 
     /** This will run when the system loads the app. Here all of the sensors
