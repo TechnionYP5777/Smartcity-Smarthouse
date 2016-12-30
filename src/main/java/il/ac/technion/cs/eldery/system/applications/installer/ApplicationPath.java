@@ -1,6 +1,7 @@
 package il.ac.technion.cs.eldery.system.applications.installer;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
@@ -13,6 +14,7 @@ import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 public class ApplicationPath<T> {
     public enum PathType {
         JAR_PATH,
+        CLASS_NAME,
         CLASS_NAMES_LIST,
         PACKAGE_NAME;
     }
@@ -39,6 +41,8 @@ public class ApplicationPath<T> {
                 return AppInstallHelper.loadApplication((String) path);
             case CLASS_NAMES_LIST:
                 return AppInstallHelper.loadApplication((List<String>) path);
+            case CLASS_NAME:
+                return AppInstallHelper.loadApplication(Arrays.asList((String) path));
             case PACKAGE_NAME:
                 // TODO: RON - add support for package names...
                 return null;

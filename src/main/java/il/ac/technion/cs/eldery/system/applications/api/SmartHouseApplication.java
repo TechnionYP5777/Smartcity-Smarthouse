@@ -27,14 +27,6 @@ public abstract class SmartHouseApplication extends Application {
         applicationsHandler = ¢;
     }
 
-    /** This will run when the system loads the app. Here all of the sensors
-     * subscriptions must occur */
-    public abstract void onLoad();
-
-    @SuppressWarnings("static-method") public String getIcon() {
-        return "";
-    }
-
     @Override public void start(final Stage s) throws Exception {
         firstStage = s;
         firstStage.setOnCloseRequest(event -> {
@@ -43,19 +35,29 @@ public abstract class SmartHouseApplication extends Application {
         });
     }
 
+    // [start] Public - Services to ApplicationHandler
+    // TODO: should the developer be able to access these functions? - RON?
     public final void reopen() {
-        Platform.runLater(() -> firstStage.setIconified(false));
+        if (firstStage != null)
+            Platform.runLater(() -> firstStage.setIconified(false));
     }
 
     public final void minimize() {
-        Platform.runLater(() -> firstStage.setIconified(true));
+        if (firstStage != null)
+            Platform.runLater(() -> firstStage.setIconified(true));
     }
 
+    @SuppressWarnings("static-method") public String getIcon() {
+        return "";
+    }
+    // [end]
+
+    // [start] Public - Services to developer
     /** Ask for the list of sensorIds registered by a specific commercial name
      * @param sensorCommercialName the sensor in question
      * @return a list of IDs of those sensors in the system. They can be used in
      *         any "sensorId" field in any method */
-    public List<String> InqireAbout(final String sensorCommercialName) {
+    public List<String> inquireAbout(final String sensorCommercialName) {
         return applicationsHandler.getDatabaseHandler().getSensors(sensorCommercialName);
     }
 
@@ -123,32 +125,35 @@ public abstract class SmartHouseApplication extends Application {
         applicationsHandler.alertOnAbnormalState(message, eLevel);
     }
 
-    static <T extends SensorData> Consumer<T> generateConsumer(final Consumer<T> functionToRun) {
+    /** Saves the app's data to the system's database
+     * @param data
+     * @return true if the data was saved to the system, or false otherwise */
+    @SuppressWarnings("static-method") public final boolean saveToDatabase(final String data) {
+        return data != null;
+    }
+
+    /** Loads the app's data from the system's database
+     * @return a string with the data */
+    @SuppressWarnings("static-method") public final String loadFromDatabase() {
+        return null;
+    }
+    // [end]
+
+    // [start] Public abstract - the developer must implement
+    /** This will run when the system loads the app. Here all of the sensors
+     * subscriptions must occur */
+    public abstract void onLoad();
+    // [end]
+
+    // [start] Private static functions
+    /** Surrounds the given function with a Platform.runLater
+     * @param functionToRun
+     * @return the modified consumer */
+    private static <T extends SensorData> Consumer<T> generateConsumer(final Consumer<T> functionToRun) {
         return sensorData -> {
             Platform.runLater(() -> functionToRun.accept(sensorData));
         };
     }
+    // [end]
 
-    // /** Check if the sensor specified is active in the house
-    // * @param sensorID
-    // * @return true if the system has this sensor or false otherwise */
-    // @SuppressWarnings("static-method") public final boolean
-    // checkIfSensorExists(final String sensorCommercialName) {
-    // return sensorCommercialName != null;
-    // }
-    //
-    // /** Saves the app's data to the system's database
-    // * @param data
-    // * @return true if the data was saved to the system, or false otherwise */
-    // @SuppressWarnings("static-method") public final boolean
-    // saveToDatabase(final String data) {
-    // return data != null;
-    // }
-    //
-    // /** Loads the app's data from the system's database
-    // * @return a JSObject with the data */
-    // @SuppressWarnings("static-method") public final String loadFromDatabase()
-    // {
-    // return null;
-    // }
 }

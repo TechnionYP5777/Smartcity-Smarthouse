@@ -5,7 +5,6 @@ import java.util.List;
 import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +31,7 @@ public class SosAppGui extends SmartHouseApplication {
     }
 
     @Override public void onLoad() {
-        List<String> ids = super.InqireAbout("iSOS");
+        List<String> ids = super.inquireAbout("iSOS");
         final String sensorId = ids.get(0);
         System.out.println("msg from app: onLoad");
         try {

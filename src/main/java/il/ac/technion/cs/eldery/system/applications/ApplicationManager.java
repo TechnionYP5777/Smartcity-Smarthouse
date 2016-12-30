@@ -25,6 +25,7 @@ public class ApplicationManager {
         this.referenceToApplicationsHandler = referenceToApplicationsHandler;
     }
 
+    // [start] Public - Getters and Setters for the private params
     public String getId() {
         return id;
     }
@@ -36,13 +37,9 @@ public class ApplicationManager {
     public void setReferenceToApplicationsHandler(final ApplicationsHandler referenceToApplicationsHandler) {
         this.referenceToApplicationsHandler = referenceToApplicationsHandler;
     }
+    // [end]
 
-    /** @return the path to the application's icon */
-    public String getIcon() {
-        // TODO: 4Ron - might not be string at some point later
-        return application.getIcon();
-    }
-
+    // [start] Public - Services to the ApplicationHandler
     /** Installs the jar file (by dynamically loading it to the system's
      * run-time). Initializes the SmartHouseApplication from the jar. This
      * function should be used once (when the application is installed or when
@@ -71,10 +68,17 @@ public class ApplicationManager {
         return true;
     }
 
+    /** @return the path to the application's icon */
+    public String getIcon() {
+        // TODO: 4Ron - might not be string at some point later
+        return application.getIcon();
+    }
+
     /** If the application is installed, but currently open (for display), this
      * will minimize it. */
     public void minimize() {
-        application.minimize();
+        if (application != null)
+            application.minimize();
     }
 
     /** If the application is installed, but currently closed, this will reopen
@@ -83,6 +87,7 @@ public class ApplicationManager {
         if (application != null)
             application.reopen();
     }
+    // [end]
 
     // [start] Overrides - hash-code and equals
     @Override public int hashCode() {
