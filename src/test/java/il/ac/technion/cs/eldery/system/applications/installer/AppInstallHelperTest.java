@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.system.applications;
+package il.ac.technion.cs.eldery.system.applications.installer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
-import il.ac.technion.cs.eldery.system.applications.examples.MyTestClass1;
+import il.ac.technion.cs.eldery.system.applications.installer.examples.MyTestClass1;
 import il.ac.technion.cs.eldery.system.applications.installer.AppInstallHelper;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 

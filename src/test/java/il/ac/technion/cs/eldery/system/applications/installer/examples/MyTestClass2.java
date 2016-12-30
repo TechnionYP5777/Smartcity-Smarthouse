@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.system.applications.examples;
+package il.ac.technion.cs.eldery.system.applications.installer.examples;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import javafx.stage.Stage;
