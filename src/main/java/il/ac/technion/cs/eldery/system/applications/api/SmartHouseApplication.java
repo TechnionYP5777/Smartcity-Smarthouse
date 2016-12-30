@@ -46,7 +46,7 @@ public abstract class SmartHouseApplication extends Application {
     public final void reopen() {
         Platform.runLater(() -> firstStage.setIconified(false));
     }
-    
+
     public final void minimize() {
         Platform.runLater(() -> firstStage.setIconified(true));
     }

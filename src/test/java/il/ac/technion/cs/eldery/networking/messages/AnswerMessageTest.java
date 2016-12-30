@@ -1,8 +1,5 @@
 package il.ac.technion.cs.eldery.networking.messages;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
-import il.ac.technion.cs.eldery.sensors.stove.StoveSensor;
 
 /** @author Sharon
  * @since 29.12.16 */
@@ -24,7 +20,7 @@ public class AnswerMessageTest {
     }
 
     @Test public void messageTypeIsAnswer() {
-        Assert.assertEquals(MessageType.ANSWER, (new AnswerMessage(Answer.FAILURE)).getType());
-        Assert.assertEquals(MessageType.ANSWER, (new AnswerMessage(Answer.SUCCESS)).getType());
+        Assert.assertEquals(MessageType.ANSWER, new AnswerMessage(Answer.FAILURE).getType());
+        Assert.assertEquals(MessageType.ANSWER, new AnswerMessage(Answer.SUCCESS).getType());
     }
 }

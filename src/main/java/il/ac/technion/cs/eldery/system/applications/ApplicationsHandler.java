@@ -21,6 +21,7 @@ import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
+import il.ac.technion.cs.eldery.system.exceptions.ApplicationInitializationException;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 
 /** API allowing smart house applications to register for information and notify
@@ -80,11 +81,11 @@ public class ApplicationsHandler {
     }
 
     /** Adds a new application to the system, and presents it to the screen
-     * @throws IOException 
-     * @throws AppInstallerException 
+     * @throws IOException
+     * @throws AppInstallerException
      * @throws ApplicationInitializationException */
     public void addApplication(final String appId, final ApplicationPath<?> appPath) throws AppInstallerException, IOException {
-        //TODO: Elia - maybe we should init the appId in here...
+        // TODO: Elia - maybe we should init the appId in here...
         final ApplicationManager $ = new ApplicationManager(appId, appPath, this);
         $.initialize();
         // $.minimize();

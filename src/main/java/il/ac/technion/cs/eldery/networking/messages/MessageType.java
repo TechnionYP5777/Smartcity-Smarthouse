@@ -7,8 +7,8 @@ public enum MessageType {
     UPDATE,
     ANSWER;
 
-    public static MessageType fromString(String ¢) {
-        String $ = ¢.toLowerCase();
+    public static MessageType fromString(final String ¢) {
+        final String $ = ¢.toLowerCase();
         return "registration".equals($) ? REGISTRATION : "update".equals($) ? UPDATE : "answer".equals($) ? MessageType.ANSWER : null;
     }
 }

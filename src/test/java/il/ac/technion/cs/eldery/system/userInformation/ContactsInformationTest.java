@@ -1,28 +1,27 @@
 package il.ac.technion.cs.eldery.system.userInformation;
 
-import org.junit.Test;
-
-import il.ac.technion.cs.eldery.system.EmergencyLevel;
-
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Test;
+
+import il.ac.technion.cs.eldery.system.EmergencyLevel;
 
 /** @author Inbal Zukerman
  * @since Dec 30, 2016 */
 
 public class ContactsInformationTest {
 
-    private ContactsInformation contactsInfo = new ContactsInformation();
-    private Contact contactA = new Contact("123", "Alon", "0508080123", "alon@gmail.com");
-    private Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
+    private final ContactsInformation contactsInfo = new ContactsInformation();
+    private final Contact contactA = new Contact("123", "Alon", "0508080123", "alon@gmail.com");
+    private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
 
     @Test public void singleContactTest() {
         contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
-        Assert.assertEquals(contactA, this.contactsInfo.getContact("123"));
+        Assert.assertEquals(contactA, contactsInfo.getContact("123"));
         Assert.assertNull(contactsInfo.getContact("456"));
         contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
-        Assert.assertEquals(contactB, this.contactsInfo.getContact("456"));
+        Assert.assertEquals(contactB, contactsInfo.getContact("456"));
     }
 
     @Test public void getContactsTest() {

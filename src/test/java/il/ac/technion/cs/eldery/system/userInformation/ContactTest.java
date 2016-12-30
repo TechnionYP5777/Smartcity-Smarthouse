@@ -1,7 +1,7 @@
 package il.ac.technion.cs.eldery.system.userInformation;
 
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 /** @author Inbal Zukerman
  * @since Dec 28, 2016 */

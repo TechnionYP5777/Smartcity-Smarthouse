@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  * @since 09-12-2016 */
 public class ApplicationManager {
     private String id;
-    private ApplicationPath<?> appPath;
+    private final ApplicationPath<?> appPath;
     @Expose private ApplicationsHandler referenceToApplicationsHandler;
     @Expose private SmartHouseApplication application;
 

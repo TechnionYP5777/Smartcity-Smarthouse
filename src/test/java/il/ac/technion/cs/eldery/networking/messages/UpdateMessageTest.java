@@ -3,10 +3,7 @@ package il.ac.technion.cs.eldery.networking.messages;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.InitialContext;
-
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -30,15 +27,15 @@ public class UpdateMessageTest {
     }
 
     @Test public void messageTypeIsUpdate() {
-        Assert.assertEquals(MessageType.UPDATE, (new UpdateMessage("00")).getType());
+        Assert.assertEquals(MessageType.UPDATE, new UpdateMessage("00").getType());
     }
 
     @Test public void initialDataIsEmpty() {
-        Assert.assertEquals(0, (new UpdateMessage("00:11:22:33")).getData().size());
+        Assert.assertEquals(0, new UpdateMessage("00:11:22:33").getData().size());
     }
 
     @Test public void successfullyAddTwoObservations() {
-        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        final UpdateMessage message = new UpdateMessage("00:11:22:33");
         message.addObservation("on", "true");
         message.addObservation("temp", "100");
 
@@ -50,7 +47,7 @@ public class UpdateMessageTest {
     }
 
     @Test public void successfullyRemoveObservations() {
-        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        final UpdateMessage message = new UpdateMessage("00:11:22:33");
         message.addObservation("on", "true");
         message.addObservation("temp", "100");
         message.addObservation("pulse", "250");
@@ -67,11 +64,11 @@ public class UpdateMessageTest {
     }
 
     @Test public void dataReturnedIsCorrect() {
-        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        final UpdateMessage message = new UpdateMessage("00:11:22:33");
         message.addObservation("on", "true");
         message.addObservation("temp", "100");
 
-        Map<String, String> map = new HashMap<>();
+        final Map<String, String> map = new HashMap<>();
         map.put("on", "true");
         map.put("temp", "100");
 
@@ -79,7 +76,7 @@ public class UpdateMessageTest {
     }
 
     @Test public void correctObservationsAreReturned() {
-        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        final UpdateMessage message = new UpdateMessage("00:11:22:33");
         message.addObservation("on", "true");
         message.addObservation("temp", "100");
 
@@ -88,10 +85,10 @@ public class UpdateMessageTest {
     }
 
     @Test public void toStringContainsAllNeededData() {
-        UpdateMessage message = new UpdateMessage("00:11:22:33");
+        final UpdateMessage message = new UpdateMessage("00:11:22:33");
         message.addObservation("on", "true");
         message.addObservation("temp", "100");
-        String $ = message + "";
+        final String $ = message + "";
 
         assert $.contains("00:11:22:33");
         assert $.contains("on");

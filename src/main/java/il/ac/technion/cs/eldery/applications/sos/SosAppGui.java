@@ -20,7 +20,7 @@ public class SosAppGui extends SmartHouseApplication {
         super.start(s);
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("sos_app_ui.fxml"));
         final Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
+        final Scene scene = new Scene(root);
         s.setTitle("SOS Application");
         s.setScene(scene);
         s.setWidth(350);
@@ -30,16 +30,16 @@ public class SosAppGui extends SmartHouseApplication {
     }
 
     @Override public void onLoad() {
-        //TODO: ron - you are not supposed to know the ID :/   fix this
-        String sensorId = "00:00:00:00:00:01";
+        // TODO: ron - you are not supposed to know the ID :/ fix this
+        final String sensorId = "00:00:00:00:00:01";
         System.out.println("msg from app: onLoad");
         try {
             subscribeToSensor(sensorId, SosSensor.class, sosSensor -> {
-                String t = "SOS " + (sosSensor.isPressed() ? "" : "Not ") + "Pressed";
+                final String t = "SOS " + (sosSensor.isPressed() ? "" : "Not ") + "Pressed";
                 Platform.runLater(() -> sosController.killElder());
                 System.out.println("msg from app: " + t);
             });
-        } catch (SensorNotFoundException e) {
+        } catch (final SensorNotFoundException e) {
             e.printStackTrace();
         }
     }
