@@ -47,20 +47,15 @@ public class ApplicationManager {
      * run-time). Initializes the SmartHouseApplication from the jar. This
      * function should be used once (when the application is installed or when
      * the system is initialized). If the application is already installed,
-     * false will be returned and nothing will happen. If the jar file can't be
-     * found, or doesn't contain the correct classes, false will be returned and
-     * nothing will happen.
-     * @return true if initialization was successful, false otherwise */
-    public boolean initialize() {
+     * false will be returned and nothing will happen.
+     * @return false if the application is already installed, and true otherwise
+     * @throws IOException - If the jar file can't be found
+     * @throws AppInstallerException - An installation error */
+    public boolean initialize() throws AppInstallerException, IOException {
         if (application != null)
             return false;
 
-        try {
-            application = appPath.installMe();
-        } catch (AppInstallerException | IOException e1) {
-            // TODO Do something better here
-            e1.printStackTrace();
-        }
+        application = appPath.installMe();
 
         application.setApplicationsHandler(referenceToApplicationsHandler);
         application.onLoad();
