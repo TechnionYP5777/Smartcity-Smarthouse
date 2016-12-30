@@ -70,7 +70,7 @@ public abstract class SmartHouseApplication extends Application {
      * @throws SensorNotFoundException */
     public final <T extends SensorData> void subscribeToSensor(final String sensorId, final Class<T> sensorClass, final Consumer<T> functionToRun)
             throws SensorNotFoundException {
-        applicationsHandler.subscribeToSensor(sensorId, sensorClass, functionToRun);
+        applicationsHandler.subscribeToSensor(sensorId, sensorClass, generateConsumer(functionToRun));
     }
 
     /** Allows registration to a sensor. on time, the sensor will be polled and
@@ -86,7 +86,7 @@ public abstract class SmartHouseApplication extends Application {
      *        time FOREVER) */
     public final <T extends SensorData> void subscribeToSensor(final String sensorId, final LocalTime t, final Class<T> sensorClass,
             final Consumer<T> functionToRun, final Boolean repeat) {
-        applicationsHandler.subscribeToSensor(sensorId, t, sensorClass, functionToRun, repeat);
+        applicationsHandler.subscribeToSensor(sensorId, t, sensorClass, generateConsumer(functionToRun), repeat);
     }
 
     /** Request for the latest k entries of data received by a sensor
@@ -121,6 +121,12 @@ public abstract class SmartHouseApplication extends Application {
      * @param eLevel The level of personnel needed in the situation */
     public final void sendAlert(final String message, final EmergencyLevel eLevel) {
         applicationsHandler.alertOnAbnormalState(message, eLevel);
+    }
+
+    static <T extends SensorData> Consumer<T> generateConsumer(final Consumer<T> functionToRun) {
+        return sensorData -> {
+            Platform.runLater(() -> functionToRun.accept(sensorData));
+        };
     }
 
     // /** Check if the sensor specified is active in the house

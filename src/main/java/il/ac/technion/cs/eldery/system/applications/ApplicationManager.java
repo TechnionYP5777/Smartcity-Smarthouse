@@ -84,6 +84,7 @@ public class ApplicationManager {
             application.reopen();
     }
 
+    // [start] Overrides - hash-code and equals
     @Override public int hashCode() {
         return id == null ? 0 : id.hashCode();
     }
@@ -101,6 +102,7 @@ public class ApplicationManager {
             return false;
         return true;
     }
+    // [end]
 
     @Override public String toString() {
         return "ApplicationManager [id=" + id + ", path={" + appPath + "}]";
