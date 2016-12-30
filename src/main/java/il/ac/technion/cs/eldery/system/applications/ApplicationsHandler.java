@@ -18,6 +18,7 @@ import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationInitializationException;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 
@@ -79,8 +80,9 @@ public class ApplicationsHandler {
 
     /** Adds a new application to the system, and presents it to the screen
      * @throws ApplicationInitializationException */
-    public void addApplication(final String appId, final String jarPath) throws ApplicationInitializationException {
-        final ApplicationManager $ = new ApplicationManager(appId, jarPath, this);
+    public void addApplication(final String appId, final ApplicationPath<?> appPath) throws ApplicationInitializationException {
+        //TODO: Elia - maybe we should init the appId in here...
+        final ApplicationManager $ = new ApplicationManager(appId, appPath, this);
         if (!$.initialize())
             throw new ApplicationInitializationException();
         $.initialize();

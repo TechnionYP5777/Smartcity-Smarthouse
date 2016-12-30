@@ -6,7 +6,6 @@ import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
-import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -20,9 +19,9 @@ public class ApplicationManager {
     @Expose private ApplicationsHandler referenceToApplicationsHandler;
     @Expose private SmartHouseApplication application;
 
-    public ApplicationManager(final String id, final String jarPath, final ApplicationsHandler referenceToApplicationsHandler) {
+    public ApplicationManager(final String id, final ApplicationPath<?> appPath, final ApplicationsHandler referenceToApplicationsHandler) {
         this.id = id;
-        this.appPath = new ApplicationPath<>(PathType.JAR_PATH, jarPath);
+        this.appPath = appPath;
         this.referenceToApplicationsHandler = referenceToApplicationsHandler;
     }
 
