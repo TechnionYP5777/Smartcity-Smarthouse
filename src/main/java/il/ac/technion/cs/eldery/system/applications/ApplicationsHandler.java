@@ -1,6 +1,5 @@
 package il.ac.technion.cs.eldery.system.applications;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -13,7 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.google.gson.Gson;
 
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
@@ -58,15 +57,7 @@ public class ApplicationsHandler {
     // ----------- not-public methods ---------------
     static <T extends SensorData> Consumer<String> generateSensorListener(final Class<T> sensorClass, final Consumer<T> functionToRun) {
         return jsonData -> {
-            T data = null;
-            try {
-                data = new ObjectMapper().readValue(jsonData, sensorClass);
-            } catch (final IOException e) {
-                // TODO: Auto-generated catch block
-                // TODO: RON - what is the desired behavior in this case?
-                e.printStackTrace();
-            }
-            functionToRun.accept(data);
+            functionToRun.accept(new Gson().fromJson(jsonData, sensorClass));
         };
     }
 
