@@ -3,6 +3,7 @@ package il.ac.technion.cs.eldery.applications.sos;
 import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 
 public class SosAppGui extends SmartHouseApplication {
     private SosController sosController;
-    
+
     public static void main(final String[] args) {
         launch(args);
     }
@@ -24,7 +25,7 @@ public class SosAppGui extends SmartHouseApplication {
         s.setScene(scene);
         s.setWidth(350);
         s.show();
-        
+
         sosController = fxmlLoader.getController();
     }
 
@@ -34,7 +35,7 @@ public class SosAppGui extends SmartHouseApplication {
         try {
             subscribeToSensor(sensorId, SosSensor.class, sosSensor -> {
                 String t = "SOS " + (sosSensor.isPressed() ? "" : "Not ") + "Pressed";
-                //sosController.stateLabel.setText(t);
+                Platform.runLater(() -> sosController.killElder());
                 System.out.println("msg from app: " + t);
             });
         } catch (SensorNotFoundException e) {

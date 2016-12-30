@@ -109,6 +109,6 @@ public class ApplicationManager {
     }
 
     @Override public String toString() {
-        return "ApplicationManager [id=" + id + ", path=[" + appPath + "]]";
+        return "ApplicationManager [id=" + id + ", path={" + appPath + "}]";
     }
 }
