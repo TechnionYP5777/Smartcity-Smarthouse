@@ -39,6 +39,9 @@ public abstract class Message {
      *         occurred or if a response was not requested, <code> null </code>
      *         will be returned. */
     public String send(final PrintWriter out, final BufferedReader in) {
+        if (out == null)
+            return null;
+        
         out.println(toJson());
         if (in != null)
             try {
