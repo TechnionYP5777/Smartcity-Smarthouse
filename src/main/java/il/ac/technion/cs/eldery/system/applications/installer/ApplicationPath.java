@@ -10,7 +10,7 @@ import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
  * classes. This will help the debugging process.
  * @author RON
  * @since 30-12-2016 */
-public class ApplicationPath {
+public class ApplicationPath<T> {
     public enum PathType {
         JAR_PATH,
         CLASS_NAMES_LIST,
@@ -18,11 +18,19 @@ public class ApplicationPath {
     }
 
     private PathType pathType;
-    private Object path;
+    private T path;
 
-    public ApplicationPath(PathType pathType, Object path) {
+    public ApplicationPath(PathType pathType, T path) {
         this.pathType = pathType;
         this.path = path;
+    }
+    
+    public PathType getPathType() {
+        return pathType;
+    }
+    
+    public T getPath() {
+        return path;
     }
 
     @SuppressWarnings("unchecked") public SmartHouseApplication installMe() throws AppInstallerException, IOException {
@@ -37,5 +45,9 @@ public class ApplicationPath {
             default:
                 return null;
         }
+    }
+    
+    @Override public String toString() {
+        return "ApplicationPath [type=" + pathType + ", path=" + path + "]";
     }
 }

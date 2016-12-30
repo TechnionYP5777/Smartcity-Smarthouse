@@ -5,7 +5,8 @@ import java.io.IOException;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
-import il.ac.technion.cs.eldery.system.applications.installer.AppInstallHelper;
+import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
+import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -13,16 +14,15 @@ import javafx.stage.Stage;
 /** A class that stores information about the installed application
  * @author RON
  * @since 09-12-2016 */
-// TODO: RON and ROY - implement this class.
 public class ApplicationManager {
     private String id;
-    private String jarPath;
+    private ApplicationPath<?> appPath;
     @Expose private ApplicationsHandler referenceToApplicationsHandler;
     @Expose private SmartHouseApplication application;
 
     public ApplicationManager(final String id, final String jarPath, final ApplicationsHandler referenceToApplicationsHandler) {
         this.id = id;
-        this.jarPath = jarPath;
+        this.appPath = new ApplicationPath<>(PathType.JAR_PATH, jarPath);
         this.referenceToApplicationsHandler = referenceToApplicationsHandler;
     }
 
@@ -32,14 +32,6 @@ public class ApplicationManager {
 
     public void setId(final String id) {
         this.id = id;
-    }
-
-    public String getJarPath() {
-        return jarPath;
-    }
-
-    public void setJarPath(final String path) {
-        jarPath = path;
     }
 
     public void setReferenceToApplicationsHandler(final ApplicationsHandler referenceToApplicationsHandler) {
@@ -65,7 +57,7 @@ public class ApplicationManager {
             return false;
 
         try {
-            application = AppInstallHelper.loadApplication(jarPath);
+            application = appPath.installMe();
         } catch (AppInstallerException | IOException e1) {
             // TODO Do something better here
             e1.printStackTrace();
@@ -99,7 +91,7 @@ public class ApplicationManager {
     }
 
     @Override public int hashCode() {
-        return 31 * ((id == null ? 0 : id.hashCode()) + 31) + (jarPath == null ? 0 : jarPath.hashCode());
+        return id == null ? 0 : id.hashCode();
     }
 
     @Override public boolean equals(final Object o) {
@@ -113,15 +105,10 @@ public class ApplicationManager {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (jarPath == null) {
-            if (other.jarPath != null)
-                return false;
-        } else if (!jarPath.equals(other.jarPath))
-            return false;
         return true;
     }
 
     @Override public String toString() {
-        return "ApplicationManager [id=" + id + ", path=" + jarPath + "]";
+        return "ApplicationManager [id=" + id + ", path=[" + appPath + "]]";
     }
 }
