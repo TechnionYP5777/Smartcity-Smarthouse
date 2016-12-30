@@ -30,6 +30,7 @@ public class SosAppGui extends SmartHouseApplication {
     }
 
     @Override public void onLoad() {
+        //TODO: ron - you are not supposed to know the ID :/   fix this
         String sensorId = "00:00:00:00:00:01";
         System.out.println("msg from app: onLoad");
         try {
