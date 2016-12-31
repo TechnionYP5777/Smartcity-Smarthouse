@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import javafx.application.Platform;
@@ -47,8 +48,9 @@ public class ApplicationManager {
      * false will be returned and nothing will happen.
      * @return false if the application is already installed, and true otherwise
      * @throws IOException - If the jar file can't be found
-     * @throws AppInstallerException - An installation error */
-    public boolean initialize() throws AppInstallerException, IOException {
+     * @throws AppInstallerException - An installation error 
+     * @throws OnLoadException - An exception in the onLoad method */
+    public boolean initialize() throws AppInstallerException, IOException, OnLoadException {
         if (application != null)
             return false;
 

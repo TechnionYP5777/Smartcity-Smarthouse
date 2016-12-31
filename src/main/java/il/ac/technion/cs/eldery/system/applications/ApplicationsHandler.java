@@ -19,6 +19,7 @@ import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationInitializationException;
@@ -83,8 +84,9 @@ public class ApplicationsHandler {
     /** Adds a new application to the system, and presents it to the screen
      * @throws IOException
      * @throws AppInstallerException
+     * @throws OnLoadException 
      * @throws ApplicationInitializationException */
-    public void addApplication(final String appId, final ApplicationPath<?> appPath) throws AppInstallerException, IOException {
+    public void addApplication(final String appId, final ApplicationPath<?> appPath) throws AppInstallerException, IOException, OnLoadException {
         // TODO: Elia - maybe we should init the appId in here...
         final ApplicationManager $ = new ApplicationManager(appId, appPath, this);
         $.initialize();

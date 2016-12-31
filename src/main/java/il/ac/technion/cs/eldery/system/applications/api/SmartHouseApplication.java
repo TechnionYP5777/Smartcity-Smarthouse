@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
+import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -142,7 +143,7 @@ public abstract class SmartHouseApplication extends Application {
     // [start] Public abstract - the developer must implement
     /** This will run when the system loads the app. Here all of the sensors
      * subscriptions must occur */
-    public abstract void onLoad();
+    public abstract void onLoad() throws OnLoadException;
     // [end]
 
     // [start] Private static functions
