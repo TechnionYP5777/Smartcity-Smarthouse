@@ -1,5 +1,7 @@
 package il.ac.technion.cs.eldery.system.userInformation;
 
+import org.jdom2.Element;
+
 /** @author Inbal Zukerman
  * @since Dec 28, 2016 */
 public class Contact {
@@ -41,4 +43,29 @@ public class Contact {
         this.emailAddress = emailAddress;
     }
 
+    public Element toXmlElement() {
+
+        // Creating the root element
+        Element $ = new Element("contact");
+
+        Element contactId = new Element("Id");
+        contactId.setText(this.id);
+
+        Element contactName = new Element("name");
+        contactName.setText(this.name);
+
+        Element contactPhoneNum = new Element("phoneNumber");
+        contactPhoneNum.setText(this.phoneNumber);
+
+        Element contactEmail = new Element("email");
+        contactEmail.setText(this.emailAddress);
+
+        $.addContent(contactId);
+        $.addContent(contactName);
+        $.addContent(contactPhoneNum);
+        $.addContent(contactEmail);
+
+        return $;
+
+    }
 }
