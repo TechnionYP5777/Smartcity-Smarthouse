@@ -6,9 +6,10 @@ public class OnLoadException extends Exception {
     private static final long serialVersionUID = 5725783046384567488L;
 
     public enum ErrorCode {
-        SENSOR_COM_NAME_NOT_FOUND(""),
-        SENSOR_NOT_FOUND_IN_LOCATION("")
-        // TODO: RON - add more here, and add the msgs
+        SENSOR_COM_NAME_NOT_FOUND("SENSOR_COM_NAME_NOT_FOUND"),
+        SENSOR_NOT_FOUND_IN_LOCATION("SENSOR_NOT_FOUND_IN_LOCATION"),
+        SENSOR_ID_NOT_FOUND("SENSOR_ID_NOT_FOUND")
+        // TODO: RON - add more here, and fix the msgs!
         ;
 
         private final String msg;
