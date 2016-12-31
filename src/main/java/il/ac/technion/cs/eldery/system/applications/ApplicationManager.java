@@ -48,7 +48,7 @@ public class ApplicationManager {
      * false will be returned and nothing will happen.
      * @return false if the application is already installed, and true otherwise
      * @throws IOException - If the jar file can't be found
-     * @throws AppInstallerException - An installation error 
+     * @throws AppInstallerException - An installation error
      * @throws OnLoadException - An exception in the onLoad method */
     public boolean initialize() throws AppInstallerException, IOException, OnLoadException {
         if (application != null)

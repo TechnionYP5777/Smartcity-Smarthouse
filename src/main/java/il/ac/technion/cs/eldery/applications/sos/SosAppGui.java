@@ -33,7 +33,7 @@ public class SosAppGui extends SmartHouseApplication {
     }
 
     @Override public void onLoad() throws OnLoadException {
-        List<String> ids = super.inquireAbout("iSOS");
+        final List<String> ids = super.inquireAbout("iSOS");
         if (ids.isEmpty())
             throw new OnLoadException(ErrorCode.SENSOR_COM_NAME_NOT_FOUND);
 
@@ -45,7 +45,7 @@ public class SosAppGui extends SmartHouseApplication {
                 sosController.killElder();
                 System.out.println("msg from app: " + t);
             });
-        } catch (SensorNotFoundException e) {
+        } catch (final SensorNotFoundException e) {
             throw new OnLoadException(ErrorCode.SENSOR_ID_NOT_FOUND, e.getMessage());
         }
     }

@@ -46,19 +46,19 @@ public class Contact {
     public Element toXmlElement() {
 
         // Creating the root element
-        Element $ = new Element("contact");
+        final Element $ = new Element("contact");
 
-        Element contactId = new Element("Id");
-        contactId.setText(this.id);
+        final Element contactId = new Element("Id");
+        contactId.setText(id);
 
-        Element contactName = new Element("name");
-        contactName.setText(this.name);
+        final Element contactName = new Element("name");
+        contactName.setText(name);
 
-        Element contactPhoneNum = new Element("phoneNumber");
-        contactPhoneNum.setText(this.phoneNumber);
+        final Element contactPhoneNum = new Element("phoneNumber");
+        contactPhoneNum.setText(phoneNumber);
 
-        Element contactEmail = new Element("email");
-        contactEmail.setText(this.emailAddress);
+        final Element contactEmail = new Element("email");
+        contactEmail.setText(emailAddress);
 
         $.addContent(contactId);
         $.addContent(contactName);

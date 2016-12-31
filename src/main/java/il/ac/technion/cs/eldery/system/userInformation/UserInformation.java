@@ -16,8 +16,8 @@ import il.ac.technion.cs.eldery.system.EmergencyLevel;
 
 public class UserInformation {
 
-    private String name;
-    private String id;
+    private final String name;
+    private final String id;
     private String phoneNumber;
     private String homeAddress;
     private final ContactsInformation emergencyContacts = new ContactsInformation();
@@ -54,37 +54,37 @@ public class UserInformation {
         return id;
     }
 
-    public void toXml(String fileName) {
-        
+    public void toXml(final String fileName) {
+
         // Creating the root element
-        Element user = new Element("user");
-        Document doc = new Document(user);
+        final Element user = new Element("user");
+        final Document doc = new Document(user);
 
-        Element userDetails = new Element("userDetails");
+        final Element userDetails = new Element("userDetails");
 
-        Element userId = new Element("Id");
-        userId.setText(this.id);
+        final Element userId = new Element("Id");
+        userId.setText(id);
 
-        Element userName = new Element("name");
-        userName.setText(this.name);
+        final Element userName = new Element("name");
+        userName.setText(name);
 
-        Element userPhoneNum = new Element("phoneNumber");
-        userPhoneNum.setText(this.phoneNumber);
+        final Element userPhoneNum = new Element("phoneNumber");
+        userPhoneNum.setText(phoneNumber);
 
-        Element userHomeAddress = new Element("homeAddress");
-        userHomeAddress.setText(this.homeAddress);
+        final Element userHomeAddress = new Element("homeAddress");
+        userHomeAddress.setText(homeAddress);
 
         userDetails.addContent(userId);
         userDetails.addContent(userName);
         userDetails.addContent(userPhoneNum);
         userDetails.addContent(userHomeAddress);
 
-        Element contactsDetails = this.emergencyContacts.toXmlElement();
+        final Element contactsDetails = emergencyContacts.toXmlElement();
 
         doc.getRootElement().addContent(userDetails);
         doc.getRootElement().addContent(contactsDetails);
 
-        XMLOutputter xmlOutput = new XMLOutputter();
+        final XMLOutputter xmlOutput = new XMLOutputter();
         xmlOutput.setFormat(Format.getPrettyFormat());
 
         try (FileWriter fw = new FileWriter(fileName);) {
@@ -92,25 +92,25 @@ public class UserInformation {
             fw.write(xmlOutput.outputString(doc));
             fw.flush();
             fw.close();
-        } catch (IOException e) {
-            e.printStackTrace(); 
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
 
     }
 
-    
-    
-    public void alert(String appId, String msg, EmergencyLevel elvl){
-        //TODO: Elia and Ron - Implement
+    public void alert(final String appId, final String msg, final EmergencyLevel elvl) {
+        // TODO: Elia and Ron - Implement
     }
+    
+    
     // the next methods might seem redundant, but when we will change this class
     // to save a profile for each application separately, these methods will be
     // changed to receive also appId.
     // In my opinion implementing them now will be easier in the future when the
     // changes mentioned above will take place
 
-    public void addContact(Contact c, EmergencyLevel elevel) {
-        this.emergencyContacts.addContact(c, elevel);
+    public void addContact(final Contact c, final EmergencyLevel elevel) {
+        emergencyContacts.addContact(c, elevel);
     }
 
     public Contact getContact(final String contactId) {

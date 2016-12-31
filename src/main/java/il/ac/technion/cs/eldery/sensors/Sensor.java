@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.objenesis.instantiator.basic.NewInstanceInstantiator;
-
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.eldery.networking.messages.MessageFactory;
@@ -25,7 +23,7 @@ public abstract class Sensor {
     /** Defines the maximal amount of update messages that can be sent by this
      * sensor each second. */
     public static final int MAX_MESSAGES_PER_SECOND = 10;
-    private List<Long> lastMessagesMillis = new ArrayList<>();
+    private final List<Long> lastMessagesMillis = new ArrayList<>();
 
     protected String id;
     protected String commName;
@@ -72,7 +70,7 @@ public abstract class Sensor {
      * to their values.
      * @param data observations to send to the system */
     @SuppressWarnings("boxing") public void updateSystem(final Map<String, String> data) {
-        long currMillis = System.currentTimeMillis();
+        final long currMillis = System.currentTimeMillis();
         for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
             if (currMillis - lastMessagesMillis.get(¢) > 1000)
                 lastMessagesMillis.remove(¢);

@@ -15,7 +15,7 @@ public class SystemCore_SosTest extends SystemCore {
         launch(args);
     }
 
-    @SuppressWarnings("resource") @Override public void start(Stage primaryStage) {
+    @SuppressWarnings("resource") @Override public void start(final Stage primaryStage) {
         while (true) {
             System.out.println("## please start SosSensorSimulator, and press Enter:");
             System.out.print(">>");

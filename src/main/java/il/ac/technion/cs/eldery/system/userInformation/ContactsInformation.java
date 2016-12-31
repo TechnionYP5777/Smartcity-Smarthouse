@@ -64,7 +64,7 @@ public class ContactsInformation {
     }
 
     public Element toXmlElement() {
-        Element $ = new Element("contactsInformation");
+        final Element $ = new Element("contactsInformation");
         Map<String, Contact> temp;
 
         Element emergencyLevel;
@@ -75,7 +75,7 @@ public class ContactsInformation {
 
             emergencyLevel = new Element(elvl + "");
 
-            for (Contact ¢ : temp.values())
+            for (final Contact ¢ : temp.values())
                 emergencyLevel.addContent(¢.toXmlElement());
 
             $.addContent(emergencyLevel);

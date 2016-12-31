@@ -41,7 +41,7 @@ public abstract class Message {
     public String send(final PrintWriter out, final BufferedReader in) {
         if (out == null)
             return null;
-        
+
         out.println(toJson());
         if (in != null)
             try {

@@ -1,26 +1,13 @@
 package il.ac.technion.cs.eldery.system;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-
-import il.ac.technion.cs.eldery.applications.sos.SosAppGui;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
-import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
-import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.PathType;
-import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /** Hold the databases of the smart house, and allow sensors and applications to
  * store and read information about the changes in the environment */
-@SuppressWarnings("unused")
+
 public class SystemCore extends Application {
     private final DatabaseHandler databaseHandler = new DatabaseHandler();
     private final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
@@ -35,8 +22,8 @@ public class SystemCore extends Application {
         launch(args);
     }
 
-    @Override public void start(Stage primaryStage) {
-        //TODO: Roy, add some GUI magic here
+    @Override public void start(final Stage primaryStage) {
+        // TODO: Roy, add some GUI magic here
         return;
     }
 }

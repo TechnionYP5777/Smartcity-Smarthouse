@@ -84,7 +84,7 @@ public class ApplicationsHandler {
     /** Adds a new application to the system, and presents it to the screen
      * @throws IOException
      * @throws AppInstallerException
-     * @throws OnLoadException 
+     * @throws OnLoadException
      * @throws ApplicationInitializationException */
     public void addApplication(final String appId, final ApplicationPath<?> appPath) throws AppInstallerException, IOException, OnLoadException {
         // TODO: Elia - maybe we should init the appId in here...
