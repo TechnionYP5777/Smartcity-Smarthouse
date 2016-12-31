@@ -6,8 +6,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.objenesis.instantiator.basic.NewInstanceInstantiator;
 
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
@@ -19,6 +22,11 @@ import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
  * @author Yarden
  * @since 7.12.16 */
 public abstract class Sensor {
+    /** Defines the maximal amount of update messages that can be sent by this
+     * sensor each second. */
+    public static final int MAX_MESSAGES_PER_SECOND = 10;
+    private List<Long> lastMessagesMillis = new ArrayList<>();
+
     protected String id;
     protected String commName;
     protected List<String> types;
@@ -52,8 +60,8 @@ public abstract class Sensor {
             socket = new Socket(InetAddress.getByName(systemIP), systemPort);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } catch (final IOException ¢) {
+            ¢.printStackTrace();
         }
         final String $ = new RegisterMessage(id, commName).send(out, in);
         return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
@@ -63,7 +71,16 @@ public abstract class Sensor {
      * observations are represented as a map from the names of the observations,
      * to their values.
      * @param data observations to send to the system */
-    public void updateSystem(final Map<String, String> data) {
+    @SuppressWarnings("boxing") public void updateSystem(final Map<String, String> data) {
+        long currMillis = System.currentTimeMillis();
+        for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
+            if (currMillis - lastMessagesMillis.get(¢) > 1000)
+                lastMessagesMillis.remove(¢);
+
+        if (lastMessagesMillis.size() >= 10)
+            return;
+
+        lastMessagesMillis.add(currMillis);
         new UpdateMessage(id, data).send(out, null);
     }
 
