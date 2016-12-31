@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jdom2.Element;
+
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 
 /** @author Inbal Zukerman
@@ -61,4 +63,25 @@ public class ContactsInformation {
         return $;
     }
 
+    public Element toXmlElement() {
+        Element $ = new Element("contactsInformation");
+        Map<String, Contact> temp;
+
+        Element emergencyLevel;
+        for (final EmergencyLevel elvl : EmergencyLevel.values()) {
+            temp = data.get(elvl);
+            if (temp.isEmpty())
+                continue;
+
+            emergencyLevel = new Element(elvl + "");
+
+            for (Contact ¢ : temp.values())
+                emergencyLevel.addContent(¢.toXmlElement());
+
+            $.addContent(emergencyLevel);
+        }
+
+        return $;
+
+    }
 }
