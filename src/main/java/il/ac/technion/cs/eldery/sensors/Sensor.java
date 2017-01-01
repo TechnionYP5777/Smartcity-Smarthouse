@@ -27,7 +27,6 @@ public abstract class Sensor {
 
     protected String id;
     protected String commName;
-    protected List<String> types;
     protected String systemIP;
     protected int systemPort;
     protected Socket socket;
@@ -41,10 +40,9 @@ public abstract class Sensor {
      * @param systemIP IP address of the system
      * @param systemPort port on which the system listens to incoming
      *        messages */
-    public Sensor(final String id, final String commName, final List<String> types, final String systemIP, final int systemPort) {
+    public Sensor(final String id, final String commName, final String systemIP, final int systemPort) {
         this.id = id;
         this.commName = commName;
-        this.types = types;
         this.systemIP = systemIP;
         this.systemPort = systemPort;
     }
@@ -87,11 +85,6 @@ public abstract class Sensor {
      * value) tuples.
      * @return array of names of the data this sensor observers */
     public abstract String[] getObservationsNames();
-
-    /** @return list of types this sensor qualifies for */
-    public List<String> getTypes() {
-        return types;
-    }
 
     /** @return id of the sensor */
     public String getId() {

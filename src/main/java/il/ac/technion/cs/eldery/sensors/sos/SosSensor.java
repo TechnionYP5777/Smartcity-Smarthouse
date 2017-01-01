@@ -10,14 +10,8 @@ import il.ac.technion.cs.eldery.sensors.Sensor;
 /** @author Yarden
  * @since 28.12.16 */
 public class SosSensor extends Sensor {
-    private static final List<String> TYPES = new ArrayList<>();
-
-    static {
-        TYPES.add("SOS");
-    }
-
     public SosSensor(final String id, final String commName, final String systemIP, final int systemPort) {
-        super(id, commName, TYPES, systemIP, systemPort);
+        super(id, commName, systemIP, systemPort);
     }
 
     public void updateSystem() {
