@@ -33,7 +33,7 @@ public class SystemCore_SosTest extends SystemCore {
                 System.out.println("## App added and started successfully!");
                 break;
             } catch (AppInstallerException | IOException | OnLoadException e) {
-                System.out.println("## App installation faild: " + e.getMessage());
+                System.out.println("## App installation failed: " + e.getMessage());
                 System.out.println(String.valueOf(new char[80]).replace("\0", "#"));
             }
         }
