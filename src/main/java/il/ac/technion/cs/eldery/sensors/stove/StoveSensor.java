@@ -1,8 +1,6 @@
 package il.ac.technion.cs.eldery.sensors.stove;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import il.ac.technion.cs.eldery.sensors.Sensor;
