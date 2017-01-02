@@ -19,6 +19,15 @@ public class Contact {
 
     }
 
+    public Contact(final Element contactElement) {
+        // TODO: inbal add checks etc.
+
+        id = contactElement.getChildText("Id");
+        name = contactElement.getChildText("name");
+        phoneNumber = contactElement.getChildText("phoneNumber");
+        emailAddress = contactElement.getChildText("email");
+    }
+
     public String getId() {
         return id;
     }
@@ -68,4 +77,10 @@ public class Contact {
         return $;
 
     }
+
+    // For debug mainly, leaving it implemented for future use
+    @Override public String toString() {
+        return "Contact:  id= " + id + "; name= " + name + "; phone= " + phoneNumber + "; email= " + emailAddress + ";\n";
+    }
+
 }
