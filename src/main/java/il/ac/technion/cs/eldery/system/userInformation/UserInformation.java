@@ -1,11 +1,14 @@
 package il.ac.technion.cs.eldery.system.userInformation;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
@@ -16,11 +19,11 @@ import il.ac.technion.cs.eldery.system.EmergencyLevel;
 
 public class UserInformation {
 
-    private final String name;
-    private final String id;
+    private String name;
+    private String id;
     private String phoneNumber;
     private String homeAddress;
-    private final ContactsInformation emergencyContacts = new ContactsInformation();
+    private ContactsInformation emergencyContacts;
 
     public UserInformation(final String name, final String id, final String phoneNumber, final String homeAddress) {
 
@@ -28,6 +31,31 @@ public class UserInformation {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.homeAddress = homeAddress;
+        emergencyContacts = new ContactsInformation();
+    }
+
+    public UserInformation(final File xmlFile) {
+        final SAXBuilder sBuilder = new SAXBuilder();
+        try {
+            final Document doc = sBuilder.build(xmlFile);
+            final Element rootElement = doc.getRootElement();
+            final List<Element> classInfo = rootElement.getChildren();
+
+            // TODO: inbal add safety checks
+
+            final Element userDetails = classInfo.get(0);
+            name = userDetails.getChildText("name");
+            id = userDetails.getChildText("Id");
+            phoneNumber = userDetails.getChildText("phoneNumber");
+            homeAddress = userDetails.getChildText("homeAddress");
+
+            emergencyContacts = new ContactsInformation(classInfo.get(1));
+
+        } catch (final JDOMException e) {
+            e.printStackTrace();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getPhoneNumber() {
@@ -101,13 +129,18 @@ public class UserInformation {
     public void alert(final String appId, final String msg, final EmergencyLevel elvl) {
         // TODO: Elia and Ron - Implement
     }
-    
-    
+
+    // For debug mainly, leaving it implemented for future use
+    @Override public String toString() {
+        return "User:\nuserId= " + id + "\tname=" + name + "\tphone= " + phoneNumber + "\taddress= " + homeAddress + "\n" + emergencyContacts;
+
+    }
+
     // the next methods might seem redundant, but when we will change this class
     // to save a profile for each application separately, these methods will be
     // changed to receive also appId.
     // In my opinion implementing them now will be easier in the future when the
-    // changes mentioned above will take place
+    // changes mentioned above will take place.
 
     public void addContact(final Contact c, final EmergencyLevel elevel) {
         emergencyContacts.addContact(c, elevel);
