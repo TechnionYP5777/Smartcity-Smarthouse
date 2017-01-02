@@ -30,15 +30,14 @@ public class SosController implements Initializable {
     }
 
     public void killElder() {
-        stateLabel.setText("Elderly is DEAD!!!");
-        killerButton.setText("Respawn");
+        stateLabel.setText("Elderly is in Danger!!!");
+        killerButton.setVisible(true);
         mainPane.setStyle("-fx-background-color: red");
         isDead = true;
     }
 
     public void respawnElder() {
         stateLabel.setText("Elderly is OK");
-        killerButton.setText("Kill Elderly");
         mainPane.setStyle("-fx-background-color: green");
         isDead = false;
     }

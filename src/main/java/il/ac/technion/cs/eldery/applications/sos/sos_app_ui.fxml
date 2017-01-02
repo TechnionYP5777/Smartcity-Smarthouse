@@ -17,7 +17,7 @@
       <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="stateLabel" text="Elderly is OK"/>
-            <Button fx:id="killerButton" text="Kill Elderly"/>
+            <Button fx:id="killerButton" text="Mark OK" visible="false"/>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
