@@ -41,8 +41,6 @@ public class UserInformation {
             final Element rootElement = doc.getRootElement();
             final List<Element> classInfo = rootElement.getChildren();
 
-            // TODO: inbal add safety checks
-
             final Element userDetails = classInfo.get(0);
             name = userDetails.getChildText("name");
             id = userDetails.getChildText("Id");
