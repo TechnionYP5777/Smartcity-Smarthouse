@@ -1,5 +1,6 @@
 package il.ac.technion.cs.eldery.system.userInformation;
 
+import org.jdom2.Element;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,6 +26,22 @@ public class ContactTest {
         Assert.assertEquals(contactA.getEmailAddress(), "alon@gmail.com");
         contactA.setEmailAddress("alon100@gmail.com");
         Assert.assertEquals(contactA.getEmailAddress(), "alon100@gmail.com");
+    }
+
+    @Test public void xmlTest() {
+        final Element contactAElement = contactA.toXmlElement();
+        final Contact newContactA = new Contact(contactAElement);
+
+        Assert.assertNotNull(newContactA);
+        Assert.assertEquals(contactA.getId(), newContactA.getId());
+        Assert.assertEquals(contactA.getName(), newContactA.getName());
+        Assert.assertEquals(contactA.getPhoneNumber(), newContactA.getPhoneNumber());
+        Assert.assertEquals(contactA.getEmailAddress(), newContactA.getEmailAddress());
+    }
+
+    @Test public void toStringTest() {
+        Assert.assertNotNull(contactA + "");
+        Assert.assertEquals("Contact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n", (contactA + ""));
     }
 
 }

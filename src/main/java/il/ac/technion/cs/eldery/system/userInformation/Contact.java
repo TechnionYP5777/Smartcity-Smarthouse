@@ -20,7 +20,6 @@ public class Contact {
     }
 
     public Contact(final Element contactElement) {
-        // TODO: inbal add checks etc.
 
         id = contactElement.getChildText("Id");
         name = contactElement.getChildText("name");
