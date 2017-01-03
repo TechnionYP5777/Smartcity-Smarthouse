@@ -1,0 +1,80 @@
+package il.ac.technion.cs.eldery.system.userInformation;
+
+import java.io.File;
+import java.util.List;
+
+import org.junit.*;
+
+import il.ac.technion.cs.eldery.system.EmergencyLevel;
+
+public class UserInformationTest {
+
+    private final UserInformation userInfo = new UserInformation("Alon", "789", "0509535200", "Hertzel avn. 7, Jerusalem");
+    private final Contact contactA = new Contact("123", "Dan", "0508080123", "alon@gmail.com");
+    private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
+
+    @Test public void initTest() {
+        Assert.assertEquals("Alon", userInfo.getName());
+        Assert.assertEquals("789", userInfo.getId());
+        Assert.assertEquals("0509535200", userInfo.getPhoneNumber());
+        Assert.assertEquals("Hertzel avn. 7, Jerusalem", userInfo.getHomeAddress());
+    }
+  
+    @Test public void settersTest() {
+        userInfo.setHomeAddress("Mlal 18, Haifa");
+        Assert.assertEquals("Mlal 18, Haifa", userInfo.getHomeAddress());
+
+        userInfo.setPhoneNumber("026895246");
+        Assert.assertEquals("026895246", userInfo.getPhoneNumber());
+    }
+
+    @Test public void contactsTest() {
+        userInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        userInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
+
+        List<Contact> temp = userInfo.getContacts(EmergencyLevel.CONTACT_FIRE_FIGHTERS);
+        Assert.assertEquals(0, temp.size());
+
+        temp = userInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        Assert.assertEquals(1, temp.size());
+        Assert.assertTrue(temp.contains(contactB));
+
+        temp = userInfo.getContacts();
+        Assert.assertTrue(temp.contains(contactA));
+        Assert.assertTrue(temp.contains(contactB));
+
+        Contact tempContact = userInfo.getContact("000");
+        Assert.assertNull(tempContact);
+
+        tempContact = userInfo.getContact("123");
+        Assert.assertNotNull(tempContact);
+    }
+
+    @Test public void xmlTesting() {
+
+        userInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        userInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
+
+        userInfo.toXml("xmldata.xml");
+
+        final File userInfoFile = new File("xmldata.xml");
+        final UserInformation ui2 = new UserInformation(userInfoFile);
+
+        Assert.assertNotNull(ui2);
+        Assert.assertEquals(userInfo.getId(), ui2.getId());
+        Assert.assertEquals(userInfo.getName(), ui2.getName());
+        Assert.assertEquals(userInfo.getHomeAddress(), ui2.getHomeAddress());
+        Assert.assertEquals(userInfo.getPhoneNumber(), ui2.getPhoneNumber());
+        Assert.assertNotNull(ui2.getContact(contactA.getId()));
+        Assert.assertNotNull(ui2.getContact(contactB.getId()));
+
+        userInfoFile.delete();
+
+    }
+
+    @Test public void toStringTest() {
+        Assert.assertNotNull(userInfo + "");
+        Assert.assertEquals("User:\nuserId= 789\tname=Alon\tphone= 0509535200\taddress= Hertzel avn. 7, Jerusalem\n", userInfo + "");
+    }
+
+}
