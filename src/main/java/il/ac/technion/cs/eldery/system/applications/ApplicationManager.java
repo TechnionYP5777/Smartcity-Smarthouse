@@ -62,8 +62,8 @@ public class ApplicationManager {
         Platform.runLater(() -> {
             try {
                 application.start(new Stage());
-            } catch (final Exception e) {
-                e.printStackTrace();
+            } catch (final Exception ¢) {
+                ¢.printStackTrace();
             }
         });
 

@@ -38,16 +38,16 @@ public abstract class Message {
      * @return the response from the destination, if requested. If an error
      *         occurred or if a response was not requested, <code> null </code>
      *         will be returned. */
-    public String send(final PrintWriter out, final BufferedReader in) {
+    public String send(final PrintWriter out, final BufferedReader $) {
         if (out == null)
             return null;
 
         out.println(toJson());
-        if (in != null)
+        if ($ != null)
             try {
-                return in.readLine();
-            } catch (final IOException e) {
-                e.printStackTrace();
+                return $.readLine();
+            } catch (final IOException ¢) {
+                ¢.printStackTrace();
                 return null;
             }
         return null;

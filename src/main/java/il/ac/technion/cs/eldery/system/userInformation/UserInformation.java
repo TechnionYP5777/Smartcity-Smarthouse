@@ -51,10 +51,10 @@ public class UserInformation {
 
             emergencyContacts = new ContactsInformation(classInfo.get(1));
 
-        } catch (final JDOMException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } catch (final JDOMException ¢) {
+            ¢.printStackTrace();
+        } catch (final IOException ¢) {
+            ¢.printStackTrace();
         }
     }
 
@@ -120,8 +120,8 @@ public class UserInformation {
             fw.write(xmlOutput.outputString(doc));
             fw.flush();
             fw.close();
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } catch (final IOException ¢) {
+            ¢.printStackTrace();
         }
 
     }

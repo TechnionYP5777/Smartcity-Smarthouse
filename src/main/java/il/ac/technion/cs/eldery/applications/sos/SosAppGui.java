@@ -45,8 +45,8 @@ public class SosAppGui extends SmartHouseApplication {
                 sosController.killElder();
                 System.out.println("msg from app: " + t);
             });
-        } catch (final SensorNotFoundException e) {
-            throw new OnLoadException(ErrorCode.SENSOR_ID_NOT_FOUND, e.getMessage());
+        } catch (final SensorNotFoundException ¢) {
+            throw new OnLoadException(ErrorCode.SENSOR_ID_NOT_FOUND, ¢.getMessage());
         }
     }
 }

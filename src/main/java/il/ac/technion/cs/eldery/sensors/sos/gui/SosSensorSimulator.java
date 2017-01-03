@@ -26,13 +26,10 @@ public class SosSensorSimulator extends Application {
         final Button sosButton = new Button();
         sosButton.setGraphic(new ImageView(sosImage));
         sosButton.setStyle("-fx-focus-color: transparent;");
-        sosButton.setOnAction(event -> {
-            sensor.updateSystem();
-        });
+        sosButton.setOnAction(event -> sensor.updateSystem());
         final StackPane layout = new StackPane();
         layout.getChildren().add(sosButton);
-        final Scene scene = new Scene(layout, 320, 268);
-        s.setScene(scene);
+        s.setScene(new Scene(layout, 320, 268));
         s.setTitle("SOS Sensor Simulator");
         s.show();
 

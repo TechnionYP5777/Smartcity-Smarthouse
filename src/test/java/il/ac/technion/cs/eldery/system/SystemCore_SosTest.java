@@ -32,8 +32,8 @@ public class SystemCore_SosTest extends SystemCore {
                 applicationsHandler.addApplication("someID", new ApplicationPath<>(PathType.CLASS_NAME, SosAppGui.class.getName()));
                 System.out.println("## App added and started successfully!");
                 break;
-            } catch (AppInstallerException | IOException | OnLoadException e) {
-                System.out.println("## App installation failed: " + e.getMessage());
+            } catch (AppInstallerException | IOException | OnLoadException ¢) {
+                System.out.println("## App installation failed: " + ¢.getMessage());
                 System.out.println(String.valueOf(new char[80]).replace("\0", "#"));
             }
         }
