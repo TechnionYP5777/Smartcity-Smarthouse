@@ -11,12 +11,12 @@ public class MappingGUI extends Application {
         launch(args);
     }
 
-    @Override public void start(Stage stage) throws Exception {
+    @Override public void start(Stage s) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("house mapping.fxml"));
         
         Scene scene = new Scene(root, 1000, 800);
-        stage.setTitle("Test");
-        stage.setScene(scene);
-        stage.show();
+        s.setTitle("Test");
+        s.setScene(scene);
+        s.show();
     }
 }

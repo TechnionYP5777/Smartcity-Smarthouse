@@ -6,12 +6,17 @@
 <?import javafx.scene.layout.*?>
 
 
-<VBox spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.system.gui.mapping.SensorInfoController">
-   <children>
-      <Label fx:id="name" text="Label" />
-      <ComboBox fx:id="room" />
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
-</VBox>
+<TitledPane fx:id="titledPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.system.gui.mapping.SensorInfoController">
+   <content>
+      <VBox spacing="10.0">
+         <children>
+            <Label fx:id="nameLabel" text="Label" />
+            <Label fx:id="idLabel" text="Label" />
+            <ComboBox fx:id="room" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </content>
+</TitledPane>
