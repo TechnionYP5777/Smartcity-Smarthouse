@@ -18,6 +18,7 @@ import il.ac.technion.cs.eldery.utils.ListenableList;
  * @author Inbal Zukerman
  * @since Dec 13, 2016 */
 public class DatabaseHandler {
+    private final Map<String, String> sensorsIdToName = new HashMap<>();
     private final Map<String, List<String>> commNames = new HashMap<>();
     private final Map<String, ListenableList<String>> sensors = new HashMap<>();
     private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
@@ -36,6 +37,7 @@ public class DatabaseHandler {
 
         sensors.put(sensorId, new ListenableList<String>(sizeLimit));
         sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
+        sensorsIdToName.put(sensorId, commName);
 
         newSensorsListeners.forEach(consumer -> consumer.accept(sensorId));
     }
@@ -46,6 +48,17 @@ public class DatabaseHandler {
      * @return list of sensor IDs with the given commercial name */
     public List<String> getSensors(final String commName) {
         return !commNames.containsKey(commName) ? new ArrayList<>() : commNames.get(commName);
+    }
+
+    /** Returns the commercial name associated with the required sensor.
+     * @param sensorId sensor'd id
+     * @return commercial name associated with this id
+     * @throws SensorNotFoundException if id was not found */
+    public String getName(String sensorId) throws SensorNotFoundException {
+        if (!sensorsIdToName.containsKey(sensorId))
+            throw new SensorNotFoundException();
+
+        return sensorsIdToName.get(sensorId);
     }
 
     /** Adds a new listener to the list of consumers that will be notified each
