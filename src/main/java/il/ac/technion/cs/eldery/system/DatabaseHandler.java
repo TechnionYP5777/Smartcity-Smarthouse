@@ -22,6 +22,8 @@ public class DatabaseHandler {
     private final Map<String, ListenableList<String>> sensors = new HashMap<>();
     private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
 
+    private final List<Consumer<String>> newSensorsListeners = new ArrayList<>();
+
     /** Adds a new sensor to the system, initializing its information table.
      * @param sensorId sensor'd id
      * @param commName sensor's commercial name
@@ -34,6 +36,8 @@ public class DatabaseHandler {
 
         sensors.put(sensorId, new ListenableList<String>(sizeLimit));
         sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
+
+        newSensorsListeners.forEach(consumer -> consumer.accept(sensorId));
     }
 
     /** Fetches a list of all the sensor IDs registered to the system with the
@@ -42,6 +46,13 @@ public class DatabaseHandler {
      * @return list of sensor IDs with the given commercial name */
     public List<String> getSensors(final String commName) {
         return !commNames.containsKey(commName) ? new ArrayList<>() : commNames.get(commName);
+    }
+
+    /** Adds a new listener to the list of consumers that will be notified each
+     * time a new sensor is registered to the system.
+     * @param listener consumer to be called when a sensor is added */
+    public void addNewSensorsListener(Consumer<String> listener) {
+        newSensorsListeners.add(listener);
     }
 
     /** Adds a listener to a certain sensor, to be called on
@@ -108,5 +119,4 @@ public class DatabaseHandler {
         sensorsLocations.remove(sensorId);
         sensorsLocations.put(sensorId, l);
     }
-
 }
