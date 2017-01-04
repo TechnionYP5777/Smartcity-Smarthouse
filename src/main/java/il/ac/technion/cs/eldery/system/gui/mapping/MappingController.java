@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
+import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,25 +21,29 @@ public class MappingController implements Initializable {
     @FXML private VBox sensorsPaneList;
 
     @Override public void initialize(URL location, ResourceBundle __) {
-        try {
-            addSensor("00:11:22:33");
-        } catch (IOException ¢) {
-            ¢.printStackTrace();
-        }
+
     }
 
     public MappingController setDatabaseHandler(DatabaseHandler dbHandler) {
         this.dbHandler = dbHandler;
 
+        dbHandler.addNewSensorsListener(id -> Platform.runLater(() -> {
+            try {
+                addSensor(id);
+            } catch (IOException | SensorNotFoundException ¢) {
+                ¢.printStackTrace();
+            }
+        }));
+
         return this;
     }
 
-    public void addSensor(String id) throws IOException {
+    public void addSensor(String id) throws IOException, SensorNotFoundException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sensor info.fxml"));
         sensorsPaneList.getChildren().add(loader.load());
 
         SensorInfoController controller = loader.getController();
-        controller.setDatabaseHandler(dbHandler).setId(id).setName("Yes");
+        controller.setDatabaseHandler(dbHandler).setId(id).setName(dbHandler.getName(id));
         sensors.put(id, controller);
     }
 }
