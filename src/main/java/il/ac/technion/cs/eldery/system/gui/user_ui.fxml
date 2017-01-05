@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <TabPane layoutX="14.0" layoutY="49.0" prefHeight="400.0" prefWidth="600.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab fx:id="userInfoTab" closable="false" text="User Information">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="83.0" layoutY="83.0" prefHeight="367.0" prefWidth="564.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="83.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="83.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.0" minWidth="10.0" prefWidth="130.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="358.0" minWidth="10.0" prefWidth="358.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label prefHeight="101.0" prefWidth="142.0" text="Name:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label prefHeight="101.0" prefWidth="142.0" text="Id:" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label prefHeight="101.0" prefWidth="142.0" text="Phone Number:" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label prefHeight="101.0" prefWidth="142.0" text="Home Address:" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="userNameField" GridPane.columnIndex="1" />
+                              <TextField fx:id="userIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="userPhoneNumField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="userHomeAddressField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                           </children>
+                        </GridPane>
+                        <Label layoutX="160.0" layoutY="24.0" text="User Information" underline="true" AnchorPane.bottomAnchor="440.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="30.0">
+                           <font>
+                              <Font name="System Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="userSaveField" layoutX="610.0" layoutY="442.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="107.0" text="Save" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="610.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="442.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab fx:id="contactsTab" closable="false" text="Emergency Contacts">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="195.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" text="Emergency Contacts" textAlignment="CENTER" underline="true" AnchorPane.bottomAnchor="440.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="30.0">
+                           <font>
+                              <Font name="System Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="contactsTable" layoutX="18.0" layoutY="75.0" prefHeight="337.0" prefWidth="719.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="Name" />
+                            <TableColumn prefWidth="70.0" text="ID" />
+                              <TableColumn prefWidth="70.0" text="Phone Number" />
+                              <TableColumn prefWidth="75.0" text="Email" />
+                              <TableColumn prefWidth="75.0" text="Emergency Level" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <TextField fx:id="addNameField" layoutX="18.0" layoutY="428.0" prefHeight="25.0" prefWidth="140.0" promptText="Name" />
+                        <TextField fx:id="addIDField" layoutX="161.0" layoutY="428.0" prefHeight="25.0" prefWidth="140.0" promptText="ID" />
+                        <TextField fx:id="addPhoneField" layoutX="305.0" layoutY="428.0" prefHeight="25.0" prefWidth="140.0" promptText="Phone Number" />
+                        <TextField fx:id="addEmailField" layoutX="448.0" layoutY="428.0" prefHeight="25.0" prefWidth="140.0" promptText="Email" />
+                        <ChoiceBox fx:id="addELevelField" layoutX="592.0" layoutY="427.0" prefHeight="25.0" prefWidth="144.0" />
+                        <Button fx:id="saveButton" layoutX="629.0" layoutY="464.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="107.0" text="Save" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
