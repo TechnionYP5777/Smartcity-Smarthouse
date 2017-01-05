@@ -25,10 +25,10 @@ public class DatabaseHandler {
 
     private final List<Consumer<String>> newSensorsListeners = new ArrayList<>();
 
-    /** Adds a new sensor to the system, initializing its information table.
+    /** Adds a new sensor to the system, initializing its information List.
      * @param sensorId sensor'd id
      * @param commName sensor's commercial name
-     * @param sizeLimit limit of the information table for this sensor */
+     * @param sizeLimit limit of the information List for this sensor */
     public void addSensor(final String sensorId, final String commName, final int sizeLimit) {
         if (commNames.containsKey(commName))
             commNames.get(commName).add(sensorId);
@@ -71,8 +71,8 @@ public class DatabaseHandler {
     /** Adds a listener to a certain sensor, to be called on
      * <strong>any</strong> update from that sensor
      * @param sensorId The sensorId
-     * @param notifee The consumer to be called on a change, with the whole
-     *        table of the sensor
+     * @param notifee The consumer to be called on a change, with the whole list
+     *        of the sensor
      * @return The id of the listener, to be used in any future reference to it
      * @throws SensorNotFoundException */
     public String addListener(final String sensorId, final Consumer<String> notifee) throws SensorNotFoundException {
@@ -104,8 +104,8 @@ public class DatabaseHandler {
         return Optional.ofNullable(sensors.get(sensorId)).filter(t -> !t.isEmpty()).map(t -> t.get(t.size() - 1));
     }
 
-    /** @param sensorId the ID of the sensor's who's Table is required
-     * @return the Table with the information of the wanted sensor
+    /** @param sensorId the ID of the sensor's who's List is required
+     * @return the List with the information of the wanted sensor
      * @throws SensorNotFoundException */
     public ListenableList<String> getList(final String sensorId) throws SensorNotFoundException {
         if (!sensors.containsKey(sensorId))

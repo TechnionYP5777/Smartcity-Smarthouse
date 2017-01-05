@@ -14,6 +14,7 @@ import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 
 public class DatabaseHandlerTest {
     private DatabaseHandler handler;
+    private boolean listenerUpdated;
 
     @Before public void init() {
         handler = new DatabaseHandler();
@@ -166,5 +167,30 @@ public class DatabaseHandlerTest {
         handler.addSensor("00", "yes", 100);
         handler.setSensorLocation("00", SensorLocation.BATHROOM);
         Assert.assertEquals(SensorLocation.BATHROOM, handler.getSensorLocation("00"));
+    }
+
+    @Test public void getNameTest() throws SensorNotFoundException {
+        handler.addSensor("00:11:22:33", "iStoves", 100);
+
+        Assert.assertEquals(1, handler.getSensors("iStoves").size());
+        Assert.assertEquals("iStoves", this.handler.getName("00:11:22:33"));
+    }
+
+    @Test(expected = SensorNotFoundException.class) public void throwsExceptionGetName() throws SensorNotFoundException {
+
+        handler.getName("01:12:23");
+
+    }
+
+    @Test public void addNewSensorsListenerTest() {
+
+        Consumer<String> listener = (x) -> {
+            listenerUpdated = true;
+        };
+
+        handler.addNewSensorsListener(listener);
+        handler.addSensor("01:12:23", "iSOS", 100);
+
+        Assert.assertTrue(listenerUpdated);
     }
 }
