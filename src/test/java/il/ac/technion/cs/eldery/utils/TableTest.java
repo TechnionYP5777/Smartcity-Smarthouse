@@ -68,8 +68,7 @@ public class TableTest {
     @Test public void getLastKEntriesTest() {
 
         Assert.assertEquals(0, limitedTable.getCurrentCapacity());
-        final Table<String, Integer> noEntries = limitedTable.receiveKLastEntries(0);
-        Assert.assertNull(noEntries);
+        Assert.assertNull(limitedTable.receiveKLastEntries(0));
         limitedTable.addEntry(info1);
         limitedTable.addEntry(moreInfo);
         limitedTable.addEntry(moreInfo2);
@@ -85,7 +84,7 @@ public class TableTest {
 
     }
 
-    @SuppressWarnings("boxing") @Test public void getLastEntryAtColTest() {
+    @Test @SuppressWarnings("boxing") public void getLastEntryAtColTest() {
         Assert.assertNull(unlimitedTable.getLastEntryAtCol("A"));
         info1.put("A", 1);
         info1.put("B", 2);
@@ -94,7 +93,7 @@ public class TableTest {
         Assert.assertEquals(2, (int) limitedTable.getLastEntryAtCol("B"));
     }
 
-    @SuppressWarnings("boxing") @Test public void getTest() {
+    @Test @SuppressWarnings("boxing") public void getTest() {
 
         try {
             Assert.assertNull(unlimitedTable.get(1, "A"));

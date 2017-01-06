@@ -31,19 +31,19 @@ public class ContactsInformationTest {
 
         List<Contact> temp = contactsInfo.getContacts();
         Assert.assertEquals(2, temp.size());
-        Assert.assertTrue(temp.contains(contactA));
-        Assert.assertTrue(temp.contains(contactB));
+        assert temp.contains(contactA);
+        assert temp.contains(contactB);
 
         temp = contactsInfo.getContacts(EmergencyLevel.CONTACT_FIRE_FIGHTERS);
         Assert.assertEquals(0, temp.size());
 
         temp = contactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT);
         Assert.assertEquals(1, temp.size());
-        Assert.assertTrue(temp.contains(contactA));
+        assert temp.contains(contactA);
 
         temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
         Assert.assertEquals(1, temp.size());
-        Assert.assertTrue(temp.contains(contactB));
+        assert temp.contains(contactB);
 
     }
 
@@ -54,26 +54,26 @@ public class ContactsInformationTest {
         final Element contactsInfoElement = contactsInfo.toXmlElement();
         final ContactsInformation newContactsInfo = new ContactsInformation(contactsInfoElement);
 
-        Assert.assertNotNull(newContactsInfo);
+        assert newContactsInfo != null;
         final Contact newContactA = newContactsInfo.getContact(contactA.getId());
-        Assert.assertNotNull(newContactA);
+        assert newContactA != null;
 
         Assert.assertEquals(contactA.getId(), newContactA.getId());
         Assert.assertEquals(contactA.getName(), newContactA.getName());
 
-        Assert.assertNotNull(newContactsInfo.getContact(contactB.getId()));
+        assert newContactsInfo.getContact(contactB.getId()) != null;
 
-        Assert.assertNotNull(newContactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT));
+        assert newContactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT) != null;
         Assert.assertEquals(0, newContactsInfo.getContacts(EmergencyLevel.CONTACT_HOSPITAL).size());
 
     }
 
     @Test public void toStringTest() {
-        Assert.assertNotNull(contactsInfo + "");
+        assert contactsInfo + "" != null;
         Assert.assertEquals("", contactsInfo + "");
 
         contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
-        Assert.assertNotNull(contactsInfo + "");
+        assert contactsInfo + "" != null;
 
         Assert.assertEquals("Elvl is: CALL_EMERGENCY_CONTACT\n\tContact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n\n",
                 contactsInfo + "");

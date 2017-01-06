@@ -37,17 +37,17 @@ public class UserInformationTest {
 
         temp = userInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
         Assert.assertEquals(1, temp.size());
-        Assert.assertTrue(temp.contains(contactB));
+        assert temp.contains(contactB);
 
         temp = userInfo.getContacts();
-        Assert.assertTrue(temp.contains(contactA));
-        Assert.assertTrue(temp.contains(contactB));
+        assert temp.contains(contactA);
+        assert temp.contains(contactB);
 
         Contact tempContact = userInfo.getContact("000");
         Assert.assertNull(tempContact);
 
         tempContact = userInfo.getContact("123");
-        Assert.assertNotNull(tempContact);
+        assert tempContact != null;
     }
 
     @Test public void xmlTesting() {
@@ -60,20 +60,20 @@ public class UserInformationTest {
         final File userInfoFile = new File("xmldata.xml");
         final UserInformation ui2 = new UserInformation(userInfoFile);
 
-        Assert.assertNotNull(ui2);
+        assert ui2 != null;
         Assert.assertEquals(userInfo.getId(), ui2.getId());
         Assert.assertEquals(userInfo.getName(), ui2.getName());
         Assert.assertEquals(userInfo.getHomeAddress(), ui2.getHomeAddress());
         Assert.assertEquals(userInfo.getPhoneNumber(), ui2.getPhoneNumber());
-        Assert.assertNotNull(ui2.getContact(contactA.getId()));
-        Assert.assertNotNull(ui2.getContact(contactB.getId()));
+        assert ui2.getContact(contactA.getId()) != null;
+        assert ui2.getContact(contactB.getId()) != null;
 
         userInfoFile.delete();
 
     }
 
     @Test public void toStringTest() {
-        Assert.assertNotNull(userInfo + "");
+        assert userInfo + "" != null;
         Assert.assertEquals("User:\nuserId= 789\tname=Alon\tphone= 0509535200\taddress= Hertzel avn. 7, Jerusalem\n", userInfo + "");
     }
 

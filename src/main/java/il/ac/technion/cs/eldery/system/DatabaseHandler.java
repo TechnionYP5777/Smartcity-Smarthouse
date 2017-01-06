@@ -75,9 +75,9 @@ public class DatabaseHandler {
      *        of the sensor
      * @return The id of the listener, to be used in any future reference to it
      * @throws SensorNotFoundException */
-    public String addListener(final String sensorId, final Consumer<String> notifee) throws SensorNotFoundException {
+    public String addListener(final String $, final Consumer<String> notifee) throws SensorNotFoundException {
         try {
-            return sensors.get(sensorId).addListener(notifee);
+            return sensors.get($).addListener(notifee);
         } catch (@SuppressWarnings("unused") final Exception e) {
             throw new SensorNotFoundException();
         }

@@ -72,8 +72,7 @@ public class ListenableListTest {
     @Test public void getLastKEntriesTest() {
 
         Assert.assertEquals(0, limitedList.size());
-        final List<String> noEntries = limitedList.getLastKEntries(0);
-        Assert.assertNull(noEntries);
+        Assert.assertNull(limitedList.getLastKEntries(0));
         limitedList.add("info1");
         limitedList.add("moreInfo");
         limitedList.add("moreInfo2");

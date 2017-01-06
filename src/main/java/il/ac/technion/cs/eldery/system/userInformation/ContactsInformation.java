@@ -50,9 +50,9 @@ public class ContactsInformation {
     /** @param id the id of the contact required
      * @return the contact with the required id or null if does not exist */
     public Contact getContact(final String id) {
-        for (final EmergencyLevel elvl : EmergencyLevel.values())
-            if (data.get(elvl).containsKey(id))
-                return data.get(elvl).get(id);
+        for (final EmergencyLevel $ : EmergencyLevel.values())
+            if (data.get($).containsKey(id))
+                return data.get($).get(id);
         return null;
     }
 

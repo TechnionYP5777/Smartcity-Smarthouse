@@ -32,7 +32,7 @@ public class ContactTest {
         final Element contactAElement = contactA.toXmlElement();
         final Contact newContactA = new Contact(contactAElement);
 
-        Assert.assertNotNull(newContactA);
+        assert newContactA != null;
         Assert.assertEquals(contactA.getId(), newContactA.getId());
         Assert.assertEquals(contactA.getName(), newContactA.getName());
         Assert.assertEquals(contactA.getPhoneNumber(), newContactA.getPhoneNumber());
@@ -40,7 +40,7 @@ public class ContactTest {
     }
 
     @Test public void toStringTest() {
-        Assert.assertNotNull(contactA + "");
+        assert contactA + "" != null;
         Assert.assertEquals("Contact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n", (contactA + ""));
     }
 

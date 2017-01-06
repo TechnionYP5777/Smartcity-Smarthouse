@@ -184,13 +184,9 @@ public class DatabaseHandlerTest {
 
     @Test public void addNewSensorsListenerTest() {
 
-        Consumer<String> listener = (x) -> {
-            listenerUpdated = true;
-        };
-
-        handler.addNewSensorsListener(listener);
+        handler.addNewSensorsListener((x) -> listenerUpdated = true);
         handler.addSensor("01:12:23", "iSOS", 100);
 
-        Assert.assertTrue(listenerUpdated);
+        assert listenerUpdated;
     }
 }

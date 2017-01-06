@@ -19,9 +19,7 @@ public class ListenableTableTest {
 
     private boolean listenerUpdated;
 
-    private final Consumer<Table<String, Integer>> listener = (x) -> {
-        listenerUpdated = true;
-    };
+    private final Consumer<Table<String, Integer>> listener = (x) -> listenerUpdated = true;
 
     @Test public void initalizationTest() {
         Assert.assertEquals(Table.UNLIMITED_CAPACITY, unlimitedTable.getMaxCapacity());
@@ -30,9 +28,9 @@ public class ListenableTableTest {
 
     @Test public void listenersTest() {
         final String listenerId = unlimitedTable.addListener(listener);
-        Assert.assertNotNull(listenerId);
+        assert listenerId != null;
         unlimitedTable.removeListener(listenerId);
-        Assert.assertNotNull(unlimitedTable);
+        assert unlimitedTable != null;
     }
 
     @Test public void addEntryTest() {
@@ -40,16 +38,16 @@ public class ListenableTableTest {
         unlimitedTable.addEntry(info1);
         Assert.assertEquals(info1, unlimitedTable.getLastEntry());
 
-        Assert.assertFalse(listenerUpdated);
+        assert !listenerUpdated;
         unlimitedTable.addListener(listener);
         unlimitedTable.addEntry(info2);
-        Assert.assertTrue(listenerUpdated);
+        assert listenerUpdated;
 
         listenerUpdated = false;
-        Assert.assertFalse(listenerUpdated);
+        assert !listenerUpdated;
         limitedTable.addListener(listener);
         limitedTable.addEntry(info1);
-        Assert.assertTrue(listenerUpdated);
+        assert listenerUpdated;
 
     }
 

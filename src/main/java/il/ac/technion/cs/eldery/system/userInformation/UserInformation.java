@@ -37,21 +37,14 @@ public class UserInformation {
     public UserInformation(final File xmlFile) {
         final SAXBuilder sBuilder = new SAXBuilder();
         try {
-            final Document doc = sBuilder.build(xmlFile);
-            final Element rootElement = doc.getRootElement();
-            final List<Element> classInfo = rootElement.getChildren();
-
+            final List<Element> classInfo = sBuilder.build(xmlFile).getRootElement().getChildren();
             final Element userDetails = classInfo.get(0);
             name = userDetails.getChildText("name");
             id = userDetails.getChildText("Id");
             phoneNumber = userDetails.getChildText("phoneNumber");
             homeAddress = userDetails.getChildText("homeAddress");
-
             emergencyContacts = new ContactsInformation(classInfo.get(1));
-
-        } catch (final JDOMException ¢) {
-            ¢.printStackTrace();
-        } catch (final IOException ¢) {
+        } catch (final IOException | JDOMException ¢) {
             ¢.printStackTrace();
         }
     }
