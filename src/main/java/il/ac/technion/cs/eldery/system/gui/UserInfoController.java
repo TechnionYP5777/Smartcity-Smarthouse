@@ -10,10 +10,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 public class UserInfoController implements Initializable {
 
@@ -29,8 +33,9 @@ public class UserInfoController implements Initializable {
     @FXML public TextField addIDField;
     @FXML public TextField addPhoneField;
     @FXML public TextField addEmailField;
-    @FXML public ChoiceBox<EmergencyLevel> addELevelField;
+    @FXML public ComboBox<EmergencyLevel> addELevelField;
     @FXML public Button saveButton;
+    @FXML public HBox buttonBox;
 
     private static boolean validateUserInput(String name, String id, String phone, String address) {
         return name != null && id != null && phone != null && address != null && !"".equals(name) && !"".equals(id) && !"".equals(phone)
@@ -62,7 +67,24 @@ public class UserInfoController implements Initializable {
                 alert.showAndWait();
             }
         });
-
+        
+        HBox.setHgrow(addNameField, Priority.ALWAYS);
+        HBox.setHgrow(addELevelField, Priority.ALWAYS);
+        HBox.setHgrow(addIDField, Priority.ALWAYS);
+        HBox.setHgrow(addPhoneField, Priority.ALWAYS);
+        HBox.setHgrow(addEmailField, Priority.ALWAYS);
+        HBox.setHgrow(saveButton, Priority.ALWAYS);
+        
+        final int btnCount = buttonBox.getChildren().size();
+        addNameField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        addELevelField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        addIDField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        addPhoneField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        addEmailField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        saveButton.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        
+        addELevelField.setPromptText("Emergency Level");
+        
         saveButton.setOnAction(event -> {
             final String name = addNameField.getText();
             final String id = addIDField.getText();
