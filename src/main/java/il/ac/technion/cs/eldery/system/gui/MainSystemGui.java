@@ -16,7 +16,8 @@ public class MainSystemGui extends Application {
         final Scene scene = new Scene(root);
         s.setTitle("System Controller");
         s.setScene(scene);
-        s.setWidth(350);
+        s.setWidth(800);
+        s.setHeight(650);
         s.show();
     }
 }

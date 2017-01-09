@@ -67,14 +67,14 @@ public class UserInfoController implements Initializable {
                 alert.showAndWait();
             }
         });
-        
+
         HBox.setHgrow(addNameField, Priority.ALWAYS);
         HBox.setHgrow(addELevelField, Priority.ALWAYS);
         HBox.setHgrow(addIDField, Priority.ALWAYS);
         HBox.setHgrow(addPhoneField, Priority.ALWAYS);
         HBox.setHgrow(addEmailField, Priority.ALWAYS);
         HBox.setHgrow(saveButton, Priority.ALWAYS);
-        
+
         final int btnCount = buttonBox.getChildren().size();
         addNameField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
         addELevelField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
@@ -82,9 +82,9 @@ public class UserInfoController implements Initializable {
         addPhoneField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
         addEmailField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
         saveButton.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
-        
+
         addELevelField.setPromptText("Emergency Level");
-        
+
         saveButton.setOnAction(event -> {
             final String name = addNameField.getText();
             final String id = addIDField.getText();
