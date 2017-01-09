@@ -23,6 +23,8 @@ public class MainSystemGuiController implements Initializable {
             userTab.setContent((Node) FXMLLoader.load(this.getClass().getResource("user information.fxml")));
             sensorsTab.setContent(
                     (Node) FXMLLoader.load(this.getClass().getResource("/il/ac/technion/cs/eldery/system/gui/mapping/house_mapping.fxml")));
+            appsTab.setContent(
+                    (Node) FXMLLoader.load(this.getClass().getResource("/il/ac/technion/cs/eldery/system/gui/applications/application_view.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
