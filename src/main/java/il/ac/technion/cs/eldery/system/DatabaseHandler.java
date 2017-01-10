@@ -129,7 +129,8 @@ public class DatabaseHandler {
     public void setSensorLocation(final String sensorId, final SensorLocation l) throws SensorNotFoundException {
         if (!sensorsLocations.containsKey(sensorId))
             throw new SensorNotFoundException();
-        sensorsLocations.remove(sensorId);
         sensorsLocations.put(sensorId, l);
+        
+        System.out.println(sensorsLocations.get(sensorId));
     }
 }

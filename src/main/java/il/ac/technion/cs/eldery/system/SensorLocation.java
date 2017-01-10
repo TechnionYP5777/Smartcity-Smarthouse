@@ -8,7 +8,6 @@ package il.ac.technion.cs.eldery.system;
  *        {@link #BASEMENT}, {@link #GARAGE} */
 
 public enum SensorLocation {
-
     /** the location of the sensor was not updated yet */
     UNDEFINED,
     /** the sensor is located in the kitchen */
@@ -32,6 +31,13 @@ public enum SensorLocation {
     /** the sensor is located in the basement */
     BASEMENT,
     /** the sensor is located in the garage */
-    GARAGE
-
+    GARAGE;
+    
+    public static SensorLocation fromString(String val) {
+        for (SensorLocation $ : SensorLocation.values())
+            if (($ + "").toLowerCase().equals(val.toLowerCase()))
+                return $;
+        
+        return null;
+    }
 }

@@ -5,6 +5,8 @@ import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.SensorLocation;
+import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -28,6 +30,13 @@ public class SensorInfoController implements Initializable {
             room.getItems().add((¢ + ""));
         
         room.getSelectionModel().select(0);
+        room.valueProperty().addListener((ov, prevVal, newVal) -> {
+            try {
+                dbHandler.setSensorLocation(this.id, SensorLocation.fromString(newVal));
+            } catch (SensorNotFoundException ¢) {
+                ¢.printStackTrace();
+            }
+        });
     }
 
     public SensorInfoController setDatabaseHandler(DatabaseHandler dbHandler) {
