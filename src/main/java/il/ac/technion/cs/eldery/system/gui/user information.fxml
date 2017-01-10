@@ -36,7 +36,7 @@
 												<Font name="System Bold" size="25.0" />
 											</font>
 										</Label>
-										<GridPane vgap="40">
+										<GridPane vgap="10">
 											<children>
 												<Label text="Name:" GridPane.columnIndex="0"
 													GridPane.rowIndex="0">
