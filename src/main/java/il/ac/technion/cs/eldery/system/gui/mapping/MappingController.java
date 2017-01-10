@@ -39,7 +39,7 @@ public class MappingController implements Initializable {
     }
 
     public void addSensor(String id) throws IOException, SensorNotFoundException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sensor info.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("sensor_info.fxml"));
         sensorsPaneList.getChildren().add(loader.load());
 
         SensorInfoController controller = loader.getController();

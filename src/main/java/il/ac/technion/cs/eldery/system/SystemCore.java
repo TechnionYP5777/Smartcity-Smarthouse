@@ -30,8 +30,8 @@ public class SystemCore extends Application {
         // TODO: Roy, add some GUI magic here
         // For now the system initializes the house mapping GUI, should be
         // changed in the future
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/mapping/house mapping.fxml"));
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/mapping/house_mapping.fxml"));
+        
         Scene scene = new Scene(loader.load(), 1000, 800);
         s.setTitle("Test");
         s.setScene(scene);

@@ -5,14 +5,22 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <TitledPane fx:id="titledPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.system.gui.mapping.SensorInfoController">
    <content>
-      <VBox spacing="10.0">
+      <VBox maxWidth="1.7976931348623157E308" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="nameLabel" text="Label" />
             <Label fx:id="idLabel" text="Label" />
-            <ComboBox fx:id="room" />
+            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0">
+               <children>
+                  <Label text="Location:" />
+                  <AnchorPane maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ComboBox fx:id="room" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
