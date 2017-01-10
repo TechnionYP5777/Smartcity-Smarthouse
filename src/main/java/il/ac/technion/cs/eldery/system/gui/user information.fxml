@@ -26,7 +26,7 @@
 							<children>
 								<VBox spacing="10.0" AnchorPane.bottomAnchor="0.0"
 									AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-									AnchorPane.topAnchor="0.0" alignment="CENTER">
+									AnchorPane.topAnchor="0.0" alignment="TOP_CENTER">
 									<children>
 										<Label layoutX="160.0" layoutY="24.0" text="User Information"
 											underline="true" AnchorPane.bottomAnchor="440.0"
@@ -88,6 +88,9 @@
 											defaultButton="true" mnemonicParsing="false" text="Save"
 											StackPane.alignment="CENTER_RIGHT" />
 									</children>
+									 <padding>
+            							<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         							</padding>
 								</VBox>
 							</children>
 						</AnchorPane>
@@ -100,7 +103,7 @@
 							<children>
 								<VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
 									AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-									alignment="CENTER">
+									alignment="TOP_CENTER">
 									<children>
 										<Label layoutX="195.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT"
 											text="Emergency Contacts" textAlignment="CENTER" underline="true"
@@ -150,6 +153,9 @@
 											</children>
 										</HBox>
 									</children>
+							        <padding>
+            							<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         							</padding>
 								</VBox>
 							</children>
 						</AnchorPane>
