@@ -60,8 +60,8 @@ public class ConfigController implements Initializable {
                 final String time = secs.getText();
                 final String degrees = cels.getText();
                 if (validateInput(time, degrees)) {
-                    mainController.set_seconds(Integer.parseInt(secs.getText()));
-                    mainController.set_temperture(Integer.parseInt(cels.getText()));
+                    mainController.set_alert_seconds(Integer.parseInt(secs.getText()));
+                    mainController.set_alert_temperture(Integer.parseInt(cels.getText()));
                     stage.close();
                 } else {
                     final Alert alert = new Alert(AlertType.ERROR);

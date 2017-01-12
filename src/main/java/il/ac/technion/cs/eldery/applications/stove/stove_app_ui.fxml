@@ -20,11 +20,6 @@
             <Label fx:id="tempLabel" text="The Stove Temperture is: 0"/>
             <AnchorPane>
                <children>
-                  <Button fx:id="onOffButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Turn on" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
-            <AnchorPane>
-               <children>
                   <Button fx:id="stoveConfigButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Stove Config" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
