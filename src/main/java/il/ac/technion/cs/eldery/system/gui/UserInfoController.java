@@ -45,49 +45,18 @@ public class UserInfoController implements Initializable {
     @FXML public TableColumn<ContactGUI, String> emailColumn;
     @FXML public TableColumn<ContactGUI, String> eLevelColumn;
 
-    private static boolean validateUserInput(final String name, final String id, final String phone, final String address) {
-        return name != null && id != null && phone != null && address != null && !"".equals(name) && !"".equals(id) && !"".equals(phone)
-                && !"".equals(address) && name.chars().allMatch(Character::isLetter) && id.chars().allMatch(Character::isDigit)
-                && phone.chars().allMatch(Character::isDigit);
-    }
-
-    private static void alertMessageUnvalidInput() {
-        final Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error Dialog");
-        alert.setHeaderText("Bad Input");
-        alert.setContentText("Make sure to enter only valid names and phone numbers");
-        alert.showAndWait();
-    }
-
     private class ContactGUI {
         public Contact contact;
         public EmergencyLevel eLevel;
 
-        public ContactGUI(Contact contact, EmergencyLevel eLevel) {
+        public ContactGUI(final Contact contact, final EmergencyLevel eLevel) {
             this.contact = contact;
             this.eLevel = eLevel;
         }
 
     }
 
-    @FXML private void addContactToTable(@SuppressWarnings("unused") final ActionEvent __) {
-        // final ObservableList<ContactGUI> data = contactsTable.getItems();
-        final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(), addEmailField.getText());
-        // user.addContact(contact, addELevelField.getValue()); TODO!
-        final ContactGUI guiContact = new ContactGUI(contact, addELevelField.getValue());
-        addNameField.clear();
-        addIDField.clear();
-        addPhoneField.clear();
-        addEmailField.clear();
-        contactsTable.getItems().add(guiContact);
-
-    }
-
-    @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
-
-        addELevelField.getItems().addAll(EmergencyLevel.CALL_EMERGENCY_CONTACT, EmergencyLevel.SMS_EMERGENCY_CONTACT, EmergencyLevel.NOTIFY_ELDERLY,
-                EmergencyLevel.CONTACT_POLICE, EmergencyLevel.CONTACT_FIRE_FIGHTERS, EmergencyLevel.CONTACT_HOSPITAL);
-
+    private void setButtons() {
         userSaveField.setOnAction(event -> {
 
             final String name = userNameField.getText();
@@ -104,12 +73,35 @@ public class UserInfoController implements Initializable {
             }
         });
 
+        saveButton.setOnAction(event -> {
+            if (validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(), addEmailField.getText()))
+                addContactToTable(event);
+            else
+                alertMessageUnvalidInput();
+        });
+    }
+
+    private void setCellsFactories() {
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getName()));
+        idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getId()));
+        phoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getPhoneNumber()));
+        emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getEmailAddress()));
+        eLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().eLevel + ""));
+
+    }
+
+    private void costumizeContactsTab() {
+
         HBox.setHgrow(addNameField, Priority.ALWAYS);
         HBox.setHgrow(addELevelField, Priority.ALWAYS);
         HBox.setHgrow(addIDField, Priority.ALWAYS);
         HBox.setHgrow(addPhoneField, Priority.ALWAYS);
         HBox.setHgrow(addEmailField, Priority.ALWAYS);
         HBox.setHgrow(saveButton, Priority.ALWAYS);
+
+        addELevelField.setPromptText("Emergency Level");
+        addELevelField.getItems().addAll(EmergencyLevel.CALL_EMERGENCY_CONTACT, EmergencyLevel.SMS_EMERGENCY_CONTACT, EmergencyLevel.NOTIFY_ELDERLY,
+                EmergencyLevel.CONTACT_POLICE, EmergencyLevel.CONTACT_FIRE_FIGHTERS, EmergencyLevel.CONTACT_HOSPITAL);
 
         final int btnCount = buttonBox.getChildren().size();
         addNameField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
@@ -119,20 +111,40 @@ public class UserInfoController implements Initializable {
         addEmailField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
         saveButton.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
 
-        addELevelField.setPromptText("Emergency Level");
+    }
 
-        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getName()));
-        idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getId()));
-        phoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getPhoneNumber()));
-        emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getEmailAddress()));
-        eLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().eLevel + ""));
+    private static boolean validateUserInput(final String name, final String id, final String phone, final String address) {
+        return name != null && id != null && phone != null && address != null && !"".equals(name) && !"".equals(id) && !"".equals(phone)
+                && !"".equals(address) && name.chars().allMatch(Character::isLetter) && id.chars().allMatch(Character::isDigit)
+                && phone.chars().allMatch(Character::isDigit);
+    }
 
-        saveButton.setOnAction(event -> {
-            if (validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(), addEmailField.getText()))
-                addContactToTable(event);
-            else
-                alertMessageUnvalidInput();
-        });
+    private static void alertMessageUnvalidInput() {
+        final Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText("Bad Input");
+        alert.setContentText("Make sure to enter only valid names and phone numbers");
+        alert.showAndWait();
+    }
+
+    @FXML private void addContactToTable(@SuppressWarnings("unused") final ActionEvent __) {
+        final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(), addEmailField.getText());
+        // user.addContact(contact, addELevelField.getValue()); TODO!
+        final ContactGUI guiContact = new ContactGUI(contact, addELevelField.getValue());
+        addNameField.clear();
+        addIDField.clear();
+        addPhoneField.clear();
+        addEmailField.clear();
+        addELevelField.setValue(null);
+        contactsTable.getItems().add(guiContact);
+
+    }
+
+    @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
+
+        setButtons();
+        setCellsFactories();
+        costumizeContactsTab();
 
     }
 
