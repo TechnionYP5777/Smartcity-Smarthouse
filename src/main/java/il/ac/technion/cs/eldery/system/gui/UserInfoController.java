@@ -6,18 +6,20 @@ import java.util.ResourceBundle;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.userInformation.Contact;
 import il.ac.technion.cs.eldery.system.userInformation.UserInformation;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 
 public class UserInfoController implements Initializable {
 
@@ -37,13 +39,40 @@ public class UserInfoController implements Initializable {
     @FXML public Button saveButton;
     @FXML public HBox buttonBox;
 
-    private static boolean validateUserInput(String name, String id, String phone, String address) {
+    @FXML private TableView<Contact> contactsTable;
+    @FXML public TableColumn<Contact, String> nameColumn;
+    @FXML public TableColumn<Contact, String> idColumn;
+    @FXML public TableColumn<Contact, String> phoneColumn;
+    @FXML public TableColumn<Contact, String> emailColumn;
+    @FXML public TableColumn<Contact, EmergencyLevel> eLevelColumn;
+
+    private static boolean validateUserInput(final String name, final String id, final String phone, final String address) {
         return name != null && id != null && phone != null && address != null && !"".equals(name) && !"".equals(id) && !"".equals(phone)
                 && !"".equals(address) && name.chars().allMatch(Character::isLetter) && id.chars().allMatch(Character::isDigit)
                 && phone.chars().allMatch(Character::isDigit);
     }
 
-    @Override public void initialize(URL arg0, ResourceBundle arg1) {
+    private static void alertMessageUnvalidInput() {
+        final Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText("Bad Input");
+        alert.setContentText("Make sure to enter only valid names and phone numbers");
+        alert.showAndWait();
+    }
+
+    @FXML private void addContactToTable(@SuppressWarnings("unused") final ActionEvent __) {
+        final ObservableList<Contact> data = contactsTable.getItems();
+        final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(), addEmailField.getText());
+        // user.addContact(contact, addELevelField.getValue()); TODO!
+        addNameField.clear();
+        addIDField.clear();
+        addPhoneField.clear();
+        addEmailField.clear();
+        data.add(contact);
+
+    }
+
+    @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
 
         addELevelField.getItems().addAll(EmergencyLevel.CALL_EMERGENCY_CONTACT, EmergencyLevel.SMS_EMERGENCY_CONTACT, EmergencyLevel.NOTIFY_ELDERLY,
                 EmergencyLevel.CONTACT_POLICE, EmergencyLevel.CONTACT_FIRE_FIGHTERS, EmergencyLevel.CONTACT_HOSPITAL);
@@ -55,16 +84,12 @@ public class UserInfoController implements Initializable {
             final String phoneNum = userPhoneNumField.getText();
             final String address = userHomeAddressField.getText();
 
-            if (validateUserInput(name, id, phoneNum, address)) {
+            if (!validateUserInput(name, id, phoneNum, address))
+                alertMessageUnvalidInput();
+            else {
                 user = new UserInformation(name, id, phoneNum, address);
                 userNameField.setEditable(false);
                 userIDField.setEditable(false);
-            } else {
-                final Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Error Dialog");
-                alert.setHeaderText("Bad Input");
-                alert.setContentText("Make sure to enter only valid names and phone numbers");
-                alert.showAndWait();
             }
         });
 
@@ -85,24 +110,16 @@ public class UserInfoController implements Initializable {
 
         addELevelField.setPromptText("Emergency Level");
 
+        nameColumn.setCellValueFactory(new PropertyValueFactory<Contact, String>("name"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Contact, String>("id"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<Contact, String>("phoneNumber"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<Contact, String>("emailAddress"));
+
         saveButton.setOnAction(event -> {
-            final String name = addNameField.getText();
-            final String id = addIDField.getText();
-            final String phoneNum = addPhoneField.getText();
-            final String email = addEmailField.getText();
-            if (validateUserInput(name, id, phoneNum, email)) {
-                user.addContact(new Contact(name, id, phoneNum, email), addELevelField.getValue());
-                addNameField.clear();
-                addIDField.clear();
-                addPhoneField.clear();
-                addEmailField.clear();
-            } else {
-                final Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Error Dialog");
-                alert.setHeaderText("Bad Input");
-                alert.setContentText("Make sure to enter only valid names and phone numbers");
-                alert.showAndWait();
-            }
+            if (validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(), addEmailField.getText()))
+                addContactToTable(event);
+            else
+                alertMessageUnvalidInput();
         });
 
     }
