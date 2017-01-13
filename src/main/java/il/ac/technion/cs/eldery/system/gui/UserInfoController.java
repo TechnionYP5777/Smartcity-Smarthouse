@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.userInformation.Contact;
 import il.ac.technion.cs.eldery.system.userInformation.UserInformation;
-import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,7 +17,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -39,12 +38,12 @@ public class UserInfoController implements Initializable {
     @FXML public Button saveButton;
     @FXML public HBox buttonBox;
 
-    @FXML private TableView<Contact> contactsTable;
-    @FXML public TableColumn<Contact, String> nameColumn;
-    @FXML public TableColumn<Contact, String> idColumn;
-    @FXML public TableColumn<Contact, String> phoneColumn;
-    @FXML public TableColumn<Contact, String> emailColumn;
-    @FXML public TableColumn<Contact, EmergencyLevel> eLevelColumn;
+    @FXML private TableView<ContactGUI> contactsTable;
+    @FXML public TableColumn<ContactGUI, String> nameColumn;
+    @FXML public TableColumn<ContactGUI, String> idColumn;
+    @FXML public TableColumn<ContactGUI, String> phoneColumn;
+    @FXML public TableColumn<ContactGUI, String> emailColumn;
+    @FXML public TableColumn<ContactGUI, String> eLevelColumn;
 
     private static boolean validateUserInput(final String name, final String id, final String phone, final String address) {
         return name != null && id != null && phone != null && address != null && !"".equals(name) && !"".equals(id) && !"".equals(phone)
@@ -60,15 +59,27 @@ public class UserInfoController implements Initializable {
         alert.showAndWait();
     }
 
+    private class ContactGUI {
+        public Contact contact;
+        public EmergencyLevel eLevel;
+
+        public ContactGUI(Contact contact, EmergencyLevel eLevel) {
+            this.contact = contact;
+            this.eLevel = eLevel;
+        }
+
+    }
+
     @FXML private void addContactToTable(@SuppressWarnings("unused") final ActionEvent __) {
-        final ObservableList<Contact> data = contactsTable.getItems();
+        // final ObservableList<ContactGUI> data = contactsTable.getItems();
         final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(), addEmailField.getText());
         // user.addContact(contact, addELevelField.getValue()); TODO!
+        final ContactGUI guiContact = new ContactGUI(contact, addELevelField.getValue());
         addNameField.clear();
         addIDField.clear();
         addPhoneField.clear();
         addEmailField.clear();
-        data.add(contact);
+        contactsTable.getItems().add(guiContact);
 
     }
 
@@ -110,10 +121,11 @@ public class UserInfoController implements Initializable {
 
         addELevelField.setPromptText("Emergency Level");
 
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Contact, String>("name"));
-        idColumn.setCellValueFactory(new PropertyValueFactory<Contact, String>("id"));
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<Contact, String>("phoneNumber"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<Contact, String>("emailAddress"));
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getName()));
+        idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getId()));
+        phoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getPhoneNumber()));
+        emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getEmailAddress()));
+        eLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().eLevel + ""));
 
         saveButton.setOnAction(event -> {
             if (validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(), addEmailField.getText()))
