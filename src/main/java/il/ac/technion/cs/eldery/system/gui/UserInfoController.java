@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
+import il.ac.technion.cs.eldery.system.SystemCore;
 import il.ac.technion.cs.eldery.system.userInformation.Contact;
 import il.ac.technion.cs.eldery.system.userInformation.UserInformation;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,7 +23,7 @@ import javafx.scene.layout.Priority;
 
 public class UserInfoController implements Initializable {
 
-    private UserInformation user;
+    private SystemCore systemCore;
 
     @FXML public TextField userNameField;
     @FXML public TextField userIDField;
@@ -66,18 +67,30 @@ public class UserInfoController implements Initializable {
 
             if (!validateUserInput(name, id, phoneNum, address))
                 alertMessageUnvalidInput();
-            else {
-                user = new UserInformation(name, id, phoneNum, address);
+            else if (systemCore.isUserInitialized()) {
+                final UserInformation temp = systemCore.getUser();
+                temp.setHomeAddress(address);
+                temp.setPhoneNumber(phoneNum);
+            } else {
+                systemCore.initializeUser(name, id, phoneNum, address);
                 userNameField.setEditable(false);
                 userIDField.setEditable(false);
             }
         });
 
         saveButton.setOnAction(event -> {
-            if (validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(), addEmailField.getText()))
-                addContactToTable(event);
-            else
-                alertMessageUnvalidInput();
+            if (systemCore.isUserInitialized())
+                if (validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(), addEmailField.getText()))
+                    addContactToTable(event);
+                else
+                    alertMessageUnvalidInput();
+            else {
+                final Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("User Not Registered");
+                alert.setContentText("Make sure to register the user before adding any contacts");
+                alert.showAndWait();
+            }
         });
     }
 
@@ -100,8 +113,7 @@ public class UserInfoController implements Initializable {
         HBox.setHgrow(saveButton, Priority.ALWAYS);
 
         addELevelField.setPromptText("Emergency Level");
-        addELevelField.getItems().addAll(EmergencyLevel.CALL_EMERGENCY_CONTACT, EmergencyLevel.SMS_EMERGENCY_CONTACT, EmergencyLevel.NOTIFY_ELDERLY,
-                EmergencyLevel.CONTACT_POLICE, EmergencyLevel.CONTACT_FIRE_FIGHTERS, EmergencyLevel.CONTACT_HOSPITAL);
+        addELevelField.getItems().addAll(EmergencyLevel.values());
 
         final int btnCount = buttonBox.getChildren().size();
         addNameField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
@@ -127,9 +139,13 @@ public class UserInfoController implements Initializable {
         alert.showAndWait();
     }
 
+    public void setSystemCore(final SystemCore sysCore) {
+        systemCore = sysCore;
+    }
+
     @FXML private void addContactToTable(@SuppressWarnings("unused") final ActionEvent __) {
         final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(), addEmailField.getText());
-        // user.addContact(contact, addELevelField.getValue()); TODO!
+        systemCore.getUser().addContact(contact, addELevelField.getValue());
         final ContactGUI guiContact = new ContactGUI(contact, addELevelField.getValue());
         addNameField.clear();
         addIDField.clear();
