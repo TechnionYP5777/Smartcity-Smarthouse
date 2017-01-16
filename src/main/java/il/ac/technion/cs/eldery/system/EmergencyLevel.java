@@ -8,6 +8,9 @@ package il.ac.technion.cs.eldery.system;
 public enum EmergencyLevel {
     /** Low level of emergency, requires a reminder to the elderly */
     NOTIFY_ELDERLY,
+    /** low-Medium level of emergency, requires e-mailing a previously defined
+     * contact */
+    EMAIL_EMERGENCY_CONTACT,
     /** Medium level of emergency, requires texting a previously defined
      * contact */
     SMS_EMERGENCY_CONTACT,
@@ -26,6 +29,8 @@ public enum EmergencyLevel {
         switch (¢) {
             case "NOTIFY_ELDERLY":
                 return NOTIFY_ELDERLY;
+            case "EMAIL_EMERGENCY_CONTACT":
+                return EMAIL_EMERGENCY_CONTACT;
             case "SMS_EMERGENCY_CONTACT":
                 return SMS_EMERGENCY_CONTACT;
             case "CALL_EMERGENCY_CONTACT":
