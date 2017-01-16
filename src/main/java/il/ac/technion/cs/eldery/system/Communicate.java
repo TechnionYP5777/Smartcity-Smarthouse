@@ -5,6 +5,7 @@ package il.ac.technion.cs.eldery.system;
 
 import java.util.Properties;
 
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -33,12 +34,17 @@ public class Communicate {
         return forwardMsgToAdmin("SMS the number "+phoneNumber+ " the following message - \""+msg+"\"");
     }
     
-    /**@return a string representing the state of the request, or null if the request failed
+    /**@param auth an Authentactor of the fromMail email address param
+     * @return a string representing the state of the request, or null if the request failed
      * */
-    public static String throughEmail(String fromMail, String toMail, String msg){
+    public static String throughEmail(String fromMail, Authenticator auth, String toMail, String msg){
         Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", "localhost");
-        Session session = Session.getDefaultInstance(properties);  
+        properties.put("mail.smtp.host", "smtp.gmail.com");  
+        properties.put("mail.smtp.socketFactory.port", "465");  
+        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");  
+        properties.put("mail.smtp.auth", "true");  
+        properties.put("mail.smtp.port", "465"); 
+        Session session = Session.getDefaultInstance(properties, auth);  
         try{  
             MimeMessage message = new MimeMessage(session);  
             message.setFrom(new InternetAddress(fromMail));  
@@ -48,9 +54,12 @@ public class Communicate {
      
             // Send message  
             Transport.send(message);  
-            System.out.println("message sent successfully....");  
+            System.out.println("message sent successfully....");  //todo:remove
      
-         }catch (MessagingException mex) {mex.printStackTrace();}
+         }catch (MessagingException mex) {
+             mex.printStackTrace();
+             return null;
+        }
         return "The e-mail was sent to:"+toMail; 
     }
 }
