@@ -54,7 +54,6 @@ public class Communicate {
      
             // Send message  
             Transport.send(message);  
-            System.out.println("message sent successfully....");  //todo:remove
      
          }catch (MessagingException mex) {
              mex.printStackTrace();

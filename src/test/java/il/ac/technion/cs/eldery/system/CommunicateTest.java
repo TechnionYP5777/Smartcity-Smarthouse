@@ -3,6 +3,9 @@
  */
 package il.ac.technion.cs.eldery.system;
 
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,6 +16,11 @@ import org.junit.Test;
  */
 public class CommunicateTest {
     @Test public void sendEmailTest(){
-        Assert.assertNotNull(Communicate.throughEmail("set@campus.technion.ac.il", "eliat158@gmail.com", "ya bishhhh"));
+        String from = "smarthouse5777@gmail.com";
+        Assert.assertNotNull(Communicate.throughEmail(from, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(from, "smart5house777");
+            }
+        }, "ron.gatenio@gmail.com", "ya bishhhh #worksss"));
     }
 }
