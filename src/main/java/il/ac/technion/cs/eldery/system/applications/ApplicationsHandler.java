@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
@@ -112,16 +113,10 @@ public class ApplicationsHandler {
      * {@link SmartHouseApplication#receiveLastEntries(String, Class, int)} */
     public final <T extends SensorData> List<T> querySensor(final String sensorId, final Class<T> sensorClass, final int numOfEntries)
             throws SensorNotFoundException {
-        final List<T> $ = new LinkedList<>();
-        final List<String> $_raw = databaseHandler.getList(sensorId);
-        final Consumer<String> adder = generateSensorListener(sensorClass, x -> $.add(x));
-        for (int ¢ = 0; ¢ < numOfEntries && ¢ < $_raw.size(); ++¢)// TODO: ELIA
-                                                                  // varify
-                                                                  // assumption
-                                                                  // - newest
-                                                                  // entry at 0
-            adder.accept($_raw.get(¢));
-        return $;
+        return databaseHandler.getList(sensorId).getLastKEntries(numOfEntries)
+                .stream()
+                .map(jsonData -> new Gson().fromJson(jsonData, sensorClass))
+                .collect(Collectors.toList());
     }
 
     /** See {@link SmartHouseApplication#sendAlert(String, EmergencyLevel)} */
