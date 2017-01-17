@@ -10,6 +10,6 @@ import org.junit.Test;
  * @since Jan 16, 2017 */
 public class CommunicateTest {
     @Test public void sendEmailFromHouseTest() {
-        Assert.assertNotNull(Communicate.throughEmailFromHere("ron.gatenio@gmail.com", "ya bishhhh #worksss"));
+        Assert.assertNotNull(Communicate.throughEmailFromHere("smarthouse5777@gmail.com", "ya bishhhh #worksss"));
     }
 }
