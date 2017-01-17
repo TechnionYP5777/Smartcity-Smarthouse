@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class SystemCore extends Application {
     private final DatabaseHandler databaseHandler = new DatabaseHandler();
-    private final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
+    protected final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
     protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler);
 
     public static void main(final String[] args) {

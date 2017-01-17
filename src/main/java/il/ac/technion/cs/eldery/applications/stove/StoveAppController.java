@@ -25,17 +25,20 @@ import javafx.util.Duration;
 
 /** @author Roy
  * @since 19.12.16 */
-public class Controller implements Initializable {
+public class StoveAppController implements Initializable {
     @FXML public Label timeLabel;
     @FXML public Label tempLabel;
     @FXML public Button stoveConfigButton;
     Timeline timeline;
     DoubleProperty timeSeconds = new SimpleDoubleProperty();
     Duration time = Duration.ZERO;
-    int degrees = 150;
+    int degrees = 120;
     int seconds = 30;
+    boolean alertTemp;
+    boolean alertTime;
+    boolean isOn;
 
-    public int get_alert_temperture() {
+    public int get_alert_temperature() {
         return degrees;
     }
 
@@ -43,7 +46,7 @@ public class Controller implements Initializable {
         return seconds;
     }
 
-    public void set_alert_temperture(final int degrees) {
+    public void set_alert_temperature(final int degrees) {
         this.degrees = degrees;
     }
 
@@ -56,21 +59,31 @@ public class Controller implements Initializable {
         alert.setTitle("ALERT");
         alert.setHeaderText("The stove is out of line");
         alert.setContentText(messege);
-        alert.showAndWait();
+        alert.show();
     }
     
     public void turnOn(){
+        if (isOn)
+            return;
+        isOn = !isOn;
         timeline = new Timeline(new KeyFrame(Duration.millis(100), ¢ -> {
             time = time.add(((KeyFrame) ¢.getSource()).getTime());
             timeSeconds.set(time.toSeconds());
             timeLabel.setText("The Stove is Running for: " + timeSeconds.get() + " (Secs)");
-            if(timeSeconds.get() > Controller.this.get_alert_seconds()) alert("Stove is runnig too long");
+            if (timeSeconds.get() <= StoveAppController.this.get_alert_seconds()) alertTime = false;
+            if (timeSeconds.get() > StoveAppController.this.get_alert_seconds() && !alertTime){
+                alert("Stove is runnig too long");
+                alertTime = true;
+            }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
     
     public void turnOf(){
+        if (!isOn)
+            return;
+        isOn = !isOn;
         timeline.stop();
         time = Duration.ZERO;
         timeLabel.setTextFill(Color.BLACK);
@@ -80,8 +93,12 @@ public class Controller implements Initializable {
     
     public void updateTemperture(int temp){
         tempLabel.setText("The Stove Temperture is: "+temp);
-        if(temp>this.degrees) alert("Stove is too hot");
-    }
+        if (temp <= get_alert_temperature()) alertTemp = false;
+        if (temp <= get_alert_temperature() || alertTemp)
+            return;
+        alert("Stove is too hot");
+        alertTemp = true;
+      }
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
 
@@ -94,7 +111,7 @@ public class Controller implements Initializable {
                     stage.setScene(new Scene(root1));
                     stage.show();
                     final ConfigController configController = fxmlLoader.getController();
-                    configController.subscribe(Controller.this);
+                    configController.subscribe(StoveAppController.this);
                 } catch (final Exception ¢) {
                     ¢.printStackTrace();
                 }

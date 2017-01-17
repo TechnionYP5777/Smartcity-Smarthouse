@@ -25,14 +25,14 @@ public class ConfigController implements Initializable {
     @FXML public HBox ButtonBox;
     @FXML public TextField secs;
     @FXML public TextField cels;
-    Controller mainController;
+    StoveAppController mainController;
 
     static boolean validateInput(final String time, final String degrees) {
         return time != null && degrees != null && !"".equals(degrees) && !"".equals(time) && time.chars().allMatch(Character::isDigit)
                 && degrees.chars().allMatch(Character::isDigit);
     }
 
-    public void subscribe(final Controller mainContr) {
+    public void subscribe(final StoveAppController mainContr) {
         mainController = mainContr;
     }
 
@@ -61,7 +61,7 @@ public class ConfigController implements Initializable {
                 final String degrees = cels.getText();
                 if (validateInput(time, degrees)) {
                     mainController.set_alert_seconds(Integer.parseInt(secs.getText()));
-                    mainController.set_alert_temperture(Integer.parseInt(cels.getText()));
+                    mainController.set_alert_temperature(Integer.parseInt(cels.getText()));
                     stage.close();
                 } else {
                     final Alert alert = new Alert(AlertType.ERROR);
