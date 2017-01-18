@@ -1,5 +1,6 @@
 package il.ac.technion.cs.eldery.system.gui.mapping;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.objenesis.instantiator.basic.NewInstanceInstantiator;
-
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.SensorLocation;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
@@ -17,8 +16,11 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 public class MappingController implements Initializable {
     private DatabaseHandler dbHandler;
@@ -27,10 +29,13 @@ public class MappingController implements Initializable {
     private Map<String, SensorLocation> sensorsLocations = new HashMap<>();
 
     @FXML private VBox sensorsPaneList;
-    @FXML private Pane mapping;
+    @FXML private Canvas canvas;
 
     @Override public void initialize(URL location, ResourceBundle __) {
-
+        canvas.setWidth(2000);
+        canvas.setHeight(2000);
+        
+        drawMapping();
     }
 
     public MappingController setDatabaseHandler(DatabaseHandler dbHandler) {
@@ -66,11 +71,13 @@ public class MappingController implements Initializable {
             locationsContents.put(l, new ArrayList<>());
 
         locationsContents.get(l).add(id);
-        
+
         drawMapping();
     }
-    
+
     private void drawMapping() {
-        
+        GraphicsContext g = canvas.getGraphicsContext2D();
+        g.setFill(Color.GREEN);
+        g.fillRect(0, 0, 10, 10);
     }
 }
