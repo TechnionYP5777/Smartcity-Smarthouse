@@ -33,6 +33,7 @@ public class SensorInfoController implements Initializable {
         room.getSelectionModel().select(0);
         room.valueProperty().addListener((ov, prevVal, newVal) -> {
             try {
+                mappingController.updateSensorLocation(this.id, SensorLocation.fromString(newVal));
                 dbHandler.setSensorLocation(this.id, SensorLocation.fromString(newVal));
             } catch (SensorNotFoundException ¢) {
                 ¢.printStackTrace();

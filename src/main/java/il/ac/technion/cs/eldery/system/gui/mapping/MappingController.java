@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
@@ -34,7 +35,7 @@ public class MappingController implements Initializable {
     @Override public void initialize(URL location, ResourceBundle __) {
         canvas.setWidth(2000);
         canvas.setHeight(2000);
-        
+
         drawMapping();
     }
 
@@ -71,13 +72,28 @@ public class MappingController implements Initializable {
             locationsContents.put(l, new ArrayList<>());
 
         locationsContents.get(l).add(id);
-
+        
         drawMapping();
     }
 
     private void drawMapping() {
         GraphicsContext g = canvas.getGraphicsContext2D();
+        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         g.setFill(Color.GREEN);
-        g.fillRect(0, 0, 10, 10);
+        
+        int x = 20;
+        
+        for (Entry<SensorLocation, List<String>> entry : locationsContents.entrySet()) {
+            System.out.println("X: " + x);
+            int y = 20;
+            
+            for (String id : entry.getValue()) {
+                System.out.println(id + " Y: " + y);
+                g.fillText(id, x, y);
+                y += 20;
+            }
+            
+            x += 200;
+        }
     }
 }
