@@ -15,6 +15,7 @@ import javafx.scene.control.TitledPane;
 
 public class SensorInfoController implements Initializable {
     private DatabaseHandler dbHandler;
+    private MappingController mappingController;
     
     private String name;
     private String id;
@@ -41,6 +42,12 @@ public class SensorInfoController implements Initializable {
 
     public SensorInfoController setDatabaseHandler(DatabaseHandler dbHandler) {
         this.dbHandler = dbHandler;
+        
+        return this;
+    }
+    
+    public SensorInfoController setMappingController(MappingController ¢) {
+        this.mappingController = ¢;
         
         return this;
     }

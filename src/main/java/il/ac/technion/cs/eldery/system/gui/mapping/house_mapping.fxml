@@ -15,7 +15,10 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <TitledPane collapsible="false" prefHeight="200.0" prefWidth="200.0" text="House Mapping" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <TitledPane collapsible="false" prefHeight="200.0" prefWidth="200.0" text="House Mapping" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <content>
+                  <Pane fx:id="mapping" prefHeight="200.0" prefWidth="200.0" />
+               </content></TitledPane>
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
