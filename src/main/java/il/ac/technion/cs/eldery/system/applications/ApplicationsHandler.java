@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -18,6 +17,7 @@ import com.google.gson.Gson;
 
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
+import il.ac.technion.cs.eldery.system.SystemCore;
 import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
@@ -58,6 +58,7 @@ public class ApplicationsHandler {
 
     Map<String, ApplicationManager> apps = new HashMap<>();
     DatabaseHandler databaseHandler;
+    SystemCore systemCore;
 
     // ----------- not-public methods ---------------
     static <T extends SensorData> Consumer<String> generateSensorListener(final Class<T> sensorClass, final Consumer<T> functionToRun) {
@@ -74,8 +75,9 @@ public class ApplicationsHandler {
 
     /** Initialize the applicationHandler with the database responsible of
      * managing the data in the current session */
-    public ApplicationsHandler(final DatabaseHandler databaseHandler) {
+    public ApplicationsHandler(final DatabaseHandler databaseHandler, final SystemCore systemCore) {
         this.databaseHandler = databaseHandler;
+        this.systemCore = systemCore;
     }
 
     public DatabaseHandler getDatabaseHandler() {
@@ -113,14 +115,12 @@ public class ApplicationsHandler {
      * {@link SmartHouseApplication#receiveLastEntries(String, Class, int)} */
     public final <T extends SensorData> List<T> querySensor(final String sensorId, final Class<T> sensorClass, final int numOfEntries)
             throws SensorNotFoundException {
-        return databaseHandler.getList(sensorId).getLastKEntries(numOfEntries)
-                .stream()
-                .map(jsonData -> new Gson().fromJson(jsonData, sensorClass))
+        return databaseHandler.getList(sensorId).getLastKEntries(numOfEntries).stream().map(jsonData -> new Gson().fromJson(jsonData, sensorClass))
                 .collect(Collectors.toList());
     }
 
     /** See {@link SmartHouseApplication#sendAlert(String, EmergencyLevel)} */
     public void alertOnAbnormalState(final String message, final EmergencyLevel eLevel) {
-        // TODO: ELIA implement
+        systemCore.alert(message, eLevel);
     }
 }
