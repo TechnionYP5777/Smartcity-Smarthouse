@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import org.controlsfx.control.RangeSlider;
 
 import il.ac.technion.cs.eldery.sensors.vitals.VitalsSensor;
+import il.ac.technion.cs.eldery.utils.Random;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,7 +34,7 @@ public class Controller implements Initializable {
     @FXML public VBox mainVBox;
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
-        sensor = new VitalsSensor("00:00:00:00:00:02", "iVitals", "127.0.0.1", 40001);
+        sensor = new VitalsSensor(Random.sensorId(), "iVitals", "127.0.0.1", 40001);
         for (boolean res = false; !res;)
             res = sensor.register();
         pulseLabel.setDisable(false);

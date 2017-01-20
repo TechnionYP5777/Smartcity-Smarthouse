@@ -1,6 +1,7 @@
 package il.ac.technion.cs.eldery.sensors.sos.gui;
 
 import il.ac.technion.cs.eldery.sensors.sos.SosSensor;
+import il.ac.technion.cs.eldery.utils.Random;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,7 +20,7 @@ public class SosSensorSimulator extends Application {
     }
 
     @Override public void start(final Stage s) throws Exception {
-        sensor = new SosSensor("00:00:00:00:00:01", "iSOS", "127.0.0.1", 40001);
+        sensor = new SosSensor(Random.sensorId(), "iSOS", "127.0.0.1", 40001);
         for (boolean res = false; !res;)
             res = sensor.register();
         final Image sosImage = new Image(getClass().getResourceAsStream("sos_icon.png"), 320, 0, true, true);

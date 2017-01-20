@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.sensors.stove.StoveSensor;
+import il.ac.technion.cs.eldery.utils.Random;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,7 +31,7 @@ public class Controller implements Initializable {
     @FXML public TextFlow console;
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
-        sensor = new StoveSensor("00:00:00:00:00:00", "iStoves", "127.0.0.1", 40001);
+        sensor = new StoveSensor(Random.sensorId(), "iStoves", "127.0.0.1", 40001);
         for (boolean res = false; !res;)
             res = sensor.register();
         onOffButton.setOnAction(event -> {
