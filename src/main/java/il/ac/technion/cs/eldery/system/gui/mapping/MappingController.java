@@ -34,13 +34,17 @@ public class MappingController implements Initializable {
     @FXML private Canvas canvas;
 
     @Override public void initialize(URL location, ResourceBundle __) {
-        house.addRoom(new Room(20, 20, 100, 100, SensorLocation.KITCHEN));
-        house.addRoom(new Room(200, 200, 100, 100, SensorLocation.BATHROOM));
+        house.addRoom(new Room(20, 20, 200, 100, SensorLocation.KITCHEN));
+        house.addRoom(new Room(200, 200, 200, 100, SensorLocation.BATHROOM));
         
         canvas.setWidth(2000);
         canvas.setHeight(2000);
 
-        drawMapping();
+        try {
+            drawMapping();
+        } catch (SensorNotFoundException ¢) {
+            ¢.printStackTrace();
+        }
     }
 
     public MappingController setDatabaseHandler(DatabaseHandler dbHandler) {
@@ -77,27 +81,31 @@ public class MappingController implements Initializable {
 
         locationsContents.get(l).add(id);
         
-        drawMapping();
+        try {
+            drawMapping();
+        } catch (SensorNotFoundException ¢) {
+            ¢.printStackTrace();
+        }
     }
 
-    private void drawMapping() {
+    private void drawMapping() throws SensorNotFoundException {
         GraphicsContext g = canvas.getGraphicsContext2D();
         
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        g.setFill(Color.GREEN);
         g.setStroke(Color.BLACK);
         
         for (Room room : house.getRooms()) {
             g.strokeRect(room.x, room.y, room.width, room.height);
+            g.strokeLine(room.x, room.y + 20, room.x + room.width, room.y + 20);
+            g.setFill(Color.BLACK);
+            g.fillText(room.location.name(), room.x + 4, room.y + 15);
+            g.setFill(Color.BLUE);
             
             if (locationsContents.containsKey(room.location)) {
-                List<String> sensors = locationsContents.get(room.location);
+                int dy = 20;
                 
-                int dy = 0;
-                
-                for (String id : sensors) {
-                    g.fillText(id, room.x, room.y + dy + 20);
-                    
+                for (String id : locationsContents.get(room.location)) {
+                    g.fillText(dbHandler.getName(id) + " (" + id + ")", room.x + 10, room.y + dy + 20);
                     dy += 20;
                 }
             }
