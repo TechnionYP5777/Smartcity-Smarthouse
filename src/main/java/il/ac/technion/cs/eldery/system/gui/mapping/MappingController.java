@@ -28,12 +28,15 @@ public class MappingController implements Initializable {
     private Map<String, SensorInfoController> sensors = new HashMap<>();
     private Map<SensorLocation, List<String>> locationsContents = new HashMap<>();
     private Map<String, SensorLocation> sensorsLocations = new HashMap<>();
-    private House house;
+    private House house = new House();
 
     @FXML private VBox sensorsPaneList;
     @FXML private Canvas canvas;
 
     @Override public void initialize(URL location, ResourceBundle __) {
+        house.addRoom(new Room(20, 20, 100, 100, SensorLocation.KITCHEN));
+        house.addRoom(new Room(200, 200, 100, 100, SensorLocation.BATHROOM));
+        
         canvas.setWidth(2000);
         canvas.setHeight(2000);
 
@@ -79,24 +82,13 @@ public class MappingController implements Initializable {
 
     private void drawMapping() {
         GraphicsContext g = canvas.getGraphicsContext2D();
+        
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         g.setFill(Color.GREEN);
         g.setStroke(Color.BLACK);
         
-        int x = 20;
-        
-        for (Entry<SensorLocation, List<String>> entry : locationsContents.entrySet()) {
-            System.out.println("X: " + x);
-            int y = 20;
-            
-            for (String id : entry.getValue()) {
-                System.out.println(id + " Y: " + y);
-                g.strokeRect(x, y, 18, 180);
-                g.fillText(id, x, y);
-                y += 20;
-            }
-            
-            x += 200;
+        for (Room room : house.getRooms()) {
+            g.fillRect(room.x, room.y, room.width, room.height);
         }
     }
 }
