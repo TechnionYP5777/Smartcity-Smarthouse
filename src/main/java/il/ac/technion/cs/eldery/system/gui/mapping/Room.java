@@ -1,0 +1,19 @@
+package il.ac.technion.cs.eldery.system.gui.mapping;
+
+import il.ac.technion.cs.eldery.system.SensorLocation;
+
+public class Room {
+    public final int x;
+    public final int y;
+    public final int width;
+    public final int height;
+    public final SensorLocation location;
+    
+    public Room(int x, int y, int width, int height, SensorLocation location) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.location = location;
+    }
+}
