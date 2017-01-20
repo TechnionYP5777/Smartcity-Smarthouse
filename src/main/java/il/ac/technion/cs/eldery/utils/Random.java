@@ -14,6 +14,6 @@ public class Random {
             $[i] = s.length() == 2 ? s : "0" + s;
         }
 
-        return String.join(":", $);
+        return String.join(":", $).toUpperCase();
     }
 }
