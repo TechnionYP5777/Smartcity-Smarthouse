@@ -12,15 +12,16 @@ public class VitalsSensor extends Sensor {
         super(id, commName, systemIP, systemPort);
     }
 
-    public void updateSystem(final int pulse, final int bloodPressure) {
+    public void updateSystem(final int pulse, final int systolicBP, final int diastolicBP) {
         final Map<String, String> data = new HashMap<>();
         data.put("pulse", pulse + "");
-        data.put("blood pressure", bloodPressure + "");
+        data.put("systolicBP", systolicBP + "");
+        data.put("diastolicBP", diastolicBP + "");
         super.updateSystem(data);
     }
 
     @Override public String[] getObservationsNames() {
-        return new String[] { "pulse", "blood pressure" };
+        return new String[] { "pulse", "systolicBP", "diastolicBP" };
     }
 
 }

@@ -12,7 +12,6 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import il.ac.technion.cs.eldery.system.Communicate;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 
 /** @author Inbal Zukerman
@@ -116,33 +115,6 @@ public class UserInformation {
             ¢.printStackTrace();
         }
 
-    }
-
-    public void alert(final String appId, final String msg, final EmergencyLevel elvl) {
-        // basic implementation todo: heavily revise.
-        final List<Contact> $ = emergencyContacts.getContacts(elvl);
-        switch (elvl) {
-            case NOTIFY_ELDERLY:
-                // todo: add to notification feed. optional - a separate queue
-                // for this elvl notifs.
-                break;
-            case SMS_EMERGENCY_CONTACT:
-                $.stream().forEach(c -> Communicate.throughSms(c.getPhoneNumber(), msg));
-                break;
-            case CALL_EMERGENCY_CONTACT:
-            case CONTACT_HOSPITAL:
-            case CONTACT_POLICE:
-            case CONTACT_FIRE_FIGHTERS:
-                $.stream().forEach(c -> Communicate.throughPhone(c.getPhoneNumber()));
-                break;
-            case EMAIL_EMERGENCY_CONTACT:
-                $.stream().forEach(c -> Communicate.throughEmailFromHere(c.getEmailAddress(), msg));
-                break;
-            default:
-                // todo: whats the desired behaviour?
-                break;
-        }
-        // todo:add to notifications queue
     }
 
     // For debug mainly, leaving it implemented for future use

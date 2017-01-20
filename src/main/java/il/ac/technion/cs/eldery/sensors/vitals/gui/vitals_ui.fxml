@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="550.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.sensors.vitals.gui.Controller">
+<VBox fx:id="mainVBox" prefHeight="400.0" prefWidth="550.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.sensors.vitals.gui.Controller">
    <children>
       <Label fx:id="pulseLabel" disable="true" text="Pulse: 70" />
       <Slider fx:id="pulseSlider" max="200.0" value="70.0" />
@@ -23,8 +23,8 @@
             <Insets />
          </VBox.margin>
       </Separator>
-      <Label fx:id="bpLabel" disable="true" text="Blood Pressure: 100" />
-      <Slider fx:id="bpSlider" max="200.0" value="100.0" />
+      <Label fx:id="bpLabel" disable="true" text="Blood Pressure: 120/80" />
+      <Pane fx:id="rsPane" prefHeight="200.0" prefWidth="200.0" />
       <Separator />
       <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Console">
          <content>

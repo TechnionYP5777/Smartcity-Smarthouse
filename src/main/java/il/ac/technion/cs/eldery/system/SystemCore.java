@@ -1,10 +1,12 @@
 package il.ac.technion.cs.eldery.system;
 
 import java.io.IOException;
+import java.util.List;
 
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import il.ac.technion.cs.eldery.system.gui.mapping.MappingController;
 import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
+import il.ac.technion.cs.eldery.system.userInformation.Contact;
 import il.ac.technion.cs.eldery.system.userInformation.UserInformation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +19,7 @@ import javafx.stage.Stage;
 public class SystemCore extends Application {
     private final DatabaseHandler databaseHandler = new DatabaseHandler();
     protected final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
-    protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler);
+    protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler, this);
     private UserInformation user;
     private boolean userInitialized;
 
@@ -53,6 +55,31 @@ public class SystemCore extends Application {
 
     public boolean isUserInitialized() {
         return userInitialized;
+    }
+
+    public void alert(final String msg, final EmergencyLevel elvl) {
+        // todo: add appId field
+        final List<Contact> $ = user.getContacts(elvl);
+        switch (elvl) {
+            case NOTIFY_ELDERLY:
+                // todo: how do we notify the eldery?
+                break;
+            case SMS_EMERGENCY_CONTACT:
+                $.stream().forEach(c -> Communicate.throughSms(c.getPhoneNumber(), msg));
+                break;
+            case CALL_EMERGENCY_CONTACT:
+            case CONTACT_HOSPITAL:
+            case CONTACT_POLICE:
+            case CONTACT_FIRE_FIGHTERS:
+                $.stream().forEach(c -> Communicate.throughPhone(c.getPhoneNumber()));
+                break;
+            case EMAIL_EMERGENCY_CONTACT:
+                $.stream().forEach(c -> Communicate.throughEmailFromHere(c.getEmailAddress(), msg));
+                break;
+            default:
+                // todo: whats the desired behaviour?
+                break;
+        }
     }
 
 }
