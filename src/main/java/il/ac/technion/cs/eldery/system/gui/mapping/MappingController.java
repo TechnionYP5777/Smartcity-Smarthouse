@@ -88,7 +88,19 @@ public class MappingController implements Initializable {
         g.setStroke(Color.BLACK);
         
         for (Room room : house.getRooms()) {
-            g.fillRect(room.x, room.y, room.width, room.height);
+            g.strokeRect(room.x, room.y, room.width, room.height);
+            
+            if (locationsContents.containsKey(room.location)) {
+                List<String> sensors = locationsContents.get(room.location);
+                
+                int dy = 0;
+                
+                for (String id : sensors) {
+                    g.fillText(id, room.x, room.y + dy + 20);
+                    
+                    dy += 20;
+                }
+            }
         }
     }
 }
