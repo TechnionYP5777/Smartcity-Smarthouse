@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  * store and read information about the changes in the environment */
 public class SystemCore extends Application {
     private static final String APP_NAME = "SmartHouse";
-    
+
     private final DatabaseHandler databaseHandler = new DatabaseHandler();
     protected final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
     protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler, this);
@@ -32,25 +32,27 @@ public class SystemCore extends Application {
         initializeSystemComponents();
         initializeSystemGui(s);
     }
-    
+
     protected void initializeSystemGui(final Stage s) throws IOException {
         System.out.println("Initializing system ui...");
-        
+
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main_system_ui.fxml"));
         final Scene scene = new Scene(loader.load(), 1000, 800);
-        ((MainSystemGuiController) loader.getController()).setDatabaseHandler(databaseHandler);
-        
+        MainSystemGuiController mainGuiController = (MainSystemGuiController) loader.getController();
+        mainGuiController.setDatabaseHandler(databaseHandler);
+        mainGuiController.setApplicationsHandler(applicationsHandler);
+
         s.setTitle(APP_NAME);
         s.setScene(scene);
         s.show();
-        
+
         s.setOnCloseRequest(e -> {
             System.out.println("System closing...");
-            //TODO: close other threads from here, or just do this:
+            // TODO: close other threads from here, or just do this:
             System.exit(0);
         });
     }
-    
+
     protected void initializeSystemComponents() {
         System.out.println("Initializing system components...");
         new Thread(sensorsHandler).start();

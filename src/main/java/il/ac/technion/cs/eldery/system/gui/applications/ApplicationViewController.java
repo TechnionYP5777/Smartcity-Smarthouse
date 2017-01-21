@@ -1,18 +1,23 @@
 package il.ac.technion.cs.eldery.system.gui.applications;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.eldery.applications.sos.SosAppGui;
+import il.ac.technion.cs.eldery.applications.stove.StoveModuleGui;
+import il.ac.technion.cs.eldery.system.applications.ApplicationManager;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
+import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
+import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
+import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.PathType;
+import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class ApplicationViewController implements Initializable {
@@ -22,32 +27,41 @@ public class ApplicationViewController implements Initializable {
     
     private ApplicationsHandler appsHandler;
     
-    ObservableList<String> names;
     @Override public void initialize(URL location, ResourceBundle __) {
-        this.names = FXCollections.observableArrayList(
-                "Stove", "SOS");
-        listView.setItems(names);
-        listView.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent arg0) {
-                ObservableList<String> selected = listView.getSelectionModel().getSelectedItems();
-            }   
-            
-        });
-        this.plusButton.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-    
-    public void addListItem(String name){
-        names.add(name);
-        listView.setItems(this.names);
+        return;
     }
     
     public void setAppsHandler(ApplicationsHandler appsHandler) {
         this.appsHandler = appsHandler;
+        
+        initListView();
+        initPlusBtn();
+    }
+    
+    private void initListView() {
+        updateListView();
+        listView.setOnMouseClicked(e -> {
+            appsHandler.getApplicationManagers().get(listView.getSelectionModel().getSelectedIndex()).reopen(appView);
+    });
+    }
+    
+    private void initPlusBtn() {
+        this.plusButton.setOnAction(e -> {
+            try {
+                appsHandler.addApplication(new ApplicationPath<>(PathType.CLASS_NAME, StoveModuleGui.class.getName()));
+            } catch (AppInstallerException | IOException | OnLoadException e1) {
+                e1.printStackTrace();
+            }
+            
+            updateListView();
+        });
+    }
+    
+    private void updateListView() {
+        ObservableList<String> names = FXCollections.observableArrayList();
+        for (ApplicationManager m : appsHandler.getApplicationManagers())
+            names.add(m.getApplicationName());
+
+        listView.setItems(names);
     }
 }

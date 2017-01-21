@@ -8,6 +8,8 @@ import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 /** A class that stores information about the installed application
@@ -63,15 +65,23 @@ public class ApplicationManager {
 
     /** If the application is installed, but currently closed, this will reopen
      * it. */
+    @SuppressWarnings("boxing")
     public void reopen(final Pane parentPane) {
-        if (application != null)
-            parentPane.getChildren().setAll(application.getRootNode());
+        if (application == null)
+            return;
+        
+        Node n = application.getRootNode();
+        
+        AnchorPane.setTopAnchor(n, 0.0);
+        AnchorPane.setRightAnchor(n, 0.0);
+        AnchorPane.setLeftAnchor(n, 0.0);
+        AnchorPane.setBottomAnchor(n, 0.0);
+        
+        parentPane.getChildren().setAll(n);
     }
     
     public String getApplicationName() {
-        if (application != null)
-            application.getApplicationName();
-        return null;
+        return application == null ? null : application.getApplicationName();
     }
     // [end]
 
