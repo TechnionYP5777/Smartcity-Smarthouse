@@ -25,6 +25,7 @@ import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.eldery.system.exceptions.ApplicationInitializationException;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
+import il.ac.technion.cs.eldery.utils.Generator;
 
 /** API allowing smart house applications to register for information and notify
  * on emergencies
@@ -86,9 +87,8 @@ public class ApplicationsHandler {
      * @throws AppInstallerException
      * @throws OnLoadException
      * @throws ApplicationInitializationException */
-    public ApplicationManager addApplication(final String appId, final ApplicationPath<?> appPath) throws AppInstallerException, IOException, OnLoadException {
-        // TODO: Elia - maybe we should init the appId in here...
-        final ApplicationManager $ = new ApplicationManager(appId, appPath, this);
+    public ApplicationManager addApplication(final ApplicationPath<?> appPath) throws AppInstallerException, IOException, OnLoadException {
+        final ApplicationManager $ = new ApplicationManager(Generator.GenerateUniqueIDstring(), appPath, this);
         apps.add($);
         $.initialize();
         return $;

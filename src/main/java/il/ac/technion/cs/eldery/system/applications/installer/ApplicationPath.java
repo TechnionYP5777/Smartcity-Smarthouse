@@ -44,7 +44,7 @@ public class ApplicationPath<T> {
             case CLASS_NAME:
                 return AppInstallHelper.loadApplication(Arrays.asList((String) path));
             case PACKAGE_NAME:
-                // TODO: RON - add support for package names...
+                // TODO: we can add support for package names here if we want...
                 return null;
             default:
                 return null;

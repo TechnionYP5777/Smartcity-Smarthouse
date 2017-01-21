@@ -27,7 +27,6 @@ public class MainSystemGuiController implements Initializable {
     @FXML Tab sensorsTab;
 
     @Override public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
         try {
             FXMLLoader loader;
             

@@ -5,7 +5,6 @@ import java.util.List;
 
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import il.ac.technion.cs.eldery.system.gui.MainSystemGuiController;
-import il.ac.technion.cs.eldery.system.gui.mapping.MappingController;
 import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
 import il.ac.technion.cs.eldery.system.userInformation.Contact;
 import il.ac.technion.cs.eldery.system.userInformation.UserInformation;

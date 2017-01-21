@@ -25,11 +25,11 @@ public class TestWindowController implements Initializable {
         return;
     }
     
-    public void setApplication(ApplicationsHandler applicationsHandler, Class<?> applicationClass) {
+    public void setApplication(ApplicationsHandler h, Class<?> applicationClass) {
         start_app.setOnAction(e -> {
             System.out.println(MSG_PREFIX + "Trying to add the app...");
             try {
-                applicationsHandler.addApplication("someID", new ApplicationPath<>(PathType.CLASS_NAME, applicationClass.getName()))
+                h.addApplication(new ApplicationPath<>(PathType.CLASS_NAME, applicationClass.getName()))
                 .reopen(loader_pane);
                 
                 System.out.println(MSG_PREFIX + "App added and started successfully!");
