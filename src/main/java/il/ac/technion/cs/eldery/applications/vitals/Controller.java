@@ -16,7 +16,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
+/** @author Yarden
+ * @since 19.1.17 */
 public class Controller implements Initializable {
     private static final int MAX_POINTS = 30;
 
@@ -72,7 +75,7 @@ public class Controller implements Initializable {
 
         tmpSeries.setName("Pulse");
         systolicSeries.setName("Systolic");
-        diastolicSeries.setName("Diaslolic");
+        diastolicSeries.setName("Diastolic");
 
         pulseLineChart.getData().add(pulseSeries);
         bpLineChart.getData().add(tmpSeries);
@@ -110,9 +113,14 @@ public class Controller implements Initializable {
 
     }
 
+    /* This method assumes the client is an adult. */
     public void updateChart(final int pulse, final int systolicBP, final int diastolicBP) {
         pulseLabel.setText("Pulse: " + pulse);
         bpLabel.setText("Blood Pressure: " + systolicBP + "/" + diastolicBP);
+
+        // minor alerts
+        pulseLabel.setTextFill(pulse < 60 || pulse > 100 ? Color.RED : Color.BLACK);
+        bpLabel.setTextFill(systolicBP < 90 || systolicBP > 140 || diastolicBP < 60 || diastolicBP > 90 ? Color.RED : Color.BLACK);
 
         if (points > MAX_POINTS) {
             pulseSeries.getData().remove(0);

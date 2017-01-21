@@ -11,6 +11,8 @@ import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.Pa
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import javafx.stage.Stage;
 
+/** @author Yarden
+ * @since 19.1.17 */
 public class SystemCore_VitalsTest extends SystemCore {
     public static void main(final String args[]) {
         launch(args);

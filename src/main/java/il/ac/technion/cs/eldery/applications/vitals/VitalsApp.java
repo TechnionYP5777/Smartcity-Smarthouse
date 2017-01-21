@@ -12,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/** @author Yarden
+ * @since 19.1.17 */
 public class VitalsApp extends SmartHouseApplication {
     private Controller controller;
 
@@ -39,10 +41,27 @@ public class VitalsApp extends SmartHouseApplication {
         System.out.println("msg from app: onLoad");
         try {
             subscribeToSensor(sensorId, VitalsSensor.class, vitalsSensor -> {
-                final String t = "Patient has pulse of " + vitalsSensor.getPulse() + " and blood pressure of " + vitalsSensor.getSystolicBP() + "/"
-                        + vitalsSensor.getDiastolicBP() + " mmHg";
+                int pulse = vitalsSensor.getPulse();
+                int systolicBP = vitalsSensor.getSystolicBP();
+                int diastolicBP = vitalsSensor.getDiastolicBP();
+                final String t = "Client has pulse of " + pulse + " and blood pressure of " + systolicBP + "/" + diastolicBP + " mmHg";
                 controller.updateChart(vitalsSensor.getPulse(), vitalsSensor.getSystolicBP(), vitalsSensor.getDiastolicBP());
                 System.out.println("msg from app: " + t);
+
+                // major alerts
+                // commented out because EmergencyLevel might change location - DO NOT ERASE
+//                if (pulse < 45)
+//                    sendAlert("ATTENTION: Client has an extremely low pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+//                if (pulse > 115)
+//                    sendAlert("ATTENTION: Client has an extremely high pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+//                if (systolicBP < 80 || diastolicBP < 50)
+//                    sendAlert("ATTENTION: Client suffers from hypotension (low blood pressure).", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+//                if (systolicBP > 160 && diastolicBP < 90)
+//                    sendAlert("ATTENTION: Client suffers from systolic hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+//                else if (systolicBP > 190 || diastolicBP > 120)
+//                    sendAlert("ATTENTION: Client suffers from hypertensive emergency.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+//                else if ((systolicBP > 160 && systolicBP <= 190) || (diastolicBP > 100 && diastolicBP <= 120))
+//                    sendAlert("ATTENTION: Client suffers from hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
             });
         } catch (final SensorNotFoundException ¢) {
             throw new OnLoadException(ErrorCode.SENSOR_ID_NOT_FOUND, ¢.getMessage());
