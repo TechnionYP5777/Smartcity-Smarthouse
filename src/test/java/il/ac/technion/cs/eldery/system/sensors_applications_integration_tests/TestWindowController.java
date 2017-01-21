@@ -9,34 +9,45 @@ import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadExcepti
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class TestWindowController implements Initializable {
-    private final String MSG_PREFIX = "## TEST - ";
-    
-    @FXML private AnchorPane loader_pane;
-    @FXML private Button start_sensor;
-    @FXML private Button start_app;
+    public static final String MSG_PREFIX = "## TEST - ";
+
+    @FXML public AnchorPane loader_pane;
+    @FXML public Button start_sensor;
+    @FXML public Button start_app;
+    @FXML public TextFlow consoleView;
 
     @Override public void initialize(URL location, ResourceBundle __) {
         return;
     }
-    
-    public void setApplication(ApplicationsHandler h, Class<?> applicationClass) {
+
+    public void setApplication(ApplicationsHandler h, Class<?> sensorSimulatorClass, Class<?> applicationClass) {
+        final ObservableList<Node> children = consoleView.getChildren();
+
+        children.add(makeText("please start the sensor simulator (" + sensorSimulatorClass.getName() + "), and press the button\n"));
+
         start_app.setOnAction(e -> {
-            System.out.println(MSG_PREFIX + "Trying to add the app...");
+            children.add(makeText("Trying to add the app..."));
             try {
-                h.addApplication(new ApplicationPath<>(PathType.CLASS_NAME, applicationClass.getName()))
-                .reopen(loader_pane);
-                
-                System.out.println(MSG_PREFIX + "App added and started successfully!");
+                h.addApplication(new ApplicationPath<>(PathType.CLASS_NAME, applicationClass.getName())).reopen(loader_pane);
+
+                children.add(makeText("App added and started successfully!"));
             } catch (AppInstallerException | IOException | OnLoadException ¢) {
-                System.out.println(MSG_PREFIX + "App installation failed: " + ¢.getMessage());
-                System.out.println(String.valueOf(new char[80]).replace("\0", "#"));
+                children.add(makeText("App installation failed: " + ¢.getMessage() + "\n"));
             }
         });
+    }
+
+    private static Text makeText(String msg) {
+        return new Text(MSG_PREFIX + msg + "\n");
     }
 }
