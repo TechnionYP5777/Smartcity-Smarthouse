@@ -2,6 +2,7 @@ package il.ac.technion.cs.eldery.applications.vitals;
 
 import java.util.List;
 
+import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
@@ -16,6 +17,10 @@ import javafx.stage.Stage;
  * @since 19.1.17 */
 public class VitalsApp extends SmartHouseApplication {
     private Controller controller;
+    boolean lowPulseAlert;
+    boolean highPulseAlert;
+    boolean lowBPAlert;
+    int highBPAlert;
 
     public static void main(final String[] args) {
         launch(args);
@@ -49,19 +54,40 @@ public class VitalsApp extends SmartHouseApplication {
                 System.out.println("msg from app: " + t);
 
                 // major alerts
-                // commented out because EmergencyLevel might change location - DO NOT ERASE
-//                if (pulse < 45)
-//                    sendAlert("ATTENTION: Client has an extremely low pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-//                if (pulse > 115)
-//                    sendAlert("ATTENTION: Client has an extremely high pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-//                if (systolicBP < 80 || diastolicBP < 50)
-//                    sendAlert("ATTENTION: Client suffers from hypotension (low blood pressure).", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-//                if (systolicBP > 160 && diastolicBP < 90)
-//                    sendAlert("ATTENTION: Client suffers from systolic hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-//                else if (systolicBP > 190 || diastolicBP > 120)
-//                    sendAlert("ATTENTION: Client suffers from hypertensive emergency.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-//                else if ((systolicBP > 160 && systolicBP <= 190) || (diastolicBP > 100 && diastolicBP <= 120))
-//                    sendAlert("ATTENTION: Client suffers from hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                if (pulse < 45 && !lowPulseAlert) {
+                    lowPulseAlert = true;
+                    sendAlert("ATTENTION: Client has an extremely low pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                }
+                if (pulse >= 45 && lowPulseAlert)
+                    lowPulseAlert = false;
+
+                if (pulse > 115 && !highPulseAlert) {
+                    highPulseAlert = true;
+                    sendAlert("ATTENTION: Client has an extremely high pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                }
+                if (pulse <= 115 && highPulseAlert)
+                    highPulseAlert = false;
+
+                if ((systolicBP < 80 || diastolicBP < 50) && !lowBPAlert) {
+                    lowBPAlert = true;
+                    sendAlert("ATTENTION: Client suffers from hypotension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                }
+                if (systolicBP >= 80 && diastolicBP >= 50 && lowBPAlert)
+                    lowBPAlert = false;
+
+                if (systolicBP > 160 && diastolicBP < 90 && highBPAlert < 3) {
+                    highBPAlert = 3;
+                    sendAlert("ATTENTION: Client suffers from systolic hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                } else if ((systolicBP > 190 || diastolicBP > 120) && highBPAlert < 2) {
+                    highBPAlert = 2;
+                    sendAlert("ATTENTION: Client suffers from hypertensive emergency.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                } else if (((systolicBP > 160 && systolicBP <= 190) || (diastolicBP > 100 && diastolicBP <= 120)) && highBPAlert < 1) {
+                    highBPAlert = 1;
+                    sendAlert("ATTENTION: Client suffers from hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                }
+
+                if (systolicBP <= 160 && diastolicBP <= 100)
+                    highBPAlert = 0;
             });
         } catch (final SensorNotFoundException ¢) {
             throw new OnLoadException(ErrorCode.SENSOR_ID_NOT_FOUND, ¢.getMessage());

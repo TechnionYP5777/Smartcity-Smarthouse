@@ -9,6 +9,7 @@ import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadExcepti
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
+import il.ac.technion.cs.eldery.system.userInformation.Contact;
 import javafx.stage.Stage;
 
 /** @author Yarden
@@ -20,6 +21,8 @@ public class SystemCore_VitalsTest extends SystemCore {
 
     @Override @SuppressWarnings("resource") public void start(final Stage primaryStage) {
         new Thread(sensorsHandler).start();
+        initializeUser("user", "123456789", "050-1234567", "Technion");
+//        user.addContact(new Contact("contact", "234567890", "054-1234567", "smarthouse5777@gmail.com"), EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
         System.out.println("## System started!");
 
         while (true) {
