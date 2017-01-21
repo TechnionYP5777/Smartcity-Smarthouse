@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
+import org.hamcrest.core.Is;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +19,8 @@ import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
  * @since 7.12.16 */
 public class SensorTest {
     private Sensor sensor;
+    private DatabaseHandler databaseHandler;
+    private Thread sensorsHandlerThread;
 
     @Before public void initSensor() {
         sensor = new Sensor("1", "iStoves", "127.0.0.1", 40001) {
@@ -24,6 +28,14 @@ public class SensorTest {
                 return new String[] { "name", "last name" };
             }
         };
+
+        databaseHandler = new DatabaseHandler();
+        sensorsHandlerThread = new Thread(new SensorsHandler(databaseHandler));
+    }
+
+    @After @SuppressWarnings("deprecation") public void stopThreads() {
+        if (sensorsHandlerThread.isAlive())
+            sensorsHandlerThread.interrupt();
     }
 
     @Test public void initializedNameIsCorrect() {
@@ -36,31 +48,5 @@ public class SensorTest {
 
     @Test public void initializedObservationsNamesAreCorrect() {
         Assert.assertArrayEquals(new String[] { "name", "last name" }, sensor.getObservationsNames());
-    }
-    
-    @Test public void registerMessageReturnsTrueWhenHandlerIsUp() {
-        new Thread(new Runnable() {
-            @Override public void run() {
-                DatabaseHandler databaseHandler = new DatabaseHandler();
-                new Thread(new SensorsHandler(databaseHandler)).start();
-            }
-        }).start();
-
-        assert sensor.register();
-    }
-    
-    @Test public void registerMessageReturnsFalseWhenSystemIsDown() {
-        assert !sensor.register();
-    }
-    
-    @Test public void updateMessageReturnsTrueWhenHandlerIsUp() {
-        new Thread(new Runnable() {
-            @Override public void run() {
-                DatabaseHandler databaseHandler = new DatabaseHandler();
-                new Thread(new SensorsHandler(databaseHandler)).start();
-            }
-        }).start();
-
-        sensor.updateSystem(new HashMap<>());
     }
 }
