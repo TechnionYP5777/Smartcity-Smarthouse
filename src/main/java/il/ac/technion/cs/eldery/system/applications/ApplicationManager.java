@@ -20,6 +20,8 @@ public class ApplicationManager {
     private final ApplicationPath<?> appPath;
     @Expose private ApplicationsHandler referenceToApplicationsHandler;
     @Expose private SmartHouseApplication application;
+    
+    @Expose private Node rootNode; 
 
     public ApplicationManager(final String id, final ApplicationPath<?> appPath, final ApplicationsHandler referenceToApplicationsHandler) {
         this.id = id;
@@ -59,6 +61,7 @@ public class ApplicationManager {
 
         application.setApplicationsHandler(referenceToApplicationsHandler);
         application.onLoad();
+        rootNode = application.getRootNode();
 
         return true;
     }
@@ -67,17 +70,15 @@ public class ApplicationManager {
      * it. */
     @SuppressWarnings("boxing")
     public void reopen(final Pane parentPane) {
-        if (application == null)
+        if (application == null || rootNode == null)
             return;
         
-        Node n = application.getRootNode();
+        AnchorPane.setTopAnchor(rootNode, 0.0);
+        AnchorPane.setRightAnchor(rootNode, 0.0);
+        AnchorPane.setLeftAnchor(rootNode, 0.0);
+        AnchorPane.setBottomAnchor(rootNode, 0.0);
         
-        AnchorPane.setTopAnchor(n, 0.0);
-        AnchorPane.setRightAnchor(n, 0.0);
-        AnchorPane.setLeftAnchor(n, 0.0);
-        AnchorPane.setBottomAnchor(n, 0.0);
-        
-        parentPane.getChildren().setAll(n);
+        parentPane.getChildren().setAll(rootNode);
     }
     
     public String getApplicationName() {

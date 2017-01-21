@@ -48,6 +48,7 @@ public class ApplicationViewController implements Initializable {
     private void initPlusBtn() {
         this.plusButton.setOnAction(e -> {
             try {
+                appsHandler.addApplication(new ApplicationPath<>(PathType.CLASS_NAME, SosAppGui.class.getName()));
                 appsHandler.addApplication(new ApplicationPath<>(PathType.CLASS_NAME, StoveModuleGui.class.getName()));
             } catch (AppInstallerException | IOException | OnLoadException e1) {
                 e1.printStackTrace();
