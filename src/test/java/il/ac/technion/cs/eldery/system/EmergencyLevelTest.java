@@ -33,7 +33,7 @@ public class EmergencyLevelTest {
 
     }
 
-    @Test public static void stringValuesTest() {
+    @Test public void stringValuesTest() {
         for (final EmergencyLevel elevel : EmergencyLevel.values())
             assert EmergencyLevel.stringValues().contains(elevel.name());
     }
