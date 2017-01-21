@@ -34,8 +34,13 @@ public class MappingController implements Initializable {
     @FXML private Canvas canvas;
 
     @Override public void initialize(URL location, ResourceBundle __) {
-        house.addRoom(new Room(20, 20, 200, 100, SensorLocation.KITCHEN));
-        house.addRoom(new Room(200, 200, 200, 100, SensorLocation.BATHROOM));
+        house.addRoom(new Room(320, 320, 150, 150, SensorLocation.LIVING_ROOM));
+        house.addRoom(new Room(470, 320, 150, 150, SensorLocation.KITCHEN));
+        house.addRoom(new Room(470, 470, 150, 150, SensorLocation.DINING_ROOM));
+        house.addRoom(new Room(320, 170, 150, 150, SensorLocation.HALLWAY));
+        house.addRoom(new Room(170, 170, 150, 150, SensorLocation.BEDROOM));
+        house.addRoom(new Room(20, 170, 150, 150, SensorLocation.BATHROOM));
+        house.addRoom(new Room(320, 20, 150, 150, SensorLocation.PORCH));
         
         canvas.setWidth(2000);
         canvas.setHeight(2000);

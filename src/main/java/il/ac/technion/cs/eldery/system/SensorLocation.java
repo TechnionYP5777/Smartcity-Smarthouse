@@ -30,6 +30,7 @@ public enum SensorLocation {
     PORCH,
     /** the sensor is located in the basement */
     BASEMENT,
+    HALLWAY,
     /** the sensor is located in the garage */
     GARAGE;
     
