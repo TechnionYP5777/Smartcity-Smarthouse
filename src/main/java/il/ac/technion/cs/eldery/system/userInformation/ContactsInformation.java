@@ -56,6 +56,16 @@ public class ContactsInformation {
         return null;
     }
 
+    public void setContactEmergencyLevel(final String id, EmergencyLevel newELevel) {
+        for (final EmergencyLevel $ : EmergencyLevel.values())
+            if (data.get($).containsKey(id)) {
+                Contact contact = data.get($).get(id);
+                data.get($).remove(id);
+                data.get(newELevel).put(id, contact);
+            }
+
+    }
+
     /** @param elvl emergency level of the required contacts
      * @return list of all the contacts to be informed at required emergency
      *         level */

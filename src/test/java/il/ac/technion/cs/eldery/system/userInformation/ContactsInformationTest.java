@@ -47,6 +47,29 @@ public class ContactsInformationTest {
 
     }
 
+    @Test public void setContactEmergencyLevelTest() {
+        contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
+
+        List<Contact> temp = contactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        Assert.assertEquals(1, temp.size());
+        assert temp.contains(contactA);
+
+        temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        Assert.assertEquals(1, temp.size());
+        assert temp.contains(contactB);
+
+        contactsInfo.setContactEmergencyLevel(contactA.getId(), EmergencyLevel.SMS_EMERGENCY_CONTACT);
+
+        temp = contactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        Assert.assertEquals(0, temp.size());
+
+        temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        Assert.assertEquals(2, temp.size());
+        assert temp.contains(contactA);
+
+    }
+
     @Test public void xmlTest() {
         contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
         contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
