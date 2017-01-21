@@ -15,8 +15,9 @@ import javafx.stage.Stage;
 
 /** Hold the databases of the smart house, and allow sensors and applications to
  * store and read information about the changes in the environment */
-
 public class SystemCore extends Application {
+    private static final String APP_NAME = "SmartHouse";
+    
     private final DatabaseHandler databaseHandler = new DatabaseHandler();
     protected final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
     protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler, this);
@@ -28,15 +29,29 @@ public class SystemCore extends Application {
     }
 
     @Override public void start(final Stage s) throws IOException {
-        System.out.println("Initializing system...");
-        new Thread(sensorsHandler).start();
-
+        initializeSystemComponents();
+        initializeSystemGui(s);
+    }
+    
+    private void initializeSystemGui(final Stage s) throws IOException {
+        System.out.println("Initializing system ui...");
+        
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main_system_ui.fxml"));
 
         final Scene scene = new Scene(loader.load(), 1000, 800);
-        s.setTitle("Test");
+        s.setTitle(APP_NAME);
         s.setScene(scene);
         s.show();
+        
+        s.setOnCloseRequest(e -> {
+            System.out.println("System closing...");
+            //TODO: close other threads from here
+        });
+    }
+    
+    private void initializeSystemComponents() {
+        System.out.println("Initializing system components...");
+        new Thread(sensorsHandler).start();
     }
 
     public UserInformation getUser() {
@@ -53,11 +68,11 @@ public class SystemCore extends Application {
     }
 
     public void alert(final String msg, final EmergencyLevel elvl) {
-        // todo: add appId field
+        // TODO: add appId field
         final List<Contact> $ = user.getContacts(elvl);
         switch (elvl) {
             case NOTIFY_ELDERLY:
-                // todo: how do we notify the eldery?
+                // TODO: how do we notify the elderly?
                 break;
             case SMS_EMERGENCY_CONTACT:
                 $.stream().forEach(c -> Communicate.throughSms(c.getPhoneNumber(), msg));
@@ -72,7 +87,7 @@ public class SystemCore extends Application {
                 $.stream().forEach(c -> Communicate.throughEmailFromHere(c.getEmailAddress(), msg));
                 break;
             default:
-                // todo: whats the desired behaviour?
+                // TODO: what's the desired behavior?
                 break;
         }
     }
