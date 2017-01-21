@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
+import il.ac.technion.cs.eldery.system.gui.MainSystemGuiController;
 import il.ac.technion.cs.eldery.system.gui.mapping.MappingController;
 import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
 import il.ac.technion.cs.eldery.system.userInformation.Contact;
@@ -37,8 +38,9 @@ public class SystemCore extends Application {
         System.out.println("Initializing system ui...");
         
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main_system_ui.fxml"));
-
         final Scene scene = new Scene(loader.load(), 1000, 800);
+        ((MainSystemGuiController) loader.getController()).setDatabaseHandler(databaseHandler);
+        
         s.setTitle(APP_NAME);
         s.setScene(scene);
         s.show();
