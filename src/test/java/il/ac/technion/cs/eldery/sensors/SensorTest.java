@@ -1,8 +1,16 @@
 package il.ac.technion.cs.eldery.sensors;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashMap;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import il.ac.technion.cs.eldery.system.DatabaseHandler;
+import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
 
 /** @author Sharon
  * @author Yarden
@@ -28,5 +36,31 @@ public class SensorTest {
 
     @Test public void initializedObservationsNamesAreCorrect() {
         Assert.assertArrayEquals(new String[] { "name", "last name" }, sensor.getObservationsNames());
+    }
+    
+    @Test public void registerMessageReturnsTrueWhenHandlerIsUp() {
+        new Thread(new Runnable() {
+            @Override public void run() {
+                DatabaseHandler databaseHandler = new DatabaseHandler();
+                new Thread(new SensorsHandler(databaseHandler)).start();
+            }
+        }).start();
+
+        assert sensor.register();
+    }
+    
+    @Test public void registerMessageReturnsFalseWhenSystemIsDown() {
+        assert !sensor.register();
+    }
+    
+    @Test public void updateMessageReturnsTrueWhenHandlerIsUp() {
+        new Thread(new Runnable() {
+            @Override public void run() {
+                DatabaseHandler databaseHandler = new DatabaseHandler();
+                new Thread(new SensorsHandler(databaseHandler)).start();
+            }
+        }).start();
+
+        sensor.updateSystem(new HashMap<>());
     }
 }
