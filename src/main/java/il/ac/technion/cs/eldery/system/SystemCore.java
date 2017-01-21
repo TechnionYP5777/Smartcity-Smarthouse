@@ -46,7 +46,8 @@ public class SystemCore extends Application {
         
         s.setOnCloseRequest(e -> {
             System.out.println("System closing...");
-            //TODO: close other threads from here
+            //TODO: close other threads from here, or just do this:
+            System.exit(0);
         });
     }
     
