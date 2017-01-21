@@ -59,10 +59,7 @@ public class VitalsApp extends SmartHouseApplication {
                 if (systolicBP >= 80 && diastolicBP >= 50 && lowBPAlert)
                     lowBPAlert = false;
 
-                if (systolicBP > 160 && diastolicBP < 90 && highBPAlert < 3) {
-                    highBPAlert = 3;
-                    sendAlert("ATTENTION: Client suffers from systolic hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-                } else if ((systolicBP > 190 || diastolicBP > 120) && highBPAlert < 2) {
+                if ((systolicBP > 190 || diastolicBP > 120) && highBPAlert < 2) {
                     highBPAlert = 2;
                     sendAlert("ATTENTION: Client suffers from hypertensive emergency.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
                 } else if (((systolicBP > 160 && systolicBP <= 190) || (diastolicBP > 100 && diastolicBP <= 120)) && highBPAlert < 1) {
