@@ -18,6 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -101,6 +102,14 @@ public class UserInfoController implements Initializable {
         emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getEmailAddress()));
         eLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().eLevel + ""));
 
+        contactsTable.setEditable(true);
+
+        phoneColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        phoneColumn.setOnEditCommit(¢ -> ¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact.setPhoneNumber(¢.getNewValue()));
+
+        emailColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        emailColumn.setOnEditCommit(¢ -> ¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact.setEmailAddress(¢.getNewValue()));
+
     }
 
     private void costumizeContactsTab() {
@@ -139,8 +148,9 @@ public class UserInfoController implements Initializable {
         alert.showAndWait();
     }
 
-    public void setSystemCore(final SystemCore sysCore) {
+    public UserInfoController setSystemCore(final SystemCore sysCore) {
         systemCore = sysCore;
+        return this;
     }
 
     @FXML private void addContactToTable(@SuppressWarnings("unused") final ActionEvent __) {
