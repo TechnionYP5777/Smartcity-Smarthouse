@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<SplitPane dividerPositions="0.3" prefHeight="400.0"
+	prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="il.ac.technion.cs.eldery.system.sensors_applications_integration_tests.TestWindowController">
+	<items>
+		<AnchorPane fx:id="loader_pane" minHeight="0.0" minWidth="0.0"
+			prefHeight="160.0" prefWidth="100.0" />
+		<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0"
+			prefWidth="100.0">
+			<children>
+				<HBox>
+					<children>
+						<Button fx:id="start_app" text="Start App" />
+						<Button fx:id="start_sensor" text="Start Sensor" visible="false" />
+					</children>
+				</HBox>
+			</children>
+		</AnchorPane>
+	</items>
+</SplitPane>
+
+

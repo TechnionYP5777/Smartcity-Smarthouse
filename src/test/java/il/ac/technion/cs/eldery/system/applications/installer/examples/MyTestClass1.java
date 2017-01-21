@@ -1,11 +1,10 @@
 package il.ac.technion.cs.eldery.system.applications.installer.examples;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
-import javafx.stage.Stage;
+import javafx.scene.Node;
 
 public class MyTestClass1 extends SmartHouseApplication {
     private boolean isLoaded;
-    private boolean isStarted;
 
     public MyTestClass1() {}
 
@@ -13,16 +12,16 @@ public class MyTestClass1 extends SmartHouseApplication {
         isLoaded = true;
     }
 
-    @Override public void start(final Stage primaryStage) throws Exception {
-        isStarted = true;
-    }
-
     public boolean isLoaded() {
         return isLoaded;
     }
 
-    public boolean isStarted() {
-        return isStarted;
+    @Override public String getApplicationName() {
+        return null;
+    }
+
+    @Override public Node getRootNode() {
+        return null;
     }
 
 }

@@ -10,6 +10,7 @@ import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadExcepti
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.stage.Stage;
 
 /** The API for the apps/modules developers Every app that wants to be installed
@@ -28,32 +29,16 @@ public abstract class SmartHouseApplication extends Application {
         applicationsHandler = ¢;
     }
 
-    @Override public void start(final Stage s) throws Exception {
+    @Override public final void start(final Stage s) throws Exception {
         firstStage = s;
         firstStage.setOnCloseRequest(event -> {
             event.consume();
-            ((Stage) event.getSource()).setIconified(true);
+            //((Stage) event.getSource()).setIconified(true);
+            System.out.println("CLOSE");
         });
     }
 
-    // [start] Public - Services to ApplicationHandler
-    // TODO: should the developer be able to access these functions? - RON?
-    public final void reopen() {
-        if (firstStage != null)
-            Platform.runLater(() -> firstStage.setIconified(false));
-    }
-
-    public final void minimize() {
-        if (firstStage != null)
-            Platform.runLater(() -> firstStage.setIconified(true));
-    }
-
-    @SuppressWarnings("static-method") public String getIcon() {
-        return "";
-    }
-    // [end]
-
-    // [start] Public - Services to developer
+    // [start] Public - Services to application developers
     /** Ask for the list of sensorIds registered by a specific commercial name
      * @param sensorCommercialName the sensor in question
      * @return a list of IDs of those sensors in the system. They can be used in
@@ -144,6 +129,10 @@ public abstract class SmartHouseApplication extends Application {
     /** This will run when the system loads the app. Here all of the sensors
      * subscriptions must occur */
     public abstract void onLoad() throws OnLoadException;
+    
+    public abstract String getApplicationName();
+    
+    public abstract Node getRootNode();
     // [end]
 
     // [start] Private static functions

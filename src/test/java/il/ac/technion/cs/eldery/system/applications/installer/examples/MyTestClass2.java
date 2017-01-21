@@ -1,7 +1,7 @@
 package il.ac.technion.cs.eldery.system.applications.installer.examples;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
-import javafx.stage.Stage;
+import javafx.scene.Node;
 
 public class MyTestClass2 extends SmartHouseApplication {
 
@@ -9,8 +9,12 @@ public class MyTestClass2 extends SmartHouseApplication {
         return;
     }
 
-    @Override public void start(final Stage primaryStage) throws Exception {
-        return;
+    @Override public String getApplicationName() {
+        return null;
+    }
+
+    @Override public Node getRootNode() {
+        return null;
     }
 
 }

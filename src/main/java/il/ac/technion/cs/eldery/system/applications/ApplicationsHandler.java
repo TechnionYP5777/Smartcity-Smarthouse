@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
@@ -56,7 +56,7 @@ public class ApplicationsHandler {
 
     }
 
-    Map<String, ApplicationManager> apps = new HashMap<>();
+    List<ApplicationManager> apps = new ArrayList<>();
     DatabaseHandler databaseHandler;
     SystemCore systemCore;
 
@@ -80,23 +80,30 @@ public class ApplicationsHandler {
         this.systemCore = systemCore;
     }
 
-    public DatabaseHandler getDatabaseHandler() {
-        return databaseHandler;
-    }
-
-    /** Adds a new application to the system, and presents it to the screen
+    // [start] Services to the SystemCore
+    /** Adds a new application to the system, and initializes it
      * @throws IOException
      * @throws AppInstallerException
      * @throws OnLoadException
      * @throws ApplicationInitializationException */
-    public void addApplication(final String appId, final ApplicationPath<?> appPath) throws AppInstallerException, IOException, OnLoadException {
+    public ApplicationManager addApplication(final String appId, final ApplicationPath<?> appPath) throws AppInstallerException, IOException, OnLoadException {
         // TODO: Elia - maybe we should init the appId in here...
         final ApplicationManager $ = new ApplicationManager(appId, appPath, this);
+        apps.add($);
         $.initialize();
-        // $.minimize();
-        apps.put(appId, $);
+        return $;
     }
+    
+    public List<ApplicationManager> getApplicationManagers() {
+        return Collections.unmodifiableList(apps);
+    }
+    // [end]
 
+    // [start] Services to SmartHouseApplications - These services will be wrapped by the SmartHouseApplication API
+    public DatabaseHandler getDatabaseHandler() {
+        return databaseHandler;
+    }
+    
     /** See
      * {@link SmartHouseApplication#subscribeToSensor(String, Class, Consumer)} */
     public final <T extends SensorData> void subscribeToSensor(final String sensorId, final Class<T> sensorClass, final Consumer<T> functionToRun)
@@ -123,4 +130,5 @@ public class ApplicationsHandler {
     public void alertOnAbnormalState(final String message, final EmergencyLevel eLevel) {
         systemCore.alert(message, eLevel);
     }
+    // [end]
 }

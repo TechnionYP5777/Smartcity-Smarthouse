@@ -22,7 +22,7 @@ public class SystemCore extends Application {
     private final DatabaseHandler databaseHandler = new DatabaseHandler();
     protected final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
     protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler, this);
-    private UserInformation user;
+    protected UserInformation user;
     private boolean userInitialized;
 
     public static void main(final String[] args) {
@@ -34,7 +34,7 @@ public class SystemCore extends Application {
         initializeSystemGui(s);
     }
     
-    private void initializeSystemGui(final Stage s) throws IOException {
+    protected void initializeSystemGui(final Stage s) throws IOException {
         System.out.println("Initializing system ui...");
         
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main_system_ui.fxml"));
@@ -51,7 +51,7 @@ public class SystemCore extends Application {
         });
     }
     
-    private void initializeSystemComponents() {
+    protected void initializeSystemComponents() {
         System.out.println("Initializing system components...");
         new Thread(sensorsHandler).start();
     }

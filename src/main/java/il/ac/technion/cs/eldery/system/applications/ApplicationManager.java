@@ -8,8 +8,7 @@ import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
-import javafx.application.Platform;
-import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
 
 /** A class that stores information about the installed application
  * @author RON
@@ -59,35 +58,20 @@ public class ApplicationManager {
         application.setApplicationsHandler(referenceToApplicationsHandler);
         application.onLoad();
 
-        Platform.runLater(() -> {
-            try {
-                application.start(new Stage());
-            } catch (final Exception ¢) {
-                ¢.printStackTrace();
-            }
-        });
-
         return true;
-    }
-
-    /** @return the path to the application's icon */
-    public String getIcon() {
-        // TODO: 4Ron - might not be string at some point later
-        return application.getIcon();
-    }
-
-    /** If the application is installed, but currently open (for display), this
-     * will minimize it. */
-    public void minimize() {
-        if (application != null)
-            application.minimize();
     }
 
     /** If the application is installed, but currently closed, this will reopen
      * it. */
-    public void reopen() {
+    public void reopen(final Pane parentPane) {
         if (application != null)
-            application.reopen();
+            parentPane.getChildren().setAll(application.getRootNode());
+    }
+    
+    public String getApplicationName() {
+        if (application != null)
+            application.getApplicationName();
+        return null;
     }
     // [end]
 

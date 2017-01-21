@@ -16,30 +16,30 @@ public class SosController implements Initializable {
     @FXML public Button killerButton;
     @FXML public AnchorPane mainPane;
 
-    boolean isDead;
+    boolean inAlertMode;
 
     @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
         stateLabel.setFont(new Font("Arial", 20));
         mainPane.setStyle("-fx-background-color: green");
         killerButton.setOnAction(__ -> {
-            if (!isDead)
-                killElder();
+            if (inAlertMode)
+                sosBtnUnpress();
             else
-                respawnElder();
+                sosBtnPressed();
         });
     }
 
-    public void killElder() {
+    public void sosBtnPressed() {
         stateLabel.setText("Elderly is in Danger!!!");
         killerButton.setVisible(true);
         mainPane.setStyle("-fx-background-color: red");
-        isDead = true;
+        inAlertMode = true;
     }
 
-    public void respawnElder() {
+    public void sosBtnUnpress() {
         stateLabel.setText("Elderly is OK");
         mainPane.setStyle("-fx-background-color: green");
-        isDead = false;
+        inAlertMode = false;
     }
 
 }

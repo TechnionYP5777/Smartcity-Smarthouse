@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +29,9 @@ public class ApplicationViewController implements Initializable {
     @FXML ListView<String> listView;
     @FXML AnchorPane appView;
     @FXML Button plusButton;
+    
+    private ApplicationsHandler appsHandler;
+    
     ObservableList<String> names;
     @Override public void initialize(URL location, ResourceBundle __) {
         this.names = FXCollections.observableArrayList(
@@ -50,5 +55,9 @@ public class ApplicationViewController implements Initializable {
     public void addListItem(String name){
         names.add(name);
         listView.setItems(this.names);
+    }
+    
+    public void setAppsHandler(ApplicationsHandler appsHandler) {
+        this.appsHandler = appsHandler;
     }
 }
