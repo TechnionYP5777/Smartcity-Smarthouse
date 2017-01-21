@@ -31,17 +31,12 @@ public class SystemCore extends Application {
         System.out.println("Initializing system...");
         new Thread(sensorsHandler).start();
 
-        // TODO: Roy, add some GUI magic here
-        // For now the system initializes the house mapping GUI, should be
-        // changed in the future
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/mapping/house_mapping.fxml"));
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main_system_ui.fxml"));
 
         final Scene scene = new Scene(loader.load(), 1000, 800);
         s.setTitle("Test");
         s.setScene(scene);
         s.show();
-
-        ((MappingController) loader.getController()).setDatabaseHandler(databaseHandler);
     }
 
     public UserInformation getUser() {
