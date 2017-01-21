@@ -12,7 +12,7 @@ public class EmergencyLevelTest {
     @Test public void fromStringTest() {
         emergencyLevel = EmergencyLevel.fromString("NOTIFY_ELDERLY");
         Assert.assertEquals(EmergencyLevel.NOTIFY_ELDERLY, emergencyLevel);
-        
+
         emergencyLevel = EmergencyLevel.fromString("EMAIL_EMERGENCY_CONTACT");
         Assert.assertEquals(EmergencyLevel.EMAIL_EMERGENCY_CONTACT, emergencyLevel);
 
@@ -31,5 +31,10 @@ public class EmergencyLevelTest {
         emergencyLevel = EmergencyLevel.fromString("CONTACT_FIRE_FIGHTERS");
         Assert.assertEquals(EmergencyLevel.CONTACT_FIRE_FIGHTERS, emergencyLevel);
 
+    }
+
+    @Test public static void stringValuesTest() {
+        for (final EmergencyLevel elevel : EmergencyLevel.values())
+            assert EmergencyLevel.stringValues().contains(elevel.name());
     }
 }

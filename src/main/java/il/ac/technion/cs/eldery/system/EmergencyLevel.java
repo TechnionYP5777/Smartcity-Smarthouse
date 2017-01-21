@@ -1,5 +1,8 @@
 package il.ac.technion.cs.eldery.system;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** The level of emergency, defined by the level of expertise needed to take
  * care of it. Includes the following options: {@link #NOTIFY_ELDERLY},
  * {@link #SMS_EMERGENCY_CONTACT}, {@link #CALL_EMERGENCY_CONTACT},
@@ -42,6 +45,14 @@ public enum EmergencyLevel {
             default:
                 return CONTACT_FIRE_FIGHTERS;
         }
+    }
+
+    public static List<String> stringValues() {
+        final ArrayList<String> $ = new ArrayList<>();
+        for (final EmergencyLevel elvl : EmergencyLevel.values())
+            $.add(elvl.name());
+
+        return $;
     }
 
 }
