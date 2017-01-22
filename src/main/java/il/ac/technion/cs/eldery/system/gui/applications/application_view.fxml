@@ -10,21 +10,32 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.ToggleSwitch?>
+<?import javafx.scene.control.Label?>
 
-<SplitPane dividerPositions="0.3" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.system.gui.applications.ApplicationViewController">
-  <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-         <children>
-            <TitledPane collapsible="false" prefHeight="200.0" prefWidth="200.0" text="Applications" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
-            	<VBox>
-            		<children>
-            			<ListView fx:id="listView"/>
-            			<Button fx:id="plusButton" text="+"/>
-            		</children>
-            	</VBox>
-            </TitledPane>
-         </children>
-    </AnchorPane>
-    <AnchorPane fx:id="appView" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0"/>
-  </items>
+<SplitPane dividerPositions="0.3" prefHeight="400.0"
+	prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="il.ac.technion.cs.eldery.system.gui.applications.ApplicationViewController">
+	<items>
+		<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0"
+			prefWidth="100.0">
+			<children>
+				<TitledPane collapsible="false" prefHeight="200.0"
+					prefWidth="200.0" text="Applications" AnchorPane.bottomAnchor="0.0"
+					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+					AnchorPane.topAnchor="0.0">
+					<VBox>
+						<children>
+							<ListView fx:id="listView" />
+							<Label fx:id="label" />
+							<Button fx:id="plusButton" text="+" />
+							<ToggleSwitch fx:id="toggleSwitch" />
+						</children>
+					</VBox>
+				</TitledPane>
+			</children>
+		</AnchorPane>
+		<AnchorPane fx:id="appView" minHeight="0.0" minWidth="0.0"
+			prefHeight="160.0" prefWidth="100.0" />
+	</items>
 </SplitPane>
