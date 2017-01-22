@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
+import il.ac.technion.cs.eldery.applications.sos.SosAppGui;
+import il.ac.technion.cs.eldery.applications.stove.StoveModuleGui;
+import il.ac.technion.cs.eldery.applications.vitals.VitalsApp;
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.SystemCore;
@@ -33,6 +36,10 @@ import il.ac.technion.cs.eldery.utils.Generator;
  * @author Inbal Zukerman
  * @since Dec 13, 2016 */
 public class ApplicationsHandler {
+    @SuppressWarnings("unchecked")
+    public static final Class<? extends SmartHouseApplication>[] PREMADE_APPLICATIONS = 
+            new Class[] {SosAppGui.class, StoveModuleGui.class, VitalsApp.class};
+    
     private class QueryTimerTask extends TimerTask {
         Boolean repeat;
         String sensorId;
