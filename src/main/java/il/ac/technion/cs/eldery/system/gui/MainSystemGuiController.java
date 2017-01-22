@@ -15,9 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 
 public class MainSystemGuiController implements Initializable {
-    private DatabaseHandler dbHandler;
-    private ApplicationsHandler appsHandler;
-    
     private MappingController mappingController;
     private ApplicationViewController appsController;
 
@@ -49,16 +46,12 @@ public class MainSystemGuiController implements Initializable {
     }
     
     public MainSystemGuiController setDatabaseHandler(DatabaseHandler dbHandler) {
-        this.dbHandler = dbHandler;
-        mappingController.setDatabaseHandler(dbHandler);
-        
+        mappingController.setDatabaseHandler(dbHandler);    
         return this;
     }
     
     public MainSystemGuiController setApplicationsHandler(ApplicationsHandler appsHandler) {
-        this.appsHandler = appsHandler;
-        appsController.setAppsHandler(appsHandler);
-        
+        appsController.setAppsHandler(appsHandler);       
         return this;
     }
 }

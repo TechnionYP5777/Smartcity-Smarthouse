@@ -1,11 +1,5 @@
 package il.ac.technion.cs.eldery.sensors;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.HashMap;
-
-import org.hamcrest.core.Is;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,7 +27,7 @@ public class SensorTest {
         sensorsHandlerThread = new Thread(new SensorsHandler(databaseHandler));
     }
 
-    @After @SuppressWarnings("deprecation") public void stopThreads() {
+    @After public void stopThreads() {
         if (sensorsHandlerThread.isAlive())
             sensorsHandlerThread.interrupt();
     }

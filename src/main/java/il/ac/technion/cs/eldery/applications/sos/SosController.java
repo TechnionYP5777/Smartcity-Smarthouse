@@ -3,7 +3,6 @@ package il.ac.technion.cs.eldery.applications.sos;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

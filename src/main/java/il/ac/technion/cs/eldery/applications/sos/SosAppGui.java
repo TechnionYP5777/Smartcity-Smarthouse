@@ -3,8 +3,6 @@ package il.ac.technion.cs.eldery.applications.sos;
 import java.io.IOException;
 import java.util.List;
 
-import com.sun.glass.events.MouseEvent;
-
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
@@ -13,7 +11,6 @@ import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadExcepti
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;

@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.controlsfx.control.ToggleSwitch;
-
 import il.ac.technion.cs.eldery.system.applications.ApplicationManager;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import javafx.collections.FXCollections;
@@ -16,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 
