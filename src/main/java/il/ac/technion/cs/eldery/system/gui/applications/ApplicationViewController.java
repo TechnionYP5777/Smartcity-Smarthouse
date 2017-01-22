@@ -7,14 +7,8 @@ import java.util.ResourceBundle;
 
 import org.controlsfx.control.ToggleSwitch;
 
-import il.ac.technion.cs.eldery.applications.sos.SosAppGui;
-import il.ac.technion.cs.eldery.applications.stove.StoveModuleGui;
 import il.ac.technion.cs.eldery.system.applications.ApplicationManager;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
-import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
-import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
-import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.PathType;
-import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -50,8 +45,8 @@ public class ApplicationViewController implements Initializable {
 
         initListView();
         initPlusBtn();
-        initLabel();
-        initSwitch();
+        // initLabel();
+        // initSwitch();
     }
 
     private void initListView() {
@@ -61,9 +56,26 @@ public class ApplicationViewController implements Initializable {
         });
     }
 
-    private void initPlusBtn() {
+    @SuppressWarnings("boxing") private void initPlusBtn() {
         this.plusButton.setOnAction(e -> {
-            browseFile();
+            try {
+                final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("applications_installer_view.fxml"));
+                Node n = fxmlLoader.load();
+
+                ((ApplicationsInstallerViewController) fxmlLoader.getController()).init(appsHandler);
+
+                AnchorPane.setTopAnchor(n, 0.0);
+                AnchorPane.setRightAnchor(n, 0.0);
+                AnchorPane.setLeftAnchor(n, 0.0);
+                AnchorPane.setBottomAnchor(n, 0.0);
+
+                appView.getChildren().setAll(n);
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+
+            // browseFile();
         });
     }
 
