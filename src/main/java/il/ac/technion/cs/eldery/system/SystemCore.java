@@ -41,6 +41,7 @@ public class SystemCore extends Application {
         MainSystemGuiController mainGuiController = (MainSystemGuiController) loader.getController();
         mainGuiController.setDatabaseHandler(databaseHandler);
         mainGuiController.setApplicationsHandler(applicationsHandler);
+        mainGuiController.setSysCore(this);
 
         s.setTitle(APP_NAME);
         s.setScene(scene);

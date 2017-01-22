@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
+import il.ac.technion.cs.eldery.system.SystemCore;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import il.ac.technion.cs.eldery.system.gui.applications.ApplicationViewController;
 import il.ac.technion.cs.eldery.system.gui.mapping.MappingController;
@@ -17,6 +18,7 @@ import javafx.scene.control.Tab;
 public class MainSystemGuiController implements Initializable {
     private MappingController mappingController;
     private ApplicationViewController appsController;
+    private SystemCore sysCore;
 
     @FXML Tab homeTab;
     @FXML Tab userTab;
@@ -28,7 +30,9 @@ public class MainSystemGuiController implements Initializable {
             FXMLLoader loader;
 
             // user tab:
-            userTab.setContent((Node) FXMLLoader.load(this.getClass().getResource("user information.fxml")));
+            loader  = new FXMLLoader(this.getClass().getResource("user information.fxml"));
+            userTab.setContent((Node) loader.load());
+            ((UserInfoController) loader.getController()).setSystemCore(this.sysCore);
 
             // sensors tab:
             loader = new FXMLLoader(this.getClass().getResource("/il/ac/technion/cs/eldery/system/gui/mapping/house_mapping.fxml"));
@@ -54,4 +58,9 @@ public class MainSystemGuiController implements Initializable {
         appsController.setAppsHandler(appsHandler);
         return this;
     }
+    
+    public void setSysCore(SystemCore sysCore){
+        this.sysCore=sysCore;
+    }
+    
 }
