@@ -26,5 +26,12 @@ public enum PremadeApplications {
     public String getAppName() {
         return appName;
     }
+    
+    public static PremadeApplications getByName(String name) {
+        for (PremadeApplications p : PremadeApplications.values())
+            if (p.getAppName().equals(name))
+                return p;
+        return null;
+    }
 }
 

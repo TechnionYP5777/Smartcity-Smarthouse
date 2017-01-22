@@ -13,10 +13,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.ToggleSwitch;
 
+import il.ac.technion.cs.eldery.applications.PremadeApplications;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import javafx.scene.layout.VBox;
 
@@ -27,7 +29,7 @@ public class ApplicationsInstallerViewController implements Initializable {
     @FXML private TextField browseText;
     @FXML private Button browseBtn;
     @FXML private HBox toggleOptionCombo;
-    @FXML private ComboBox comboBox;
+    @FXML private ComboBox<String> comboBox;
     @FXML private Button installBtn;
 
     ApplicationsHandler applicationsHandler;
@@ -40,6 +42,7 @@ public class ApplicationsInstallerViewController implements Initializable {
         applicationsHandler = h;
         
         initToggleBtn();
+        initComboBox();
 
         gotoRegularMode();
 
@@ -54,6 +57,12 @@ public class ApplicationsInstallerViewController implements Initializable {
                     gotoRegularMode();
             }
         });
+    }
+    
+    private void initComboBox() {
+        comboBox.setPromptText("Choose File");
+        comboBox.getItems().addAll(Arrays.stream(PremadeApplications.values()).map(x -> x.getAppName()).toArray(String[]::new));
+        
     }
 
     void gotoTestMode() {
