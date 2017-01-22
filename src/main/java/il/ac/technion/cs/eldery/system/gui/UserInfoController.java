@@ -163,8 +163,9 @@ public class UserInfoController implements Initializable {
         alert.showAndWait();
     }
 
-    public void setSystemCore(final SystemCore sysCore) {
+    public UserInfoController setSystemCore(final SystemCore sysCore) {
         systemCore = sysCore;
+        return this;
     }
 
     @FXML private void addContactToTable(@SuppressWarnings("unused") final ActionEvent __) {

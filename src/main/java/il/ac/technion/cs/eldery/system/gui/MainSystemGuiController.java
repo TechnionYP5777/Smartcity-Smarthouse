@@ -18,6 +18,7 @@ import javafx.scene.control.Tab;
 public class MainSystemGuiController implements Initializable {
     private MappingController mappingController;
     private ApplicationViewController appsController;
+    private UserInfoController userController;
     private SystemCore sysCore;
 
     @FXML Tab homeTab;
@@ -31,7 +32,7 @@ public class MainSystemGuiController implements Initializable {
 
             // user tab:
             userTab.setContent((Node) loader.load());
-            ((UserInfoController) loader.getController()).setSystemCore(this.sysCore);
+            userController = loader.getController();
 
             // sensors tab:
             loader = new FXMLLoader(this.getClass().getResource("/il/ac/technion/cs/eldery/system/gui/mapping/house_mapping.fxml"));
@@ -58,8 +59,9 @@ public class MainSystemGuiController implements Initializable {
         return this;
     }
     
-    public void setSysCore(SystemCore sysCore){
-        this.sysCore=sysCore;
+    public MainSystemGuiController setSysCore(SystemCore sysCore){
+        userController.setSystemCore(sysCore);
+        return this;
     }
     
 }
