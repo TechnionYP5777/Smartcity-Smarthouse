@@ -9,22 +9,16 @@ import org.controlsfx.control.ToggleSwitch;
 
 import il.ac.technion.cs.eldery.system.applications.ApplicationManager;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 public class ApplicationViewController implements Initializable {
     @FXML ListView<String> listView;
@@ -59,7 +53,9 @@ public class ApplicationViewController implements Initializable {
                 final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("applications_installer_view.fxml"));
                 Node n = fxmlLoader.load();
 
-                ((ApplicationsInstallerViewController) fxmlLoader.getController()).init(appsHandler);
+                ApplicationsInstallerViewController a = (ApplicationsInstallerViewController) fxmlLoader.getController(); 
+                a.setApplicationsHandler(appsHandler);
+                a.setApplicationViewController(this);
 
                 AnchorPane.setTopAnchor(n, 0.0);
                 AnchorPane.setRightAnchor(n, 0.0);
@@ -73,33 +69,11 @@ public class ApplicationViewController implements Initializable {
         });
     }
 
-    private void updateListView() {
+    public void updateListView() {
         ObservableList<String> names = FXCollections.observableArrayList();
         for (ApplicationManager m : appsHandler.getApplicationManagers())
             names.add(m.getApplicationName());
 
         listView.setItems(names);
-    }
-
-    protected void browseFile() {
-        Stage stage = new Stage();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        this.file = fileChooser.showOpenDialog(stage);
-    }
-
-    protected void comboBoxWindow() {
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ComboBoxSelection.fxml"));
-        Parent root1 = null;
-        try {
-            root1 = (Parent) fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        final Stage stage = new Stage();
-        stage.setScene(new Scene(root1));
-        stage.setTitle("Application Installer");
-        stage.show();
-        ((ComboWindowController) fxmlLoader.getController()).setController(this);
     }
 }
