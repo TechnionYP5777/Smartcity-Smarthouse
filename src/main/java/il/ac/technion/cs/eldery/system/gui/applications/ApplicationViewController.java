@@ -20,7 +20,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -72,7 +75,7 @@ public class ApplicationViewController implements Initializable {
         this.toggleSwitch.selectedProperty().addListener(new ChangeListener<Boolean>() {
 
             @Override public void changed(ObservableValue<? extends Boolean> __, Boolean oldValue, Boolean newValue) {
-                if (newValue.booleanValue()) {
+                if (!newValue.booleanValue()) {
                     ApplicationViewController.this.label.setText("Browse File:");
                     ApplicationViewController.this.plusButton.setOnAction(e -> {
                         browseFile();
@@ -102,5 +105,19 @@ public class ApplicationViewController implements Initializable {
         this.file = fileChooser.showOpenDialog(stage);
     }
 
-    protected void comboBoxWindow() {}
+    protected void comboBoxWindow() {
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ComboBoxSelection.fxml"));
+        Parent root1 = null;
+        try {
+            root1 = (Parent) fxmlLoader.load();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        final Stage stage = new Stage();
+        stage.setScene(new Scene(root1));
+        stage.setTitle("Application Installer");
+        stage.show();
+        ((ComboWindowController) fxmlLoader.getController()).setController(this);
+    }
 }
