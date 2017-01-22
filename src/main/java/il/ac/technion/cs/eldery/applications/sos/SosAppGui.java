@@ -40,9 +40,9 @@ public class SosAppGui extends SmartHouseApplication {
     @Override public Node getRootNode() {
         try {
             final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("sos_app_ui.fxml"));
-            final Parent root = fxmlLoader.load();
+            final Parent $ = fxmlLoader.load();
             sosController = fxmlLoader.getController();
-            return root;
+            return $;
         } catch (IOException e) {
             e.printStackTrace();
         }
