@@ -46,6 +46,7 @@ public class StoveModuleGui extends SmartHouseApplication {
             final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_ui.fxml"));
             final Parent $ = fxmlLoader.load();
             controller = fxmlLoader.getController();
+            controller.setInstance(this);
             return $;
         } catch (IOException e) {
             e.printStackTrace();

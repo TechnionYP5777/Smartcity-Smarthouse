@@ -3,6 +3,7 @@ package il.ac.technion.cs.eldery.applications.stove;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -37,6 +38,11 @@ public class StoveAppController implements Initializable {
     boolean alertTemp;
     boolean alertTime;
     boolean isOn;
+    StoveModuleGui instance;
+    
+    public void setInstance(StoveModuleGui instance){
+        this.instance=instance;
+    }
 
     public int get_alert_temperature() {
         return degrees;
@@ -54,12 +60,8 @@ public class StoveAppController implements Initializable {
         this.seconds = seconds;
     }
     
-    private static void alert(String messege){
-        final Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle("ALERT");
-        alert.setHeaderText("The stove is out of line");
-        alert.setContentText(messege);
-        alert.show();
+    private void alert(String messege){
+        this.instance.sendAlert(messege, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
     }
     
     public void turnOn(){
