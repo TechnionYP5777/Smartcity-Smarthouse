@@ -55,6 +55,7 @@ public class ApplicationsInstallerViewController implements Initializable {
         return;
     }
 
+    // [start] Public - set params
     public void setApplicationsHandler(ApplicationsHandler h) {
         applicationsHandler = h;
     }
@@ -62,7 +63,9 @@ public class ApplicationsInstallerViewController implements Initializable {
     public void setApplicationViewController(ApplicationViewController c) {
         this.applicationViewController = c;
     }
+    // [end]
 
+    // [start] Private - init FXML elements
     private void initToggleBtn() {
         toggleBtn.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override public void changed(ObservableValue<? extends Boolean> __, Boolean oldValue, Boolean newValue) {
@@ -102,10 +105,15 @@ public class ApplicationsInstallerViewController implements Initializable {
             browseText.setText(fileChooser.showOpenDialog(stage).getAbsolutePath());
         });
     }
+    // [end]
 
+    // [start] install app and alert if needed
     private void installApp(ApplicationPath<?> p) {
         try {
             applicationsHandler.addApplication(p);
+            
+            if (!inRealMode)
+                comboBox.getItems().remove(comboBox.getValue());
         } catch (AppInstallerException e) {
             alert(e.getMessage());
         } catch (IOException e) {
@@ -122,7 +130,9 @@ public class ApplicationsInstallerViewController implements Initializable {
         alert.setContentText(messege);
         alert.show();
     }
+    // [end]
 
+    // [start] set mode functions
     void gotoTestMode() {
         inRealMode = false;
         toggleBtn.setText("Test Mode");
@@ -142,5 +152,5 @@ public class ApplicationsInstallerViewController implements Initializable {
 
         // toggleOptionsParent.getChildren().setAll(toggleOptionBrowse);
     }
-
+    // [end]
 }
