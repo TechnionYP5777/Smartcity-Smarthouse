@@ -71,8 +71,8 @@ public class ApplicationViewController implements Initializable {
 
     public void updateListView() {
         ObservableList<String> names = FXCollections.observableArrayList();
-        for (ApplicationManager m : appsHandler.getApplicationManagers())
-            names.add(m.getApplicationName());
+        for (ApplicationManager ¢ : appsHandler.getApplicationManagers())
+            names.add(¢.getApplicationName());
 
         listView.setItems(names);
     }
