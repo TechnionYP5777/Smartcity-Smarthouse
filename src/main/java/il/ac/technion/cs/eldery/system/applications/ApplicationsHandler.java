@@ -89,8 +89,8 @@ public class ApplicationsHandler {
      * @throws ApplicationInitializationException */
     public ApplicationManager addApplication(final ApplicationPath<?> appPath) throws AppInstallerException, IOException, OnLoadException {
         final ApplicationManager $ = new ApplicationManager(Generator.GenerateUniqueIDstring(), appPath, this);
-        apps.add($);
         $.initialize();
+        apps.add($);
         return $;
     }
     
