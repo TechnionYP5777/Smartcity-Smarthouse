@@ -30,8 +30,6 @@ public class ApplicationViewController implements Initializable {
     @FXML ListView<String> listView;
     @FXML AnchorPane appView;
     @FXML Button plusButton;
-    @FXML Label label;
-    @FXML ToggleSwitch toggleSwitch;
     File file;
 
     private ApplicationsHandler appsHandler;
@@ -45,8 +43,6 @@ public class ApplicationViewController implements Initializable {
 
         initListView();
         initPlusBtn();
-        // initLabel();
-        // initSwitch();
     }
 
     private void initListView() {
@@ -57,6 +53,7 @@ public class ApplicationViewController implements Initializable {
     }
 
     @SuppressWarnings("boxing") private void initPlusBtn() {
+        this.plusButton.setStyle("-fx-font: 42 arial; -fx-base: #b6e7c9;");
         this.plusButton.setOnAction(e -> {
             try {
                 final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("applications_installer_view.fxml"));
@@ -71,33 +68,7 @@ public class ApplicationViewController implements Initializable {
 
                 appView.getChildren().setAll(n);
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
-            }
-
-            // browseFile();
-        });
-    }
-
-    private void initLabel() {
-        this.label.setText("Browse File");
-    }
-
-    private void initSwitch() {
-        this.toggleSwitch.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
-            @Override public void changed(ObservableValue<? extends Boolean> __, Boolean oldValue, Boolean newValue) {
-                if (!newValue.booleanValue()) {
-                    ApplicationViewController.this.label.setText("Browse File:");
-                    ApplicationViewController.this.plusButton.setOnAction(e -> {
-                        browseFile();
-                    });
-                } else {
-                    ApplicationViewController.this.label.setText("Choose From Classes:");
-                    ApplicationViewController.this.plusButton.setOnAction(e -> {
-                        comboBoxWindow();
-                    });
-                }
             }
         });
     }
@@ -123,7 +94,6 @@ public class ApplicationViewController implements Initializable {
         try {
             root1 = (Parent) fxmlLoader.load();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         final Stage stage = new Stage();

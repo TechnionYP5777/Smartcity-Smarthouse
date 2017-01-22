@@ -24,12 +24,10 @@
 					prefWidth="200.0" text="Applications" AnchorPane.bottomAnchor="0.0"
 					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 					AnchorPane.topAnchor="0.0">
-					<VBox>
+					<VBox alignment="TOP_CENTER">
 						<children>
 							<ListView fx:id="listView" />
-							<Label fx:id="label" />
 							<Button fx:id="plusButton" text="+" />
-							<ToggleSwitch fx:id="toggleSwitch" />
 						</children>
 					</VBox>
 				</TitledPane>

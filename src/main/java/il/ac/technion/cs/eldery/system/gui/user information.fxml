@@ -18,7 +18,9 @@
 					<content>
 						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
 							<children>
-								<VBox alignment="TOP_CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+								<VBox alignment="TOP_CENTER" spacing="10.0"
+	AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+	AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 									<children>
 										<Label layoutX="160.0" layoutY="24.0" text="User Information" underline="true" AnchorPane.bottomAnchor="440.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="30.0">
 											<font>
