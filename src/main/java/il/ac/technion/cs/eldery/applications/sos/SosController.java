@@ -3,6 +3,7 @@ package il.ac.technion.cs.eldery.applications.sos;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -21,12 +22,6 @@ public class SosController implements Initializable {
     @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
         stateLabel.setFont(new Font("Arial", 20));
         mainPane.setStyle("-fx-background-color: green");
-        killerButton.setOnAction(__ -> {
-            if (inAlertMode)
-                sosBtnUnpress();
-            else
-                sosBtnPressed();
-        });
     }
 
     public void sosBtnPressed() {
@@ -38,8 +33,13 @@ public class SosController implements Initializable {
 
     public void sosBtnUnpress() {
         stateLabel.setText("Elderly is OK");
+        killerButton.setVisible(false);
         mainPane.setStyle("-fx-background-color: green");
         inAlertMode = false;
+    }
+    
+    public Button getBtn(){
+        return killerButton;
     }
 
 }
