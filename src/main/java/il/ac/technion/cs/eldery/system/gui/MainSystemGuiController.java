@@ -27,10 +27,9 @@ public class MainSystemGuiController implements Initializable {
 
     @Override public void initialize(URL arg0, ResourceBundle arg1) {
         try {
-            FXMLLoader loader;
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("user information.fxml"));
 
             // user tab:
-            loader  = new FXMLLoader(this.getClass().getResource("user information.fxml"));
             userTab.setContent((Node) loader.load());
             ((UserInfoController) loader.getController()).setSystemCore(this.sysCore);
 

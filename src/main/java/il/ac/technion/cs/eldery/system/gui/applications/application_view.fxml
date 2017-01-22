@@ -24,7 +24,7 @@
 					prefWidth="200.0" text="Applications" AnchorPane.bottomAnchor="0.0"
 					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 					AnchorPane.topAnchor="0.0">
-					<VBox alignment="TOP_CENTER">
+					<VBox fx:id="vBox" alignment="TOP_CENTER" >
 						<children>
 							<ListView fx:id="listView" />
 							<Button fx:id="plusButton" text="+" />

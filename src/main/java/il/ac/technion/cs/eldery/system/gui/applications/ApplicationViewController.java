@@ -12,15 +12,18 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 public class ApplicationViewController implements Initializable {
     @FXML ListView<String> listView;
     @FXML AnchorPane appView;
     @FXML Button plusButton;
+    @FXML VBox vBox;
     File file;
 
     private ApplicationsHandler appsHandler;
@@ -31,9 +34,14 @@ public class ApplicationViewController implements Initializable {
 
     public void setAppsHandler(ApplicationsHandler appsHandler) {
         this.appsHandler = appsHandler;
-
+        
+        initVBox();
         initListView();
         initPlusBtn();
+    }
+    
+    private void initVBox(){
+        vBox.setSpacing(10);
     }
 
     private void initListView() {
