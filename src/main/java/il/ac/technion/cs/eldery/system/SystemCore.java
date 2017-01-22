@@ -28,9 +28,9 @@ public class SystemCore extends Application {
         launch(args);
     }
 
-    @Override public void start(final Stage s) throws IOException {
+    @Override public void start(final Stage ¢) throws IOException {
         initializeSystemComponents();
-        initializeSystemGui(s);
+        initializeSystemGui(¢);
     }
 
     protected void initializeSystemGui(final Stage s) throws IOException {

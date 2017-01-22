@@ -26,32 +26,32 @@ public class MainSystemGuiController implements Initializable {
     @Override public void initialize(URL arg0, ResourceBundle arg1) {
         try {
             FXMLLoader loader;
-            
-            // user tab: 
+
+            // user tab:
             userTab.setContent((Node) FXMLLoader.load(this.getClass().getResource("user information.fxml")));
-            
+
             // sensors tab:
             loader = new FXMLLoader(this.getClass().getResource("/il/ac/technion/cs/eldery/system/gui/mapping/house_mapping.fxml"));
             sensorsTab.setContent(loader.load());
             mappingController = loader.getController();
-            
+
             // applications tab:
             loader = new FXMLLoader(this.getClass().getResource("/il/ac/technion/cs/eldery/system/gui/applications/application_view.fxml"));
             appsTab.setContent(loader.load());
             appsController = loader.getController();
-            
+
         } catch (IOException ¢) {
             ¢.printStackTrace();
         }
     }
-    
+
     public MainSystemGuiController setDatabaseHandler(DatabaseHandler dbHandler) {
-        mappingController.setDatabaseHandler(dbHandler);    
+        mappingController.setDatabaseHandler(dbHandler);
         return this;
     }
-    
+
     public MainSystemGuiController setApplicationsHandler(ApplicationsHandler appsHandler) {
-        appsController.setAppsHandler(appsHandler);       
+        appsController.setAppsHandler(appsHandler);
         return this;
     }
 }

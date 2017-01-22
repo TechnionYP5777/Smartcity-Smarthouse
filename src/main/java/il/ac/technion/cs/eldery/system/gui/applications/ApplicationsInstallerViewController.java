@@ -56,12 +56,12 @@ public class ApplicationsInstallerViewController implements Initializable {
     }
 
     // [start] Public - set params
-    public void setApplicationsHandler(ApplicationsHandler h) {
-        applicationsHandler = h;
+    public void setApplicationsHandler(ApplicationsHandler ¢) {
+        applicationsHandler = ¢;
     }
     
-    public void setApplicationViewController(ApplicationViewController c) {
-        this.applicationViewController = c;
+    public void setApplicationViewController(ApplicationViewController ¢) {
+        this.applicationViewController = ¢;
     }
     // [end]
 
