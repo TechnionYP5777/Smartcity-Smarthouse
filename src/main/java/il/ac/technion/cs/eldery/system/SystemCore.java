@@ -73,7 +73,7 @@ public class SystemCore extends Application {
     }
 
     public void alert(final String msg, final EmergencyLevel elvl) {
-        // TODO: add appId field
+        if(user == null) return;
         final List<Contact> $ = user.getContacts(elvl);
         switch (elvl) {
             case NOTIFY_ELDERLY:

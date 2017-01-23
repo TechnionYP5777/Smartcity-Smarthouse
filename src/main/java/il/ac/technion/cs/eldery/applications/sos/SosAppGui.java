@@ -34,9 +34,7 @@ public class SosAppGui extends SmartHouseApplication {
                 final String t = "SOS " + (sosSensor.isPressed() ? "" : "Not ") + "Pressed";
                 if (sosController != null && shouldAlert){
                     sosController.sosBtnPressed();
-                    try{
-                        sendAlert("ATTENTION SOS: Client is requesting help.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-                    }catch(Exception e){e.printStackTrace();}
+                    sendAlert("ATTENTION SOS: Client is requesting help.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
                     shouldAlert=false;
                 }
                 System.out.println("msg from app: " + t);
