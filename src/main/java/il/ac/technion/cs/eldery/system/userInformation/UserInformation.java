@@ -144,9 +144,9 @@ public class UserInformation {
     public List<Contact> getContacts() {
         return emergencyContacts.getContacts();
     }
-    
-    public void setContactEmergencyLevel(String id, String eLevel){
-        this.emergencyContacts.setContactEmergencyLevel(id, EmergencyLevel.fromString(eLevel));
+
+    public void setContactEmergencyLevel(final String id, final String eLevel) {
+        emergencyContacts.setContactEmergencyLevel(id, EmergencyLevel.fromString(eLevel));
     }
 
 }

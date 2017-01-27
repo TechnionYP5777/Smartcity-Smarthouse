@@ -1,6 +1,7 @@
 package il.ac.technion.cs.eldery.system.sensors_applications_integration_tests;
 
 import java.io.IOException;
+
 import il.ac.technion.cs.eldery.applications.sos.SosAppGui;
 import il.ac.technion.cs.eldery.sensors.sos.gui.SosSensorSimulator;
 import javafx.stage.Stage;
@@ -9,16 +10,16 @@ import javafx.stage.Stage;
  * requested, please open the SosSensorSimulator as a java application.
  * @author RON
  * @since 01-01-2017 */
-public class SystemCore_SosTest extends IntegrationAbstructTest {    
+public class SystemCore_SosTest extends IntegrationAbstructTest {
     public static void main(final String[] args) {
         launch(args);
     }
 
-    @Override public void start(Stage primaryStage) {
+    @Override public void start(final Stage primaryStage) {
         try {
             super.start(primaryStage, SosSensorSimulator.class, SosAppGui.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException ¢) {
+            ¢.printStackTrace();
         }
     }
 }

@@ -12,7 +12,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -28,37 +27,35 @@ public class ApplicationViewController implements Initializable {
 
     private ApplicationsHandler appsHandler;
 
-    @Override public void initialize(URL location, ResourceBundle __) {
-        return;
+    @Override public void initialize(final URL location, final ResourceBundle __) {
+        // no special actions to be done here
     }
 
-    public void setAppsHandler(ApplicationsHandler appsHandler) {
+    public void setAppsHandler(final ApplicationsHandler appsHandler) {
         this.appsHandler = appsHandler;
-        
+
         initVBox();
         initListView();
         initPlusBtn();
     }
-    
-    private void initVBox(){
+
+    private void initVBox() {
         vBox.setSpacing(10);
     }
 
     private void initListView() {
         updateListView();
-        listView.setOnMouseClicked(e -> {
-            appsHandler.getApplicationManagers().get(listView.getSelectionModel().getSelectedIndex()).reopen(appView);
-        });
+        listView.setOnMouseClicked(e -> appsHandler.getApplicationManagers().get(listView.getSelectionModel().getSelectedIndex()).reopen(appView));
     }
 
     @SuppressWarnings("boxing") private void initPlusBtn() {
-        this.plusButton.setStyle("-fx-font: 42 arial; -fx-base: #b6e7c9;");
-        this.plusButton.setOnAction(e -> {
+        plusButton.setStyle("-fx-font: 42 arial; -fx-base: #b6e7c9;");
+        plusButton.setOnAction(e -> {
             try {
                 final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("applications_installer_view.fxml"));
-                Node n = fxmlLoader.load();
+                final Node n = fxmlLoader.load();
 
-                ApplicationsInstallerViewController a = (ApplicationsInstallerViewController) fxmlLoader.getController(); 
+                final ApplicationsInstallerViewController a = (ApplicationsInstallerViewController) fxmlLoader.getController();
                 a.setApplicationsHandler(appsHandler);
                 a.setApplicationViewController(this);
 
@@ -68,15 +65,15 @@ public class ApplicationViewController implements Initializable {
                 AnchorPane.setBottomAnchor(n, 0.0);
 
                 appView.getChildren().setAll(n);
-            } catch (IOException e1) {
+            } catch (final IOException e1) {
                 e1.printStackTrace();
             }
         });
     }
 
     public void updateListView() {
-        ObservableList<String> names = FXCollections.observableArrayList();
-        for (ApplicationManager ¢ : appsHandler.getApplicationManagers())
+        final ObservableList<String> names = FXCollections.observableArrayList();
+        for (final ApplicationManager ¢ : appsHandler.getApplicationManagers())
             names.add(¢.getApplicationName());
 
         listView.setItems(names);

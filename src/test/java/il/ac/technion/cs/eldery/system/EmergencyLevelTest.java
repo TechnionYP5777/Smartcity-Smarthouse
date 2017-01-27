@@ -33,7 +33,8 @@ public class EmergencyLevelTest {
 
     }
 
-    @Test public void stringValuesTest() {
+    // JUnit tests methods should not be static!
+    @Test @SuppressWarnings("static-method") public void stringValuesTest() {
         for (final EmergencyLevel elevel : EmergencyLevel.values())
             assert EmergencyLevel.stringValues().contains(elevel.name());
     }

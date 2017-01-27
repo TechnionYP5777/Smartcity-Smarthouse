@@ -6,7 +6,7 @@ import javafx.scene.Node;
 public class MyTestClass2 extends SmartHouseApplication {
 
     @Override public void onLoad() {
-        return;
+        // no special actions to be done here
     }
 
     @Override public String getApplicationName() {

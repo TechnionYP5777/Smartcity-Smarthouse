@@ -33,12 +33,12 @@ public enum SensorLocation {
     HALLWAY,
     /** the sensor is located in the garage */
     GARAGE;
-    
-    public static SensorLocation fromString(String val) {
-        for (SensorLocation $ : SensorLocation.values())
+
+    public static SensorLocation fromString(final String val) {
+        for (final SensorLocation $ : SensorLocation.values())
             if (($ + "").toLowerCase().equals(val.toLowerCase()))
                 return $;
-        
+
         return null;
     }
 }

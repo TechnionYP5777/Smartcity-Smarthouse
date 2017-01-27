@@ -24,13 +24,13 @@ public class Controller implements Initializable {
     private static final int MAX_POINTS = 30;
 
     private int points;
-    private XYChart.Series<Number, Number> pulseSeries = new XYChart.Series<>();
-    private XYChart.Series<Number, Number> systolicSeries = new XYChart.Series<>();
-    private XYChart.Series<Number, Number> diastolicSeries = new XYChart.Series<>();
-    private XYChart.Series<Number, Number> tmpSeries = new XYChart.Series<>();
-    private NumberAxis xAxis = new NumberAxis(0, MAX_POINTS, 1);
-    private HBox backHBox = new HBox();
-    private HBox frontHBox = new HBox();
+    private final XYChart.Series<Number, Number> pulseSeries = new XYChart.Series<>();
+    private final XYChart.Series<Number, Number> systolicSeries = new XYChart.Series<>();
+    private final XYChart.Series<Number, Number> diastolicSeries = new XYChart.Series<>();
+    private final XYChart.Series<Number, Number> tmpSeries = new XYChart.Series<>();
+    private final NumberAxis xAxis = new NumberAxis(0, MAX_POINTS, 1);
+    private final HBox backHBox = new HBox();
+    private final HBox frontHBox = new HBox();
 
     @FXML public Label pulseLabel;
     @FXML public Label bpLabel;
@@ -46,27 +46,27 @@ public class Controller implements Initializable {
         xAxis.setTickMarkVisible(false);
         xAxis.setMinorTickVisible(false);
 
-        NumberAxis bpYAxis = new NumberAxis();
+        final NumberAxis bpYAxis = new NumberAxis();
         bpYAxis.setLabel("Blood Pressure (mmHg)");
 
-        NumberAxis pulseXAxis = new NumberAxis();
+        final NumberAxis pulseXAxis = new NumberAxis();
         pulseXAxis.setAutoRanging(false);
         pulseXAxis.setVisible(false);
         pulseXAxis.lowerBoundProperty().bind(xAxis.lowerBoundProperty());
         pulseXAxis.upperBoundProperty().bind(xAxis.upperBoundProperty());
         pulseXAxis.tickUnitProperty().bind(xAxis.tickUnitProperty());
 
-        NumberAxis pulseYAxis = new NumberAxis();
+        final NumberAxis pulseYAxis = new NumberAxis();
         pulseYAxis.setSide(Side.RIGHT);
         pulseYAxis.setLabel("Pulse (BPM)");
 
         final LineChart<Number, Number> bpLineChart = new LineChart<Number, Number>(xAxis, bpYAxis) {
-            @Override protected void dataItemAdded(Series<Number, Number> __1, int itemIndex, Data<Number, Number> item) {
+            @Override protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex, final Data<Number, Number> item) {
                 // Override to remove symbols from points
             }
         };
         final LineChart<Number, Number> pulseLineChart = new LineChart<Number, Number>(xAxis, pulseYAxis) {
-            @Override protected void dataItemAdded(Series<Number, Number> __1, int itemIndex, Data<Number, Number> item) {
+            @Override protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex, final Data<Number, Number> item) {
                 // Override to remove symbols from points
             }
         };
@@ -88,10 +88,10 @@ public class Controller implements Initializable {
 
         // stackPane.getChildren().add(pulseLineChart);
         // stackPane.getChildren().add(bpLineChart);
-        Pane tmpBackPane = new Pane();
+        final Pane tmpBackPane = new Pane();
         tmpBackPane.setMinSize(50, Region.USE_COMPUTED_SIZE);
         tmpBackPane.setMaxSize(50, Region.USE_COMPUTED_SIZE);
-        Pane tmpFrontPane = new Pane();
+        final Pane tmpFrontPane = new Pane();
         tmpFrontPane.setMinSize(50, Region.USE_COMPUTED_SIZE);
         tmpFrontPane.setMaxSize(50, Region.USE_COMPUTED_SIZE);
 

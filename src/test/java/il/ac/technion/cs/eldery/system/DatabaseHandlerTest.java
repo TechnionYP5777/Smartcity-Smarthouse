@@ -173,7 +173,7 @@ public class DatabaseHandlerTest {
         handler.addSensor("00:11:22:33", "iStoves", 100);
 
         Assert.assertEquals(1, handler.getSensors("iStoves").size());
-        Assert.assertEquals("iStoves", this.handler.getName("00:11:22:33"));
+        Assert.assertEquals("iStoves", handler.getName("00:11:22:33"));
     }
 
     @Test(expected = SensorNotFoundException.class) public void throwsExceptionGetName() throws SensorNotFoundException {

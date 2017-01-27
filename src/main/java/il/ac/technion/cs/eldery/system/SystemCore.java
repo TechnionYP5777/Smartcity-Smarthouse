@@ -38,7 +38,7 @@ public class SystemCore extends Application {
 
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main_system_ui.fxml"));
         final Scene scene = new Scene(loader.load(), 1000, 800);
-        MainSystemGuiController mainGuiController = (MainSystemGuiController) loader.getController();
+        final MainSystemGuiController mainGuiController = (MainSystemGuiController) loader.getController();
         mainGuiController.setDatabaseHandler(databaseHandler);
         mainGuiController.setApplicationsHandler(applicationsHandler);
         mainGuiController.setSysCore(this);
@@ -73,12 +73,10 @@ public class SystemCore extends Application {
     }
 
     public void alert(final String msg, final EmergencyLevel elvl) {
-        if(user == null) return;
+        if (user == null)
+            return;
         final List<Contact> $ = user.getContacts(elvl);
         switch (elvl) {
-            case NOTIFY_ELDERLY:
-                // TODO: how do we notify the elderly?
-                break;
             case SMS_EMERGENCY_CONTACT:
                 $.stream().forEach(c -> Communicate.throughSms(c.getPhoneNumber(), msg));
                 break;
@@ -92,8 +90,6 @@ public class SystemCore extends Application {
                 $.stream().forEach(c -> Communicate.throughEmailFromHere(c.getEmailAddress(), msg));
                 break;
             default:
-                // TODO: what's the desired behavior?
-                break;
         }
     }
 

@@ -3,7 +3,8 @@ package il.ac.technion.cs.eldery.system.userInformation;
 import java.io.File;
 import java.util.List;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 
@@ -19,7 +20,7 @@ public class UserInformationTest {
         Assert.assertEquals("0509535200", userInfo.getPhoneNumber());
         Assert.assertEquals("Hertzel avn. 7, Jerusalem", userInfo.getHomeAddress());
     }
-  
+
     @Test public void settersTest() {
         userInfo.setHomeAddress("Mlal 18, Haifa");
         Assert.assertEquals("Mlal 18, Haifa", userInfo.getHomeAddress());

@@ -26,11 +26,11 @@ public class TestWindowController implements Initializable {
     @FXML public Button start_app;
     @FXML public TextFlow consoleView;
 
-    @Override public void initialize(URL location, ResourceBundle __) {
-        return;
+    @Override public void initialize(final URL location, final ResourceBundle __) {
+        // no special actions to be done here
     }
 
-    public void setApplication(ApplicationsHandler h, Class<?> sensorSimulatorClass, Class<?> applicationClass) {
+    public void setApplication(final ApplicationsHandler h, final Class<?> sensorSimulatorClass, final Class<?> applicationClass) {
         final ObservableList<Node> children = consoleView.getChildren();
 
         children.add(makeText("please start the sensor simulator (" + sensorSimulatorClass.getName() + "), and press the button\n"));
@@ -47,7 +47,7 @@ public class TestWindowController implements Initializable {
         });
     }
 
-    private static Text makeText(String msg) {
+    private static Text makeText(final String msg) {
         return new Text(MSG_PREFIX + msg + "\n");
     }
 }

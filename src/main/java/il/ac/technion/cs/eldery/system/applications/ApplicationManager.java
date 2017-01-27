@@ -20,8 +20,8 @@ public class ApplicationManager {
     private final ApplicationPath<?> appPath;
     @Expose private ApplicationsHandler referenceToApplicationsHandler;
     @Expose private SmartHouseApplication application;
-    
-    @Expose private Node rootNode; 
+
+    @Expose private Node rootNode;
 
     public ApplicationManager(final String id, final ApplicationPath<?> appPath, final ApplicationsHandler referenceToApplicationsHandler) {
         this.id = id;
@@ -68,19 +68,18 @@ public class ApplicationManager {
 
     /** If the application is installed, but currently closed, this will reopen
      * it. */
-    @SuppressWarnings("boxing")
-    public void reopen(final Pane parentPane) {
+    @SuppressWarnings("boxing") public void reopen(final Pane parentPane) {
         if (application == null || rootNode == null)
             return;
-        
+
         AnchorPane.setTopAnchor(rootNode, 0.0);
         AnchorPane.setRightAnchor(rootNode, 0.0);
         AnchorPane.setLeftAnchor(rootNode, 0.0);
         AnchorPane.setBottomAnchor(rootNode, 0.0);
-        
+
         parentPane.getChildren().setAll(rootNode);
     }
-    
+
     public String getApplicationName() {
         return application == null ? null : application.getApplicationName();
     }

@@ -38,7 +38,7 @@ public class Communicate {
      * @param a an Authentactor of the fromMail email address param
      * @return a string representing the state of the request, or null if the
      *         request failed */
-    public static String throughEmail(final String fromMail, final Authenticator a, final String toMail, final String msg) {
+    public static String throughEmail(final String fromMail, final Authenticator a, final String $, final String msg) {
         final Properties properties = System.getProperties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.socketFactory.port", "465");
@@ -49,7 +49,7 @@ public class Communicate {
         try {
             final MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(fromMail));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toMail));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress($));
             message.setSubject("SmartHouse Alert!");
             message.setText(msg);
 
@@ -60,16 +60,16 @@ public class Communicate {
             mex.printStackTrace();
             return null;
         }
-        return "The e-mail was sent to:" + toMail;
+        return "The e-mail was sent to:" + $;
     }
 
     /** @return a string representing the state of the request, or null if the
      *         request failed */
     public static String throughEmailFromHere(final String toMail, final String msg) {
-        final String from = "smarthouse5777@gmail.com";
-        return Communicate.throughEmail(from, new Authenticator() {
+        final String $ = "smarthouse5777@gmail.com";
+        return Communicate.throughEmail($, new Authenticator() {
             @Override protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, "smart5house777");
+                return new PasswordAuthentication($, "smart5house777");
             }
         }, toMail, msg);
     }
