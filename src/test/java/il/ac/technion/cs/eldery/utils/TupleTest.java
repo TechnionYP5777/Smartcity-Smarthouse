@@ -33,8 +33,7 @@ public class TupleTest {
         assert tupleStrStr.equals(newTuple);
         assert newTuple.equals(tupleStrStr);
 
-        final Tuple<String, String> leftNullTuple = new Tuple<>(null, "a");
-        final Tuple<String, String> rightNullTuple = new Tuple<>("A", null);
+        final Tuple<String, String> leftNullTuple = new Tuple<>(null, "a"), rightNullTuple = new Tuple<>("A", null);
         assert !nullTuple.equals(tupleStrStr);
         assert !leftNullTuple.equals(tupleStrStr);
         assert !rightNullTuple.equals(tupleStrStr);

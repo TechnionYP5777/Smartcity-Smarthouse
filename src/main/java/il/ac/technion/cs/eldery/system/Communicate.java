@@ -1,6 +1,3 @@
-/**
- * 
- */
 package il.ac.technion.cs.eldery.system;
 
 import java.util.Properties;

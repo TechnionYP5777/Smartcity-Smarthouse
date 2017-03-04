@@ -87,9 +87,7 @@ public class DatabaseHandlerTest {
     }
 
     @Test public void addTwoListenersAndRemoveOne() throws SensorNotFoundException {
-        @SuppressWarnings("unchecked") final Consumer<String> listener = Mockito.mock(Consumer.class);
-        @SuppressWarnings("unchecked") final Consumer<String> listener2 = Mockito.mock(Consumer.class);
-
+        @SuppressWarnings("unchecked") final Consumer<String> listener = Mockito.mock(Consumer.class), listener2 = Mockito.mock(Consumer.class);
         handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
         handler.removeListener("00:11:22:33:44:55", handler.addListener("00:11:22:33:44:55", listener));
         handler.addListener("00:11:22:33:44:55", listener2);
@@ -184,7 +182,7 @@ public class DatabaseHandlerTest {
 
     @Test public void addNewSensorsListenerTest() {
 
-        handler.addNewSensorsListener((x) -> listenerUpdated = true);
+        handler.addNewSensorsListener(x -> listenerUpdated = true);
         handler.addSensor("01:12:23", "iSOS", 100);
 
         assert listenerUpdated;

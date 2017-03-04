@@ -61,14 +61,9 @@ public class Controller implements Initializable {
         pulseYAxis.setLabel("Pulse (BPM)");
 
         final LineChart<Number, Number> bpLineChart = new LineChart<Number, Number>(xAxis, bpYAxis) {
-            @Override protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex, final Data<Number, Number> item) {
-                // Override to remove symbols from points
-            }
-        };
-        final LineChart<Number, Number> pulseLineChart = new LineChart<Number, Number>(xAxis, pulseYAxis) {
-            @Override protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex, final Data<Number, Number> item) {
-                // Override to remove symbols from points
-            }
+            @Override protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex, final Data<Number, Number> item) {}
+        }, pulseLineChart = new LineChart<Number, Number>(xAxis, pulseYAxis) {
+            @Override protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex, final Data<Number, Number> item) {}
         };
         bpLineChart.setDisable(false);
         pulseLineChart.setDisable(false);

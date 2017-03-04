@@ -79,9 +79,8 @@ public class UserInformation {
         final Element user = new Element("user");
         final Document doc = new Document(user);
 
-        final Element userDetails = new Element("userDetails");
+        final Element userDetails = new Element("userDetails"), userId = new Element("Id");
 
-        final Element userId = new Element("Id");
         userId.setText(id);
 
         final Element userName = new Element("name");

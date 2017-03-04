@@ -19,7 +19,7 @@ public class ListenableTableTest {
 
     private boolean listenerUpdated;
 
-    private final Consumer<Table<String, Integer>> listener = (x) -> listenerUpdated = true;
+    private final Consumer<Table<String, Integer>> listener = x -> listenerUpdated = true;
 
     @Test public void initalizationTest() {
         Assert.assertEquals(Table.UNLIMITED_CAPACITY, unlimitedTable.getMaxCapacity());

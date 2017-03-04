@@ -65,11 +65,8 @@ public class UserInfoController implements Initializable {
     private void setButtons() {
         userSaveField.setOnAction(event -> {
 
-            final String name = userNameField.getText();
-            final String id = userIDField.getText();
-            final String phoneNum = userPhoneNumField.getText();
-            final String address = userHomeAddressField.getText();
-
+            final String name = userNameField.getText(), id = userIDField.getText(), phoneNum = userPhoneNumField.getText(),
+                    address = userHomeAddressField.getText();
             if (!validateUserInput(name, id, phoneNum, address))
                 alertMessageUnvalidInput();
             else if (systemCore.isUserInitialized()) {

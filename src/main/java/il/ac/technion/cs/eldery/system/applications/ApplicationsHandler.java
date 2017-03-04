@@ -49,7 +49,7 @@ public class ApplicationsHandler {
         /* (non-Javadoc)
          * 
          * @see java.util.TimerTask#run() */
-        @Override @SuppressWarnings({ "boxing" }) public void run() {
+        @Override @SuppressWarnings("boxing") public void run() {
             notifee.accept(databaseHandler.getLastEntryOf(sensorId).orElse(new String()));
             if (repeat)
                 new Timer().schedule(this, localTimeToDate(t));
