@@ -19,3 +19,5 @@ And the following command to install the JavaFX library:
 `sudo apt-get install openjfx`
 
 These three commands will install the java development kit, java runtime environment and the JavaFX library. Another option would be to go to the official Oracle download page, download the java binaries and do the installation manually.
+
+
