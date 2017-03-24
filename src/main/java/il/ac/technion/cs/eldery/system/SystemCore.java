@@ -11,6 +11,7 @@ import il.ac.technion.cs.eldery.system.userInformation.UserInformation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /** Hold the databases of the smart house, and allow sensors and applications to
@@ -44,6 +45,7 @@ public class SystemCore extends Application {
         mainGuiController.setSysCore(this);
 
         s.setTitle(APP_NAME);
+        s.getIcons().add(new Image(getClass().getResourceAsStream("gui/house-icon.png")));
         s.setScene(scene);
         s.show();
 
