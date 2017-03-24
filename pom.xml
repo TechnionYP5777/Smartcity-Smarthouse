@@ -13,6 +13,53 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+	                <execution>
+	                    <id>main</id>
+	                    <goals>
+	                        <goal>java</goal>
+	                    </goals>
+	                    <configuration>
+	                        <mainClass>il.ac.technion.cs.eldery.system.SystemCore</mainClass>
+	                    </configuration>
+	                </execution>
+	                <execution>
+	                    <id>sensor_sim_sos</id>
+	                    <goals>
+	                        <goal>java</goal>
+	                    </goals>
+	                    <configuration>
+	                        <mainClass>il.ac.technion.cs.eldery.sensors.sos.gui.SosSensorSimulator</mainClass>
+	                    </configuration>
+	                </execution>
+	                <execution>
+	                    <id>sensor_sim_stove</id>
+	                    <goals>
+	                        <goal>java</goal>
+	                    </goals>
+	                    <configuration>
+	                        <mainClass>il.ac.technion.cs.eldery.sensors.stove.gui.StoveSensorSimulator</mainClass>
+	                    </configuration>
+	                </execution>
+	                <execution>
+	                    <id>sensor_sim_vitals</id>
+	                    <goals>
+	                        <goal>java</goal>
+	                    </goals>
+	                    <configuration>
+	                        <mainClass>il.ac.technion.cs.eldery.sensors.vitals.gui.VitalsSensorSimulator</mainClass>
+	                    </configuration>
+	                </execution>
+	            </executions>
+			</plugin>
+		</plugins>
+	</build>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
