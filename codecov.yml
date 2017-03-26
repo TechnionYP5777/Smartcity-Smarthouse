@@ -17,11 +17,11 @@ coverage:
 comment: off
 
   ignore: 
-   - src/main/java/il/ac/technion/cs/elderly/applications
-   - src/main/java/il/ac/technion/cs/elderly/sensors/sos/gui
-   - src/main/java/il/ac/technion/cs/elderly/sensors/stove/gui
-   - src/main/java/il/ac/technion/cs/elderly/sensors/vitals/gui
-   - src/main/java/il/ac/technion/cs/elderly/system/gui
+   - src/main/java/il/ac/technion/cs/eldery/applications
+   - src/main/java/il/ac/technion/cs/eldery/sensors/sos/gui
+   - src/main/java/il/ac/technion/cs/eldery/sensors/stove/gui
+   - src/main/java/il/ac/technion/cs/eldery/sensors/vitals/gui
+   - src/main/java/il/ac/technion/cs/eldery/system/gui
 
 comment:
   layout: "header, diff, changes, sunburst, uncovered, tree"
