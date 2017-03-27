@@ -17,7 +17,7 @@ coverage:
 comment: off
 
 paths:
-  - src/main/java/il/ac/technion/cs/eldery/applications
+  - src/main/java/il/ac/technion/cs/eldery/*
   - !src/main/java/il/ac/technion/cs/eldery/applications
 
 comment:
