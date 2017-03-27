@@ -7,4 +7,4 @@ comment:
 
 coverage:
   ignore: 
-    - src/main/**/*
+    - "src/main/**/*"
