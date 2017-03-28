@@ -1,7 +1,3 @@
-[![codecov](https://codecov.io/gh/TechnionYP5777/project-name/branch/master/graph/badge.svg)](https://codecov.io/gh/TechnionYP5777/SmartCity-Elderly-Support)
-
-[![Build Status](https://travis-ci.org/TechnionYP5777/project-name.png)](https://travis-ci.org/TechnionYP5777/SmartCity-Elderly-Support)
-
 # SmartCity - Elder Support
 An autonomous system which keeps track of the well being and day to day activity of an elderly person. The purpose of this project is to develop the core of the system, alongside several tools that will be able to achieve this goal.
 
