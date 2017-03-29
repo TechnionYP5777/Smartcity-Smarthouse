@@ -36,8 +36,8 @@ public class SosController implements Initializable {
         mainPane.setStyle("-fx-background-color: green");
         inAlertMode = false;
     }
-    
-    public Button getBtn(){
+
+    public Button getBtn() {
         return killerButton;
     }
 

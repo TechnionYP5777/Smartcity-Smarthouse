@@ -54,7 +54,7 @@ public class DatabaseHandler {
      * @param sensorId sensor'd id
      * @return commercial name associated with this id
      * @throws SensorNotFoundException if id was not found */
-    public String getName(String sensorId) throws SensorNotFoundException {
+    public String getName(final String sensorId) throws SensorNotFoundException {
         if (!sensorsIdToName.containsKey(sensorId))
             throw new SensorNotFoundException();
 
@@ -64,7 +64,7 @@ public class DatabaseHandler {
     /** Adds a new listener to the list of consumers that will be notified each
      * time a new sensor is registered to the system.
      * @param listener consumer to be called when a sensor is added */
-    public void addNewSensorsListener(Consumer<String> listener) {
+    public void addNewSensorsListener(final Consumer<String> listener) {
         newSensorsListeners.add(listener);
     }
 
@@ -130,7 +130,7 @@ public class DatabaseHandler {
         if (!sensorsLocations.containsKey(sensorId))
             throw new SensorNotFoundException();
         sensorsLocations.put(sensorId, l);
-        
+
         System.out.println(sensorsLocations.get(sensorId));
     }
 }

@@ -8,8 +8,7 @@ public class OnLoadException extends Exception {
     public enum ErrorCode {
         SENSOR_COM_NAME_NOT_FOUND("Sensor's commercial name not found in database"),
         SENSOR_NOT_FOUND_IN_LOCATION("Sensor not found in the given loaction"),
-        SENSOR_ID_NOT_FOUND("Sensor's ID not found in database")
-        ;
+        SENSOR_ID_NOT_FOUND("Sensor's ID not found in database");
 
         private final String msg;
 

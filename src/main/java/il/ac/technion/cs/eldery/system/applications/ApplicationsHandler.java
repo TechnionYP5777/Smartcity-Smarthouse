@@ -49,7 +49,7 @@ public class ApplicationsHandler {
         /* (non-Javadoc)
          * 
          * @see java.util.TimerTask#run() */
-        @Override @SuppressWarnings({ "boxing" }) public void run() {
+        @Override @SuppressWarnings("boxing") public void run() {
             notifee.accept(databaseHandler.getLastEntryOf(sensorId).orElse(new String()));
             if (repeat)
                 new Timer().schedule(this, localTimeToDate(t));
@@ -63,9 +63,7 @@ public class ApplicationsHandler {
 
     // ----------- not-public methods ---------------
     static <T extends SensorData> Consumer<String> generateSensorListener(final Class<T> sensorClass, final Consumer<T> functionToRun) {
-        return jsonData -> {
-            functionToRun.accept(new Gson().fromJson(jsonData, sensorClass));
-        };
+        return jsonData -> functionToRun.accept(new Gson().fromJson(jsonData, sensorClass));
     }
 
     static Date localTimeToDate(final LocalTime ¢) {
@@ -93,17 +91,18 @@ public class ApplicationsHandler {
         apps.add($);
         return $;
     }
-    
+
     public List<ApplicationManager> getApplicationManagers() {
         return Collections.unmodifiableList(apps);
     }
     // [end]
 
-    // [start] Services to SmartHouseApplications - These services will be wrapped by the SmartHouseApplication API
+    // [start] Services to SmartHouseApplications - These services will be
+    // wrapped by the SmartHouseApplication API
     public DatabaseHandler getDatabaseHandler() {
         return databaseHandler;
     }
-    
+
     /** See
      * {@link SmartHouseApplication#subscribeToSensor(String, Class, Consumer)} */
     public final <T extends SensorData> void subscribeToSensor(final String sensorId, final Class<T> sensorClass, final Consumer<T> functionToRun)

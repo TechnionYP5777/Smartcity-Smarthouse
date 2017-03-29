@@ -57,8 +57,7 @@ public class ConfigController implements Initializable {
         Apply.setOnAction(new EventHandler<ActionEvent>() {
             @Override @SuppressWarnings("hiding") public void handle(final ActionEvent __) {
                 final Stage stage = (Stage) Apply.getScene().getWindow();
-                final String time = secs.getText();
-                final String degrees = cels.getText();
+                final String time = secs.getText(), degrees = cels.getText();
                 if (validateInput(time, degrees)) {
                     mainController.set_alert_seconds(Integer.parseInt(secs.getText()));
                     mainController.set_alert_temperature(Integer.parseInt(cels.getText()));

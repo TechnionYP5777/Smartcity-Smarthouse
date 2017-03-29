@@ -53,10 +53,8 @@ public class Contact {
 
     public Element toXmlElement() {
 
-        // Creating the root element
-        final Element $ = new Element("contact");
+        final Element $ = new Element("contact"), contactId = new Element("Id");
 
-        final Element contactId = new Element("Id");
         contactId.setText(id);
 
         final Element contactName = new Element("name");

@@ -56,10 +56,10 @@ public class ContactsInformation {
         return null;
     }
 
-    public void setContactEmergencyLevel(final String id, EmergencyLevel newELevel) {
+    public void setContactEmergencyLevel(final String id, final EmergencyLevel newELevel) {
         for (final EmergencyLevel $ : EmergencyLevel.values())
             if (data.get($).containsKey(id)) {
-                Contact contact = data.get($).get(id);
+                final Contact contact = data.get($).get(id);
                 data.get($).remove(id);
                 data.get(newELevel).put(id, contact);
             }

@@ -9,19 +9,17 @@ import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException.ErrorCode;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 
 public class SosAppGui extends SmartHouseApplication {
-    
+
     SosController sosController;
     private Button killerButon;
-    public boolean shouldAlert=true;
-    
+    public boolean shouldAlert = true;
+
     @Override public void onLoad() throws OnLoadException {
         final List<String> ids = super.inquireAbout("iSOS");
         if (ids.isEmpty())
@@ -32,10 +30,10 @@ public class SosAppGui extends SmartHouseApplication {
         try {
             subscribeToSensor(sensorId, SosSensor.class, sosSensor -> {
                 final String t = "SOS " + (sosSensor.isPressed() ? "" : "Not ") + "Pressed";
-                if (sosController != null && shouldAlert){
+                if (sosController != null && shouldAlert) {
                     sosController.sosBtnPressed();
                     sendAlert("ATTENTION SOS: Client is requesting help.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-                    shouldAlert=false;
+                    shouldAlert = false;
                 }
                 System.out.println("msg from app: " + t);
             });
@@ -54,25 +52,21 @@ public class SosAppGui extends SmartHouseApplication {
             final Parent $ = fxmlLoader.load();
             sosController = fxmlLoader.getController();
             killerButon = sosController.getBtn();
-            killerButon.setOnAction(new EventHandler<ActionEvent>() {
-                
-                @Override public void handle(ActionEvent __) {
-                    if(SosAppGui.this.shouldAlert)
-                        sosController.sosBtnPressed();
-                    else {
-                        sosController.sosBtnUnpress();
-                        SosAppGui.this.shouldAlert = !SosAppGui.this.shouldAlert;
-                    }
+            killerButon.setOnAction(__ -> {
+                if (shouldAlert)
+                    sosController.sosBtnPressed();
+                else {
+                    sosController.sosBtnUnpress();
+                    shouldAlert = !shouldAlert;
                 }
             });
             return $;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException ¢) {
+            ¢.printStackTrace();
         }
         return null;
     }
-    
-    
+
 }
 
 class SosSensor extends SensorData {

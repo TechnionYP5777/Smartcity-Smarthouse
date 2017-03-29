@@ -79,9 +79,8 @@ public class UserInformation {
         final Element user = new Element("user");
         final Document doc = new Document(user);
 
-        final Element userDetails = new Element("userDetails");
+        final Element userDetails = new Element("userDetails"), userId = new Element("Id");
 
-        final Element userId = new Element("Id");
         userId.setText(id);
 
         final Element userName = new Element("name");
@@ -144,9 +143,9 @@ public class UserInformation {
     public List<Contact> getContacts() {
         return emergencyContacts.getContacts();
     }
-    
-    public void setContactEmergencyLevel(String id, String eLevel){
-        this.emergencyContacts.setContactEmergencyLevel(id, EmergencyLevel.fromString(eLevel));
+
+    public void setContactEmergencyLevel(final String id, final String eLevel) {
+        emergencyContacts.setContactEmergencyLevel(id, EmergencyLevel.fromString(eLevel));
     }
 
 }

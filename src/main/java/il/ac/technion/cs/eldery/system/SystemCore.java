@@ -11,6 +11,7 @@ import il.ac.technion.cs.eldery.system.userInformation.UserInformation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /** Hold the databases of the smart house, and allow sensors and applications to
@@ -38,12 +39,13 @@ public class SystemCore extends Application {
 
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main_system_ui.fxml"));
         final Scene scene = new Scene(loader.load(), 1000, 800);
-        MainSystemGuiController mainGuiController = (MainSystemGuiController) loader.getController();
+        final MainSystemGuiController mainGuiController = (MainSystemGuiController) loader.getController();
         mainGuiController.setDatabaseHandler(databaseHandler);
         mainGuiController.setApplicationsHandler(applicationsHandler);
         mainGuiController.setSysCore(this);
 
         s.setTitle(APP_NAME);
+        s.getIcons().add(new Image(getClass().getResourceAsStream("gui/house-icon.png")));
         s.setScene(scene);
         s.show();
 
@@ -73,12 +75,10 @@ public class SystemCore extends Application {
     }
 
     public void alert(final String msg, final EmergencyLevel elvl) {
-        // TODO: add appId field
+        if (user == null)
+            return;
         final List<Contact> $ = user.getContacts(elvl);
         switch (elvl) {
-            case NOTIFY_ELDERLY:
-                // TODO: how do we notify the elderly?
-                break;
             case SMS_EMERGENCY_CONTACT:
                 $.stream().forEach(c -> Communicate.throughSms(c.getPhoneNumber(), msg));
                 break;
@@ -92,8 +92,6 @@ public class SystemCore extends Application {
                 $.stream().forEach(c -> Communicate.throughEmailFromHere(c.getEmailAddress(), msg));
                 break;
             default:
-                // TODO: what's the desired behavior?
-                break;
         }
     }
 

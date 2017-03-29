@@ -8,8 +8,8 @@ public class Room {
     public final int width;
     public final int height;
     public final SensorLocation location;
-    
-    public Room(int x, int y, int width, int height, SensorLocation location) {
+
+    public Room(final int x, final int y, final int width, final int height, final SensorLocation location) {
         this.x = x;
         this.y = y;
         this.width = width;

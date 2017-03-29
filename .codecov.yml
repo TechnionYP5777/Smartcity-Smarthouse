@@ -1,0 +1,7 @@
+coverage:
+  ignore: 
+    - "src/main/java/il/ac/technion/cs/eldery/applications/*"
+    - "src/main/java/il/ac/technion/cs/eldery/sensors/sos/gui/*"
+    - "src/main/java/il/ac/technion/cs/eldery/sensors/stove/gui/*"
+    - "src/main/java/il/ac/technion/cs/eldery/sensors/vitals/gui/*"
+    - "src/main/java/il/ac/technion/cs/eldery/system/gui/*"

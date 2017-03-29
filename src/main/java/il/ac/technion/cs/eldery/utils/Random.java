@@ -7,10 +7,10 @@ public class Random {
      * any hex value.
      * @return randomly generated id */
     public static String sensorId() {
-        String $[] = new String[4];
+        final String $[] = new String[4];
 
         for (int i = 0; i < 4; ++i) {
-            String s = Integer.toHexString(r.nextInt(256));
+            final String s = Integer.toHexString(r.nextInt(256));
             $[i] = s.length() == 2 ? s : "0" + s;
         }
 

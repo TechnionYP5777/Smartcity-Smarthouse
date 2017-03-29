@@ -19,14 +19,12 @@ public class MainSystemGuiController implements Initializable {
     private MappingController mappingController;
     private ApplicationViewController appsController;
     private UserInfoController userController;
-    private SystemCore sysCore;
-
     @FXML Tab homeTab;
     @FXML Tab userTab;
     @FXML Tab appsTab;
     @FXML Tab sensorsTab;
 
-    @Override public void initialize(URL arg0, ResourceBundle arg1) {
+    @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource("user information.fxml"));
 
@@ -44,24 +42,24 @@ public class MainSystemGuiController implements Initializable {
             appsTab.setContent(loader.load());
             appsController = loader.getController();
 
-        } catch (IOException ¢) {
+        } catch (final IOException ¢) {
             ¢.printStackTrace();
         }
     }
 
-    public MainSystemGuiController setDatabaseHandler(DatabaseHandler dbHandler) {
+    public MainSystemGuiController setDatabaseHandler(final DatabaseHandler dbHandler) {
         mappingController.setDatabaseHandler(dbHandler);
         return this;
     }
 
-    public MainSystemGuiController setApplicationsHandler(ApplicationsHandler appsHandler) {
+    public MainSystemGuiController setApplicationsHandler(final ApplicationsHandler appsHandler) {
         appsController.setAppsHandler(appsHandler);
         return this;
     }
-    
-    public MainSystemGuiController setSysCore(SystemCore sysCore){
+
+    public MainSystemGuiController setSysCore(final SystemCore sysCore) {
         userController.setSystemCore(sysCore);
         return this;
     }
-    
+
 }

@@ -14,7 +14,7 @@ import javafx.scene.Parent;
 
 public class StoveModuleGui extends SmartHouseApplication {
     private StoveAppController controller;
-    
+
     @Override public void onLoad() throws OnLoadException {
         final List<String> ids = super.inquireAbout("iStoves");
         if (ids.isEmpty())
@@ -24,8 +24,8 @@ public class StoveModuleGui extends SmartHouseApplication {
         System.out.println("msg from app: onLoad");
         try {
             subscribeToSensor(sensorId, StoveSensor.class, stoveSensor -> {
-                final String t = "Stove is " + (stoveSensor.isOn() ? "" : "Not ") + "On at " + stoveSensor.getTemperture() +" degrees";
-                if(stoveSensor.isOn())  
+                final String t = "Stove is " + (stoveSensor.isOn() ? "" : "Not ") + "On at " + stoveSensor.getTemperture() + " degrees";
+                if (stoveSensor.isOn())
                     controller.turnOn();
                 else
                     controller.turnOf();
@@ -40,7 +40,7 @@ public class StoveModuleGui extends SmartHouseApplication {
     @Override public String getApplicationName() {
         return "Stove Application";
     }
-    
+
     @Override public Node getRootNode() {
         try {
             final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_ui.fxml"));
@@ -48,8 +48,8 @@ public class StoveModuleGui extends SmartHouseApplication {
             controller = fxmlLoader.getController();
             controller.setInstance(this);
             return $;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException ¢) {
+            ¢.printStackTrace();
         }
         return null;
     }
@@ -58,12 +58,12 @@ public class StoveModuleGui extends SmartHouseApplication {
 class StoveSensor extends SensorData {
     private boolean on;
     private int temperature;
-    
+
     boolean isOn() {
         return on;
     }
-    
-    int getTemperture(){
+
+    int getTemperture() {
         return temperature;
     }
 }

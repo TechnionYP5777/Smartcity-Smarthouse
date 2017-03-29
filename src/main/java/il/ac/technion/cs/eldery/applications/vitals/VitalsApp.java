@@ -30,9 +30,7 @@ public class VitalsApp extends SmartHouseApplication {
         System.out.println("msg from app: onLoad");
         try {
             subscribeToSensor(sensorId, VitalsSensor.class, vitalsSensor -> {
-                int pulse = vitalsSensor.getPulse();
-                int systolicBP = vitalsSensor.getSystolicBP();
-                int diastolicBP = vitalsSensor.getDiastolicBP();
+                final int pulse = vitalsSensor.getPulse(), systolicBP = vitalsSensor.getSystolicBP(), diastolicBP = vitalsSensor.getDiastolicBP();
                 final String t = "Client has pulse of " + pulse + " and blood pressure of " + systolicBP + "/" + diastolicBP + " mmHg";
                 controller.updateChart(vitalsSensor.getPulse(), vitalsSensor.getSystolicBP(), vitalsSensor.getDiastolicBP());
                 System.out.println("msg from app: " + t);
@@ -62,7 +60,7 @@ public class VitalsApp extends SmartHouseApplication {
                 if ((systolicBP > 190 || diastolicBP > 120) && highBPAlert < 2) {
                     highBPAlert = 2;
                     sendAlert("ATTENTION: Client suffers from hypertensive emergency.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-                } else if (((systolicBP > 160 && systolicBP <= 190) || (diastolicBP > 100 && diastolicBP <= 120)) && highBPAlert < 1) {
+                } else if ((systolicBP > 160 && systolicBP <= 190 || diastolicBP > 100 && diastolicBP <= 120) && highBPAlert < 1) {
                     highBPAlert = 1;
                     sendAlert("ATTENTION: Client suffers from hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
                 }
@@ -85,8 +83,8 @@ public class VitalsApp extends SmartHouseApplication {
             final Parent $ = fxmlLoader.load();
             controller = fxmlLoader.getController();
             return $;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException ¢) {
+            ¢.printStackTrace();
         }
         return null;
     }

@@ -73,7 +73,7 @@ public class AppInstallHelper {
      * @param filterClass
      * @return a list of the filtered classes */
     private static List<Class<?>> getClassesBySuperclass(final List<Class<?>> cs, final Class<?> filterClass) {
-        return cs.stream().filter((x) -> x.getSuperclass() == filterClass).collect(Collectors.toList());
+        return cs.stream().filter(x -> x.getSuperclass() == filterClass).collect(Collectors.toList());
     }
 
     /** loads the classes to the JVM using the given ClassLoader. if a class was

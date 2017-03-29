@@ -37,9 +37,9 @@ public class StoveAppController implements Initializable {
     boolean alertTime;
     boolean isOn;
     StoveModuleGui instance;
-    
-    public void setInstance(StoveModuleGui instance){
-        this.instance=instance;
+
+    public void setInstance(final StoveModuleGui instance) {
+        this.instance = instance;
     }
 
     public int get_alert_temperature() {
@@ -57,12 +57,12 @@ public class StoveAppController implements Initializable {
     public void set_alert_seconds(final int seconds) {
         this.seconds = seconds;
     }
-    
-    private void alert(String messege){
-        this.instance.sendAlert(messege, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+
+    private void alert(final String messege) {
+        instance.sendAlert(messege, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
     }
-    
-    public void turnOn(){
+
+    public void turnOn() {
         if (isOn)
             return;
         isOn = !isOn;
@@ -70,17 +70,19 @@ public class StoveAppController implements Initializable {
             time = time.add(((KeyFrame) ¢.getSource()).getTime());
             timeSeconds.set(time.toSeconds());
             timeLabel.setText("The Stove is Running for: " + timeSeconds.get() + " (Secs)");
-            if (timeSeconds.get() <= StoveAppController.this.get_alert_seconds()) alertTime = false;
-            if (timeSeconds.get() > StoveAppController.this.get_alert_seconds() && !alertTime){
+            if (timeSeconds.get() <= StoveAppController.this.get_alert_seconds())
+                alertTime = false;
+            if (timeSeconds.get() > StoveAppController.this.get_alert_seconds() && !alertTime) {
                 alert("Stove is runnig too long");
+                timeLabel.setTextFill(Color.RED);
                 alertTime = true;
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
-    
-    public void turnOf(){
+
+    public void turnOf() {
         if (!isOn)
             return;
         isOn = !isOn;
@@ -90,28 +92,31 @@ public class StoveAppController implements Initializable {
         timeSeconds.set(time.toSeconds());
         timeLabel.setText("The Stove is: Off");
     }
-    
-    public void updateTemperture(int temp){
-        tempLabel.setText("The Stove Temperture is: "+temp);
-        if (temp <= get_alert_temperature()) alertTemp = false;
+
+    public void updateTemperture(final int temp) {
+        tempLabel.setText("The Stove Temperture is: " + temp);
+        if (temp <= get_alert_temperature()) {
+            alertTemp = false;
+            tempLabel.setTextFill(Color.BLACK);
+        }
         if (temp <= get_alert_temperature() || alertTemp)
             return;
+        tempLabel.setTextFill(Color.RED);
         alert("Stove is too hot");
         alertTemp = true;
-      }
+    }
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
 
         stoveConfigButton.setOnAction(new EventHandler<ActionEvent>() {
-            @SuppressWarnings({ "hiding" }) @Override public void handle(final ActionEvent __) {
+            @Override @SuppressWarnings("hiding") public void handle(final ActionEvent __) {
                 try {
                     final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_config.fxml"));
                     final Parent root1 = (Parent) fxmlLoader.load();
                     final Stage stage = new Stage();
                     stage.setScene(new Scene(root1));
                     stage.show();
-                    final ConfigController configController = fxmlLoader.getController();
-                    configController.subscribe(StoveAppController.this);
+                    ((ConfigController) fxmlLoader.getController()).subscribe(StoveAppController.this);
                 } catch (final Exception ¢) {
                     ¢.printStackTrace();
                 }

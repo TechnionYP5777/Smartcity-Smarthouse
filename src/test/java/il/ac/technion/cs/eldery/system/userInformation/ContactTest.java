@@ -41,7 +41,7 @@ public class ContactTest {
 
     @Test public void toStringTest() {
         assert contactA + "" != null;
-        Assert.assertEquals("Contact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n", (contactA + ""));
+        Assert.assertEquals("Contact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n", contactA + "");
     }
 
 }

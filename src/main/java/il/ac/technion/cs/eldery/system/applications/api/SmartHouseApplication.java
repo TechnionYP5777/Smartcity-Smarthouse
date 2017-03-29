@@ -33,7 +33,7 @@ public abstract class SmartHouseApplication extends Application {
         firstStage = s;
         firstStage.setOnCloseRequest(event -> {
             event.consume();
-            //((Stage) event.getSource()).setIconified(true);
+            // ((Stage) event.getSource()).setIconified(true);
             System.out.println("CLOSE");
         });
     }
@@ -137,9 +137,9 @@ public abstract class SmartHouseApplication extends Application {
     /** This will run when the system loads the app. Here all of the sensors
      * subscriptions must occur */
     public abstract void onLoad() throws OnLoadException;
-    
+
     public abstract String getApplicationName();
-    
+
     public abstract Node getRootNode();
     // [end]
 
@@ -148,9 +148,7 @@ public abstract class SmartHouseApplication extends Application {
      * @param functionToRun
      * @return the modified consumer */
     private static <T extends SensorData> Consumer<T> generateConsumer(final Consumer<T> functionToRun) {
-        return sensorData -> {
-            Platform.runLater(() -> functionToRun.accept(sensorData));
-        };
+        return sensorData -> Platform.runLater(() -> functionToRun.accept(sensorData));
     }
     // [end]
 
