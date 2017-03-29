@@ -130,5 +130,10 @@ public class ApplicationsHandler {
     public void alertOnAbnormalState(final String message, final EmergencyLevel eLevel) {
         systemCore.alert(message, eLevel);
     }
+    
+    /** See {@link SmartHouseApplication#instructSensor(String, String)} */
+    public final void instructSensor(final String sensorId, final String instruction) {
+        systemCore.notifySensor(sensorId, instruction);
+    }
     // [end]
 }

@@ -97,4 +97,7 @@ public class SystemCore extends Application {
         }
     }
 
+    public final void notifySensor(final String sensorId, final String instruction) {
+        //todo: access the map of threads in sensorhandler, get the thread of @sensorId, and send the instructions
+    }
 }

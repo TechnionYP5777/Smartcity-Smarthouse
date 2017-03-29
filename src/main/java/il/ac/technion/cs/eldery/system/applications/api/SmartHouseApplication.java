@@ -111,6 +111,14 @@ public abstract class SmartHouseApplication extends Application {
         applicationsHandler.alertOnAbnormalState(message, eLevel);
     }
 
+    /** Send a message to a sensor. 
+     * @param sensorId The ID of the sensor, returned from
+     *        inquireAbout(sensorCommercialName)
+     * @param instruction the message that the sensor will recieve */
+    public final void instructSensor(final String sensorId, final String instruction) {
+        applicationsHandler.instructSensor(sensorId, instruction);
+    }
+
     /** Saves the app's data to the system's database
      * @param data
      * @return true if the data was saved to the system, or false otherwise */
