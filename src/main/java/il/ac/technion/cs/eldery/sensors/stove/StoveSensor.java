@@ -5,7 +5,8 @@ import java.util.Map;
 
 import il.ac.technion.cs.eldery.sensors.Sensor;
 
-/** @author Yarden
+/** This class represents a temperature sensor for a stove.
+ * @author Yarden
  * @author Sharon
  * @since 10.12.16 */
 public class StoveSensor extends Sensor {

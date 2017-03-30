@@ -22,7 +22,7 @@ public class SosSensorSimulator extends Application {
     @Override public void start(final Stage s) throws Exception {
         sensor = new SosSensor(Random.sensorId(), "iSOS", "127.0.0.1", 40001);
         for (boolean res = false; !res;)
-            res = sensor.register();
+            res = sensor.register(sensor.getSystemPort());
         final Image sosImage = new Image(getClass().getResourceAsStream("sos_icon.png"), 320, 0, true, true);
         final Button sosButton = new Button();
         sosButton.setGraphic(new ImageView(sosImage));

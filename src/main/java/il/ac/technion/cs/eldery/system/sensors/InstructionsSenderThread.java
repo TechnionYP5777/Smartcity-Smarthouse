@@ -6,29 +6,23 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import com.google.gson.JsonObject;
-
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage;
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.eldery.networking.messages.Message;
 import il.ac.technion.cs.eldery.networking.messages.MessageFactory;
 import il.ac.technion.cs.eldery.networking.messages.RegisterMessage;
-import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
-import il.ac.technion.cs.eldery.system.DatabaseHandler;
-import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 
-/** A sensors handler thread is a class that handles a specific connection with
- * a sensor. The class can parse the different incoming messages and act
- * accordingly.
+/** An instructions sender thread is a class that allows sending instructions
+ * from the system to a specific sensor.
  * @author Yarden
- * @since 24.12.16 */
-public class SensorsHandlerThread extends Thread {
+ * @since 30.3.17 */
+public class InstructionsSenderThread extends Thread {
     private final Socket client;
-    private final DatabaseHandler databaseHandler;
+    private StoreThread storage;
 
-    public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler) {
+    public InstructionsSenderThread(final Socket client, final StoreThread storage) {
         this.client = client;
-        this.databaseHandler = databaseHandler;
+        this.storage = storage;
     }
 
     @Override public void run() {
@@ -48,9 +42,6 @@ public class SensorsHandlerThread extends Thread {
                 switch (message.getType()) {
                     case REGISTRATION:
                         handleRegisterMessage(out, (RegisterMessage) message);
-                        break;
-                    case UPDATE:
-                        handleUpdateMessage((UpdateMessage) message);
                         break;
                     default:
                 }
@@ -72,19 +63,11 @@ public class SensorsHandlerThread extends Thread {
     }
 
     private void handleRegisterMessage(final PrintWriter out, final RegisterMessage ¢) {
-        databaseHandler.addSensor(¢.sensorId, ¢.sensorCommName, 100);
+        storage.store(¢.sensorId, out);
         new AnswerMessage(Answer.SUCCESS).send(out, null);
     }
+}
 
-    private void handleUpdateMessage(final UpdateMessage m) {
-        final JsonObject json = new JsonObject();
-        m.getData().entrySet().forEach(entry -> json.addProperty(entry.getKey(), entry.getValue()));
-
-        try {
-            databaseHandler.getList(m.sensorId).add(json + "");
-        } catch (final SensorNotFoundException ¢) {
-            ¢.printStackTrace();
-        }
-    }
-
+interface StoreThread {
+    void store(String id, PrintWriter out);
 }

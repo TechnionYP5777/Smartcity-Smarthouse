@@ -33,7 +33,7 @@ public class Controller implements Initializable {
     @Override public void initialize(final URL location, final ResourceBundle __) {
         sensor = new StoveSensor(Random.sensorId(), "iStoves", "127.0.0.1", 40001);
         for (boolean res = false; !res;)
-            res = sensor.register();
+            res = sensor.register(sensor.getSystemPort());
         onOffButton.setOnAction(event -> {
             on = !on;
             onOffButton.setText("Turn " + (on ? "off" : "on"));
