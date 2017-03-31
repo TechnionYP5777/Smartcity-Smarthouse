@@ -95,9 +95,4 @@ public abstract class Sensor {
     public String getCommName() {
         return commName;
     }
-
-    /** @return sensor's system port */
-    public int getSystemPort() {
-        return systemPort;
-    }
 }
