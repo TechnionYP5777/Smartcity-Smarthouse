@@ -2,7 +2,7 @@
 
 [![codecov](https://codecov.io/gh/TechnionYP5777/Smartcity-Smarthouse/branch/master/graph/badge.svg)](https://codecov.io/gh/TechnionYP5777/Smartcity-Smarthouse)
 
-# SmartCity - Smarthouse
+# Smartcity - Smarthouse
 An autonomous system which receives data from house sensors, stores it in a database and runs applications that operate based on this data.
 
 The system keeps track of the well being and day to day activity of the user. It monitors the user's state via the sensors and analyzes his or her behavior via the applications. The system can send alerts and notifications, and on request from an application through the defined API, will contact the appropriate contacts (according to their emergency-level).
