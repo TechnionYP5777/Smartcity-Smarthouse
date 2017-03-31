@@ -47,14 +47,13 @@ public abstract class Sensor {
         this.systemPort = systemPort;
     }
 
-    /** Registers the sensor a TCP connection with the system. This method must
-     * be called for all TCP connections with the system before any calls to the
-     * updateSystem method.
+    /** Registers the sensor its TCP connection with the system. This method
+     * must be called before any calls to the updateSystem method.
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise */
-    public boolean register(int port) {
+    public boolean register() {
         try {
-            socket = new Socket(InetAddress.getByName(systemIP), port);
+            socket = new Socket(InetAddress.getByName(systemIP), systemPort);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (final IOException ¢) {

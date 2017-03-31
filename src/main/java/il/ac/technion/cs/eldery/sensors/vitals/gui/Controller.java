@@ -36,7 +36,7 @@ public class Controller implements Initializable {
     @Override public void initialize(final URL location, final ResourceBundle __) {
         sensor = new VitalsSensor(Random.sensorId(), "iVitals", "127.0.0.1", 40001);
         for (boolean res = false; !res;)
-            res = sensor.register(sensor.getSystemPort());
+            res = sensor.register();
         pulseLabel.setDisable(false);
         bpLabel.setDisable(false);
         bpRSlider = new RangeSlider(0, 200, 80, 120);
