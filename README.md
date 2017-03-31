@@ -1,7 +1,3 @@
-[![Build Status](https://travis-ci.org/TechnionYP5777/Smartcity-Smarthouse.svg?branch=master)](https://travis-ci.org/TechnionYP5777/Smartcity-Smarthouse)
-
-[![codecov](https://codecov.io/gh/TechnionYP5777/Smartcity-Smarthouse/branch/master/graph/badge.svg)](https://codecov.io/gh/TechnionYP5777/Smartcity-Smarthouse)
-
 # Smartcity - Smarthouse
 An autonomous system which receives data from house sensors, stores it in a database and runs applications that operate based on this data.
 
@@ -10,6 +6,11 @@ The system keeps track of the well being and day to day activity of the user. It
 The system acts as a mediator between the sensors and the applications. The sensors send data to the system and the system notifies the applications that a new data has been received.
 
 Applications and sensors that are developed by 3rd party developers, must implement the platform's API.
+
+# Development Status
+[![Build Status](https://travis-ci.org/TechnionYP5777/Smartcity-Smarthouse.svg?branch=master)](https://travis-ci.org/TechnionYP5777/Smartcity-Smarthouse)
+
+[![codecov](https://codecov.io/gh/TechnionYP5777/Smartcity-Smarthouse/branch/master/graph/badge.svg)](https://codecov.io/gh/TechnionYP5777/Smartcity-Smarthouse)
 
 # Contributions
 The project is developed using the `Java` programming language. To run the code you will need JDK 8 and the JavaFX library. For a better understanding of the project structure, please read the [System Overview](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki/The-Smart-House-System-Overview) wiki page, which presents the different parts of the project.
@@ -30,7 +31,7 @@ And the following command to install the JavaFX library:
 
 These three commands will install the java development kit, java runtime environment and the JavaFX library. Another option would be to go to the official Oracle download page, download the java binaries and do the installation manually.
 
-## Running the application from the command line
+# Running the application from the command line
 The application can be launched from the command line with the following commands:
 - `mvn exec:java@main` - launches the system
 - `mvn exec:java@sensor_sim_sos` - launches the SOS sensor
