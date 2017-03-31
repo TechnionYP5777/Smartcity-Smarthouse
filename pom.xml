@@ -87,6 +87,13 @@
 			<version>2.8.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.github.thiagolocatelli/parse4j -->
+		<dependency>
+			<groupId>com.github.thiagolocatelli</groupId>
+			<artifactId>parse4j</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
 		<dependency>
 			<groupId>org.mockito</groupId>
