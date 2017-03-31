@@ -2,6 +2,7 @@ package il.ac.technion.cs.eldery.system.applications.api;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
@@ -115,7 +116,7 @@ public abstract class SmartHouseApplication extends Application {
      * @param sensorId The ID of the sensor, returned from
      *        inquireAbout(sensorCommercialName)
      * @param instruction the message that the sensor will recieve */
-    public final void instructSensor(final String sensorId, final String instruction) {
+    public final void instructSensor(final String sensorId, final Map<String,String> instruction) {
         applicationsHandler.instructSensor(sensorId, instruction);
     }
 

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
@@ -131,7 +132,7 @@ public class ApplicationsHandler {
     }
     
     /** See {@link SmartHouseApplication#instructSensor(String, String)} */
-    public final void instructSensor(final String sensorId, final String instruction) {
+    public final void instructSensor(final String sensorId, final Map<String,String> instruction) {
         systemCore.notifySensor(sensorId, instruction);
     }
     // [end]

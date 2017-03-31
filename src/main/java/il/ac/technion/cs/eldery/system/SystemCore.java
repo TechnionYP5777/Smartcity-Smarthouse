@@ -2,7 +2,9 @@ package il.ac.technion.cs.eldery.system;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import il.ac.technion.cs.eldery.system.gui.MainSystemGuiController;
 import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
@@ -95,8 +97,9 @@ public class SystemCore extends Application {
         }
     }
 
-    public final void notifySensor(final String sensorId, final String instruction) {
+    public final void notifySensor(final String sensorId, final Map<String,String> instruction) {
         // todo: access the map of threads in sensorhandler, get the thread of
         // @sensorId, and send the instructions
+        sensorsHandler.sendInstruction(new UpdateMessage(sensorId, instruction));
     }
 }
