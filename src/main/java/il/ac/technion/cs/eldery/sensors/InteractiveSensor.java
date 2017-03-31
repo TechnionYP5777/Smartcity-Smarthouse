@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Map;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import il.ac.technion.cs.eldery.networking.messages.AnswerMessage;
@@ -20,9 +21,12 @@ import il.ac.technion.cs.eldery.networking.messages.AnswerMessage.Answer;
  * @author Yarden
  * @since 31.3.17 */
 public abstract class InteractiveSensor extends Sensor {
-    public class InstructionChecker extends TimerTask {
+    private class InstructionChecker extends TimerTask {
+        InstructionChecker() {}
+
         @Override public void run() {
             operate();
+            new Timer().schedule(this, 0, period);
         }
     }
 
@@ -31,6 +35,7 @@ public abstract class InteractiveSensor extends Sensor {
     protected PrintWriter instOut;
     protected BufferedReader instIn;
     protected InstructionHandler handler;
+    protected long period;
 
     public InteractiveSensor(final String id, final String commName, final String systemIP, final int systemPort, final int instPort) {
         super(id, commName, systemIP, systemPort);
@@ -71,6 +76,14 @@ public abstract class InteractiveSensor extends Sensor {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /** Checks for waiting instructions by polling the connection repeatedly
+     * every specified period of time.
+     * @param p The polling period, in milliseconds */
+    public void pollInstructions(long p) {
+        this.period = p;
+        new Timer().schedule(new InstructionChecker(), 0, period);
     }
 }
 
