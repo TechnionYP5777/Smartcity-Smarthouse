@@ -49,6 +49,11 @@ public class UserInformationTest {
 
         tempContact = userInfo.getContact("123");
         assert tempContact != null;
+
+        userInfo.setContactEmergencyLevel("123", "CONTACT_HOSPITAL");
+        temp = userInfo.getContacts(EmergencyLevel.CONTACT_HOSPITAL);
+        Assert.assertEquals(1, temp.size());
+        assert temp.contains(contactA);
     }
 
     @Test public void xmlTesting() {
