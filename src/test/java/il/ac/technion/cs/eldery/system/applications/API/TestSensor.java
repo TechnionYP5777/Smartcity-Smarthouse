@@ -14,14 +14,14 @@ import il.ac.technion.cs.eldery.utils.Random;
  * @since Apr 1, 2017
  */
 public class TestSensor extends InteractiveSensor {
-    private String[] obserNames = null;
+    private String[] obserNames;
 
     /**
      * @param commName
      * @param obserNames the params that will be sent to the system
      */
-    public TestSensor(String commName, String[] obserNames) {
-        super(Random.sensorId(), commName, "127.0.0.1", 40001, 40002);
+    public TestSensor(String id, final String commName, final String[] obserNames) {
+        super(id != null ? id : Random.sensorId() , commName, "127.0.0.1", 40001, 40002);
         this.obserNames = obserNames;
     }
 
