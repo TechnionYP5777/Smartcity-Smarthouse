@@ -59,7 +59,7 @@ public class SensorsHandler implements Runnable {
         routingMap.get(instruction.sensorId).println(instruction.toJson());
     }
     
-    public void closeSockets(){
+    public void closeSockets(){ //for testing
         try {
             server.close();
             router.close();

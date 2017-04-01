@@ -4,20 +4,22 @@
 package il.ac.technion.cs.eldery.system.applications.API;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
 import il.ac.technion.cs.eldery.sensors.InteractiveSensor;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
+import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
 import il.ac.technion.cs.eldery.utils.Random;
 
@@ -28,6 +30,7 @@ import il.ac.technion.cs.eldery.utils.Random;
 public class ApplicationApiTest {    
     // general tests data
     @Rule public TestName testName = new TestName();
+    //todo: ELIA create testdata class instead of all the maps
     private static Map<String, String> sensorIds = new HashMap<>();
     private static Map<String, String> commName = new HashMap<>();
     private static Map<String, String[]> obserNames = new HashMap<>();
@@ -39,15 +42,25 @@ public class ApplicationApiTest {
     private String currentTestName;
     
     @BeforeClass public static void setup_DataMaps(){
-        String test = "InquireAboutExistingSensorReturnsId";
+        String test = "inquireAboutExistingSensorReturnsId";
         sensorIds.put(test, Random.sensorId());
         commName.put(test, "iSensor"+test.substring(0,20));
         obserNames.put(test, null);
         
-        test = "InquireAboutNoneExistingDoesntReturnId";
+        test = "inquireAboutNoneExistingDoesntReturnId";
         sensorIds.put(test, Random.sensorId());
         commName.put(test, test.substring(0,20));
         obserNames.put(test, null);
+        
+        test = "subscribeToNoneExistingThrows";
+        sensorIds.put(test, Random.sensorId());
+        commName.put(test, test.substring(0,20));
+        obserNames.put(test, null);
+        
+        test = "subscribeToExistingWorks";
+        sensorIds.put(test, Random.sensorId());
+        commName.put(test, test.substring(0,20));
+        obserNames.put(test, new String[]{"b"});
     }
     
     @AfterClass public static void teardown_killSensorHandler(){
@@ -85,20 +98,42 @@ public class ApplicationApiTest {
         }
     }
     
-    // JUnits shouldn't be static!
-    @Test @SuppressWarnings("static-method") public void InquireAboutExistingSensorReturnsId(){
-      
+    // ----------------------------- tests ----------------------------- 
+    @Test public void inquireAboutExistingSensorReturnsId(){
         Assert.assertEquals(app.inquireAbout(commName.get(currentTestName)).get(0), sensorIds.get(currentTestName));
     }
     
-    @Test @SuppressWarnings("static-method") public void InquireAboutNoneExistingDoesntReturnId(){
-        
+    @Test public void inquireAboutNoneExistingDoesntReturnId(){
         for(String id: app.inquireAbout("not "+commName.get(currentTestName)))        
             Assert.assertFalse(sensorIds.containsValue(id));
     }
     
-    // JUnits shouldn't be static!
-    @SuppressWarnings("static-method") public void TBD(){
+    @Test(expected = SensorNotFoundException.class)
+    public void subscribeToNoneExistingThrows() throws SensorNotFoundException{
+        class TestSensorData extends SensorData {}
+        app.subscribeToSensor("not a sensor id", TestSensorData.class, tsd -> {});
+    }
+    
+    /**
+     * [[SuppressWarningsSpartan]]
+     */
+    @Ignore //todo: why  java.lang.IllegalStateException: Toolkit not initialized ? 
+    @SuppressWarnings("boxing")
+    @Test public void subscribeToExistingWorks() throws SensorNotFoundException, InterruptedException{
+        class TestSensorData extends SensorData { public Boolean b;};
+        Boolean[] $ = new Boolean[] {false};
+        app.subscribeToSensor(sensorIds.get(currentTestName), TestSensorData.class, o -> { $[0] =  o.b;});
+        
+        Map<String, String> data = new HashMap<>();
+        data.put("b", "true");
+        sensor.updateSystem(data);
+        
+        Thread.sleep(5000);
+        
+        Assert.assertEquals(true,$[0]);
+    }
+    
+    public void TBD(){
         //todo:
     }
     
