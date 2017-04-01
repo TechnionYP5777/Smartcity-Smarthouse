@@ -26,12 +26,14 @@ public class SystemCore extends Application {
     protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler, this);
     protected UserInformation user;
     private boolean userInitialized;
+    private static Stage stage;
 
     public static void main(final String[] args) {
         launch(args);
     }
 
     @Override public void start(final Stage ¢) throws IOException {
+        stage = ¢;
         initializeSystemComponents();
         initializeSystemGui(¢);
     }
@@ -102,4 +104,9 @@ public class SystemCore extends Application {
         // @sensorId, and send the instructions
         sensorsHandler.sendInstruction(new UpdateMessage(sensorId, instruction));
     }
+    
+    public static Stage getStage(){
+        return stage;
+    }
+
 }
