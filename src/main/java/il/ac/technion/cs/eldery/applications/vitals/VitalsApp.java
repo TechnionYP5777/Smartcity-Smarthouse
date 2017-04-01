@@ -1,6 +1,5 @@
 package il.ac.technion.cs.eldery.applications.vitals;
 
-import java.io.IOException;
 import java.util.List;
 
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
@@ -9,9 +8,6 @@ import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException.ErrorCode;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 
 /** @author Yarden
  * @since 19.1.17 */
@@ -71,22 +67,12 @@ public class VitalsApp extends SmartHouseApplication {
         } catch (final SensorNotFoundException ¢) {
             throw new OnLoadException(ErrorCode.SENSOR_ID_NOT_FOUND, ¢.getMessage());
         }
+        
+        controller = super.setContentView(getClass().getResource("vitals_app_ui.fxml"));
     }
 
     @Override public String getApplicationName() {
         return "Vitals Application";
-    }
-
-    @Override public Node getRootNode() {
-        try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("vitals_app_ui.fxml"));
-            final Parent $ = fxmlLoader.load();
-            controller = fxmlLoader.getController();
-            return $;
-        } catch (final IOException ¢) {
-            ¢.printStackTrace();
-        }
-        return null;
     }
 }
 

@@ -1,7 +1,6 @@
 package il.ac.technion.cs.eldery.system.applications.API;
 
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
-import javafx.scene.Node;
 
 public class TestApplication extends SmartHouseApplication {
     private boolean isLoaded;
@@ -18,10 +17,6 @@ public class TestApplication extends SmartHouseApplication {
 
     @Override public String getApplicationName() {
         return "TestApplication";
-    }
-
-    @Override public Node getRootNode() {
-        return null;
     }
 
 }

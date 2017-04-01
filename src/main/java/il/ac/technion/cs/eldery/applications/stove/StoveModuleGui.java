@@ -1,6 +1,5 @@
 package il.ac.technion.cs.eldery.applications.stove;
 
-import java.io.IOException;
 import java.util.List;
 
 import il.ac.technion.cs.eldery.system.applications.api.SensorData;
@@ -8,9 +7,6 @@ import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException.ErrorCode;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 
 public class StoveModuleGui extends SmartHouseApplication {
     private StoveAppController controller;
@@ -35,23 +31,14 @@ public class StoveModuleGui extends SmartHouseApplication {
         } catch (final SensorNotFoundException ¢) {
             throw new OnLoadException(ErrorCode.SENSOR_ID_NOT_FOUND, ¢.getMessage());
         }
+        
+        
+        controller = super.setContentView(getClass().getResource("stove_app_ui.fxml"));
+        controller.setInstance(this);
     }
 
     @Override public String getApplicationName() {
         return "Stove Application";
-    }
-
-    @Override public Node getRootNode() {
-        try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_ui.fxml"));
-            final Parent $ = fxmlLoader.load();
-            controller = fxmlLoader.getController();
-            controller.setInstance(this);
-            return $;
-        } catch (final IOException ¢) {
-            ¢.printStackTrace();
-        }
-        return null;
     }
 }
 
