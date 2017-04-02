@@ -8,6 +8,7 @@ import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import il.ac.technion.cs.eldery.system.gui.MainSystemGuiController;
 import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
+import il.ac.technion.cs.eldery.system.services.ServiceManager;
 import il.ac.technion.cs.eldery.system.userInformation.Contact;
 import il.ac.technion.cs.eldery.system.userInformation.UserInformation;
 import javafx.application.Application;
@@ -20,10 +21,12 @@ import javafx.stage.Stage;
  * store and read information about the changes in the environment */
 public class SystemCore extends Application {
     private static final String APP_NAME = "SmartHouse";
+    
+    public final ServiceManager serviceManager = new ServiceManager(this);
 
-    private final DatabaseHandler databaseHandler = new DatabaseHandler();
+    public final DatabaseHandler databaseHandler = new DatabaseHandler();
     protected final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
-    protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(databaseHandler, this);
+    protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(this);
     protected UserInformation user;
     private boolean userInitialized;
     private static Stage stage;

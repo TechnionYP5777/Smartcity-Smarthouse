@@ -16,9 +16,9 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import il.ac.technion.cs.eldery.sensors.InteractiveSensor;
-import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
-import il.ac.technion.cs.eldery.system.applications.api.SensorData;
-import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.services.ServiceType;
+import il.ac.technion.cs.eldery.system.services.sensors_service.SensorData;
+import il.ac.technion.cs.eldery.system.services.sensors_service.SensorsManager;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
 import il.ac.technion.cs.eldery.utils.Random;
@@ -27,7 +27,7 @@ import il.ac.technion.cs.eldery.utils.Random;
  * @author Elia Traore
  * @since Apr 1, 2017
  */
-public class ApplicationApiTest {    
+public class SensorsManagerTest {    
     // general tests data
     @Rule public TestName testName = new TestName();
     //todo: ELIA create testdata class instead of all the maps
@@ -37,7 +37,7 @@ public class ApplicationApiTest {
     private static final Core core = new Core(); //todo: init core in every test?
     
     // single test info
-    private SmartHouseApplication app;
+    private SensorsManager sensorsManager;
     private InteractiveSensor sensor;
     private String currentTestName;
     
@@ -70,13 +70,8 @@ public class ApplicationApiTest {
         ((SensorsHandler)core.getHandler(Handler.SENSORS)).closeSockets();
     }
     
-    @Before public void tsetup_installAppAndSensor() throws Exception{
-        app = new TestApplication();
-        app.setApplicationsHandler((ApplicationsHandler)core.getHandler(Handler.APPS));
-        /* assumption here ^- using the appHandler of the core is enough in order to receive apps' API 
-         * services from the system. This is somewhat white-box testing and the tests will break if this 
-         * changes.
-        */
+    @Before public void tsetup_SensorsManager() throws Exception{
+        sensorsManager = (SensorsManager) core.serviceManager.getService(ServiceType.SENSORS_SERVICE);
         
         currentTestName = testName.getMethodName();
         if(!sensorIds.containsKey(currentTestName)||
@@ -100,18 +95,18 @@ public class ApplicationApiTest {
     
     // ----------------------------- tests ----------------------------- 
     @Test public void inquireAboutExistingSensorReturnsId(){
-        Assert.assertEquals(app.inquireAbout(commName.get(currentTestName)).get(0), sensorIds.get(currentTestName));
+        Assert.assertEquals(sensorsManager.inquireAbout(commName.get(currentTestName)).get(0), sensorIds.get(currentTestName));
     }
     
     @Test public void inquireAboutNoneExistingDoesntReturnId(){
-        for(String id: app.inquireAbout("not "+commName.get(currentTestName)))        
+        for(String id: sensorsManager.inquireAbout("not "+commName.get(currentTestName)))        
             Assert.assertFalse(sensorIds.containsValue(id));
     }
     
     @Test(expected = SensorNotFoundException.class)
     public void subscribeToNoneExistingThrows() throws SensorNotFoundException{
         class TestSensorData extends SensorData {}
-        app.subscribeToSensor("not a sensor id", TestSensorData.class, tsd -> {});
+        sensorsManager.subscribeToSensor("not a sensor id", TestSensorData.class, tsd -> {});
     }
     
     /**
@@ -120,9 +115,9 @@ public class ApplicationApiTest {
     @Ignore //todo: why  java.lang.IllegalStateException: Toolkit not initialized ? 
     @SuppressWarnings("boxing")
     @Test public void subscribeToExistingWorks() throws SensorNotFoundException, InterruptedException{
-        class TestSensorData extends SensorData { public Boolean b;};
+        class TestSensorData extends SensorData { public Boolean b;}
         Boolean[] $ = new Boolean[] {false};
-        app.subscribeToSensor(sensorIds.get(currentTestName), TestSensorData.class, o -> { $[0] =  o.b;});
+        sensorsManager.subscribeToSensor(sensorIds.get(currentTestName), TestSensorData.class, o -> { $[0] =  o.b;});
         
         Map<String, String> data = new HashMap<>();
         data.put("b", "true");

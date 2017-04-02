@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
+import il.ac.technion.cs.eldery.system.services.ServiceType;
+import il.ac.technion.cs.eldery.system.services.alerts_service.AlertsManager;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -59,7 +61,8 @@ public class StoveAppController implements Initializable {
     }
 
     private void alert(final String messege) {
-        instance.sendAlert(messege, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+        AlertsManager alertsManager = (AlertsManager) instance.getService(ServiceType.ALERTS_SERVICE);
+        alertsManager.sendAlert(messege, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
     }
 
     public void turnOn() {

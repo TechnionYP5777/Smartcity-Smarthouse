@@ -23,6 +23,8 @@ public class Core extends SystemCore{
                 return applicationsHandler;
             case SENSORS:
                 return sensorsHandler;
+            case SERVICES:
+                return serviceManager;
 //            case DB:
 //                return databaseHandler;
             default:

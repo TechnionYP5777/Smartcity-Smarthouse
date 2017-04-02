@@ -8,6 +8,7 @@ import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.exceptions.AppInstallerException;
+import il.ac.technion.cs.eldery.system.services.ServiceManager;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -18,15 +19,13 @@ import javafx.scene.layout.Pane;
 public class ApplicationManager {
     private String id;
     private final ApplicationPath<?> appPath;
-    @Expose private ApplicationsHandler referenceToApplicationsHandler;
     @Expose private SmartHouseApplication application;
 
     @Expose private Node rootNode;
 
-    public ApplicationManager(final String id, final ApplicationPath<?> appPath, final ApplicationsHandler referenceToApplicationsHandler) {
+    public ApplicationManager(final String id, final ApplicationPath<?> appPath) {
         this.id = id;
         this.appPath = appPath;
-        this.referenceToApplicationsHandler = referenceToApplicationsHandler;
     }
 
     // [start] Public - Getters and Setters for the private params
@@ -36,10 +35,6 @@ public class ApplicationManager {
 
     public void setId(final String id) {
         this.id = id;
-    }
-
-    public void setReferenceToApplicationsHandler(final ApplicationsHandler referenceToApplicationsHandler) {
-        this.referenceToApplicationsHandler = referenceToApplicationsHandler;
     }
     // [end]
 
@@ -53,13 +48,13 @@ public class ApplicationManager {
      * @throws IOException - If the jar file can't be found
      * @throws AppInstallerException - An installation error
      * @throws OnLoadException - An exception in the onLoad method */
-    public boolean initialize() throws AppInstallerException, IOException, OnLoadException {
+    public boolean initialize(ServiceManager $) throws AppInstallerException, IOException, OnLoadException {
         if (application != null)
             return false;
 
         application = appPath.installMe();
 
-        application.setApplicationsHandler(referenceToApplicationsHandler);
+        application.setServiceManager($);
         application.onLoad();
         rootNode = application.getRootNode();
 

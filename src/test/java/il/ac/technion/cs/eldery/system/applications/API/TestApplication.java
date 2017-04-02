@@ -2,8 +2,8 @@ package il.ac.technion.cs.eldery.system.applications.API;
 
 import java.util.function.Consumer;
 
-import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.eldery.system.services.sensors_service.SensorData;
 
 
 

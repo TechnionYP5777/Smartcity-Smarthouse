@@ -2,24 +2,28 @@ package il.ac.technion.cs.eldery.applications.stove;
 
 import java.util.List;
 
-import il.ac.technion.cs.eldery.system.applications.api.SensorData;
 import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException.ErrorCode;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
+import il.ac.technion.cs.eldery.system.services.ServiceType;
+import il.ac.technion.cs.eldery.system.services.sensors_service.SensorData;
+import il.ac.technion.cs.eldery.system.services.sensors_service.SensorsManager;
 
 public class StoveModuleGui extends SmartHouseApplication {
     private StoveAppController controller;
 
     @Override public void onLoad() throws OnLoadException {
-        final List<String> ids = super.inquireAbout("iStoves");
+        SensorsManager sensorsManager = (SensorsManager) super.getService(ServiceType.SENSORS_SERVICE);
+        
+        final List<String> ids = sensorsManager.inquireAbout("iStoves");
         if (ids.isEmpty())
             throw new OnLoadException(ErrorCode.SENSOR_COM_NAME_NOT_FOUND);
 
         final String sensorId = ids.get(0);
         System.out.println("msg from app: onLoad");
         try {
-            subscribeToSensor(sensorId, StoveSensor.class, stoveSensor -> {
+            sensorsManager.subscribeToSensor(sensorId, StoveSensor.class, stoveSensor -> {
                 final String t = "Stove is " + (stoveSensor.isOn() ? "" : "Not ") + "On at " + stoveSensor.getTemperture() + " degrees";
                 if (stoveSensor.isOn())
                     controller.turnOn();

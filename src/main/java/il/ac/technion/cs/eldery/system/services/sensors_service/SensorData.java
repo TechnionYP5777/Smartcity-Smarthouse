@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.system.applications.api;
+package il.ac.technion.cs.eldery.system.services.sensors_service;
 
 /** A base class for all sensor classes that will be used by the
  * SmartHouseApplication
