@@ -1,5 +1,7 @@
 package il.ac.technion.cs.eldery.system.applications.api;
 
+import java.io.IOException;
+import java.net.URL;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +11,10 @@ import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
-import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.stage.Stage;
 
 /** The API for the apps/modules developers Every app that wants to be installed
  * on the system, MUST extend this class
@@ -20,9 +22,9 @@ import javafx.stage.Stage;
  * @author roysh
  * @author Elia Traore
  * @since 8.12.2016 */
-public abstract class SmartHouseApplication extends Application {
+public abstract class SmartHouseApplication {
     private ApplicationsHandler applicationsHandler;
-    private Stage firstStage;
+    private Node rootNode;
 
     public SmartHouseApplication() {}
 
@@ -30,13 +32,19 @@ public abstract class SmartHouseApplication extends Application {
         applicationsHandler = ¢;
     }
 
-    @Override public final void start(final Stage s) throws Exception {
-        firstStage = s;
-        firstStage.setOnCloseRequest(event -> {
-            event.consume();
-            // ((Stage) event.getSource()).setIconified(true);
-            System.out.println("CLOSE");
-        });
+    public <T extends Initializable> T setContentView(URL location) {
+        final FXMLLoader fxmlLoader = new FXMLLoader(location);
+        try {
+            rootNode = fxmlLoader.load();
+        } catch (IOException e) {
+            rootNode = null;
+            e.printStackTrace();
+        }
+        return fxmlLoader.getController();
+    }
+    
+    public final Node getRootNode() {
+        return rootNode;
     }
 
     // [start] Public - Services to application developers
@@ -141,7 +149,6 @@ public abstract class SmartHouseApplication extends Application {
 
     public abstract String getApplicationName();
 
-    public abstract Node getRootNode();
     // [end]
 
     // [start] Private static functions

@@ -1,6 +1,5 @@
 package il.ac.technion.cs.eldery.applications.sos;
 
-import java.io.IOException;
 import java.util.List;
 
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
@@ -9,9 +8,6 @@ import il.ac.technion.cs.eldery.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException.ErrorCode;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 
 public class SosAppGui extends SmartHouseApplication {
@@ -40,31 +36,24 @@ public class SosAppGui extends SmartHouseApplication {
         } catch (final SensorNotFoundException ¢) {
             throw new OnLoadException(ErrorCode.SENSOR_ID_NOT_FOUND, ¢.getMessage());
         }
+        
+        
+        sosController = super.setContentView(getClass().getResource("sos_app_ui.fxml"));
+        
+        killerButon = sosController.getBtn();
+        killerButon.setOnAction(__ -> {
+            if (shouldAlert)
+                sosController.sosBtnPressed();
+            else {
+                sosController.sosBtnUnpress();
+                shouldAlert = !shouldAlert;
+            }
+        });
+        
     }
 
     @Override public String getApplicationName() {
         return "SOS Application";
-    }
-
-    @Override public Node getRootNode() {
-        try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("sos_app_ui.fxml"));
-            final Parent $ = fxmlLoader.load();
-            sosController = fxmlLoader.getController();
-            killerButon = sosController.getBtn();
-            killerButon.setOnAction(__ -> {
-                if (shouldAlert)
-                    sosController.sosBtnPressed();
-                else {
-                    sosController.sosBtnUnpress();
-                    shouldAlert = !shouldAlert;
-                }
-            });
-            return $;
-        } catch (final IOException ¢) {
-            ¢.printStackTrace();
-        }
-        return null;
     }
 
 }
