@@ -9,22 +9,21 @@ import org.apache.log4j.Logger;
 import il.ac.technion.cs.eldery.system.SystemCore;
 
 public class ServiceManager {
-    Logger log = Logger.getLogger(getClass());
+    static Logger log = Logger.getLogger(ServiceManager.class);
     
     private Map<ServiceType, Service> services = new HashMap<>();
     
     public ServiceManager(SystemCore systemCore) {
-        for (ServiceType s : ServiceType.values()) {
+        for (ServiceType s : ServiceType.values())
             try {
-                Service newService = s.getServiceClass().getDeclaredConstructor(SystemCore.class).newInstance(systemCore);
-                services.put(s, newService);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                services.put(s, s.getServiceClass().getDeclaredConstructor(SystemCore.class).newInstance(systemCore));
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                    | SecurityException e) {
                 log.error(e.getMessage());
             }
-        }
     }
     
-    public Service getService(ServiceType s) {
-        return services.get(s);
+    public Service getService(ServiceType t) {
+        return services.get(t);
     }
 }

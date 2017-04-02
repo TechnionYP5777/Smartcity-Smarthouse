@@ -3,9 +3,6 @@
  */
 package il.ac.technion.cs.eldery.system.applications.API;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import il.ac.technion.cs.eldery.sensors.InteractiveSensor;
 import il.ac.technion.cs.eldery.utils.Random;
 
