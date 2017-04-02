@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
+import il.ac.technion.cs.eldery.system.applications.ApplicationsCore;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.PathType;
@@ -30,7 +30,7 @@ public class TestWindowController implements Initializable {
         // no special actions to be done here
     }
 
-    public void setApplication(final ApplicationsHandler h, final Class<?> sensorSimulatorClass, final Class<?> applicationClass) {
+    public void setApplication(final ApplicationsCore h, final Class<?> sensorSimulatorClass, final Class<?> applicationClass) {
         final ObservableList<Node> children = consoleView.getChildren();
 
         children.add(makeText("please start the sensor simulator (" + sensorSimulatorClass.getName() + "), and press the button\n"));

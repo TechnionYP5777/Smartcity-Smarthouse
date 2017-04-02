@@ -5,8 +5,8 @@ import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
 import il.ac.technion.cs.eldery.system.SystemCore;
-import il.ac.technion.cs.eldery.system.userInformation.Contact;
-import il.ac.technion.cs.eldery.system.userInformation.UserInformation;
+import il.ac.technion.cs.eldery.system.user_information.Contact;
+import il.ac.technion.cs.eldery.system.user_information.UserInformation;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;

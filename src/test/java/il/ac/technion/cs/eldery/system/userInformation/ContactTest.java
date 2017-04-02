@@ -4,6 +4,8 @@ import org.jdom2.Element;
 import org.junit.Assert;
 import org.junit.Test;
 
+import il.ac.technion.cs.eldery.system.user_information.Contact;
+
 /** @author Inbal Zukerman
  * @since Dec 28, 2016 */
 public class ContactTest {

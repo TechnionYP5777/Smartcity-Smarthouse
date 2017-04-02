@@ -1,16 +1,11 @@
 package il.ac.technion.cs.eldery.system;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
-import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
+import il.ac.technion.cs.eldery.system.applications.ApplicationsCore;
 import il.ac.technion.cs.eldery.system.gui.MainSystemGuiController;
 import il.ac.technion.cs.eldery.system.sensors.SensorsHandler;
 import il.ac.technion.cs.eldery.system.services.ServiceManager;
-import il.ac.technion.cs.eldery.system.userInformation.Contact;
-import il.ac.technion.cs.eldery.system.userInformation.UserInformation;
+import il.ac.technion.cs.eldery.system.user_information.UserInformation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,10 +18,9 @@ public class SystemCore extends Application {
     private static final String APP_NAME = "SmartHouse";
     
     public final ServiceManager serviceManager = new ServiceManager(this);
-
     public final DatabaseHandler databaseHandler = new DatabaseHandler();
-    protected final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
-    protected final ApplicationsHandler applicationsHandler = new ApplicationsHandler(this);
+    public final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
+    protected final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     protected UserInformation user;
     private boolean userInitialized;
     private static Stage stage;
@@ -79,33 +73,6 @@ public class SystemCore extends Application {
 
     public boolean isUserInitialized() {
         return userInitialized;
-    }
-
-    public void alert(final String msg, final EmergencyLevel elvl) {
-        if (user == null)
-            return;
-        final List<Contact> $ = user.getContacts(elvl);
-        switch (elvl) {
-            case SMS_EMERGENCY_CONTACT:
-                $.stream().forEach(c -> Communicate.throughSms(c.getPhoneNumber(), msg));
-                break;
-            case CALL_EMERGENCY_CONTACT:
-            case CONTACT_HOSPITAL:
-            case CONTACT_POLICE:
-            case CONTACT_FIRE_FIGHTERS:
-                $.stream().forEach(c -> Communicate.throughPhone(c.getPhoneNumber()));
-                break;
-            case EMAIL_EMERGENCY_CONTACT:
-                $.stream().forEach(c -> Communicate.throughEmailFromHere(c.getEmailAddress(), msg));
-                break;
-            default:
-        }
-    }
-
-    public final void notifySensor(final String sensorId, final Map<String,String> instruction) {
-        // todo: access the map of threads in sensorhandler, get the thread of
-        // @sensorId, and send the instructions
-        sensorsHandler.sendInstruction(new UpdateMessage(sensorId, instruction));
     }
     
     public static Stage getStage(){

@@ -22,10 +22,22 @@ public abstract class SmartHouseApplication {
 
     public SmartHouseApplication() {}
 
+    // [start] Public - Services to the SystemCore
     public void setServiceManager(final ServiceManager $) {
         serviceManager = $;
     }
+    
+    public final Node getRootNode() {
+        return rootNode;
+    }
+    // [end]
 
+    // [start] Public - Services to application developers
+    /**
+     * Set the fxml file that will be used
+     * @param location of the fxml file
+     * @return
+     */
     public <T extends Initializable> T setContentView(URL location) {
         final FXMLLoader fxmlLoader = new FXMLLoader(location);
         try {
@@ -37,15 +49,14 @@ public abstract class SmartHouseApplication {
         return fxmlLoader.getController();
     }
     
-    public final Node getRootNode() {
-        return rootNode;
-    }
-    
+    /**
+     * Get a service from the system
+     * @param $
+     * @return
+     */
     public Service getService(ServiceType $) {
         return serviceManager.getService($);
     }
-
-    // [start] Public - Services to application developers
 
     /** Saves the app's data to the system's database
      * @param data
@@ -67,10 +78,5 @@ public abstract class SmartHouseApplication {
     public abstract void onLoad() throws OnLoadException;
 
     public abstract String getApplicationName();
-
     // [end]
-
-    // [start] Private static functions
-    // [end]
-
 }

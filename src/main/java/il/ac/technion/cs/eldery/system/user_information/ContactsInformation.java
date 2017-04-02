@@ -1,4 +1,4 @@
-package il.ac.technion.cs.eldery.system.userInformation;
+package il.ac.technion.cs.eldery.system.user_information;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -16,13 +16,13 @@ import il.ac.technion.cs.eldery.utils.Generator;
  * @author Elia Traore
  * @author Inbal Zukerman
  * @since Dec 13, 2016 */
-public class ApplicationsHandler {
+public class ApplicationsCore {
     List<ApplicationManager> apps = new ArrayList<>();
     SystemCore systemCore;
 
     /** Initialize the applicationHandler with the database responsible of
      * managing the data in the current session */
-    public ApplicationsHandler(final SystemCore systemCore) {
+    public ApplicationsCore(final SystemCore systemCore) {
         this.systemCore = systemCore;
     }
 

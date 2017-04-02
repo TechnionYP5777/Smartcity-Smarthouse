@@ -5,7 +5,7 @@ import java.io.IOException;
 import il.ac.technion.cs.eldery.applications.vitals.VitalsApp;
 import il.ac.technion.cs.eldery.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
-import il.ac.technion.cs.eldery.system.userInformation.Contact;
+import il.ac.technion.cs.eldery.system.user_information.Contact;
 import javafx.stage.Stage;
 
 /** @author Yarden

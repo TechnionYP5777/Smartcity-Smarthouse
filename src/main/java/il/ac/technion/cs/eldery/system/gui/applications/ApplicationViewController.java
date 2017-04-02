@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.system.applications.ApplicationManager;
-import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
+import il.ac.technion.cs.eldery.system.applications.ApplicationsCore;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,13 +25,13 @@ public class ApplicationViewController implements Initializable {
     @FXML VBox vBox;
     File file;
 
-    private ApplicationsHandler appsHandler;
+    private ApplicationsCore appsHandler;
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
         // no special actions to be done here
     }
 
-    public void setAppsHandler(final ApplicationsHandler appsHandler) {
+    public void setAppsHandler(final ApplicationsCore appsHandler) {
         this.appsHandler = appsHandler;
 
         initVBox();

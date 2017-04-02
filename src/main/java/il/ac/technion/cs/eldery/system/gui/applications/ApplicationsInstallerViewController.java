@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 import org.controlsfx.control.ToggleSwitch;
 
 import il.ac.technion.cs.eldery.applications.PremadeApplications;
-import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
+import il.ac.technion.cs.eldery.system.applications.ApplicationsCore;
 import il.ac.technion.cs.eldery.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.eldery.system.applications.installer.ApplicationPath.PathType;
@@ -37,7 +37,7 @@ public class ApplicationsInstallerViewController implements Initializable {
     @FXML private Button installBtn;
 
     private ApplicationViewController applicationViewController;
-    private ApplicationsHandler applicationsHandler;
+    private ApplicationsCore applicationsHandler;
     private boolean inRealMode;
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
@@ -49,7 +49,7 @@ public class ApplicationsInstallerViewController implements Initializable {
     }
 
     // [start] Public - set params
-    public void setApplicationsHandler(final ApplicationsHandler ¢) {
+    public void setApplicationsHandler(final ApplicationsCore ¢) {
         applicationsHandler = ¢;
     }
 

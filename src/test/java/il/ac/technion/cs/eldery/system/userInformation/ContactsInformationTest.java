@@ -7,6 +7,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import il.ac.technion.cs.eldery.system.EmergencyLevel;
+import il.ac.technion.cs.eldery.system.user_information.Contact;
+import il.ac.technion.cs.eldery.system.user_information.ContactsInformation;
 
 /** @author Inbal Zukerman
  * @since Dec 30, 2016 */

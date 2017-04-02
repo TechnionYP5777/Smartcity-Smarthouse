@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 
 import il.ac.technion.cs.eldery.system.DatabaseHandler;
 import il.ac.technion.cs.eldery.system.SystemCore;
-import il.ac.technion.cs.eldery.system.applications.ApplicationsHandler;
+import il.ac.technion.cs.eldery.system.applications.ApplicationsCore;
 import il.ac.technion.cs.eldery.system.gui.applications.ApplicationViewController;
 import il.ac.technion.cs.eldery.system.gui.mapping.MappingController;
 import javafx.fxml.FXML;
@@ -52,7 +52,7 @@ public class MainSystemGuiController implements Initializable {
         return this;
     }
 
-    public MainSystemGuiController setApplicationsHandler(final ApplicationsHandler appsHandler) {
+    public MainSystemGuiController setApplicationsHandler(final ApplicationsCore appsHandler) {
         appsController.setAppsHandler(appsHandler);
         return this;
     }

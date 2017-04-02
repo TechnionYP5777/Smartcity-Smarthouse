@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
+import il.ac.technion.cs.eldery.networking.messages.UpdateMessage;
 import il.ac.technion.cs.eldery.system.SystemCore;
 import il.ac.technion.cs.eldery.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.eldery.system.services.Service;
@@ -137,7 +138,9 @@ public class SensorsManager extends Service {
      *        inquireAbout(sensorCommercialName)
      * @param instruction the message that the sensor will recieve */
     public final void instructSensor(final String sensorId, final Map<String,String> instruction) {
-        systemCore.notifySensor(sensorId, instruction);
+     // todo: access the map of threads in sensorhandler, get the thread of
+        // @sensorId, and send the instructions
+        systemCore.sensorsHandler.sendInstruction(new UpdateMessage(sensorId, instruction));
     }
 
 }
