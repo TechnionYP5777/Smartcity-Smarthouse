@@ -10,7 +10,7 @@ import il.ac.technion.cs.smarthouse.system.applications.api.exceptions.OnLoadExc
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.smarthouse.system.exceptions.ApplicationInitializationException;
-import il.ac.technion.cs.smarthouse.utils.Generator;
+import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /** API allowing smart house applications to register for information and notify
  * on emergencies
@@ -34,7 +34,7 @@ public class ApplicationsCore {
      * @throws OnLoadException
      * @throws ApplicationInitializationException */
     public ApplicationManager addApplication(final ApplicationPath<?> appPath) throws AppInstallerException, IOException, OnLoadException {
-        final ApplicationManager $ = new ApplicationManager(Generator.GenerateUniqueIDstring(), appPath);
+        final ApplicationManager $ = new ApplicationManager(UuidGenerator.GenerateUniqueIDstring(), appPath);
         $.initialize(systemCore.serviceManager);
         apps.add($);
         return $;

@@ -11,15 +11,19 @@ import java.util.TimerTask;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.smarthouse.system.services.Service;
-import javafx.application.Platform;
+import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 
 public class SensorsManager extends Service {
+    
+    static Logger log = Logger.getLogger(SensorsManager.class);
     
     public SensorsManager(final SystemCore $) {
         super($);
@@ -32,8 +36,8 @@ public class SensorsManager extends Service {
     /** Surrounds the given function with a Platform.runLater
      * @param functionToRun
      * @return the modified consumer */
-    protected static <T extends SensorData> Consumer<T> generateConsumer(final Consumer<T> functionToRun) {
-        return sensorData -> Platform.runLater(() -> functionToRun.accept(sensorData));
+    protected static <T extends SensorData> Consumer<T> generateConsumer(final Consumer<T> functionToRun, boolean runOnFx) {
+        return !runOnFx ? functionToRun : JavaFxHelper.surroundConsumerWithFx(functionToRun);
     }
     
     static Date localTimeToDate(final LocalTime ¢) {
@@ -88,7 +92,7 @@ public class SensorsManager extends Service {
      * @throws SensorNotFoundException */
     public final <T extends SensorData> void subscribeToSensor(final String sensorId, final Class<T> sensorClass, final Consumer<T> functionToRun)
             throws SensorNotFoundException {
-        systemCore.databaseHandler.addListener(sensorId, generateSensorListener(sensorClass, generateConsumer(functionToRun)));
+        systemCore.databaseHandler.addListener(sensorId, generateSensorListener(sensorClass, generateConsumer(functionToRun, true)));
     }
 
     /** Allows registration to a sensor. on time, the sensor will be polled and
@@ -104,7 +108,7 @@ public class SensorsManager extends Service {
      *        time FOREVER) */
     public final <T extends SensorData> void subscribeToSensor(final String sensorId, final LocalTime t, final Class<T> sensorClass,
             final Consumer<T> functionToRun, final Boolean repeat) {
-        new Timer().schedule(new QueryTimerTask(sensorId, t, generateSensorListener(sensorClass, generateConsumer(functionToRun)), repeat), localTimeToDate(t));
+        new Timer().schedule(new QueryTimerTask(sensorId, t, generateSensorListener(sensorClass, generateConsumer(functionToRun, true)), repeat), localTimeToDate(t));
     }
 
     /** Request for the latest k entries of data received by a sensor

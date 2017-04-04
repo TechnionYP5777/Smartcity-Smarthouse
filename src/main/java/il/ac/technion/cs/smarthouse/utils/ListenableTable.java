@@ -21,7 +21,7 @@ public class ListenableTable<T, S> extends Table<T, S> {
      * @param listener listener to be added
      * @return id of the new listener */
     public String addListener(final Consumer<Table<T, S>> listener) {
-        final String $ = Generator.GenerateUniqueIDstring();
+        final String $ = UuidGenerator.GenerateUniqueIDstring();
         listeners.put($, listener);
 
         return $;

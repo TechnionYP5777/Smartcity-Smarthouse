@@ -74,7 +74,7 @@ public class ListenableList<T> extends ArrayList<T> {
      * @param listener listener to be added
      * @return id of the new listener */
     public String addListener(final Consumer<T> listener) {
-        final String $ = Generator.GenerateUniqueIDstring();
+        final String $ = UuidGenerator.GenerateUniqueIDstring();
         listeners.put($, listener);
 
         return $;

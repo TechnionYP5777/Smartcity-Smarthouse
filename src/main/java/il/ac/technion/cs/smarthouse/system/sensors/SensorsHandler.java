@@ -32,17 +32,18 @@ public class SensorsHandler implements Runnable {
         this.databaseHandler = databaseHandler;
     }
 
+    @SuppressWarnings("unused")
     @Override public void run() {
-        try (ServerSocket server = new ServerSocket(40001); ServerSocket router = new ServerSocket(40002)) {
-            this.server = server;
-            this.router = router;
+        try (ServerSocket server1 = new ServerSocket(40001); ServerSocket router1 = new ServerSocket(40002)) {
+            this.server = server1;
+            this.router = router1;
             while (true)
                 try {
 //                    System.out.println("sensorhandler about to attempt to accept connection on 40001"); todo: delete after debugging ends
-                    @SuppressWarnings("resource") final Socket client = server.accept();
+                    @SuppressWarnings("resource") final Socket client = server1.accept();
                     new SensorsHandlerThread(client, databaseHandler).start();
 //                    System.out.println("sensorhandler about to attempt to accept connection on 40002"); todo: delete after debugging ends
-                    @SuppressWarnings("resource") final Socket sensor = router.accept();
+                    @SuppressWarnings("resource") final Socket sensor = router1.accept();
                     new InstructionsSenderThread(sensor, (id, out) -> routingMap.put(id, out)).start();
 //                    System.out.println("sensorhandler created connection with an interactivesensor"); todo: delete after debugging ends
                 } catch (final SocketException ¢) {
