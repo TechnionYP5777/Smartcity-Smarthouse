@@ -1,7 +1,7 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.system.applications.API;
+package il.ac.technion.cs.smarthouse.system.services;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,12 +112,12 @@ public class SensorsManagerTest {
     /**
      * [[SuppressWarningsSpartan]]
      */
-    @Ignore //todo: why  java.lang.IllegalStateException: Toolkit not initialized ? 
+    @Ignore
     @SuppressWarnings("boxing")
     @Test public void subscribeToExistingWorks() throws SensorNotFoundException, InterruptedException{
         class TestSensorData extends SensorData { public Boolean b;}
         Boolean[] $ = new Boolean[] {false};
-        sensorsManager.subscribeToSensor(sensorIds.get(currentTestName), TestSensorData.class, o -> { $[0] =  o.b;});
+        sensorsManager.subscribeToSensor(sensorIds.get(currentTestName), TestSensorData.class, o -> { $[0] =  o == null;});
         
         Map<String, String> data = new HashMap<>();
         data.put("b", "true");

@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.applications.API;
+package il.ac.technion.cs.smarthouse.system.services;
 
 import java.util.function.Consumer;
 

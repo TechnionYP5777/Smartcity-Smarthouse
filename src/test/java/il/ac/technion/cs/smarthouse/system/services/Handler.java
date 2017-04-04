@@ -1,7 +1,7 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.system.applications.API;
+package il.ac.technion.cs.smarthouse.system.services;
 
 /**
  * @author Elia Traore
