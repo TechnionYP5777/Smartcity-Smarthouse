@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<VBox prefHeight="400.0" prefWidth="550.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.applications.vitals.Controller">
+<VBox prefHeight="400.0" prefWidth="550.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.applications.vitals.Controller">
    <children>
       <Label fx:id="pulseLabel" text="Pulse: 70" />
       <Label fx:id="bpLabel" text="Blood Pressure: 120/80" />

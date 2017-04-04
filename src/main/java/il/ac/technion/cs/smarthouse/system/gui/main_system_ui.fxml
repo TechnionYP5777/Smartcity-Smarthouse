@@ -5,7 +5,7 @@
 
 <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE"
 	xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="il.ac.technion.cs.eldery.system.gui.MainSystemGuiController">
+	fx:controller="il.ac.technion.cs.smarthouse.system.gui.MainSystemGuiController">
 	<tabs>
 		<Tab fx:id="homeTab" text="home screen" />
 		<Tab fx:id="appsTab" text="applications" />

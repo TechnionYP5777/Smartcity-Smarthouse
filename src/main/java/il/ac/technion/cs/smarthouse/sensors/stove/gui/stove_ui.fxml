@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox prefHeight="400.0" prefWidth="550.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.eldery.sensors.stove.gui.Controller">
+<VBox prefHeight="400.0" prefWidth="550.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.sensors.stove.gui.Controller">
    <children>
       <Label fx:id="tempLabel" disable="true" text="Temperature: 100" />
       <Slider fx:id="tempSlider" disable="true" max="150.0" value="100.0" />
