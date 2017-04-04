@@ -19,7 +19,7 @@
 			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
 				<HBox alignment="TOP_LEFT">
-					<ToggleSwitch fx:id="toggleBtn" alignment="CENTER_RIGHT"
+					<Button fx:id="toggleBtn" alignment="CENTER_RIGHT"
 						text="ToggleButtonss" />
 				</HBox>
 				<VBox alignment="TOP_CENTER">

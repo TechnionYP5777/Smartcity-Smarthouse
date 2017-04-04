@@ -14,6 +14,8 @@ import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPat
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -27,7 +29,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ApplicationsInstallerViewController implements Initializable {
-    @FXML private ToggleSwitch toggleBtn;
+    @FXML private Button toggleBtn;
     @FXML private VBox toggleOptionsParent;
     @FXML private HBox toggleOptionBrowse;
     @FXML private TextField browseText;
@@ -38,7 +40,7 @@ public class ApplicationsInstallerViewController implements Initializable {
 
     private ApplicationViewController applicationViewController;
     private ApplicationsCore applicationsHandler;
-    private boolean inRealMode;
+    boolean inRealMode;
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
         initToggleBtn();
@@ -60,11 +62,15 @@ public class ApplicationsInstallerViewController implements Initializable {
 
     // [start] Private - init FXML elements
     private void initToggleBtn() {
-        toggleBtn.selectedProperty().addListener((ChangeListener<Boolean>) (__, oldValue, newValue) -> {
-            if (newValue.booleanValue())
-                gotoTestMode();
-            else
-                gotoRegularMode();
+        toggleBtn.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override public void handle(ActionEvent event) {
+                if (ApplicationsInstallerViewController.this.inRealMode)
+                    gotoTestMode();
+                else
+                    gotoRegularMode();
+                
+            }
         });
     }
 

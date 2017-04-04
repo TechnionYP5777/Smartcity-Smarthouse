@@ -17,7 +17,7 @@ public class MainSystemGuiController implements Initializable {
     private MappingController mappingController;
     private ApplicationViewController appsController;
     private UserInfoController userController;
-    private SystemCore sysCore;
+    public SystemCore sysCore;
     @FXML Tab homeTab;
     @FXML Tab userTab;
     @FXML Tab appsTab;
