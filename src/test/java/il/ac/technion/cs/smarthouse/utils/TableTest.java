@@ -85,7 +85,7 @@ public class TableTest {
 
     }
 
-    @Test @SuppressWarnings("boxing") public void getLastEntryAtColTest() {
+    @Test public void getLastEntryAtColTest() {
         Assert.assertNull(unlimitedTable.getLastEntryAtCol("A"));
         info1.put("A", 1);
         info1.put("B", 2);
@@ -94,11 +94,11 @@ public class TableTest {
         Assert.assertEquals(2, (int) limitedTable.getLastEntryAtCol("B"));
     }
 
-    @Test @SuppressWarnings("boxing") public void getTest() {
+    @Test public void getTest() {
 
         try {
             Assert.assertNull(unlimitedTable.get(1, "A"));
-        } catch (@SuppressWarnings("unused") final OutOfTableLimit e) {
+        } catch (final OutOfTableLimit e) {
             assert false; // should never get here
         }
 
@@ -113,7 +113,7 @@ public class TableTest {
             Assert.assertEquals(1, (int) limitedTable.get(Table.OLDEST_DATA_INDEX, "A"));
             Assert.assertEquals(2, (int) limitedTable.get(Table.OLDEST_DATA_INDEX, "B"));
             Assert.assertEquals(3, (int) limitedTable.get(1, "X"));
-        } catch (@SuppressWarnings("unused") final OutOfTableLimit e) {
+        } catch (final OutOfTableLimit e) {
             assert false; // should never get here
         }
     }

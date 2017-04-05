@@ -165,7 +165,7 @@ public class UserInfoController implements Initializable {
         return this;
     }
 
-    @FXML private void addContactToTable(@SuppressWarnings("unused") final ActionEvent __) {
+    @FXML private void addContactToTable(final ActionEvent __) {
         final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(), addEmailField.getText());
         systemCore.getUser().addContact(contact, addELevelField.getValue());
         final ContactGUI guiContact = new ContactGUI(contact, addELevelField.getValue());

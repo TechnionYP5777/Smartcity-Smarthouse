@@ -18,7 +18,7 @@ public class DatabaseManagerTest {
     public static String testParse = "DatabaseManagerTest";
 
     @BeforeClass
-    @SuppressWarnings("boxing") public static void init() {
+    public static void init() {
         try {
             ParseUser.currentUser = new ParseUser();
             DatabaseManager.initialize();
@@ -34,7 +34,7 @@ public class DatabaseManagerTest {
     }
 
     @Test
-    @SuppressWarnings({ "static-method", "boxing" })  // JUnit tests cannot be static
+    @SuppressWarnings({ "static-method" })  // JUnit tests cannot be static
 
     public void dataManagmentTest() throws ParseException {
         Map<String, Object> m = new HashMap<>();

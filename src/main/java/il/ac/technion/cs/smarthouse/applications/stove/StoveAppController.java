@@ -111,7 +111,7 @@ public class StoveAppController implements Initializable {
     @Override public void initialize(final URL location, final ResourceBundle __) {
 
         stoveConfigButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override @SuppressWarnings("hiding") public void handle(final ActionEvent __) {
+            @Override public void handle(final ActionEvent __1) {
                 try {
                     final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("stove_app_config.fxml"));
                     final Parent root1 = (Parent) fxmlLoader.load();

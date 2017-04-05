@@ -22,30 +22,28 @@ import il.ac.technion.cs.smarthouse.system.services.Service;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 
 public class SensorsManager extends Service {
-    
+
     static Logger log = Logger.getLogger(SensorsManager.class);
-    
+
     public SensorsManager(final SystemCore $) {
         super($);
     }
-    
+
     static <T extends SensorData> Consumer<String> generateSensorListener(final Class<T> sensorClass, final Consumer<T> functionToRun) {
         return jsonData -> functionToRun.accept(new Gson().fromJson(jsonData, sensorClass));
     }
-    
+
     /** Surrounds the given function with a Platform.runLater
      * @param functionToRun
      * @return the modified consumer */
     protected static <T extends SensorData> Consumer<T> generateConsumer(final Consumer<T> functionToRun, boolean runOnFx) {
         return !runOnFx ? functionToRun : JavaFxHelper.surroundConsumerWithFx(functionToRun);
     }
-    
+
     static Date localTimeToDate(final LocalTime ¢) {
         return Date.from(¢.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
     }
-    
-    
-    
+
     private class QueryTimerTask extends TimerTask {
         Boolean repeat;
         String sensorId;
@@ -62,17 +60,14 @@ public class SensorsManager extends Service {
         /* (non-Javadoc)
          * 
          * @see java.util.TimerTask#run() */
-        @Override @SuppressWarnings("boxing") public void run() {
+        @SuppressWarnings("synthetic-access") @Override public void run() {
             notifee.accept(systemCore.databaseHandler.getLastEntryOf(sensorId).orElse(new String()));
             if (repeat)
                 new Timer().schedule(this, localTimeToDate(t));
         }
 
     }
-    
-    
-    
-    
+
     /** Ask for the list of sensorIds registered by a specific commercial name
      * @param sensorCommercialName the sensor in question
      * @return a list of IDs of those sensors in the system. They can be used in
@@ -108,7 +103,8 @@ public class SensorsManager extends Service {
      *        time FOREVER) */
     public final <T extends SensorData> void subscribeToSensor(final String sensorId, final LocalTime t, final Class<T> sensorClass,
             final Consumer<T> functionToRun, final Boolean repeat) {
-        new Timer().schedule(new QueryTimerTask(sensorId, t, generateSensorListener(sensorClass, generateConsumer(functionToRun, true)), repeat), localTimeToDate(t));
+        new Timer().schedule(new QueryTimerTask(sensorId, t, generateSensorListener(sensorClass, generateConsumer(functionToRun, true)), repeat),
+                localTimeToDate(t));
     }
 
     /** Request for the latest k entries of data received by a sensor
@@ -121,8 +117,8 @@ public class SensorsManager extends Service {
      * @throws SensorNotFoundException */
     public final <T extends SensorData> List<T> receiveLastEntries(final String sensorId, final Class<T> sensorClass, final int numOfEntries)
             throws SensorNotFoundException {
-        return systemCore.databaseHandler.getList(sensorId).getLastKEntries(numOfEntries).stream().map(jsonData -> new Gson().fromJson(jsonData, sensorClass))
-                .collect(Collectors.toList());
+        return systemCore.databaseHandler.getList(sensorId).getLastKEntries(numOfEntries).stream()
+                .map(jsonData -> new Gson().fromJson(jsonData, sensorClass)).collect(Collectors.toList());
     }
 
     /** Request the latest data received by the sensor in the system
@@ -136,15 +132,15 @@ public class SensorsManager extends Service {
         final List<T> $ = receiveLastEntries(sensorId, sensorClass, 1);
         return $.isEmpty() ? null : $.get(0);
     }
-    
-    /** Send a message to a sensor. 
+
+    /** Send a message to a sensor.
      * @param sensorId The ID of the sensor, returned from
      *        inquireAbout(sensorCommercialName)
-     * @param instruction the message that the sensor will recieve 
+     * @param instruction the message that the sensor will recieve
      * @throws SensorNotFoundException */
-    @SuppressWarnings("boxing")
-    public final void instructSensor(final String sensorId, final Map<String,String> instruction) throws SensorNotFoundException {
-        if(!systemCore.databaseHandler.sensorExists(sensorId))
+    public final void instructSensor(final String sensorId, final Map<String, String> instruction)
+            throws SensorNotFoundException {
+        if (!systemCore.databaseHandler.sensorExists(sensorId))
             throw new SensorNotFoundException();
         systemCore.sensorsHandler.sendInstruction(new UpdateMessage(sensorId, instruction));
     }

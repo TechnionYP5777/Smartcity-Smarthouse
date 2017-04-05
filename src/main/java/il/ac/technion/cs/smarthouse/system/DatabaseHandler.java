@@ -50,7 +50,6 @@ public class DatabaseHandler {
         return !commNames.containsKey(commName) ? new ArrayList<>() : commNames.get(commName);
     }
     
-    @SuppressWarnings("boxing")
     public Boolean sensorExists(final String id){//TODO - move method to sensorsHandler
         return sensors.containsKey(id);
     }
@@ -83,7 +82,7 @@ public class DatabaseHandler {
     public String addListener(final String $, final Consumer<String> notifee) throws SensorNotFoundException {
         try {
             return sensors.get($).addListener(notifee);
-        } catch (@SuppressWarnings("unused") final Exception e) {
+        } catch (final Exception e) {
             throw new SensorNotFoundException();
         }
     }

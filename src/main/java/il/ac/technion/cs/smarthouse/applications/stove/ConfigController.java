@@ -49,13 +49,13 @@ public class ConfigController implements Initializable {
 
         Cancel.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override @SuppressWarnings("hiding") public void handle(final ActionEvent __) {
+            @Override public void handle(final ActionEvent __1) {
                 // do what you have to do
                 ((Stage) Cancel.getScene().getWindow()).close();
             }
         });
         Apply.setOnAction(new EventHandler<ActionEvent>() {
-            @Override @SuppressWarnings("hiding") public void handle(final ActionEvent __) {
+            @Override public void handle(final ActionEvent __1) {
                 final Stage stage = (Stage) Apply.getScene().getWindow();
                 final String time = secs.getText(), degrees = cels.getText();
                 if (validateInput(time, degrees)) {

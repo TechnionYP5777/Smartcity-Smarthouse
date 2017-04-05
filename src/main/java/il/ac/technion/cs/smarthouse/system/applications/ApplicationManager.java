@@ -63,7 +63,7 @@ public class ApplicationManager {
 
     /** If the application is installed, but currently closed, this will reopen
      * it. */
-    @SuppressWarnings("boxing") public void reopen(final Pane parentPane) {
+    public void reopen(final Pane parentPane) {
         if (application == null || rootNode == null)
             return;
 

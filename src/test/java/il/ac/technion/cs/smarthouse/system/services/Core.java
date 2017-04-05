@@ -12,7 +12,6 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
 public class Core extends SystemCore{
     Thread sensorsThread = new Thread(sensorsHandler);
     
-    @SuppressWarnings("unused")
     public Core() {
         sensorsThread.start();
     }

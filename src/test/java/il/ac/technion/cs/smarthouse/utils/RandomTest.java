@@ -16,7 +16,7 @@ public class RandomTest {
         Assert.assertEquals(":", String.valueOf(sensorId.charAt(8)));
     }
 
-    @Test @SuppressWarnings("boxing") public void CheckIdValues() {
+    @Test public void CheckIdValues() {
         for (String s : Random.sensorId().split(":")) {
             int d = Integer.decode("0x" + s);
             Assert.assertEquals(d < 256, true);

@@ -62,7 +62,7 @@ public class ApplicationsInstallerViewController implements Initializable {
     private void initToggleBtn() {
         toggleBtn.setOnAction(new EventHandler<ActionEvent>() {
             
-            @Override public void handle(ActionEvent event) {
+            @Override public void handle(ActionEvent __) {
                 if (ApplicationsInstallerViewController.this.inRealMode)
                     gotoTestMode();
                 else

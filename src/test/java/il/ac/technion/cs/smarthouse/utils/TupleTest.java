@@ -7,7 +7,6 @@ import il.ac.technion.cs.smarthouse.utils.Tuple;
 
 /** @author Inbal Zukerman
  * @since 8.12.2016 */
-@SuppressWarnings("boxing")
 public class TupleTest {
     private final Tuple<String, String> tupleStrStr = new Tuple<>("A", "a");
     private final Tuple<String, Integer> tupleStrInt = new Tuple<>("A", 7);

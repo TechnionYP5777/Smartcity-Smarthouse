@@ -48,7 +48,7 @@ public class ApplicationViewController implements Initializable {
         listView.setOnMouseClicked(e -> appsHandler.getApplicationManagers().get(listView.getSelectionModel().getSelectedIndex()).reopen(appView));
     }
 
-    @SuppressWarnings("boxing") private void initPlusBtn() {
+    private void initPlusBtn() {
         plusButton.setStyle("-fx-font: 42 arial; -fx-base: #b6e7c9;");
         plusButton.setOnAction(e -> {
             try {

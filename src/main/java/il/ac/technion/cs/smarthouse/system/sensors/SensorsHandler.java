@@ -32,7 +32,6 @@ public class SensorsHandler implements Runnable {
         this.databaseHandler = databaseHandler;
     }
 
-    @SuppressWarnings("unused")
     @Override public void run() {
         try (ServerSocket server1 = new ServerSocket(40001); ServerSocket router1 = new ServerSocket(40002)) {
             this.server = server1;

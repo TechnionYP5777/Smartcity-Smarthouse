@@ -67,7 +67,7 @@ public abstract class Sensor {
      * observations are represented as a map from the names of the observations,
      * to their values.
      * @param data observations to send to the system */
-    @SuppressWarnings("boxing") public void updateSystem(final Map<String, String> data) {
+    public void updateSystem(final Map<String, String> data) {
         final long currMillis = System.currentTimeMillis();
         for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
             if (currMillis - lastMessagesMillis.get(¢) > 1000)
