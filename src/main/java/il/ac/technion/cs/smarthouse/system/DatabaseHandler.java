@@ -49,6 +49,11 @@ public class DatabaseHandler {
     public List<String> getSensors(final String commName) {
         return !commNames.containsKey(commName) ? new ArrayList<>() : commNames.get(commName);
     }
+    
+    @SuppressWarnings("boxing")
+    public Boolean sensorExists(final String id){//TODO - move method to sensorsHandler
+        return sensors.containsKey(id);
+    }
 
     /** Returns the commercial name associated with the required sensor.
      * @param sensorId sensor'd id

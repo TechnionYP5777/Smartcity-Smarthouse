@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -71,7 +70,7 @@ public abstract class InteractiveSensor extends Sensor {
      *         otherwise */
     public boolean operate() {
         try {
-            return !instIn.ready() || handler.applyInstruction(((UpdateMessage) MessageFactory.create(instIn.readLine())).getData());
+            return instIn.ready() && handler.applyInstruction(((UpdateMessage) MessageFactory.create(instIn.readLine())).getData());
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -85,11 +84,4 @@ public abstract class InteractiveSensor extends Sensor {
         this.period = p;
         new Timer().schedule(new InstructionChecker(), 0, period);
     }
-}
-
-interface InstructionHandler {
-    /** Acts due to an instruction.
-     * @return <code>true</code> if the action was successful,
-     *         <code>false</code> otherwise */
-    boolean applyInstruction(Map<String, String> instructionData);
 }
