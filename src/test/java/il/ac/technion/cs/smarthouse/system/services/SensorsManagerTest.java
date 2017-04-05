@@ -147,16 +147,11 @@ public class SensorsManagerTest {
     /**
      * [[SuppressWarningsSpartan]]
      */
-    @Ignore // TODO: comment the annotation and debug 
+    class TestSensorData extends SensorData { public Boolean b;}
     @SuppressWarnings("boxing")
     @Test public void subscribeToExistingWorks() throws SensorNotFoundException, InterruptedException{
-        class TestSensorData extends SensorData { public Boolean b;}
         Boolean[] $ = new Boolean[] {false};
-        sensorsManager.subscribeToSensor(currentInfo.sensorId(), TestSensorData.class, o -> { 
-            System.out.println(""+$[0]);
-            $[0] =  o == null;
-            System.out.println(""+$[0]);
-            });
+        sensorsManager.subscribeToSensor(currentInfo.sensorId(), TestSensorData.class, o -> {$[0] =  o.b;});
         
         Map<String, String> data = new HashMap<>();
         data.put("b", true + "");
