@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
-import org.controlsfx.control.ToggleSwitch;
 
 import il.ac.technion.cs.smarthouse.applications.PremadeApplications;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
@@ -13,7 +12,6 @@ import il.ac.technion.cs.smarthouse.system.applications.api.exceptions.OnLoadExc
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
