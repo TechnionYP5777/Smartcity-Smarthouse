@@ -3,6 +3,7 @@
  */
 package il.ac.technion.cs.smarthouse.system.services;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +94,22 @@ public class SensorsManagerTest {
         testsInfo.put(test, new TestData(test));
         testsInfo.get(test).setObserNames(new String[]{"b"});
         
+        test = "receiveLastEntriesOfNoneExistingThrows";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
+        test = "receiveLastEntriesOfExistingWorks";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
+        test = "receiveLastEntryOfExistingWorks";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
+        test = "receiveLastEntryOfNoneExistingThrows";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
     }
     
     @AfterClass public static void teardown_killSensorHandler(){
@@ -138,16 +155,12 @@ public class SensorsManagerTest {
                                                         .filter(id -> idsInSystem.contains(id)).count(),0);
     }
     
+    class TestSensorData extends SensorData { public Boolean b;}
     @Test(expected = SensorNotFoundException.class)
     public void subscribeToNoneExistingThrows() throws SensorNotFoundException{
-        class TestSensorData extends SensorData {}
         sensorsManager.subscribeToSensor("not a sensor id", TestSensorData.class, tsd -> {});
     }
     
-    /**
-     * [[SuppressWarningsSpartan]]
-     */
-    class TestSensorData extends SensorData { public Boolean b;}
     @SuppressWarnings("boxing")
     @Test public void subscribeToExistingWorks() throws SensorNotFoundException, InterruptedException{
         Boolean[] $ = new Boolean[] {false};
@@ -162,10 +175,46 @@ public class SensorsManagerTest {
         Assert.assertEquals(true,$[0]);
     }
     
-    public void TBD(){
-        //todo:
+    @Test(expected = SensorNotFoundException.class)
+    public void receiveLastEntriesOfNoneExistingThrows() throws SensorNotFoundException{
+        sensorsManager.receiveLastEntries("not a sensor id", TestSensorData.class, 3);
     }
     
+    /**
+     * [[SuppressWarningsSpartan]]
+     */
+    @SuppressWarnings("boxing")
+    @Test public void receiveLastEntriesOfExistingWorks() throws SensorNotFoundException, InterruptedException{
+        List<Boolean> dataToBeSent = Arrays.asList(false, true, false);
+        
+        for(Boolean b : dataToBeSent){
+            Map<String, String> data = new HashMap<>();
+            data.put("b", b + "");
+            sensor.updateSystem(data);
+        }
+        Thread.sleep(5000);
+        
+        List<TestSensorData> dataReceived = sensorsManager.receiveLastEntries(currentInfo.sensorId(), TestSensorData.class, 3);
+        
+        for(int i=0; i < dataToBeSent.size(); i++){
+            Assert.assertEquals(dataToBeSent.get(i), dataReceived.get(i).b);            
+        }
+    }
     
+    @Test(expected = SensorNotFoundException.class)
+    public void receiveLastEntryOfNoneExistingThrows() throws SensorNotFoundException{
+        sensorsManager.receiveLastEntry("not a sensor id", TestSensorData.class);
+    }
+
+    @SuppressWarnings("boxing")
+    @Test public void receiveLastEntryOfExistingWorks() throws SensorNotFoundException, InterruptedException{
+        Map<String, String> data = new HashMap<>();
+        data.put("b", true + "");
+        sensor.updateSystem(data);
+        
+        Thread.sleep(5000);
+        
+        Assert.assertEquals(true, sensorsManager.receiveLastEntry(currentInfo.sensorId(), TestSensorData.class).b);
+    }
 }
 
