@@ -140,10 +140,12 @@ public class SensorsManager extends Service {
     /** Send a message to a sensor. 
      * @param sensorId The ID of the sensor, returned from
      *        inquireAbout(sensorCommercialName)
-     * @param instruction the message that the sensor will recieve */
-    public final void instructSensor(final String sensorId, final Map<String,String> instruction) {
-     // todo: access the map of threads in sensorhandler, get the thread of
-        // @sensorId, and send the instructions
+     * @param instruction the message that the sensor will recieve 
+     * @throws SensorNotFoundException */
+    @SuppressWarnings("boxing")
+    public final void instructSensor(final String sensorId, final Map<String,String> instruction) throws SensorNotFoundException {
+        if(!systemCore.databaseHandler.sensorExists(sensorId))
+            throw new SensorNotFoundException();
         systemCore.sensorsHandler.sendInstruction(new UpdateMessage(sensorId, instruction));
     }
 

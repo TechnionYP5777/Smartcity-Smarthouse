@@ -3,8 +3,13 @@
  */
 package il.ac.technion.cs.smarthouse.system.services;
 
+import java.nio.channels.AsynchronousServerSocketChannel;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -28,40 +33,95 @@ import il.ac.technion.cs.smarthouse.utils.Random;
  * @since Apr 1, 2017
  */
 public class SensorsManagerTest {    
+    public static class TestData {
+        String sId, commName;
+        String[] obserNames;
+        
+        TestData(String sId, String commName, String[] obsers) {
+             this.sId = sId;
+             this.commName = commName;
+             this.obserNames = obsers;
+        }
+        
+        TestData(String base, String[] obsers) {
+            this.sId = Random.sensorId();
+            this.commName = base.substring(0,20);
+            this.obserNames = obsers;
+       }
+        
+        void setObserNames(String[] obsers){
+            obserNames = obsers;
+        }
+        
+        String sensorId(){
+            return sId;
+        }
+
+        String commName(){
+            return commName;
+        }
+        
+        String[] obserNames(){
+            return obserNames;
+        }
+
+    }
+    class TestSensorData extends SensorData { public Boolean b;}
+    
     // general tests data
     @Rule public TestName testName = new TestName();
-    //todo: ELIA create testdata class instead of all the maps
-    private static Map<String, String> sensorIds = new HashMap<>();
-    private static Map<String, String> commName = new HashMap<>();
-    private static Map<String, String[]> obserNames = new HashMap<>();
+
+//    private static Map<String, TestData> testsInfo = new HashMap<>();
     private static final Core core = new Core(); //todo: init core in every test?
     
     // single test info
     private SensorsManager sensorsManager;
     private InteractiveSensor sensor;
-    private String currentTestName;
+//    private String currentTestName;
+    private TestData currentInfo;
     
-    @BeforeClass public static void setup_DataMaps(){
+    /*
+    @BeforeClass public static void setup_DacurrentTestNametaMaps(){//todo: something less WET
+//        SensorsManagerTest javaIsStupid = new SensorsManagerTest(); DO NOT DELETE
+        
         String test = "inquireAboutExistingSensorReturnsId";
-        sensorIds.put(test, Random.sensorId());
-        commName.put(test, "iSensor"+test.substring(0,20));
-        obserNames.put(test, null);
+        testsInfo.put(test, new TestData(Random.sensorId(), "iSensor"+test.substring(0,20), null));
         
         test = "inquireAboutNoneExistingDoesntReturnId";
-        sensorIds.put(test, Random.sensorId());
-        commName.put(test, test.substring(0,20));
-        obserNames.put(test, null);
+        testsInfo.put(test, );
         
         test = "subscribeToNoneExistingThrows";
-        sensorIds.put(test, Random.sensorId());
-        commName.put(test, test.substring(0,20));
-        obserNames.put(test, null);
+        testsInfo.put(test, new TestData(test));
         
         test = "subscribeToExistingWorks";
-        sensorIds.put(test, Random.sensorId());
-        commName.put(test, test.substring(0,20));
-        obserNames.put(test, new String[]{"b"});
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
+        test = "receiveLastEntriesOfNoneExistingThrows";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
+        test = "receiveLastEntriesOfExistingWorks";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
+        test = "receiveLastEntryOfExistingWorks";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
+        test = "receiveLastEntryOfNoneExistingThrows";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
+        test = "sendingInstructionToNoneExistingThrows";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
+        
+        test = "sendingInstructionToExistingWorks";
+        testsInfo.put(test, new TestData(test));
+        testsInfo.get(test).setObserNames(new String[]{"b"});
     }
+    */
     
     @AfterClass public static void teardown_killSensorHandler(){
         Thread t = core.getSensorHandlerThread();
@@ -70,16 +130,16 @@ public class SensorsManagerTest {
         ((SensorsHandler)core.getHandler(Handler.SENSORS)).closeSockets();
     }
     
-    @Before public void tsetup_SensorsManager() throws Exception{
+    @Before public void testsetup_SensorsManager() throws Exception{
         sensorsManager = (SensorsManager) core.serviceManager.getService(ServiceType.SENSORS_SERVICE);
         
-        currentTestName = testName.getMethodName();
-        if(!sensorIds.containsKey(currentTestName)||
-                !commName.containsKey(currentTestName) ||
-                !obserNames.containsKey(currentTestName))
-            throw new Exception("failed to initialize test enviourment for:"+ currentTestName+ ". [missing keys]");
-        
-        sensor = new TestSensor(sensorIds.get(currentTestName), commName.get(currentTestName), obserNames.get(currentTestName));
+        String currentTestName = testName.getMethodName();
+//        if(!testsInfo.containsKey(currentTestName))
+//            throw new Exception("failed to initialize test's environment for:"+ currentTestName+ ". [missing keys]");
+//        
+//        currentInfo = testsInfo.get(currentTestName);
+        currentInfo = new TestData(currentTestName, new String[]{"b"});
+        sensor = new TestSensor(currentInfo.sensorId(), currentInfo.commName(), currentInfo.obserNames());
         for (int i=0;;++i){
             try {
               System.out.println(currentTestName+"'s sensor attempts to register");
@@ -95,32 +155,31 @@ public class SensorsManagerTest {
     
     // ----------------------------- tests ----------------------------- 
     @Test public void inquireAboutExistingSensorReturnsId(){
-        Assert.assertEquals(sensorsManager.inquireAbout(commName.get(currentTestName)).get(0), sensorIds.get(currentTestName));
-    }
-    
-    @Test public void inquireAboutNoneExistingDoesntReturnId(){
-        for(String id: sensorsManager.inquireAbout("not "+commName.get(currentTestName)))        
-            Assert.assertFalse(sensorIds.containsValue(id));
-    }
-    
-    @Test(expected = SensorNotFoundException.class)
-    public void subscribeToNoneExistingThrows() throws SensorNotFoundException{
-        class TestSensorData extends SensorData {}
-        sensorsManager.subscribeToSensor("not a sensor id", TestSensorData.class, tsd -> {});
+        Assert.assertEquals(sensorsManager.inquireAbout(currentInfo.commName()).get(0), currentInfo.sensorId());
     }
     
     /**
      * [[SuppressWarningsSpartan]]
      */
-    @Ignore
-    @SuppressWarnings("boxing")
+    
+    @Test public void inquireAboutNoneExistingDoesntReturnId(){
+        List<String> idsInSystem = sensorsManager.inquireAbout("not " + currentInfo.commName()); 
+        Assert.assertEquals(0, idsInSystem.size());
+//        Assert.assertEquals(testsInfo.values().stream().map(i -> i.sensorId())
+//                                                        .filter(id -> idsInSystem.contains(id)).count(),0);
+    }
+    
+    @Test(expected = SensorNotFoundException.class)
+    public void subscribeToNoneExistingThrows() throws SensorNotFoundException{
+        sensorsManager.subscribeToSensor("not a sensor id", TestSensorData.class, tsd -> {});
+    }
+    
     @Test public void subscribeToExistingWorks() throws SensorNotFoundException, InterruptedException{
-        class TestSensorData extends SensorData { public Boolean b;}
         Boolean[] $ = new Boolean[] {false};
-        sensorsManager.subscribeToSensor(sensorIds.get(currentTestName), TestSensorData.class, o -> { $[0] =  o == null;});
+        sensorsManager.subscribeToSensor(currentInfo.sensorId(), TestSensorData.class, o -> {$[0] =  o.b;});
         
         Map<String, String> data = new HashMap<>();
-        data.put("b", "true");
+        data.put("b", true + "");
         sensor.updateSystem(data);
         
         Thread.sleep(5000);
@@ -128,10 +187,71 @@ public class SensorsManagerTest {
         Assert.assertEquals(true,$[0]);
     }
     
-    public void TBD(){
-        //todo:
+    @Test(expected = SensorNotFoundException.class)
+    public void receiveLastEntriesOfNoneExistingThrows() throws SensorNotFoundException{
+        sensorsManager.receiveLastEntries("not a sensor id", TestSensorData.class, 3);
     }
     
+    /**
+     * [[SuppressWarningsSpartan]]
+     */
+    @Test public void receiveLastEntriesOfExistingWorks() throws SensorNotFoundException, InterruptedException{
+        List<Boolean> dataToBeSent = Arrays.asList(false, true, false);
+        
+        for(Boolean b : dataToBeSent){
+            Map<String, String> data = new HashMap<>();
+            data.put("b", b + "");
+            sensor.updateSystem(data);
+        }
+        Thread.sleep(5000);
+        
+        List<TestSensorData> dataReceived = sensorsManager.receiveLastEntries(currentInfo.sensorId(), TestSensorData.class, 3);
+        
+        for(int i=0; i < dataToBeSent.size(); i++){
+            Assert.assertEquals(dataToBeSent.get(i), dataReceived.get(i).b);            
+        }
+    }
     
+    @Test(expected = SensorNotFoundException.class)
+    public void receiveLastEntryOfNoneExistingThrows() throws SensorNotFoundException{
+        sensorsManager.receiveLastEntry("not a sensor id", TestSensorData.class);
+    }
+
+    @Test public void receiveLastEntryOfExistingWorks() throws SensorNotFoundException, InterruptedException{
+        Map<String, String> data = new HashMap<>();
+        data.put("b", true + "");
+        sensor.updateSystem(data);
+        
+        Thread.sleep(5000);
+        
+        Assert.assertEquals(true, sensorsManager.receiveLastEntry(currentInfo.sensorId(), TestSensorData.class).b);
+    }
+    
+    @Test(expected = SensorNotFoundException.class)
+    public void sendingInstructionToNoneExistingThrows() throws SensorNotFoundException{
+        sensorsManager.instructSensor("not a sensor id", new HashMap<String, String>());
+    }
+
+    /**
+     * [[SuppressWarningsSpartan]]
+     */
+    @Test public void sendingInstructionToExistingWorks() throws SensorNotFoundException, InterruptedException{
+        String[] $ = new String[] {""};
+        sensor.setInstructionHandler(
+                data -> {
+                    $[0] = data.get("b");
+                    return true;
+                }
+                );
+        
+        Map<String, String> instruction = new HashMap<>();
+        instruction.put("b", true + "");
+        sensorsManager.instructSensor(currentInfo.sensorId(), instruction);
+        
+        Thread.sleep(5000);
+        sensor.operate();
+        
+        Assert.assertEquals(true + "", $[0]);
+    }
 }
 
