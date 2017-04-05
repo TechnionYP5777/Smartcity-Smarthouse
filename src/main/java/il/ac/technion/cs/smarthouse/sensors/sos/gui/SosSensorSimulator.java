@@ -25,6 +25,7 @@ public class SosSensorSimulator extends Application {
             res = sensor.register();
         final Image sosImage = new Image(getClass().getResourceAsStream("sos_icon.png"), 320, 0, true, true);
         final Button sosButton = new Button();
+        sosButton.setId("sosButton");
         sosButton.setGraphic(new ImageView(sosImage));
         sosButton.setStyle("-fx-focus-color: transparent;");
         sosButton.setOnAction(event -> sensor.updateSystem());
