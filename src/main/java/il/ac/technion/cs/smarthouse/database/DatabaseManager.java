@@ -4,18 +4,16 @@ import java.util.Map;
 
 import org.parse4j.Parse;
 import org.parse4j.ParseException;
-
 import org.parse4j.ParseObject;
-import org.parse4j.callback.DeleteCallback;
+import org.parse4j.ParseQuery;
 import org.parse4j.callback.SaveCallback;
 
 /** @author Inbal Zukerman
  * @date Mar 31, 2017 */
 
 public abstract class DatabaseManager {
-    // public static final String serverUrl =
-    // "https://smartcity-smarthouse.herokuapp.com/parse";
-    public static final String appId = "smartcity-smarthouse";
+    public static final String serverUrl = "http://sc-smarthouse.herokuapp.com/parse";
+    public static final String appId = "myAppId";
     public static final String restAPIKey = "ag9h-84j3-ked2-94j5";
 
     private static boolean init;
@@ -28,7 +26,7 @@ public abstract class DatabaseManager {
 
         if (init)
             return;
-        Parse.initialize(appId, restAPIKey);
+        Parse.initialize(appId, restAPIKey, serverUrl);
         init = true;
     }
 
@@ -58,11 +56,29 @@ public abstract class DatabaseManager {
 
     /** This method deletes an object in the background from class @objectClass
      * with @id */
-    public static void deleteById(final String objectClass, String id, DeleteCallback c) {
+    public static void deleteById(final String objectClass, String id) {
         final ParseObject obj = new ParseObject(objectClass);
         obj.setObjectId(id);
-        obj.deleteInBackground(c);
+        try {
+            obj.delete();
+        } catch (ParseException ¢) {
+            // TODO Auto-generated catch block
+            ¢.printStackTrace();
+        }
     }
 
+    /** Retrieves an item from the server
+     * @param objectClass
+     * @param id The item's id
+     * @return ParseObject Result of query if it was successful, null o.w.
+     * @throws ParseException */
+    public static ParseObject getValue(final String $, final String id) {
+        try {
+            return ParseQuery.getQuery($).get(id);
+        } catch (ParseException ¢) {
+            ¢.printStackTrace();
+        }
+        return null;
+    }
 
 }
