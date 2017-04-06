@@ -13,6 +13,7 @@ import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
+import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
@@ -25,10 +26,12 @@ import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 public class SensorsHandlerThread extends Thread {
     private final Socket client;
     private final DatabaseHandler databaseHandler;
+    private TypeHandler typeHandler;
 
-    public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler) {
+    public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler, final TypeHandler typeHandler) {
         this.client = client;
         this.databaseHandler = databaseHandler;
+        this.typeHandler = typeHandler;
     }
 
     @Override public void run() {
@@ -74,6 +77,7 @@ public class SensorsHandlerThread extends Thread {
     private void handleRegisterMessage(final PrintWriter out, final RegisterMessage ¢) {
         databaseHandler.addSensor(¢.sensorId, ¢.sensorCommName, 100);
         new AnswerMessage(Answer.SUCCESS).send(out, null);
+        typeHandler.accept(¢.sensorType);
     }
 
     private void handleUpdateMessage(final UpdateMessage m) {
@@ -87,4 +91,8 @@ public class SensorsHandlerThread extends Thread {
         }
     }
 
+}
+
+interface TypeHandler {
+    void accept(SensorType t);
 }

@@ -18,11 +18,11 @@ import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
  * @since 30.3.17 */
 public class InstructionsSenderThread extends Thread {
     private final Socket client;
-    private StoreThread storage;
+    private OutputMapper mapper;
 
-    public InstructionsSenderThread(final Socket client, final StoreThread storage) {
+    public InstructionsSenderThread(final Socket client, final OutputMapper mapper) {
         this.client = client;
-        this.storage = storage;
+        this.mapper = mapper;
     }
 
     @Override public void run() {
@@ -63,11 +63,7 @@ public class InstructionsSenderThread extends Thread {
     }
 
     private void handleRegisterMessage(final PrintWriter out, final RegisterMessage ¢) {
-        storage.store(¢.sensorId, out);
+        mapper.store(¢.sensorId, out);
         new AnswerMessage(Answer.SUCCESS).send(out, null);
     }
-}
-
-interface StoreThread {
-    void store(String id, PrintWriter out);
 }

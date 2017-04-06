@@ -1,6 +1,8 @@
 package il.ac.technion.cs.smarthouse.networking.messages;
 
-/** @author Yarden
+/** This enum specifies all possible types for a message sent between the system
+ * and the sensors.
+ * @author Yarden
  * @since 11.12.16 */
 public enum MessageType {
     REGISTRATION,

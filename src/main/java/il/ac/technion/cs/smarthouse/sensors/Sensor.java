@@ -27,11 +27,15 @@ public abstract class Sensor {
 
     protected String id;
     protected String commName;
+
     protected String systemIP;
     protected int systemPort;
+
     protected Socket socket;
     protected PrintWriter out;
     protected BufferedReader in;
+
+    protected SensorType sType;
 
     /** Initializes a new sensor given its name and id.
      * @param id id of the sensor
@@ -45,6 +49,7 @@ public abstract class Sensor {
         this.commName = commName;
         this.systemIP = systemIP;
         this.systemPort = systemPort;
+        this.sType = SensorType.NON_INTERACTIVE;
     }
 
     /** Registers the sensor its TCP connection with the system. This method
@@ -59,7 +64,7 @@ public abstract class Sensor {
         } catch (final IOException ¢) {
             ¢.printStackTrace();
         }
-        final String $ = new RegisterMessage(id, commName).send(out, in);
+        final String $ = new RegisterMessage(id, commName, sType).send(out, in);
         return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
     }
 
@@ -94,5 +99,10 @@ public abstract class Sensor {
     /** @return sensor's commercial name */
     public String getCommName() {
         return commName;
+    }
+
+    /** @return sensor's type */
+    public SensorType getType() {
+        return sType;
     }
 }

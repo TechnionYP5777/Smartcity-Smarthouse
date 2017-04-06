@@ -40,6 +40,8 @@ public abstract class InteractiveSensor extends Sensor {
         super(id, commName, systemIP, systemPort);
         this.instPort = instPort;
         this.handler = null;
+
+        this.sType = SensorType.INTERACTIVE;
     }
 
     /** Registers the sensor its instructions TCP connection with the system.
@@ -54,7 +56,7 @@ public abstract class InteractiveSensor extends Sensor {
         } catch (final IOException ¢) {
             ¢.printStackTrace();
         }
-        final String $ = new RegisterMessage(id, commName).send(instOut, instIn);
+        final String $ = new RegisterMessage(id, commName, sType).send(instOut, instIn);
         return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
     }
 

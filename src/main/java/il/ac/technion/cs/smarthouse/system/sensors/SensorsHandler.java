@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
+import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 
 /** A sensors handler is a class dedicated to listening for incoming messages
@@ -21,9 +22,9 @@ import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 public class SensorsHandler implements Runnable {
     private final DatabaseHandler databaseHandler;
     private final Map<String, PrintWriter> routingMap = new HashMap<>();
-    
-    //for testing
-    private ServerSocket server; 
+
+    // for testing
+    private ServerSocket server;
     private ServerSocket router;
 
     /** Initializes a new sensors handler object.
@@ -33,23 +34,21 @@ public class SensorsHandler implements Runnable {
     }
 
     @Override public void run() {
-        try (ServerSocket server1 = new ServerSocket(40001); ServerSocket router1 = new ServerSocket(40002)) {
+        try (ServerSocket server1 = new ServerSocket(40001)) {
             this.server = server1;
-            this.router = router1;
             while (true)
                 try {
-//                    System.out.println("sensorhandler about to attempt to accept connection on 40001"); todo: delete after debugging ends
+                    // System.out.println("sensorhandler about to attempt to accept connection on 40001"); todo: delete after debugging ends
                     @SuppressWarnings("resource") final Socket client = server1.accept();
-                    new SensorsHandlerThread(client, databaseHandler).start();
-//                    System.out.println("sensorhandler about to attempt to accept connection on 40002"); todo: delete after debugging ends
-                    @SuppressWarnings("resource") final Socket sensor = router1.accept();
-                    new InstructionsSenderThread(sensor, (id, out) -> routingMap.put(id, out)).start();
-//                    System.out.println("sensorhandler created connection with an interactivesensor"); todo: delete after debugging ends
+                    new SensorsHandlerThread(client, databaseHandler, type -> {
+                        if (type == SensorType.INTERACTIVE)
+                            new InteractiveSensorServer((id, out) -> routingMap.put(id, out)).start();
+                    }).start();
                 } catch (final SocketException ¢) {
                     return; // if we closed the sockets we want to shutoff the server
                 } catch (final IOException ¢) {
                     ¢.printStackTrace();
-                } 
+                }
         } catch (final IOException ¢) {
             ¢.printStackTrace();
         }
@@ -58,11 +57,12 @@ public class SensorsHandler implements Runnable {
     public void sendInstruction(UpdateMessage instruction) {
         routingMap.get(instruction.sensorId).println(instruction.toJson());
     }
-    
-    public void closeSockets(){ //for testing
+
+    public void closeSockets() { // for testing
         try {
             server.close();
-            router.close();
+            // TODO: ELIA remove if you don't need this
+//            router.close();
         } catch (IOException e) {
             // TODO: Auto-generated catch block
             e.printStackTrace();
