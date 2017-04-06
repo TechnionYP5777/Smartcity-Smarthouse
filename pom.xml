@@ -26,7 +26,7 @@
 							<goal>java</goal>
 						</goals>
 						<configuration>
-							<mainClass>il.ac.technion.cs.eldery.system.SystemCore</mainClass>
+							<mainClass>il.ac.technion.cs.smarthouse.system.gui.MainSystemGui</mainClass>
 						</configuration>
 					</execution>
 					<execution>
@@ -35,7 +35,7 @@
 							<goal>java</goal>
 						</goals>
 						<configuration>
-							<mainClass>il.ac.technion.cs.eldery.sensors.sos.gui.SosSensorSimulator</mainClass>
+							<mainClass>il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator</mainClass>
 						</configuration>
 					</execution>
 					<execution>
@@ -44,7 +44,7 @@
 							<goal>java</goal>
 						</goals>
 						<configuration>
-							<mainClass>il.ac.technion.cs.eldery.sensors.stove.gui.StoveSensorSimulator</mainClass>
+							<mainClass>il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator</mainClass>
 						</configuration>
 					</execution>
 					<execution>
@@ -53,7 +53,7 @@
 							<goal>java</goal>
 						</goals>
 						<configuration>
-							<mainClass>il.ac.technion.cs.eldery.sensors.vitals.gui.VitalsSensorSimulator</mainClass>
+							<mainClass>il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator</mainClass>
 						</configuration>
 					</execution>
 				</executions>
