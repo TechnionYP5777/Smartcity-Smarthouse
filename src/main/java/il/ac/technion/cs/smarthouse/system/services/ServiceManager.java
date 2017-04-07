@@ -4,7 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 
@@ -15,7 +16,7 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
  * @author RON
  * @since 02-04-2017 */
 public final class ServiceManager {
-    private static Logger log = Logger.getLogger(ServiceManager.class);
+    private static Logger log = LoggerFactory.getLogger(ServiceManager.class);
 
     private Map<ServiceType, Service> services = new HashMap<>();
 
@@ -25,7 +26,7 @@ public final class ServiceManager {
                 services.put(s, s.getServiceClass().getDeclaredConstructor(SystemCore.class).newInstance(systemCore));
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                     | SecurityException e) {
-                log.fatal("Service " + s.toString() + " can't start. " + e.getMessage());
+                log.error("Service " + s.toString() + " can't start. " + e.getMessage());
             }
     }
 

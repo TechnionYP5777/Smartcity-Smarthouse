@@ -2,7 +2,9 @@ package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
@@ -16,7 +18,7 @@ import il.ac.technion.cs.smarthouse.system.services.Service;
  * @since 02-04-2017 */
 public final class SensorsManager extends Service {
 
-    static Logger log = Logger.getLogger(SensorsManager.class);
+    static Logger log = LoggerFactory.getLogger(SensorsManager.class);
 
     public SensorsManager(final SystemCore $) {
         super($);

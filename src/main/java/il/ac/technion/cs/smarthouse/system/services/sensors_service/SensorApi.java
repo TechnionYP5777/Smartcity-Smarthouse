@@ -11,7 +11,8 @@ import java.util.TimerTask;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import com.google.gson.Gson;
 
@@ -28,7 +29,7 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
  * @param <T> the sensor's messages will be deserialize into this class. T must
  *        extend SensorData */
 public final class SensorApi<T extends SensorData> {
-    private static Logger log = Logger.getLogger(SensorApi.class);
+    private static Logger log = LoggerFactory.getLogger(SensorApi.class);
 
     private SystemCore systemCore;
     private String sensorId;
