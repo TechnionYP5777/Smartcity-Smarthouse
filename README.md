@@ -1,4 +1,8 @@
 # Smartcity - Smarthouse
+<p align="center">
+<img src="https://cloud.githubusercontent.com/assets/15971916/24823370/5f96f4fa-1c06-11e7-9784-0089af77932f.png" width="300">
+</p>
+
 An autonomous system which receives data from house sensors, stores it in a database and runs applications that operate based on this data.
 
 The system keeps track of the well being and day to day activity of the user. It monitors the user's state via the sensors and analyzes his or her behavior via the applications. The system can send alerts and notifications, and on request from an application through the defined API, will contact the appropriate contacts (according to their emergency-level).
@@ -38,3 +42,5 @@ The application can be launched from the command line with the following command
 - `mvn exec:java@sensor_sim_stove` - launches the Stove sensor
 - `mvn exec:java@sensor_sim_vitals` - launches the Vitals sensor
 
+## About
+Icons by www.icons8.com
