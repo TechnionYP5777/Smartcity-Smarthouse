@@ -9,10 +9,11 @@ import java.util.function.Consumer;
 /** @author Inbal Zukerman
  * @since Dec 25, 2016 */
 public class ListenableList<T> extends ArrayList<T> {
+    private static final long serialVersionUID = -0x61DFA4D7D65FF9FCL;
+    
     public static final int UNLIMITED_CAPACITY = -1;
     public static final int OLDEST_DATA_INDEX = 0;
 
-    private static final long serialVersionUID = 1L;
     private final Map<String, Consumer<T>> listeners = new HashMap<>();
     boolean limitedSize;
     private int maxCapacity;

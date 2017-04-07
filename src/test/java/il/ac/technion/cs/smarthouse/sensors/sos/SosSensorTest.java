@@ -6,7 +6,6 @@ import org.junit.Test;
 import il.ac.technion.cs.smarthouse.sensors.SensorTest;
 import il.ac.technion.cs.smarthouse.sensors.sos.SosSensor;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.utils.Random;
 
@@ -31,7 +30,6 @@ public class SosSensorTest extends SensorTest {
 
         Thread.sleep(5000);
 
-        SensorApi<TestSensorData> s = sensorsManager.getDefaultSensor(TestSensorData.class, commName);
-        Assert.assertEquals(true, s.receiveLastEntry().pressed);
+        Assert.assertEquals(true, sensorsManager.getDefaultSensor(TestSensorData.class, commName).receiveLastEntry().pressed);
     }
 }

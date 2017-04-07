@@ -24,7 +24,7 @@ public class SosAppGui extends SmartHouseApplication {
 
         System.out.println("msg from app: onLoad " + Platform.isFxApplicationThread());
 
-        sosSensor.subscribeToSensor(sos -> {
+        sosSensor.subscribe(sos -> {
             final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
             System.out.println("msg from app: onLoad " + Platform.isFxApplicationThread());
             if (sosController != null && shouldAlert) {

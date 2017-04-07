@@ -34,8 +34,7 @@ public class DatabaseManagerTest {
     }
 
     @Test
-    @SuppressWarnings({ "static-method" })  // JUnit tests cannot be static
-
+    @SuppressWarnings("static-method")  // JUnit tests cannot be static
     public void dataManagmentTest() throws ParseException {
         Map<String, Object> m = new HashMap<>();
         m.put("col1", "test1");

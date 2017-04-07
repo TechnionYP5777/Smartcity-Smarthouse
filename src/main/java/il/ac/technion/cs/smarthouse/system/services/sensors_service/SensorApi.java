@@ -88,8 +88,7 @@ public final class SensorApi<T extends SensorData> {
             sensorData.commercialName = getCommercialName();
             sensorData.sensorLocation = getSensorLocation();
             functionToRun.accept(sensorData);
-        };
-        final Consumer<T> functionToRunWrapper2 = !runOnFx ? functionToRunWrapper1 : JavaFxHelper.surroundConsumerWithFx(functionToRunWrapper1);
+        }, functionToRunWrapper2 = !runOnFx ? functionToRunWrapper1 : JavaFxHelper.surroundConsumerWithFx(functionToRunWrapper1);
         return jsonData -> functionToRunWrapper2.accept(new Gson().fromJson(jsonData, sensorDataClass));
     }
 
@@ -98,7 +97,7 @@ public final class SensorApi<T extends SensorData> {
      * @param functionToRun A consumer that will receive a seneorClass object
      *        initialized with the newest data from the sensor
      * @throws SensorLostRuntimeException */
-    public final void subscribeToSensor(final Consumer<T> functionToRun) throws SensorLostRuntimeException {
+    public final void subscribe(final Consumer<T> functionToRun) throws SensorLostRuntimeException {
         try {
             systemCore.databaseHandler.addListener(sensorId, generateSensorListener(functionToRun, true));
         } catch (SensorNotFoundException e) {
@@ -114,7 +113,7 @@ public final class SensorApi<T extends SensorData> {
      * @param repeat <code>false</code> if you want to query the sensor on the
      *        given time only once, <code>true</code> otherwise (query at this
      *        time FOREVER) */
-    public final void subscribeToSensor(final LocalTime t, final Consumer<T> functionToRun, final Boolean repeat) {
+    public final void subscribe(final LocalTime t, final Consumer<T> functionToRun, final Boolean repeat) {
         new Timer().schedule(new QueryTimerTask(sensorId, t, generateSensorListener(functionToRun, true), repeat), localTimeToDate(t));
     }
 
@@ -143,7 +142,7 @@ public final class SensorApi<T extends SensorData> {
     /** Send a message to a sensor.
      * @param instruction the message that the sensor will receive
      * @throws SensorLostRuntimeException */
-    public final void instructSensor(final Map<String, String> instruction) throws SensorLostRuntimeException {
+    public final void instruct(final Map<String, String> instruction) throws SensorLostRuntimeException {
         if (!systemCore.databaseHandler.sensorExists(sensorId)) {
             logSensorLostRuntimeException();
             throw new SensorLostRuntimeException(null);
@@ -162,17 +161,17 @@ public final class SensorApi<T extends SensorData> {
         LocalTime t;
         Consumer<String> notifee;
 
-        QueryTimerTask(final String sensorId, final LocalTime t, final Consumer<String> notifee, final Boolean repeat) {
+        QueryTimerTask(final String sensorId1, final LocalTime t, final Consumer<String> notifee, final Boolean repeat) {
             this.repeat = repeat;
             this.notifee = notifee;
             this.t = t;
-            this.sensorId1 = sensorId;
+            this.sensorId1 = sensorId1;
         }
 
         /* (non-Javadoc)
          * 
          * @see java.util.TimerTask#run() */
-        @SuppressWarnings("synthetic-access") @Override public void run() {
+        @Override @SuppressWarnings("synthetic-access") public void run() {
             notifee.accept(systemCore.databaseHandler.getLastEntryOf(sensorId1).orElse(new String()));
             if (repeat)
                 new Timer().schedule(this, localTimeToDate(t));

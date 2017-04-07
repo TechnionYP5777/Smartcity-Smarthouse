@@ -21,7 +21,7 @@ public abstract class SensorTest {
     protected String commName = "iTest";
     protected String id;
     protected String[] observations;
-    protected static Core core = null;
+    protected static Core core;
     protected SensorsManager sensorsManager;
 
     /** Here you should initialize the fields: sensor, id, observations.

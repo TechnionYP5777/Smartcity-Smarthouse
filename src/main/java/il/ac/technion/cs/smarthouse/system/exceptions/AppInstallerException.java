@@ -28,7 +28,7 @@ public class AppInstallerException extends Exception {
         }
     }
 
-    private static final long serialVersionUID = 4633789134305606432L;
+    private static final long serialVersionUID = 0x404E86AAB259BB20L;
 
     private final ErrorCode errorCode;
     private final String moreInfo;

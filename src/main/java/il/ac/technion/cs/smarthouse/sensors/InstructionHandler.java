@@ -1,6 +1,3 @@
-/**
- * 
- */
 package il.ac.technion.cs.smarthouse.sensors;
 
 import java.util.Map;

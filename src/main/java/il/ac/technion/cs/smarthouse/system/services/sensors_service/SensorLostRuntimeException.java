@@ -10,7 +10,7 @@ import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
  */
 public class SensorLostRuntimeException extends RuntimeException {
     
-    private static final long serialVersionUID = -1785616690114924046L;
+    private static final long serialVersionUID = -0x18C7C8EB474F0E0EL;
 
     public SensorLostRuntimeException(SensorNotFoundException $) {
         super($ == null ? "" : $.getMessage());

@@ -16,7 +16,7 @@ public class StoveModuleGui extends SmartHouseApplication {
 
         System.out.println("msg from app: onLoad");
 
-        stoveSensor.subscribeToSensor(stove -> {
+        stoveSensor.subscribe(stove -> {
             final String t = "Stove is " + (stove.isOn() ? "" : "Not ") + "On at " + stove.getTemperture() + " degrees";
             if (stove.isOn())
                 controller.turnOn();

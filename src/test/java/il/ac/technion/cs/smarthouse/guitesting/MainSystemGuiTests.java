@@ -32,7 +32,7 @@ public class MainSystemGuiTests extends GuiTest {
         });
         click("#appsTab");
         ListView<String> l = find("#listView");
-        assertTrue(l.getItems().isEmpty());
+        assert l.getItems().isEmpty();
         click("#plusButton");
         click("#toggleBtn");
         click("#comboBox");

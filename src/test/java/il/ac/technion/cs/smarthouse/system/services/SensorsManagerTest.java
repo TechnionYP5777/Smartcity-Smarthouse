@@ -1,6 +1,3 @@
-/**
- * 
- */
 package il.ac.technion.cs.smarthouse.system.services;
 
 import java.util.Arrays;
@@ -165,7 +162,7 @@ public class SensorsManagerTest {
     
     @Test public void subscribeToExistingWorks() throws SensorNotFoundException, InterruptedException {
         Boolean[] $ = new Boolean[] {false};
-        getRealSensor().subscribeToSensor(o -> $[0] = o.b);
+        getRealSensor().subscribe(o -> $[0] = o.b);
         
         Map<String, String> data = new HashMap<>();
         data.put("b", true + "");
@@ -217,7 +214,7 @@ public class SensorsManagerTest {
         
         Map<String, String> instruction = new HashMap<>();
         instruction.put("b", true + "");
-        getRealSensor().instructSensor(instruction);
+        getRealSensor().instruct(instruction);
         
         Thread.sleep(5000);
         sensor.operate();
