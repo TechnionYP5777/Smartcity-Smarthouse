@@ -25,7 +25,7 @@ public class MainSystemGui extends Application {
         final Scene scene = new Scene(loader.load(), 1000, 800);
         s.setTitle("System Controller");
         s.setTitle(APP_NAME);
-        s.getIcons().add(new Image(getClass().getResourceAsStream("house-icon.png")));
+        s.getIcons().add(new Image(getClass().getResourceAsStream("/icons/house-icon.png")));
         s.setScene(scene);
         s.show();
 
