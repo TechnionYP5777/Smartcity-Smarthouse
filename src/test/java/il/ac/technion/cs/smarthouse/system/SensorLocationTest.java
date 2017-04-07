@@ -27,7 +27,7 @@ public class SensorLocationTest {
                 { "DINING_room", SensorLocation.DINING_ROOM }, { "BeDrOoM", SensorLocation.BEDROOM }, { "BATHroom", SensorLocation.BATHROOM },
                 { "living_ROOM", SensorLocation.LIVING_ROOM }, { "tv_room", SensorLocation.TV_ROOM }, { "stuDy", SensorLocation.STUDY },
                 { "yard", SensorLocation.YARD }, { "PORCH", SensorLocation.PORCH }, { "baseMent", SensorLocation.BASEMENT },
-                { "Hallway", SensorLocation.HALLWAY }, { "GaraGE", SensorLocation.GARAGE } });
+                { "Hallway", SensorLocation.HALLWAY }, { "GaraGE", SensorLocation.GARAGE }, { "notAlocation", null } });
     }
 
     @Test public void validate() {
