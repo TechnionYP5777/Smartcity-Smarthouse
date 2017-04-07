@@ -6,6 +6,7 @@ import org.junit.Test;
 import il.ac.technion.cs.smarthouse.sensors.SensorTest;
 import il.ac.technion.cs.smarthouse.sensors.stove.StoveSensor;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.utils.Random;
 
@@ -30,7 +31,8 @@ public class StoveSensorTest extends SensorTest {
 
         Thread.sleep(5000);
 
-        Assert.assertEquals(true, sensorsManager.receiveLastEntry(id, TestSensorData.class).on);
-        Assert.assertEquals(90, sensorsManager.receiveLastEntry(id, TestSensorData.class).temperature);
+        SensorApi<TestSensorData> s = sensorsManager.getDefaultSensor(TestSensorData.class, commName);
+        Assert.assertEquals(true, s.receiveLastEntry().on);
+        Assert.assertEquals(90, s.receiveLastEntry().temperature);
     }
 }

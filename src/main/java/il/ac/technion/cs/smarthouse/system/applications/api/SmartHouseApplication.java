@@ -3,7 +3,6 @@ package il.ac.technion.cs.smarthouse.system.applications.api;
 import java.io.IOException;
 import java.net.URL;
 
-import il.ac.technion.cs.smarthouse.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.smarthouse.system.services.Service;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -76,7 +75,7 @@ public abstract class SmartHouseApplication {
     // [start] Public abstract - the developer must implement
     /** This will run when the system loads the app. Here all of the sensors
      * subscriptions must occur */
-    public abstract void onLoad() throws OnLoadException;
+    public abstract void onLoad() throws Exception;
 
     public abstract String getApplicationName();
     // [end]

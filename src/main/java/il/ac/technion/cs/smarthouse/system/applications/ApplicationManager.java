@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
-import il.ac.technion.cs.smarthouse.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
@@ -47,8 +46,8 @@ public class ApplicationManager {
      * @return false if the application is already installed, and true otherwise
      * @throws IOException - If the jar file can't be found
      * @throws AppInstallerException - An installation error
-     * @throws OnLoadException - An exception in the onLoad method */
-    public boolean initialize(ServiceManager $) throws AppInstallerException, IOException, OnLoadException {
+     * @throws Exception - An exception in the onLoad method */
+    public boolean initialize(ServiceManager $) throws Exception {
         if (application != null)
             return false;
 

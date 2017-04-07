@@ -6,16 +6,15 @@ import java.util.Collections;
 import java.util.List;
 
 import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.smarthouse.system.exceptions.ApplicationInitializationException;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
-/** API allowing smart house applications to register for information and notify
- * on emergencies
+/** Part of the system's core. Stores the managers of the running applications.
  * @author Elia Traore
  * @author Inbal Zukerman
+ * @author RON
  * @since Dec 13, 2016 */
 public class ApplicationsCore {
     List<ApplicationManager> apps = new ArrayList<>();
@@ -31,9 +30,9 @@ public class ApplicationsCore {
     /** Adds a new application to the system, and initializes it
      * @throws IOException
      * @throws AppInstallerException
-     * @throws OnLoadException
+     * @throws Exception
      * @throws ApplicationInitializationException */
-    public ApplicationManager addApplication(final ApplicationPath<?> appPath) throws AppInstallerException, IOException, OnLoadException {
+    public ApplicationManager addApplication(final ApplicationPath<?> appPath) throws Exception {
         final ApplicationManager $ = new ApplicationManager(UuidGenerator.GenerateUniqueIDstring(), appPath);
         $.initialize(systemCore.serviceManager);
         apps.add($);

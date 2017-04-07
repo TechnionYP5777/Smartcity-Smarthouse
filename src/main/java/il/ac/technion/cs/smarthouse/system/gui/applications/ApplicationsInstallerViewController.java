@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 
 import il.ac.technion.cs.smarthouse.applications.PremadeApplications;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
-import il.ac.technion.cs.smarthouse.system.applications.api.exceptions.OnLoadException;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
@@ -108,10 +107,12 @@ public class ApplicationsInstallerViewController implements Initializable {
             applicationsHandler.addApplication(p);
             if (!inRealMode)
                 comboBox.getItems().remove(comboBox.getValue());
-        } catch (final OnLoadException | AppInstallerException ¢) {
-            alert(¢.getMessage());
+        } catch (AppInstallerException ¢) {
+            alert("Installer Error: " + ¢.getMessage());
         } catch (final IOException ¢) {
             alert("IO Error: " + ¢.getMessage());
+        } catch (final Exception ¢) {
+            alert(¢.getMessage());
         }
     }
 

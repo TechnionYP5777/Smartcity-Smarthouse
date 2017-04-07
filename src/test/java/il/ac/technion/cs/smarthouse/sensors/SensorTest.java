@@ -34,8 +34,8 @@ public abstract class SensorTest {
     }
 
     @Before public void initSensor() throws Exception {
-        customInitSensor();
         sensorsManager = (SensorsManager) core.serviceManager.getService(ServiceType.SENSORS_SERVICE);
+        customInitSensor();
         for (int i = 0;; ++i) {
             try {
                 if (sensor.register())

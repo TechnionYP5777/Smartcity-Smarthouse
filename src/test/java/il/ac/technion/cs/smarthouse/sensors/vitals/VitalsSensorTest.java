@@ -6,6 +6,7 @@ import org.junit.Test;
 import il.ac.technion.cs.smarthouse.sensors.SensorTest;
 import il.ac.technion.cs.smarthouse.sensors.vitals.VitalsSensor;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.utils.Random;
 
@@ -31,8 +32,9 @@ public class VitalsSensorTest extends SensorTest {
 
         Thread.sleep(5000);
 
-        Assert.assertEquals(80, sensorsManager.receiveLastEntry(id, TestSensorData.class).pulse);
-        Assert.assertEquals(120, sensorsManager.receiveLastEntry(id, TestSensorData.class).systolicBP);
-        Assert.assertEquals(90, sensorsManager.receiveLastEntry(id, TestSensorData.class).diastolicBP);
+        SensorApi<TestSensorData> s = sensorsManager.getDefaultSensor(TestSensorData.class, commName);
+        Assert.assertEquals(80, s.receiveLastEntry().pulse);
+        Assert.assertEquals(120, s.receiveLastEntry().systolicBP);
+        Assert.assertEquals(90, s.receiveLastEntry().diastolicBP);
     }
 }

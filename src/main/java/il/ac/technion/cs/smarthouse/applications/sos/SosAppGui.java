@@ -1,16 +1,13 @@
 package il.ac.technion.cs.smarthouse.applications.sos;
 
-import java.util.List;
-
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
-import il.ac.technion.cs.smarthouse.system.applications.api.exceptions.OnLoadException;
-import il.ac.technion.cs.smarthouse.system.applications.api.exceptions.OnLoadException.ErrorCode;
-import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 
 public class SosAppGui extends SmartHouseApplication {
@@ -19,33 +16,27 @@ public class SosAppGui extends SmartHouseApplication {
     private Button killerButon;
     public boolean shouldAlert = true;
 
-    @Override public void onLoad() throws OnLoadException {
+    @Override public void onLoad() throws Exception {
         SensorsManager sensorsManager = (SensorsManager) super.getService(ServiceType.SENSORS_SERVICE);
         AlertsManager alertsManager = (AlertsManager) super.getService(ServiceType.ALERTS_SERVICE);
-        
-        final List<String> ids = sensorsManager.inquireAbout("iSOS");
-        if (ids.isEmpty())
-            throw new OnLoadException(ErrorCode.SENSOR_COM_NAME_NOT_FOUND);
 
-        final String sensorId = ids.get(0);
-        System.out.println("msg from app: onLoad");
-        try {
-            sensorsManager.subscribeToSensor(sensorId, SosSensor.class, sosSensor -> {
-                final String t = "SOS " + (sosSensor.isPressed() ? "" : "Not ") + "Pressed";
-                if (sosController != null && shouldAlert) {
-                    sosController.sosBtnPressed();
-                    alertsManager.sendAlert("ATTENTION SOS: Client is requesting help.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-                    shouldAlert = false;
-                }
-                System.out.println("msg from app: " + t);
-            });
-        } catch (final SensorNotFoundException ¢) {
-            throw new OnLoadException(ErrorCode.SENSOR_ID_NOT_FOUND, ¢.getMessage());
-        }
-        
-        
+        SensorApi<SosSensor> sosSensor = sensorsManager.getDefaultSensor(SosSensor.class, "iSOS");
+
+        System.out.println("msg from app: onLoad " + Platform.isFxApplicationThread());
+
+        sosSensor.subscribeToSensor(sos -> {
+            final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
+            System.out.println("msg from app: onLoad " + Platform.isFxApplicationThread());
+            if (sosController != null && shouldAlert) {
+                sosController.sosBtnPressed();
+                alertsManager.sendAlert("ATTENTION SOS: Client is requesting help.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                shouldAlert = false;
+            }
+            System.out.println("msg from app: " + t + " Location: " + sos.getSensorLocation());
+        });
+
         sosController = super.setContentView(getClass().getResource("sos_app_ui.fxml"));
-        
+
         killerButon = sosController.getBtn();
         killerButon.setOnAction(__ -> {
             if (shouldAlert)
@@ -55,13 +46,11 @@ public class SosAppGui extends SmartHouseApplication {
                 shouldAlert = !shouldAlert;
             }
         });
-        
     }
 
     @Override public String getApplicationName() {
         return "SOS Application";
     }
-
 }
 
 class SosSensor extends SensorData {
