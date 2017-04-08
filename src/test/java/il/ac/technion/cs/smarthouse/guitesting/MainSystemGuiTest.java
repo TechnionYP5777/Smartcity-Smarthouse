@@ -3,7 +3,6 @@ package il.ac.technion.cs.smarthouse.guitesting;
 import static org.junit.Assert.*;
 
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.loadui.testfx.GuiTest;
 
@@ -24,14 +23,15 @@ public class MainSystemGuiTest extends GuiTest {
     }
     
     @After public void closeSystem() throws Exception {
+        Thread.sleep(500);
         if (sosSim != null)
             sosSim.stop();
         gui.kill();
         gui.stop();
+        Thread.sleep(1000);
     }
     
-    @Ignore("Still not working ):")
-    @Test public void testInstalation() {
+    @Test public void testInstalation() throws InterruptedException {
         Platform.runLater(() -> {
             try {
                 sosSim = new SosSensorSimulator();
@@ -41,6 +41,7 @@ public class MainSystemGuiTest extends GuiTest {
                 e.printStackTrace();
             }
         });
+        Thread.sleep(500);
         click("#appsTab");
         ListView<String> l = find("#listView");
         assert l.getItems().isEmpty();
