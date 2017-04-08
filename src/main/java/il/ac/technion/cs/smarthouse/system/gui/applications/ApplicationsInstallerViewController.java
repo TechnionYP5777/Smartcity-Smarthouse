@@ -112,13 +112,13 @@ public class ApplicationsInstallerViewController implements Initializable {
             if (!inRealMode)
                 comboBox.getItems().remove(comboBox.getValue());
         } catch (AppInstallerException $) {
-            log.debug("An exception while installing: " + p.toString(), $);
+            log.debug("An exception while installing: " + p, $);
             alert("Installer Error: " + $.getMessage());
         } catch (final IOException $) {
-            log.debug("An exception while installing: " + p.toString(), $);
+            log.debug("An exception while installing: " + p, $);
             alert("IO Error: " + $.getMessage());
         } catch (final Exception $) {
-            log.debug("An exception while installing: " + p.toString(), $);
+            log.debug("An exception while installing: " + p, $);
             alert($.getClass().getName() + ": " + $.getMessage());
         }
     }

@@ -3,10 +3,13 @@ package il.ac.technion.cs.smarthouse.networking.messages;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
+/** This singleton is used to transform a Json String (originally made from a
+ * Message) back to a Message object.
+ * @author Sharon */
 public enum MessageFactory {
     ;
 
-    /** Creates a returns a message given its JSon encoding.
+    /** Creates and returns a message given its JSon encoding.
      * @param json JSon encoding of the message
      * @return message encoded extracted from the JSon string */
     public static Message create(final String json) {

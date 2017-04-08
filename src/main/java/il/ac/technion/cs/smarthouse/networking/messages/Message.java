@@ -6,11 +6,17 @@ import java.io.PrintWriter;
 
 import com.google.gson.Gson;
 
-/** @author Sharon
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
+/** This class represents a general message that can be sent from a sensor to
+ * the system or vice versa.
+ * @author Sharon
  * @author Yarden
  * @since 11.12.16 */
 public abstract class Message {
     private final MessageType type;
+    private static Logger log = LoggerFactory.getLogger(Message.class);
 
     /** Creates a new message object.
      * @param type type of this message */
@@ -46,8 +52,8 @@ public abstract class Message {
         if ($ != null)
             try {
                 return $.readLine();
-            } catch (final IOException ¢) {
-                ¢.printStackTrace();
+            } catch (final IOException e) {
+                log.error("I/O error occurred", e);
                 return null;
             }
         return null;

@@ -7,7 +7,6 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
 
@@ -15,7 +14,7 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManag
  * @since 19.1.17 */
 public class VitalsApp extends SmartHouseApplication {
     private static Logger log = LoggerFactory.getLogger(VitalsApp.class);
-    
+
     private Controller controller;
     boolean lowPulseAlert;
     boolean highPulseAlert;
@@ -24,17 +23,15 @@ public class VitalsApp extends SmartHouseApplication {
 
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
-        
+
         SensorsManager sensorsManager = (SensorsManager) super.getService(ServiceType.SENSORS_SERVICE);
         AlertsManager alertsManager = (AlertsManager) super.getService(ServiceType.ALERTS_SERVICE);
 
-        SensorApi<VitalsSensor> vitalsSensor = sensorsManager.getDefaultSensor(VitalsSensor.class, "iVitals");
-
-        vitalsSensor.subscribe(vitals -> {
+        sensorsManager.getDefaultSensor(VitalsSensor.class, "iVitals").subscribe(vitals -> {
             final int pulse = vitals.getPulse(), systolicBP = vitals.getSystolicBP(), diastolicBP = vitals.getDiastolicBP();
             final String t = "Client has pulse of " + pulse + " and blood pressure of " + systolicBP + "/" + diastolicBP + " mmHg";
             controller.updateChart(vitals.getPulse(), vitals.getSystolicBP(), vitals.getDiastolicBP());
-            
+
             log.debug("App msg (from function subscibed to vitals sensor): " + t + " | Sensor is located at: " + vitals.getSensorLocation());
 
             // major alerts

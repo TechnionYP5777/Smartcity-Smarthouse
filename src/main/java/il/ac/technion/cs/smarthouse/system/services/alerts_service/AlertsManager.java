@@ -47,7 +47,7 @@ public class AlertsManager extends Service {
                 $.stream().forEach(c -> Communicate.throughEmailFromHere(c.getEmailAddress(), message));
                 break;
             default:
-                log.warn(eLevel.toString() + " is not handled");
+                log.warn(eLevel + " is not handled");
         }
     }
 }

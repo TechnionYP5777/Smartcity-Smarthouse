@@ -7,7 +7,6 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
 import javafx.application.Platform;
@@ -22,18 +21,14 @@ public class SosAppGui extends SmartHouseApplication {
 
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
-        
-        SensorsManager sensorsManager = (SensorsManager) super.getService(ServiceType.SENSORS_SERVICE);
-        AlertsManager alertsManager = (AlertsManager) super.getService(ServiceType.ALERTS_SERVICE);
 
-        SensorApi<SosSensor> sosSensor = sensorsManager.getDefaultSensor(SosSensor.class, "iSOS");
-
-        sosSensor.subscribe(sos -> {
+        ((SensorsManager) super.getService(ServiceType.SENSORS_SERVICE)).getDefaultSensor(SosSensor.class, "iSOS").subscribe(sos -> {
             final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
             System.out.println("msg from app: onLoad " + Platform.isFxApplicationThread());
             if (sosController != null && shouldAlert) {
                 sosController.sosBtnPressed();
-                alertsManager.sendAlert("ATTENTION SOS: Client is requesting help.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                ((AlertsManager) super.getService(ServiceType.ALERTS_SERVICE)).sendAlert("ATTENTION SOS: Client is requesting help.",
+                        EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
                 shouldAlert = false;
             }
             log.debug("App msg (from function subscibed to sos sensor): " + t + " | Sensor is located at: " + sos.getSensorLocation());
