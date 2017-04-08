@@ -12,6 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class MainSystemGuiController implements Initializable {
     private MappingController mappingController;
@@ -22,6 +24,7 @@ public class MainSystemGuiController implements Initializable {
     @FXML Tab userTab;
     @FXML Tab appsTab;
     @FXML Tab sensorsTab;
+    @FXML ImageView homePageImageView;
 
     @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
         try {
@@ -30,6 +33,10 @@ public class MainSystemGuiController implements Initializable {
             sysCore.initializeSystemComponents();
             
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource("user information.fxml"));
+            
+            // home tab:
+            homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
+            homePageImageView.setFitHeight(600);
 
             // user tab:
             userTab.setContent((Node) loader.load());
