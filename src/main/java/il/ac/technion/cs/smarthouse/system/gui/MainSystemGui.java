@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 
 public class MainSystemGui extends Application {
     
-    private static final String APP_NAME = "SmartHouse";
+    private static final String APP_NAME = "Smarthouse";
+    
+    private FXMLLoader loader;
     
     public static void main(final String[] args) {
         launch(args);
@@ -21,23 +23,24 @@ public class MainSystemGui extends Application {
         
         System.out.println("Initializing system ui...");
         
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("main_system_ui.fxml"));
-        final Scene scene = new Scene(loader.load(), 1000, 800);
-        s.setTitle("System Controller");
+        final Scene scene = new Scene(getRoot(), 1000, 800);
         s.setTitle(APP_NAME);
         s.getIcons().add(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon.png")));
         s.setScene(scene);
         s.show();
 
-        s.setOnCloseRequest(e -> {
-            System.out.println("System closing...");
-            ((MainSystemGuiController)loader.getController()).sysCore.sensorsHandler.closeSockets();
-        });
+        s.setOnCloseRequest(e -> kill());
     }
     
-    public Parent getRoot(){
+    public void kill() {
+        System.out.println("System closing...");
+        ((MainSystemGuiController)loader.getController()).sysCore.sensorsHandler.closeSockets();
+    }
+    
+    public Parent getRoot() {
         try {
-            return FXMLLoader.load(getClass().getResource("main_system_ui.fxml"));
+            loader = new FXMLLoader(getClass().getResource("main_system_ui.fxml"));
+            return loader.load();
         } catch (IOException e) {
             System.out.println(e);
             return null;

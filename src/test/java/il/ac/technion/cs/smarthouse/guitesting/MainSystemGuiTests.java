@@ -2,7 +2,7 @@ package il.ac.technion.cs.smarthouse.guitesting;
 
 import static org.junit.Assert.*;
 
-import org.junit.Ignore;
+import org.junit.After;
 import org.junit.Test;
 import org.loadui.testfx.GuiTest;
 
@@ -15,16 +15,25 @@ import javafx.stage.Stage;
 
 public class MainSystemGuiTests extends GuiTest {
 
-    MainSystemGui gui = new MainSystemGui();
+    private MainSystemGui gui = new MainSystemGui();
+    private SosSensorSimulator sosSim;
 
     @Override protected Parent getRootNode() {
         return this.gui.getRoot();
     }
-
-    @Ignore("causes tests in SensorsManagerTest to fail when running before them") @Test public void testInstalation() {
+    
+    @After public void closeSystem() throws Exception {
+        if (sosSim != null)
+            sosSim.stop();
+        gui.kill();
+        gui.stop();
+    }
+    
+    @Test public void testInstalation() {
         Platform.runLater(() -> {
             try {
-                new SosSensorSimulator().start(new Stage());
+                sosSim = new SosSensorSimulator();
+                sosSim.start(new Stage());
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
