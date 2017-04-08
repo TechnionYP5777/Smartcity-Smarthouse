@@ -18,12 +18,17 @@ import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 /** A sensors handler thread is a class that handles a specific connection with
  * a sensor. The class can parse the different incoming messages and act
  * accordingly.
  * @author Yarden
  * @since 24.12.16 */
 public class SensorsHandlerThread extends Thread {
+    private static Logger log = LoggerFactory.getLogger(SensorsHandlerThread.class);
+
     private final Socket client;
     private final DatabaseHandler databaseHandler;
     private TypeHandler typeHandler;
@@ -41,13 +46,12 @@ public class SensorsHandlerThread extends Thread {
             out = new PrintWriter(client.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             for (String input = in.readLine(); input != null;) {
-                System.out.println(input);
                 final Message message = MessageFactory.create(input);
                 if (message == null) {
                     new AnswerMessage(Answer.FAILURE).send(out, null);
                     continue;
                 }
-                System.out.println("Received message: " + message + "\n");
+                log.info("Received message: " + message + "\n");
                 switch (message.getType()) {
                     case REGISTRATION:
                         handleRegisterMessage(out, (RegisterMessage) message);
@@ -59,8 +63,8 @@ public class SensorsHandlerThread extends Thread {
                 }
                 input = in.readLine();
             }
-        } catch (final IOException ¢) {
-            ¢.printStackTrace();
+        } catch (final IOException e) {
+            log.error("I/O error occurred", e);
         } finally {
             try {
                 if (out != null)
@@ -68,8 +72,8 @@ public class SensorsHandlerThread extends Thread {
 
                 if (in != null)
                     in.close();
-            } catch (final IOException ¢) {
-                ¢.printStackTrace();
+            } catch (final IOException e) {
+                log.error("I/O error occurred while closing", e);
             }
         }
     }
@@ -86,8 +90,8 @@ public class SensorsHandlerThread extends Thread {
 
         try {
             databaseHandler.getList(m.sensorId).add(json + "");
-        } catch (final SensorNotFoundException ¢) {
-            ¢.printStackTrace();
+        } catch (final SensorNotFoundException e) {
+            log.debug("Failed to store data, no matching sensor was found", e);
         }
     }
 

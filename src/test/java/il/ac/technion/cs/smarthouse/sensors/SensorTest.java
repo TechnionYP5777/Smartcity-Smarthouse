@@ -13,10 +13,15 @@ import il.ac.technion.cs.smarthouse.system.services.Handler;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 /** @author Sharon
  * @author Yarden
  * @since 7.12.16 */
 public abstract class SensorTest {
+    private static Logger log = LoggerFactory.getLogger(SensorTest.class);
+
     protected Sensor sensor;
     protected String commName = "iTest";
     protected String id;
@@ -24,12 +29,13 @@ public abstract class SensorTest {
     protected static Core core;
     protected SensorsManager sensorsManager;
 
-    /** Here you should initialize the fields: sensor, id, observations.
-     * Initialization is based on the a concrete sensor (not the abstract
-     * Sensor). */
+    /** Here you should initialize the fields: sensor, id, observations. It is
+     * recommended to change commName as well. Initialization is based on the a
+     * concrete sensor (not the abstract Sensor). */
     public abstract void customInitSensor();
 
     @BeforeClass public static void initCore() {
+        log.debug("SensorTest: Core starting");
         core = new Core();
     }
 
@@ -41,14 +47,17 @@ public abstract class SensorTest {
                 if (sensor.register())
                     break;
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("I/O error occurred, can't regester", e);
             }
-            if (i == 100)
-                throw new Exception("SensorTest: registration failed");
+            if (i == 100) {
+                log.debug("SensorTest: Registration failed");
+                throw new Exception("SensorTest: Registration failed");
+            }
         }
     }
 
     @AfterClass public static void close() {
+        log.debug("SensorTest: Core closing");
         Thread t = core.getSensorHandlerThread();
         if (t.isAlive())
             t.interrupt();

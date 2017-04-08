@@ -8,6 +8,8 @@ import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 
+/** @author Sharon
+ * @since 14.12.16 */
 @SuppressWarnings("static-method")
 public class MessageFactoryTest {
     @Test public void recognizeRegistrationMessages() {

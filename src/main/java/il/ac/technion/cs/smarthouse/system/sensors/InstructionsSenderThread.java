@@ -12,11 +12,16 @@ import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 /** An instructions sender thread is a class that allows sending instructions
  * from the system to a specific sensor.
  * @author Yarden
  * @since 30.3.17 */
 public class InstructionsSenderThread extends Thread {
+    private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);
+
     private final Socket client;
     private OutputMapper mapper;
 
@@ -32,13 +37,12 @@ public class InstructionsSenderThread extends Thread {
             out = new PrintWriter(client.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             for (String input = in.readLine(); input != null;) {
-                System.out.println(input);
                 final Message message = MessageFactory.create(input);
                 if (message == null) {
                     new AnswerMessage(Answer.FAILURE).send(out, null);
                     continue;
                 }
-                System.out.println("Received message: " + message + "\n");
+                log.info("Received message: " + message + "\n");
                 switch (message.getType()) {
                     case REGISTRATION:
                         handleRegisterMessage(out, (RegisterMessage) message);
@@ -47,8 +51,8 @@ public class InstructionsSenderThread extends Thread {
                 }
                 input = in.readLine();
             }
-        } catch (final IOException ¢) {
-            ¢.printStackTrace();
+        } catch (final IOException e) {
+            log.error("I/O error occurred", e);
         } finally {
             try {
                 if (out != null)
@@ -56,8 +60,8 @@ public class InstructionsSenderThread extends Thread {
 
                 if (in != null)
                     in.close();
-            } catch (final IOException ¢) {
-                ¢.printStackTrace();
+            } catch (final IOException e) {
+                log.error("I/O error occurred while closing", e);
             }
         }
     }

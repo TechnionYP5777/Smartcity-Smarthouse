@@ -12,6 +12,9 @@ import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 /** A sensors handler is a class dedicated to listening for incoming messages
  * from sensors and sending instructions to them. The class creates two new
  * threads for each sensor (in order to create a bidirectional connection) so
@@ -20,6 +23,8 @@ import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
  * @author Yarden
  * @since 17.12.16 */
 public class SensorsHandler implements Runnable {
+    private static Logger log = LoggerFactory.getLogger(SensorsHandler.class);
+    
     private final DatabaseHandler databaseHandler;
     private final Map<String, PrintWriter> routingMap = new HashMap<>();
 
@@ -44,13 +49,14 @@ public class SensorsHandler implements Runnable {
                         if (type == SensorType.INTERACTIVE)
                             new InteractiveSensorServer((id, out) -> routingMap.put(id, out)).start();
                     }).start();
-                } catch (final SocketException ¢) {
+                } catch (final SocketException e) {
+                    log.warn("socket closed, SensorsHandler is shutting down", e);
                     return; // if we closed the sockets we want to shutoff the server
-                } catch (final IOException ¢) {
-                    ¢.printStackTrace();
+                } catch (final IOException e) {
+                    log.error("I/O error occurred while waiting for a connection", e);
                 }
-        } catch (final IOException ¢) {
-            ¢.printStackTrace();
+        } catch (final IOException e) {
+            log.error("I/O error occurred when the socket was opened", e);
         }
     }
 
@@ -65,7 +71,7 @@ public class SensorsHandler implements Runnable {
 //            router.close();
         } catch (IOException e) {
             // TODO: Auto-generated catch block
-            e.printStackTrace();
+            log.error("I/O error occurred while closing", e);
         }
     }
 }
