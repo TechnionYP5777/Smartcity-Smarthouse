@@ -1,7 +1,5 @@
 # Smartcity - Smarthouse
-<p align="center">
-<img src="https://cloud.githubusercontent.com/assets/15971916/24823370/5f96f4fa-1c06-11e7-9784-0089af77932f.png" width="300">
-</p>
+<img src="https://cloud.githubusercontent.com/assets/15971916/24823370/5f96f4fa-1c06-11e7-9784-0089af77932f.png" align="left" hspace="10" vspace="9" width="300">
 
 An autonomous system which receives data from house sensors, stores it in a database and runs applications that operate based on this data.
 
