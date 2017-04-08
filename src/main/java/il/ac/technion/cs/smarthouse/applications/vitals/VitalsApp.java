@@ -1,5 +1,8 @@
 package il.ac.technion.cs.smarthouse.applications.vitals;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -11,6 +14,8 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManag
 /** @author Yarden
  * @since 19.1.17 */
 public class VitalsApp extends SmartHouseApplication {
+    private static Logger log = LoggerFactory.getLogger(VitalsApp.class);
+    
     private Controller controller;
     boolean lowPulseAlert;
     boolean highPulseAlert;
@@ -18,18 +23,19 @@ public class VitalsApp extends SmartHouseApplication {
     int highBPAlert;
 
     @Override public void onLoad() throws Exception {
+        log.debug("App starting - in onLoad");
+        
         SensorsManager sensorsManager = (SensorsManager) super.getService(ServiceType.SENSORS_SERVICE);
         AlertsManager alertsManager = (AlertsManager) super.getService(ServiceType.ALERTS_SERVICE);
 
         SensorApi<VitalsSensor> vitalsSensor = sensorsManager.getDefaultSensor(VitalsSensor.class, "iVitals");
 
-        System.out.println("msg from app: onLoad");
-
         vitalsSensor.subscribe(vitals -> {
             final int pulse = vitals.getPulse(), systolicBP = vitals.getSystolicBP(), diastolicBP = vitals.getDiastolicBP();
             final String t = "Client has pulse of " + pulse + " and blood pressure of " + systolicBP + "/" + diastolicBP + " mmHg";
             controller.updateChart(vitals.getPulse(), vitals.getSystolicBP(), vitals.getDiastolicBP());
-            System.out.println("msg from app: " + t);
+            
+            log.debug("App msg (from function subscibed to vitals sensor): " + t + " | Sensor is located at: " + vitals.getSensorLocation());
 
             // major alerts
             if (pulse < 45 && !lowPulseAlert) {

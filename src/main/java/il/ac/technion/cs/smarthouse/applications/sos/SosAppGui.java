@@ -1,5 +1,8 @@
 package il.ac.technion.cs.smarthouse.applications.sos;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -11,18 +14,19 @@ import javafx.application.Platform;
 import javafx.scene.control.Button;
 
 public class SosAppGui extends SmartHouseApplication {
+    private static Logger log = LoggerFactory.getLogger(SosAppGui.class);
 
     SosController sosController;
     private Button killerButon;
     public boolean shouldAlert = true;
 
     @Override public void onLoad() throws Exception {
+        log.debug("App starting - in onLoad");
+        
         SensorsManager sensorsManager = (SensorsManager) super.getService(ServiceType.SENSORS_SERVICE);
         AlertsManager alertsManager = (AlertsManager) super.getService(ServiceType.ALERTS_SERVICE);
 
         SensorApi<SosSensor> sosSensor = sensorsManager.getDefaultSensor(SosSensor.class, "iSOS");
-
-        System.out.println("msg from app: onLoad " + Platform.isFxApplicationThread());
 
         sosSensor.subscribe(sos -> {
             final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
@@ -32,7 +36,7 @@ public class SosAppGui extends SmartHouseApplication {
                 alertsManager.sendAlert("ATTENTION SOS: Client is requesting help.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
                 shouldAlert = false;
             }
-            System.out.println("msg from app: " + t + " Location: " + sos.getSensorLocation());
+            log.debug("App msg (from function subscibed to sos sensor): " + t + " | Sensor is located at: " + sos.getSensorLocation());
         });
 
         sosController = super.setContentView(getClass().getResource("sos_app_ui.fxml"));

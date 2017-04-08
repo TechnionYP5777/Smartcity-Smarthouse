@@ -3,6 +3,9 @@ package il.ac.technion.cs.smarthouse.applications.stove;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
@@ -27,6 +30,8 @@ import javafx.util.Duration;
 /** @author Roy
  * @since 19.12.16 */
 public class StoveAppController implements Initializable {
+    static Logger log = LoggerFactory.getLogger(StoveAppController.class);
+    
     @FXML public Label timeLabel;
     @FXML public Label tempLabel;
     @FXML public Button stoveConfigButton;
@@ -119,8 +124,8 @@ public class StoveAppController implements Initializable {
                     stage.setScene(new Scene(root1));
                     stage.show();
                     ((ConfigController) fxmlLoader.getController()).subscribe(StoveAppController.this);
-                } catch (final Exception ¢) {
-                    ¢.printStackTrace();
+                } catch (final Exception $) {
+                    log.error("Failed trying to initialize the ConfigController", $);
                 }
             }
         });
