@@ -5,7 +5,8 @@ import java.util.Map;
 
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 
-/** This class represents a temperature sensor for a stove.
+/** This class represents a temperature sensor for a stove and contains its
+ * logic.
  * @author Yarden
  * @author Sharon
  * @since 10.12.16 */

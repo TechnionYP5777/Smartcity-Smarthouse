@@ -16,10 +16,16 @@ import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 
-/** @author Sharon
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
+/** Represents a physical component that can send information.
+ * @author Sharon
  * @author Yarden
  * @since 7.12.16 */
 public abstract class Sensor {
+    private static Logger log = LoggerFactory.getLogger(Sensor.class);
+
     /** Defines the maximal amount of update messages that can be sent by this
      * sensor each second. */
     public static final int MAX_MESSAGES_PER_SECOND = 10;
@@ -61,8 +67,8 @@ public abstract class Sensor {
             socket = new Socket(InetAddress.getByName(systemIP), systemPort);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (final IOException ¢) {
-            ¢.printStackTrace();
+        } catch (final IOException e) {
+            log.error("I/O error occurred when the sensor's socket was created", e);
         }
         final String $ = new RegisterMessage(id, commName, sType).send(out, in);
         return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;

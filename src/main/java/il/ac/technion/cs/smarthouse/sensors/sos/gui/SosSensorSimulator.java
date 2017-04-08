@@ -10,7 +10,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-/** @author Yarden
+/** This class simulates an SOS button.
+ * @author Yarden
  * @since 28.12.16 */
 public class SosSensorSimulator extends Application {
     private SosSensor sensor;

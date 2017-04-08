@@ -5,7 +5,7 @@ import java.util.Map;
 
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 
-/** This class represents an SOS button.
+/** This class represents an SOS button and contains its logic.
  * @author Yarden
  * @since 28.12.16 */
 public class SosSensor extends Sensor {

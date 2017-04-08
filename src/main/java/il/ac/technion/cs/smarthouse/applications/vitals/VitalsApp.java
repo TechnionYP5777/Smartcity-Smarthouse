@@ -10,7 +10,8 @@ import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
 
-/** @author Yarden
+/** This class contains the logic of the vitals signs application.
+ * @author Yarden
  * @since 19.1.17 */
 public class VitalsApp extends SmartHouseApplication {
     private static Logger log = LoggerFactory.getLogger(VitalsApp.class);

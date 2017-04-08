@@ -15,7 +15,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-/** @author Sharon
+/** This class is responsible for the visual part of the stove sensor.
+ * @author Sharon
  * @since 9.12.16 */
 public class Controller implements Initializable {
     private static final String STYLE_REG = "-fx-fill: #4d4d4c; -fx-font-weight: bold;";

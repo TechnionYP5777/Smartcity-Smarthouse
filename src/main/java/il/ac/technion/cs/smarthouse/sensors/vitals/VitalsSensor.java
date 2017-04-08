@@ -5,7 +5,8 @@ import java.util.Map;
 
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 
-/** @author Yarden
+/** This class represents a vitals signs sensor and contains its logic.
+ * @author Yarden
  * @since 16.1.17 */
 public class VitalsSensor extends Sensor {
     public VitalsSensor(final String id, final String commName, final String systemIP, final int systemPort) {

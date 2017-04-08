@@ -6,7 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/** @author Yarden
+/** This class simulates the vitals signs application.
+ * @author Yarden
  * @since 16.1.17 */
 public class VitalsSensorSimulator extends Application {
     public static void main(final String[] args) {

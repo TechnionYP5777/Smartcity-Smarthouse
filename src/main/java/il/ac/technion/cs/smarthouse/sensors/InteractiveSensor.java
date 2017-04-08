@@ -15,11 +15,16 @@ import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 /** This class represents a sensor that can get instructions and operate
  * accordingly.
  * @author Yarden
  * @since 31.3.17 */
 public abstract class InteractiveSensor extends Sensor {
+    private static Logger log = LoggerFactory.getLogger(InteractiveSensor.class);
+
     private class InstructionChecker extends TimerTask {
         InstructionChecker() {}
 
@@ -53,8 +58,8 @@ public abstract class InteractiveSensor extends Sensor {
             instSocket = new Socket(InetAddress.getByName(systemIP), instPort);
             instOut = new PrintWriter(instSocket.getOutputStream(), true);
             instIn = new BufferedReader(new InputStreamReader(instSocket.getInputStream()));
-        } catch (final IOException ¢) {
-            ¢.printStackTrace();
+        } catch (final IOException e) {
+            log.error("I/O error occurred when the sensor's instructions socket was created", e);
         }
         final String $ = new RegisterMessage(id, commName, sType).send(instOut, instIn);
         return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
@@ -74,7 +79,7 @@ public abstract class InteractiveSensor extends Sensor {
         try {
             return instIn.ready() && handler.applyInstruction(((UpdateMessage) MessageFactory.create(instIn.readLine())).getData());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("I/O error occurred", e);
             return false;
         }
     }

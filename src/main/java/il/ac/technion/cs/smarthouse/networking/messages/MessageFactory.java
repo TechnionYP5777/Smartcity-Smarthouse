@@ -3,9 +3,10 @@ package il.ac.technion.cs.smarthouse.networking.messages;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
-/** This singleton is used to transform a Json String (originally made from a
+/** This singleton is used to transform a JSon String (originally made from a
  * Message) back to a Message object.
- * @author Sharon */
+ * @author Sharon
+ * @since 14.12.16 */
 public enum MessageFactory {
     ;
 

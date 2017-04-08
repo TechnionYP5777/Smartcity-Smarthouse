@@ -17,7 +17,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-/** @author Yarden
+/** This class is responsible for the visual part of the vitals signs
+ * application.
+ * @author Yarden
  * @since 16.1.17 */
 public class Controller implements Initializable {
     private static final String STYLE_REG = "-fx-fill: #4d4d4c; -fx-font-weight: bold;";

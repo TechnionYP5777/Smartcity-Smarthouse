@@ -6,7 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/** @author Sharon
+/** This class simulates a temperature sensor for a stove.
+ * @author Sharon
  * @since 9.12.16 */
 public class StoveSensorSimulator extends Application {
     public static void main(final String[] args) {
