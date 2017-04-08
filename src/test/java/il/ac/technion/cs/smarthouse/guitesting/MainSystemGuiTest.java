@@ -3,6 +3,7 @@ package il.ac.technion.cs.smarthouse.guitesting;
 import static org.junit.Assert.*;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.loadui.testfx.GuiTest;
 
@@ -21,7 +22,7 @@ public class MainSystemGuiTest extends GuiTest {
     @Override protected Parent getRootNode() {
         return this.gui.getRoot();
     }
-    
+
     @After public void closeSystem() throws Exception {
         Thread.sleep(500);
         if (sosSim != null)
@@ -30,8 +31,8 @@ public class MainSystemGuiTest extends GuiTest {
         gui.stop();
         Thread.sleep(1000);
     }
-    
-    @Test public void testInstalation() throws InterruptedException {
+
+    @Ignore("Read issue #151 for details") @Test public void testInstalation() throws InterruptedException {
         Platform.runLater(() -> {
             try {
                 sosSim = new SosSensorSimulator();
