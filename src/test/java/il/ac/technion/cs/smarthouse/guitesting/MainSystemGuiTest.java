@@ -13,7 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-public class MainSystemGuiTests extends GuiTest {
+public class MainSystemGuiTest extends GuiTest {
 
     private MainSystemGui gui = new MainSystemGui();
     private SosSensorSimulator sosSim;
