@@ -30,6 +30,8 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
  *        extend SensorData */
 public final class SensorApi<T extends SensorData> {
     private static Logger log = LoggerFactory.getLogger(SensorApi.class);
+    private static String LOG_MSG_RUNTIME_THROW = "SensorLostRuntimeException is being thrown. This is unexpected!";
+    private static String LOG_MSG_SENSOR_NOT_FOUND = LOG_MSG_RUNTIME_THROW + " This is thrown because SensorNotFoundException was received";
 
     private SystemCore systemCore;
     private String sensorId;
@@ -53,7 +55,7 @@ public final class SensorApi<T extends SensorData> {
         try {
             return systemCore.databaseHandler.getName(sensorId);
         } catch (SensorNotFoundException e) {
-            logSensorLostRuntimeException();
+            log.error(LOG_MSG_SENSOR_NOT_FOUND, e);
             throw new SensorLostRuntimeException(e);
         }
     }
@@ -64,13 +66,9 @@ public final class SensorApi<T extends SensorData> {
         try {
             return systemCore.databaseHandler.getSensorLocation(this.sensorId);
         } catch (SensorNotFoundException e) {
-            logSensorLostRuntimeException();
+            log.error(LOG_MSG_SENSOR_NOT_FOUND, e);
             throw new SensorLostRuntimeException(e);
         }
-    }
-
-    private static void logSensorLostRuntimeException() {
-        log.error("SensorLostRuntimeException is being thrown - this is unexpected");
     }
 
     /** Wraps the <code>functionToRun</code> Consumer with helpful wrappers.
@@ -102,7 +100,7 @@ public final class SensorApi<T extends SensorData> {
         try {
             systemCore.databaseHandler.addListener(sensorId, generateSensorListener(functionToRun, true));
         } catch (SensorNotFoundException e) {
-            logSensorLostRuntimeException();
+            log.error(LOG_MSG_SENSOR_NOT_FOUND, e);
             throw new SensorLostRuntimeException(e);
         }
     }
@@ -127,7 +125,7 @@ public final class SensorApi<T extends SensorData> {
             return systemCore.databaseHandler.getList(sensorId).getLastKEntries(numOfEntries).stream()
                     .map(jsonData -> new Gson().fromJson(jsonData, sensorDataClass)).collect(Collectors.toList());
         } catch (SensorNotFoundException e) {
-            logSensorLostRuntimeException();
+            log.error(LOG_MSG_SENSOR_NOT_FOUND, e);
             throw new SensorLostRuntimeException(e);
         }
     }
@@ -145,7 +143,7 @@ public final class SensorApi<T extends SensorData> {
      * @throws SensorLostRuntimeException */
     public final void instruct(final Map<String, String> instruction) throws SensorLostRuntimeException {
         if (!systemCore.databaseHandler.sensorExists(sensorId)) {
-            logSensorLostRuntimeException();
+            log.error(LOG_MSG_RUNTIME_THROW + " This is because " + sensorId + " Doesn't exist");
             throw new SensorLostRuntimeException(null);
         }
         systemCore.sensorsHandler.sendInstruction(new UpdateMessage(sensorId, instruction));

@@ -26,7 +26,7 @@ public final class ServiceManager {
                 services.put(s, s.getServiceClass().getDeclaredConstructor(SystemCore.class).newInstance(systemCore));
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                     | SecurityException e) {
-                log.error("Service " + s.toString() + " can't start. " + e.getMessage());
+                log.error("Service " + s.toString() + " can't start ", e);
             }
     }
 

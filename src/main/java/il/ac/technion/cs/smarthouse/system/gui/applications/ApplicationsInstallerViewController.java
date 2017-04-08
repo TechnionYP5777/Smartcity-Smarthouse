@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.applications.PremadeApplications;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
@@ -26,6 +28,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ApplicationsInstallerViewController implements Initializable {
+    private static Logger log = LoggerFactory.getLogger(ApplicationsInstallerViewController.class);
+    
     @FXML private Button toggleBtn;
     @FXML private VBox toggleOptionsParent;
     @FXML private HBox toggleOptionBrowse;
@@ -107,12 +111,15 @@ public class ApplicationsInstallerViewController implements Initializable {
             applicationsHandler.addApplication(p);
             if (!inRealMode)
                 comboBox.getItems().remove(comboBox.getValue());
-        } catch (AppInstallerException ¢) {
-            alert("Installer Error: " + ¢.getMessage());
-        } catch (final IOException ¢) {
-            alert("IO Error: " + ¢.getMessage());
-        } catch (final Exception ¢) {
-            alert(¢.getMessage());
+        } catch (AppInstallerException $) {
+            log.debug("An exception while installing: " + p.toString(), $);
+            alert("Installer Error: " + $.getMessage());
+        } catch (final IOException $) {
+            log.debug("An exception while installing: " + p.toString(), $);
+            alert("IO Error: " + $.getMessage());
+        } catch (final Exception $) {
+            log.debug("An exception while installing: " + p.toString(), $);
+            alert($.getClass().getName() + ": " + $.getMessage());
         }
     }
 

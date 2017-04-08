@@ -2,6 +2,9 @@ package il.ac.technion.cs.smarthouse.system.services.alerts_service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.system.Communicate;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
@@ -10,6 +13,7 @@ import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
 public class AlertsManager extends Service {
+    private static Logger log = LoggerFactory.getLogger(AlertsManager.class);
     
     public AlertsManager(SystemCore $) {
         super($);
@@ -23,8 +27,11 @@ public class AlertsManager extends Service {
     public final void sendAlert(final String message, final EmergencyLevel eLevel) {
         UserInformation user = systemCore.getUser();
         
-        if (user == null)
+        if (user == null) {
+            log.debug("systemCore.getUser() returned a null");
             return;
+        }
+        
         final List<Contact> $ = user.getContacts(eLevel);
         switch (eLevel) {
             case SMS_EMERGENCY_CONTACT:
@@ -40,6 +47,7 @@ public class AlertsManager extends Service {
                 $.stream().forEach(c -> Communicate.throughEmailFromHere(c.getEmailAddress(), message));
                 break;
             default:
+                log.warn(eLevel.toString() + " is not handled");
         }
     }
 }

@@ -1,9 +1,11 @@
 package il.ac.technion.cs.smarthouse.system.gui.applications;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationManager;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
@@ -19,6 +21,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 public class ApplicationViewController implements Initializable {
+    private static Logger log = LoggerFactory.getLogger(ApplicationViewController.class);
+    
     @FXML ListView<String> listView;
     @FXML AnchorPane appView;
     @FXML Button plusButton;
@@ -65,8 +69,8 @@ public class ApplicationViewController implements Initializable {
                 AnchorPane.setBottomAnchor(n, 0.0);
 
                 appView.getChildren().setAll(n);
-            } catch (final IOException e1) {
-                e1.printStackTrace();
+            } catch (final Exception e1) {
+                log.error("An exception while loading the ApplicationsInstallerViewController (after pressing the plus button)", e1);
             }
         });
     }

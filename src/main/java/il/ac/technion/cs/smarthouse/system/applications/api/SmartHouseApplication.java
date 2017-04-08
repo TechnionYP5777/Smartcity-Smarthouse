@@ -1,7 +1,9 @@
 package il.ac.technion.cs.smarthouse.system.applications.api;
 
-import java.io.IOException;
 import java.net.URL;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.system.services.Service;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
@@ -17,6 +19,8 @@ import javafx.scene.Node;
  * @author Elia Traore
  * @since 8.12.2016 */
 public abstract class SmartHouseApplication {
+    private static Logger log = LoggerFactory.getLogger(SmartHouseApplication.class);
+    
     private ServiceManager serviceManager;
     private Node rootNode;
 
@@ -26,34 +30,31 @@ public abstract class SmartHouseApplication {
     public void setServiceManager(final ServiceManager $) {
         serviceManager = $;
     }
-    
+
     public final Node getRootNode() {
         return rootNode;
     }
     // [end]
 
     // [start] Public - Services to application developers
-    /**
-     * Set the fxml file that will be used
+    /** Set the fxml file that will be used
      * @param location of the fxml file
-     * @return
-     */
+     * @return */
     public <T extends Initializable> T setContentView(URL location) {
-        final FXMLLoader fxmlLoader = new FXMLLoader(location);
         try {
+            final FXMLLoader fxmlLoader = new FXMLLoader(location);
             rootNode = fxmlLoader.load();
-        } catch (IOException e) {
+            return fxmlLoader.getController();
+        } catch (Exception e) {
             rootNode = null;
-            e.printStackTrace();
+            log.error("Couldn't load the application's fxml. The rootNode is null", e);
         }
-        return fxmlLoader.getController();
+        return null;
     }
-    
-    /**
-     * Get a service from the system
+
+    /** Get a service from the system
      * @param $
-     * @return
-     */
+     * @return */
     public Service getService(ServiceType $) {
         return serviceManager.getService($);
     }
@@ -62,12 +63,14 @@ public abstract class SmartHouseApplication {
      * @param data
      * @return true if the data was saved to the system, or false otherwise */
     @SuppressWarnings("static-method") public final boolean saveToDatabase(final String data) {
+        log.warn("This function is not implemented yet");
         return data != null;
     }
 
     /** Loads the app's data from the system's database
      * @return a string with the data */
     @SuppressWarnings("static-method") public final String loadFromDatabase() {
+        log.warn("This function is not implemented yet");
         return null;
     }
     // [end]

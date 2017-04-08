@@ -49,8 +49,9 @@ public class DatabaseHandler {
     public List<String> getSensors(final String commName) {
         return !commNames.containsKey(commName) ? new ArrayList<>() : commNames.get(commName);
     }
-    
-    public Boolean sensorExists(final String id){//TODO - move method to sensorsHandler
+
+    public Boolean sensorExists(final String id) {// TODO - move method to
+                                                  // sensorsHandler
         return sensors.containsKey(id);
     }
 
@@ -60,7 +61,7 @@ public class DatabaseHandler {
      * @throws SensorNotFoundException if id was not found */
     public String getName(final String sensorId) throws SensorNotFoundException {
         if (!sensorsIdToName.containsKey(sensorId))
-            throw new SensorNotFoundException();
+            throw new SensorNotFoundException(sensorId);
 
         return sensorsIdToName.get(sensorId);
     }
@@ -79,11 +80,11 @@ public class DatabaseHandler {
      *        of the sensor
      * @return The id of the listener, to be used in any future reference to it
      * @throws SensorNotFoundException */
-    public String addListener(final String $, final Consumer<String> notifee) throws SensorNotFoundException {
+    public String addListener(final String sensorId, final Consumer<String> notifee) throws SensorNotFoundException {
         try {
-            return sensors.get($).addListener(notifee);
+            return sensors.get(sensorId).addListener(notifee);
         } catch (final Exception e) {
-            throw new SensorNotFoundException();
+            throw new SensorNotFoundException(sensorId); // TODO: are we sure about this?
         }
     }
 
@@ -94,7 +95,7 @@ public class DatabaseHandler {
      * @throws SensorNotFoundException */
     public void removeListener(final String sensorId, final String listenerId) throws SensorNotFoundException {
         if (!sensors.containsKey(sensorId))
-            throw new SensorNotFoundException();
+            throw new SensorNotFoundException(sensorId);
 
         sensors.get(sensorId).removeListener(listenerId);
     }
@@ -113,7 +114,7 @@ public class DatabaseHandler {
      * @throws SensorNotFoundException */
     public ListenableList<String> getList(final String sensorId) throws SensorNotFoundException {
         if (!sensors.containsKey(sensorId))
-            throw new SensorNotFoundException();
+            throw new SensorNotFoundException(sensorId);
         return sensors.get(sensorId);
     }
 
@@ -123,7 +124,7 @@ public class DatabaseHandler {
      * @throws SensorNotFoundException */
     public SensorLocation getSensorLocation(final String sensorId) throws SensorNotFoundException {
         if (sensorsLocations.get(sensorId) == null)
-            throw new SensorNotFoundException();
+            throw new SensorNotFoundException(sensorId);
         return sensorsLocations.get(sensorId);
     }
 
@@ -132,7 +133,7 @@ public class DatabaseHandler {
      * @throws SensorNotFoundException */
     public void setSensorLocation(final String sensorId, final SensorLocation l) throws SensorNotFoundException {
         if (!sensorsLocations.containsKey(sensorId))
-            throw new SensorNotFoundException();
+            throw new SensorNotFoundException(sensorId);
         sensorsLocations.put(sensorId, l);
 
         System.out.println(sensorsLocations.get(sensorId));
