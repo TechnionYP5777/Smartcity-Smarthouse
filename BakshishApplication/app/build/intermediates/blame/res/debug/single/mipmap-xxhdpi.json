@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Users\\Alex\\AndroidStudioProjects\\BakshishApplication\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher_round.png",
+        "source": "C:\\Users\\Alex\\AndroidStudioProjects\\BakshishApplication\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Alex\\AndroidStudioProjects\\BakshishApplication\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Alex\\AndroidStudioProjects\\BakshishApplication\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    }
+]

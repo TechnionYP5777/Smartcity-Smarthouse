@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
+        revision="25.0.2"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\javax.inject-1-e86c6ad046940b581fcf8f69e7965f8f5d1cfaf6.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.android\build-cache\998e17fe1ce302f2606fd8128bd37758b3cdd425\output\jars\classes.jar"
+        revision="25.0.2"
+        sha1="d115b0e9e1501135fe91254ba884fcbd83d374c0">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\classes-21193c8abcb8eafab60e8eb71beafd80a78a1951.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\org.hamcrest\hamcrest-integration\1.3\5de0c73fef18917cd85d0ab70bb23818685e4dfd\hamcrest-integration-1.3.jar"
+        revision="25.0.2"
+        sha1="5de0c73fef18917cd85d0ab70bb23818685e4dfd">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\hamcrest-integration-1.3-c27217bfee1bf31012347cc7b5e4a196977240af.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\com.squareup\javawriter\2.1.1\67ff45d9ae02e583d0f9b3432a5ebbe05c30c966\javawriter-2.1.1.jar"
+        revision="25.0.2"
+        sha1="67ff45d9ae02e583d0f9b3432a5ebbe05c30c966">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\javawriter-2.1.1-504784057d6ed4c809eafa6ecaa17d2e0a85d942.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.android\build-cache\636b24e491110c3e06511be21813c3be58f67b69\output\jars\classes.jar"
+        revision="25.0.2"
+        sha1="905f3e63973d47fedf2d945fa31d8c0f0c98816e">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\classes-b7a10e3ee9a625328375fbbc7f4a36a6713baa2f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\AppData\Local\Android\Sdk\platforms\android-25\android.jar"
+        revision="25.0.2"
+        sha1="712a0312fe844a21a1b3812fa960c363a1578984">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackRuntimeLibraries\androidTest\debug\jars\8000\40\android-aa6cf50908a84164db536551627b3c41ec8bab6b.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.android\build-cache\f0abb8c1437e34d3c2529199c0ceb2d72383b071\output\jars\classes.jar"
+        revision="25.0.2"
+        sha1="a890ee8445927649d9ed50f625a315d8758688be">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\classes-5c50a9bc4c4a0b608967577a695aafba8d3be63e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.android\build-cache\f243d3fed4436874aa475e3c8f5a053ca65e0468\output\jars\classes.jar"
+        revision="25.0.2"
+        sha1="796f9229948e907471c5595fbe94655ccf03ff73">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\classes-a8435a6dd4f88b70ef757081987212d054490d7b.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\2.0.1\516c03b21d50a644d538de0f0369c620989cd8f0\jsr305-2.0.1.jar"
+        revision="25.0.2"
+        sha1="516c03b21d50a644d538de0f0369c620989cd8f0">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\jsr305-2.0.1-fefc45d2420a5d2ef24bec8c7a660484e12e9aa7.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\AppData\Local\Android\Sdk\platforms\android-25\optional\org.apache.http.legacy.jar"
+        revision="25.0.2"
+        sha1="5f0541a4298daa0590b22cfbde43f85e2a675545">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackRuntimeLibraries\androidTest\debug\jars\8000\40\org.apache.http.legacy-8dd3d43140f8d6406d1aa40a9c5b003bdf0fed94.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\javax.annotation\javax.annotation-api\1.2\479c1e06db31c432330183f5cae684163f186146\javax.annotation-api-1.2.jar"
+        revision="25.0.2"
+        sha1="479c1e06db31c432330183f5cae684163f186146">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\javax.annotation-api-1.2-e180261abe2091ffe8c1ada2100411b016a96bc0.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.android\build-cache\008fd43f7feafe56f29ed18bc918c22380717725\output\jars\classes.jar"
+        revision="25.0.2"
+        sha1="7e11799d8a26bfa5d48acafe012ee5545b9bf468">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\classes-50e6f9252fbbdbc0e1d5f4d3a5bc99c39cf3d6d6.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\org.hamcrest\hamcrest-library\1.3\4785a3c21320980282f9f33d0d1264a69040538f\hamcrest-library-1.3.jar"
+        revision="25.0.2"
+        sha1="4785a3c21320980282f9f33d0d1264a69040538f">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\hamcrest-library-1.3-a36ab2f3d18e1bf420247006d67715e971d9c24d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\org.hamcrest\hamcrest-core\1.3\42a25dc3219429f0e5d060061f71acb49bf010a0\hamcrest-core-1.3.jar"
+        revision="25.0.2"
+        sha1="42a25dc3219429f0e5d060061f71acb49bf010a0">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\hamcrest-core-1.3-104faf59a643db0ab98327e062e5aad0629fa4aa.jar" />
+    </item>
+    <item
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\junit\junit\4.12\2973d150c0dc1fefe998f834810d68f278ea58ec\junit-4.12.jar"
+        revision="25.0.2"
+        sha1="2973d150c0dc1fefe998f834810d68f278ea58ec">
+        <dex dex="C:\Users\Alex\AndroidStudioProjects\BakshishApplication\app\build\intermediates\transforms\preJackPackagedLibraries\androidTest\debug\jars\8000\1f\junit-4.12-753f3fab90ebf9d0714b9dac5ca7d82dd911dfc6.jar" />
+    </item>
+
+</items>
