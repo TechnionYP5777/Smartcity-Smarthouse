@@ -6,12 +6,18 @@ import org.parse4j.Parse;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
+import org.parse4j.callback.GetCallback;
 import org.parse4j.callback.SaveCallback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** @author Inbal Zukerman
  * @date Mar 31, 2017 */
 
 public abstract class DatabaseManager {
+
+    private static Logger log = LoggerFactory.getLogger(DatabaseManager.class);
+
     public static final String serverUrl = "http://sc-smarthouse.herokuapp.com/parse";
     public static final String appId = "myAppId";
     public static final String restAPIKey = "ag9h-84j3-ked2-94j5";
@@ -24,8 +30,10 @@ public abstract class DatabaseManager {
 
     public static void initialize() {
 
+        log.info("Initializing Database");
         if (init)
             return;
+
         Parse.initialize(appId, restAPIKey, serverUrl);
         init = true;
     }
@@ -79,6 +87,24 @@ public abstract class DatabaseManager {
             ¢.printStackTrace();
         }
         return null;
+    }
+
+    /** This method updates an object with new values.
+     * @param objectClass The class of the object which should be updated
+     * @param id The id of the object which should be updated
+     * @param values The new Values to be saved in the object's fields. Fields
+     *        which are not included in this mapping will remain untouched. */
+    public static void update(final String objectClass, final String id, Map<String, Object> values) {
+
+        ParseQuery.getQuery(objectClass).getInBackground(id, new GetCallback<ParseObject>() {
+            @Override public void done(ParseObject arg0, ParseException arg1) {
+                if (arg0 == null || arg1 != null)
+                    return;
+                for (String key : values.keySet())
+                    arg0.put(key, values.get(key));
+                arg0.saveInBackground();
+            }
+        });
     }
 
 }
