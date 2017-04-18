@@ -1,4 +1,0 @@
-#Wed Apr 12 23:24:10 IDT 2017
-base.0=C\:\\Users\\Alex\\AndroidStudioProjects\\BakshishApplication\\app\\build\\intermediates\\transforms\\jack\\debug\\folders\\1000\\1f\\main
-renamed.0=classes.dex
-file.0=C\:\\Users\\Alex\\AndroidStudioProjects\\BakshishApplication\\app\\build\\intermediates\\transforms\\jack\\debug\\folders\\1000\\1f\\main\\classes.dex
