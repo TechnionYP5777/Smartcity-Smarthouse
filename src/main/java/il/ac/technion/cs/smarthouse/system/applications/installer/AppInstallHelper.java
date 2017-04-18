@@ -10,6 +10,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 
@@ -18,6 +21,8 @@ import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
  * @author RON
  * @since 09-12-2016 */
 public class AppInstallHelper {
+
+    private static Logger log = LoggerFactory.getLogger(AppInstallHelper.class);
 
     // [start] Public - loadApplication functions
     /** Dynamically loads the classes from the jar file to the JVM. Finds the
@@ -60,8 +65,10 @@ public class AppInstallHelper {
         try {
             return (SmartHouseApplication) $.get(0).newInstance();
         } catch (final InstantiationException ¢) {
+            log.error("Instantiation error occured", ¢);
             throw new AppInstallerException(AppInstallerException.ErrorCode.INSTANTIATION_ERROR, ¢.getMessage());
         } catch (final IllegalAccessException ¢) {
+            log.error("Illegal access occured", ¢);
             throw new AppInstallerException(AppInstallerException.ErrorCode.ILLEGAL_ACCESS_ERROR, ¢.getMessage());
         }
     }
@@ -88,7 +95,7 @@ public class AppInstallHelper {
             try {
                 $.add(l.loadClass(className));
             } catch (final ClassNotFoundException e1) {
-                e1.printStackTrace();
+                log.error("Class was not found", e1);
             }
         return $;
     }

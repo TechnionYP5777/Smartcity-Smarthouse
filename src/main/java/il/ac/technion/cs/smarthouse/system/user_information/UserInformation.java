@@ -11,6 +11,8 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
@@ -18,6 +20,8 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
  * @since Dec 29, 2016 */
 
 public class UserInformation {
+
+    private static Logger log = LoggerFactory.getLogger(UserInformation.class);
 
     private String name;
     private String id;
@@ -45,7 +49,7 @@ public class UserInformation {
             homeAddress = userDetails.getChildText("homeAddress");
             emergencyContacts = new ContactsInformation(classInfo.get(1));
         } catch (final IOException | JDOMException ¢) {
-            ¢.printStackTrace();
+            log.error("I/O error occurred", ¢);
         }
     }
 
@@ -111,7 +115,7 @@ public class UserInformation {
             fw.flush();
             fw.close();
         } catch (final IOException ¢) {
-            ¢.printStackTrace();
+            log.error("I/O error occurred", ¢);
         }
 
     }

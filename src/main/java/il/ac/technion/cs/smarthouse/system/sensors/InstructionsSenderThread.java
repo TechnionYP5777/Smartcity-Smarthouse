@@ -51,8 +51,8 @@ public class InstructionsSenderThread extends Thread {
                 }
                 input = in.readLine();
             }
-        } catch (final IOException e) {
-            log.error("I/O error occurred", e);
+        } catch (final IOException ¢) {
+            log.error("I/O error occurred", ¢);
         } finally {
             try {
                 if (out != null)
@@ -60,8 +60,8 @@ public class InstructionsSenderThread extends Thread {
 
                 if (in != null)
                     in.close();
-            } catch (final IOException e) {
-                log.error("I/O error occurred while closing", e);
+            } catch (final IOException ¢) {
+                log.error("I/O error occurred while closing", ¢);
             }
         }
     }

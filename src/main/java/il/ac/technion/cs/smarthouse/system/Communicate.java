@@ -11,9 +11,15 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /** @author Elia Traore
  * @since Jan 16, 2017 */
 public class Communicate {
+    
+    private static Logger log = LoggerFactory.getLogger(Communicate.class);
+    
     private static String forwardMsgToAdmin(final String request) {
         return "The request to: " + request + ", was foward to the community security admin.";
     }
@@ -54,7 +60,7 @@ public class Communicate {
             Transport.send(message);
 
         } catch (final MessagingException mex) {
-            mex.printStackTrace();
+            log.error("A messaging error occurred", mex);
             return null;
         }
         return "The e-mail was sent to:" + $;
