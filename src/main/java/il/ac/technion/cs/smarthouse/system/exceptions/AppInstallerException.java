@@ -2,7 +2,9 @@ package il.ac.technion.cs.smarthouse.system.exceptions;
 
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 
-/** @author RON
+/** This exception describes an error in the process of installing an
+ * application
+ * @author RON
  * @since 09-12-2016 */
 public class AppInstallerException extends Exception {
     public enum ErrorCode {

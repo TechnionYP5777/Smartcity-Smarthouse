@@ -66,7 +66,7 @@ public class DatabaseHandler {
      * @return commercial name associated with this id
      * @throws SensorNotFoundException if id was not found */
     public String getName(final String sensorId) throws SensorNotFoundException {
-        if (!sensorsIdToName.containsKey(sensorId)){
+        if (!sensorsIdToName.containsKey(sensorId)) {
             log.error("Sensor was not found");
             throw new SensorNotFoundException(sensorId);
         }

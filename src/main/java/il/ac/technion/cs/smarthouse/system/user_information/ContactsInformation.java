@@ -9,7 +9,9 @@ import org.jdom2.Element;
 
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
-/** @author Inbal Zukerman
+/** This class saves all necessary information and implements the required API
+ * to save information about the client's emergency contacts
+ * @author Inbal Zukerman
  * @since Dec 29, 2016 */
 
 public class ContactsInformation {

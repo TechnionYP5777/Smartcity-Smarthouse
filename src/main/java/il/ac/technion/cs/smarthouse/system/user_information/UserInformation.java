@@ -16,7 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
-/** @author Inbal Zukerman
+/** This class represents all the data which is relevant to the system about the
+ * client
+ * @author Inbal Zukerman
  * @since Dec 29, 2016 */
 
 public class UserInformation {

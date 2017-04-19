@@ -2,7 +2,9 @@ package il.ac.technion.cs.smarthouse.system.user_information;
 
 import org.jdom2.Element;
 
-/** @author Inbal Zukerman
+/** This class saves information about a contact and implements the required API
+ * for the system
+ * @author Inbal Zukerman
  * @since Dec 28, 2016 */
 public class Contact {
 

@@ -14,12 +14,14 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** @author Elia Traore
+/** This class takes part in managing the communication with the emergency
+ * contacts
+ * @author Elia Traore
  * @since Jan 16, 2017 */
 public class Communicate {
-    
+
     private static Logger log = LoggerFactory.getLogger(Communicate.class);
-    
+
     private static String forwardMsgToAdmin(final String request) {
         return "The request to: " + request + ", was foward to the community security admin.";
     }
