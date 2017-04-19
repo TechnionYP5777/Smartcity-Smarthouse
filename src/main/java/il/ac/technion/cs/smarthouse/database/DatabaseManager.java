@@ -1,11 +1,13 @@
 package il.ac.technion.cs.smarthouse.database;
 
+import java.util.List;
 import java.util.Map;
 
 import org.parse4j.Parse;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
+import org.parse4j.callback.FindCallback;
 import org.parse4j.callback.GetCallback;
 import org.parse4j.callback.SaveCallback;
 import org.slf4j.Logger;
@@ -40,7 +42,7 @@ public abstract class DatabaseManager {
 
     /** @param objectClass
      * @param fields Map any field name (string) to an object which will be
-     *        saves as the ParseObject
+     *        saved as the ParseObject
      * @return The ParseObject which was created
      * @throws ParseException */
     public static ParseObject putValue(final String objectClass, Map<String, Object> fields) throws ParseException {
@@ -53,7 +55,7 @@ public abstract class DatabaseManager {
 
     /** @param objectClass
      * @param fields Map any field name (string) to an object which will be
-     *        saves as the ParseObject
+     *        saved as the ParseObject
      * @param c callback which will let us get the result */
     public static void putValue(final String objectClass, Map<String, Object> fields, SaveCallback c) {
         final ParseObject obj = new ParseObject(objectClass);
@@ -80,11 +82,11 @@ public abstract class DatabaseManager {
      * @param id The item's id
      * @return ParseObject Result of query if it was successful, null o.w.
      * @throws ParseException */
-    public static ParseObject getValue(final String $, final String id) {
+    public static ParseObject getValue(final String objectClass, final String id) {
         try {
-            return ParseQuery.getQuery($).get(id);
+            return ParseQuery.getQuery(objectClass).get(id);
         } catch (ParseException ¢) {
-            ¢.printStackTrace();
+            log.error("A parse exception has happened", ¢);
         }
         return null;
     }
@@ -97,12 +99,39 @@ public abstract class DatabaseManager {
     public static void update(final String objectClass, final String id, Map<String, Object> values) {
 
         ParseQuery.getQuery(objectClass).getInBackground(id, new GetCallback<ParseObject>() {
-            @Override public void done(ParseObject arg0, ParseException arg1) {
+            @Override @SuppressWarnings("synthetic-access") public void done(ParseObject arg0, ParseException arg1) {
                 if (arg0 == null || arg1 != null)
                     return;
                 for (String key : values.keySet())
                     arg0.put(key, values.get(key));
-                arg0.saveInBackground();
+                try {
+                    arg0.save();
+                } catch (ParseException ¢) {
+                    ¢.printStackTrace(); // DEBUG ONLY
+                    log.error("A parse exception has happened", ¢);
+                }
+            }
+        });
+    }
+
+    /** This method returns (in the callback) the object in objectClass with
+     * values matching to the values mapping
+     * @param objectClass
+     * @param values Map any field name to a value
+     * @param o GetCallback from which the objects will be retrieved */
+    public static void getObjectByFields(final String objectClass, Map<String, Object> values, GetCallback<ParseObject> o) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(objectClass);
+        for (String key : values.keySet())
+            query.whereEqualTo(key, values.get(key));
+        query.limit(1);
+        query.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override public void done(List<ParseObject> arg0, ParseException arg1) {
+                if (arg1 != null || arg0 == null)
+                    o.done(null, arg1);
+                else
+                    o.done(arg0.get(0), null);
+
             }
         });
     }
