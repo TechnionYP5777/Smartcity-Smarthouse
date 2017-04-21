@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gson.annotations.Expose;
+
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 
@@ -11,7 +13,7 @@ import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
  * classes. This will help the debugging process.
  * @author RON
  * @since 30-12-2016 */
-public class ApplicationPath<T> {
+public class ApplicationPath {
     public enum PathType {
         JAR_PATH,
         CLASS_NAME,
@@ -19,10 +21,10 @@ public class ApplicationPath<T> {
         PACKAGE_NAME;
     }
 
-    private final PathType pathType;
-    private final T path;
+    @Expose private final PathType pathType;
+    @Expose private final Object path;
 
-    public ApplicationPath(final PathType pathType, final T path) {
+    public ApplicationPath(final PathType pathType, final Object path) {
         this.pathType = pathType;
         this.path = path;
     }
@@ -31,7 +33,7 @@ public class ApplicationPath<T> {
         return pathType;
     }
 
-    public T getPath() {
+    public Object getPath() {
         return path;
     }
 

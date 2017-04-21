@@ -51,7 +51,7 @@ public final class SensorApi<T extends SensorData> {
     }
 
     /** @return the sensors commercial name */
-    public final String getCommercialName() {
+    public String getCommercialName() {
         try {
             return systemCore.databaseHandler.getName(sensorId);
         } catch (SensorNotFoundException e) {
@@ -62,7 +62,7 @@ public final class SensorApi<T extends SensorData> {
 
     /** Queries the system for the sensor's current location
      * @return the sensors location */
-    public final SensorLocation getSensorLocation() {
+    public SensorLocation getSensorLocation() {
         try {
             return systemCore.databaseHandler.getSensorLocation(this.sensorId);
         } catch (SensorNotFoundException e) {
@@ -81,7 +81,9 @@ public final class SensorApi<T extends SensorData> {
      * @param functionToRun a Consumer that receives
      *        <code>SensorData sensorData</code> and operates on it.
      * @param runOnFx
-     * @return the modified consumer */
+     * @return the modified consumer 
+     * [[SuppressWarningsSpartan]]
+     */
     private Consumer<String> generateSensorListener(final Consumer<T> functionToRun, boolean runOnFx) {
         final Consumer<T> functionToRunWrapper1 = sensorData -> {
             sensorData.commercialName = getCommercialName();
@@ -96,7 +98,7 @@ public final class SensorApi<T extends SensorData> {
      * @param functionToRun A consumer that will receive a seneorClass object
      *        initialized with the newest data from the sensor
      * @throws SensorLostRuntimeException */
-    public final void subscribe(final Consumer<T> functionToRun) throws SensorLostRuntimeException {
+    public void subscribe(final Consumer<T> functionToRun) throws SensorLostRuntimeException {
         try {
             systemCore.databaseHandler.addListener(sensorId, generateSensorListener(functionToRun, true));
         } catch (SensorNotFoundException e) {
@@ -112,7 +114,7 @@ public final class SensorApi<T extends SensorData> {
      * @param repeat <code>false</code> if you want to query the sensor on the
      *        given time only once, <code>true</code> otherwise (query at this
      *        time FOREVER) */
-    public final void subscribe(final LocalTime t, final Consumer<T> functionToRun, final Boolean repeat) {
+    public void subscribe(final LocalTime t, final Consumer<T> functionToRun, final Boolean repeat) {
         new Timer().schedule(new QueryTimerTask(sensorId, t, generateSensorListener(functionToRun, true), repeat), localTimeToDate(t));
     }
 
@@ -120,7 +122,7 @@ public final class SensorApi<T extends SensorData> {
      * @param numOfEntries the number of entries desired
      * @return the list of the <code> &lt;=k </code> available entries
      * @throws SensorLostRuntimeException */
-    public final List<T> receiveLastEntries(final int numOfEntries) throws SensorLostRuntimeException {
+    public List<T> receiveLastEntries(final int numOfEntries) throws SensorLostRuntimeException {
         try {
             return systemCore.databaseHandler.getList(sensorId).getLastKEntries(numOfEntries).stream()
                     .map(jsonData -> new Gson().fromJson(jsonData, sensorDataClass)).collect(Collectors.toList());
@@ -133,7 +135,7 @@ public final class SensorApi<T extends SensorData> {
     /** Request the latest data received by the sensor in the system
      * @return the latest data or null if none is available
      * @throws SensorLostRuntimeException */
-    public final T receiveLastEntry() throws SensorLostRuntimeException {
+    public T receiveLastEntry() throws SensorLostRuntimeException {
         final List<T> $ = receiveLastEntries(1);
         return $.isEmpty() ? null : $.get(0);
     }
@@ -141,7 +143,7 @@ public final class SensorApi<T extends SensorData> {
     /** Send a message to a sensor.
      * @param instruction the message that the sensor will receive
      * @throws SensorLostRuntimeException */
-    public final void instruct(final Map<String, String> instruction) throws SensorLostRuntimeException {
+    public void instruct(final Map<String, String> instruction) throws SensorLostRuntimeException {
         if (!systemCore.databaseHandler.sensorExists(sensorId)) {
             log.error(LOG_MSG_RUNTIME_THROW + " This is because " + sensorId + " Doesn't exist");
             throw new SensorLostRuntimeException(null);

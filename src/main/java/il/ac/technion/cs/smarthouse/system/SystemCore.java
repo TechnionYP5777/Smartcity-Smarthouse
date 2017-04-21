@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import com.google.gson.annotations.Expose;
+
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorsHandler;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
@@ -7,12 +9,12 @@ import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
 /** Hold the databases of the smart house, and allow sensors and applications to
  * store and read information about the changes in the environment */
-public class SystemCore{
+public class SystemCore implements Savable {
     
     public final ServiceManager serviceManager = new ServiceManager(this);
     public final DatabaseHandler databaseHandler = new DatabaseHandler();
     public final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
-    public final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
+    @Expose public final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     protected UserInformation user;
     private boolean userInitialized;
 

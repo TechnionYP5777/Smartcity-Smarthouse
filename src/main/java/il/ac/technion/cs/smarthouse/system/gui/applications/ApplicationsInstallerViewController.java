@@ -87,9 +87,9 @@ public class ApplicationsInstallerViewController implements Initializable {
                 return;
 
             if (inRealMode)
-                installApp(new ApplicationPath<>(PathType.JAR_PATH, browseText.getText()));
+                installApp(new ApplicationPath(PathType.JAR_PATH, browseText.getText()));
             else if (comboBox.getValue() != null)
-                installApp(new ApplicationPath<>(PathType.CLASS_NAME, PremadeApplications.getByName(comboBox.getValue()).getAppClass().getName()));
+                installApp(new ApplicationPath(PathType.CLASS_NAME, PremadeApplications.getByName(comboBox.getValue()).getAppClass().getName()));
 
             applicationViewController.updateListView();
         });
@@ -106,7 +106,7 @@ public class ApplicationsInstallerViewController implements Initializable {
     // [end]
 
     // [start] install app and alert if needed
-    private void installApp(final ApplicationPath<?> p) {
+    private void installApp(final ApplicationPath p) {
         try {
             applicationsHandler.addApplication(p);
             if (!inRealMode)

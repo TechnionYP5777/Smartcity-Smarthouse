@@ -16,13 +16,13 @@ import javafx.scene.layout.Pane;
  * @author RON
  * @since 09-12-2016 */
 public class ApplicationManager {
-    private String id;
-    private final ApplicationPath<?> appPath;
-    @Expose private SmartHouseApplication application;
+    @Expose private String id;
+    @Expose private final ApplicationPath appPath;
+    private SmartHouseApplication application;
 
-    @Expose private Node rootNode;
+    private Node rootNode;
 
-    public ApplicationManager(final String id, final ApplicationPath<?> appPath) {
+    public ApplicationManager(final String id, final ApplicationPath appPath) {
         this.id = id;
         this.appPath = appPath;
     }

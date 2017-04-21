@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.gson.annotations.Expose;
+
+import il.ac.technion.cs.smarthouse.system.Savable;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
@@ -16,9 +19,9 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  * @author Inbal Zukerman
  * @author RON
  * @since Dec 13, 2016 */
-public class ApplicationsCore {
-    List<ApplicationManager> apps = new ArrayList<>();
-    SystemCore systemCore;
+public class ApplicationsCore implements Savable {
+    @Expose private List<ApplicationManager> apps = new ArrayList<>();
+    private SystemCore systemCore;
 
     /** Initialize the applicationHandler with the database responsible of
      * managing the data in the current session */
@@ -32,9 +35,9 @@ public class ApplicationsCore {
      * @throws AppInstallerException
      * @throws Exception
      * @throws ApplicationInitializationException */
-    public ApplicationManager addApplication(final ApplicationPath<?> appPath) throws Exception {
+    public ApplicationManager addApplication(final ApplicationPath appPath) throws Exception {
         final ApplicationManager $ = new ApplicationManager(UuidGenerator.GenerateUniqueIDstring(), appPath);
-        $.initialize(systemCore.serviceManager);
+        initializeApplicationManager($);
         apps.add($);
         return $;
     }
@@ -43,4 +46,17 @@ public class ApplicationsCore {
         return Collections.unmodifiableList(apps);
     }
     // [end]
+    
+    // [start] Private functions
+    private void initializeApplicationManager(ApplicationManager $) throws Exception {
+        $.initialize(systemCore.serviceManager);
+    }
+    // [end]
+    
+    @Override public void populate(final String jsonString) throws Exception {
+        Savable.super.populate(jsonString);
+        
+        for (ApplicationManager applicationManager : apps)
+            initializeApplicationManager(applicationManager);
+    }
 }
