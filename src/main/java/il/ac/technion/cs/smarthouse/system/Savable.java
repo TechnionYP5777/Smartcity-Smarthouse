@@ -1,7 +1,12 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Map.Entry;
+
+import org.apache.commons.io.IOUtils;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -43,8 +48,16 @@ public interface Savable {
             
             Object o = gsonBuilder.create().fromJson(e.getValue(), f.getGenericType());
             if (Savable.class.isAssignableFrom(f.getType()))
-                ((Savable) o).populate((e.getValue() + ""));
+                ((Savable) o).populate(e.getValue() + "");
             f.set(this, o);
         }
+    }
+    
+    default void populateFromFile(final InputStream s) throws Exception {
+        populate(IOUtils.toString(s));
+    }
+    
+    default void toJsonFile(final OutputStream s) throws IOException {
+        s.write(Byte.valueOf(gsonBuilder.create().toJson(this)));
     }
 }

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
@@ -14,6 +17,8 @@ import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
  * @author RON
  * @since 30-12-2016 */
 public class ApplicationPath {
+    private static Logger log = LoggerFactory.getLogger(ApplicationPath.class);
+    
     public enum PathType {
         JAR_PATH,
         CLASS_NAME,
@@ -47,8 +52,10 @@ public class ApplicationPath {
                 return AppInstallHelper.loadApplication(Arrays.asList((String) path));
             case PACKAGE_NAME:
                 // TODO: we can add support for package names here if we want...
+                log.error("PathType " + pathType + " is not implemented");
                 return null;
             default:
+                log.error("PathType " + pathType + " is not an option");
                 return null;
         }
     }

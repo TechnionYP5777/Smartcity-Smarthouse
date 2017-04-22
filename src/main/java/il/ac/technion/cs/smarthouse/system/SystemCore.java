@@ -36,4 +36,8 @@ public class SystemCore implements Savable {
         return userInitialized;
     }
     
+    public void shutdown() {
+        sensorsHandler.closeSockets();
+    }
+    
 }
