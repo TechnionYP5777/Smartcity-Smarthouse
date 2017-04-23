@@ -8,6 +8,8 @@ import org.controlsfx.control.RangeSlider;
 import il.ac.technion.cs.smarthouse.sensors.vitals.VitalsSensor;
 import il.ac.technion.cs.smarthouse.utils.Random;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -71,6 +73,8 @@ public class Controller implements Initializable {
             sensor.updateSystem((int) Math.round(pulseSlider.getValue()), systolicBP, (int) Math.round(bpRSlider.getLowValue()));
             printUpdateMessage();
         });
+
+        simulatePulseChange();
     }
 
     private void printUpdateMessage() {
@@ -103,6 +107,35 @@ public class Controller implements Initializable {
         text = new Text("}\n");
         text.setStyle(STYLE_REG);
         children.add(6, text);
+    }
+
+    private void simulatePulseChange() {
+        final int bpVals[] = { 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 107, 108, 109, 110, 109, 108, 107, 106, 105, 104, 103,
+                102, 101, 100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 83, 84, 85, 84, 85, 86, 87, 88, 89, 90, 91, 92,
+                93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 103, 102, 101, 100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85,
+                84, 83, 82, 81, 80, 81, 82, 83, 84, 85, 86, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 100, 99, 98, 97, 96,
+                95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 81 };
+
+        Service<Void> bg = new Service<Void>() {
+            int p;
+
+            @Override protected Task<Void> createTask() {
+                return new Task<Void>() {
+
+                    @Override protected Void call() throws Exception {
+                        while (true) {
+                            updateProgress((bpVals[p]), 150);
+                            p = (p + 1) % bpVals.length;
+                            Thread.sleep(30);
+                        }
+                    }
+                };
+            }
+        };
+
+        pulseSlider.valueProperty().bind(bg.workDoneProperty());
+
+        bg.start();
     }
 
 }

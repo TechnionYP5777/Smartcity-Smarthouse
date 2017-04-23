@@ -11,7 +11,7 @@
 	<tabs>
 		<Tab fx:id="homeTab" text="home screen">
    			<content>
-               <HBox alignment="CENTER" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+               <HBox fx:id="homeTabHBox" alignment="CENTER" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                   <children>
                      <ImageView fx:id="homePageImageView" pickOnBounds="true" preserveRatio="true" />
                   </children>

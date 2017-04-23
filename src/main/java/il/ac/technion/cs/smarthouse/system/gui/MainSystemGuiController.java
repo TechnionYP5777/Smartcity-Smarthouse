@@ -14,6 +14,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.HBox;
 
 public class MainSystemGuiController implements Initializable {
     private MappingController mappingController;
@@ -25,20 +31,27 @@ public class MainSystemGuiController implements Initializable {
     @FXML Tab appsTab;
     @FXML Tab sensorsTab;
     @FXML ImageView homePageImageView;
+    @FXML HBox homeTabHBox;
 
     @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
         try {
-            
             this.sysCore = new SystemCore();
             sysCore.initializeSystemComponents();
-            
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("user information.fxml"));
-            
+
+            FXMLLoader loader;
+
             // home tab:
+            homeTab.setContent(homeTabHBox);
             homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
-            homePageImageView.setFitHeight(600);
+            homePageImageView.setFitHeight(200);
+            //homePageImageView.fitHeightProperty().bind(homeTabHBox.heightProperty().divide(2));
+            BackgroundImage myBI = new BackgroundImage(new Image(getClass().getResourceAsStream("/backgrounds/bg_4.png"), 0, 200, false, false), BackgroundRepeat.REPEAT,
+                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+            homeTabHBox.setBackground(new Background(myBI));
+            
 
             // user tab:
+            loader = new FXMLLoader(this.getClass().getResource("user information.fxml"));
             userTab.setContent((Node) loader.load());
             userController = loader.getController();
             userController.setSystemCore(this.sysCore);
