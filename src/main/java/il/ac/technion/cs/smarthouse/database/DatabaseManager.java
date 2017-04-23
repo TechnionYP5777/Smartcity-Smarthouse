@@ -107,7 +107,6 @@ public abstract class DatabaseManager {
                 try {
                     arg0.save();
                 } catch (ParseException ¢) {
-                    ¢.printStackTrace(); // DEBUG ONLY
                     log.error("A parse exception has happened", ¢);
                 }
             }

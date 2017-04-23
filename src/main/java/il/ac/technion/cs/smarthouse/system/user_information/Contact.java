@@ -1,5 +1,8 @@
 package il.ac.technion.cs.smarthouse.system.user_information;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jdom2.Element;
 
 /** This class saves information about a contact and implements the required API
@@ -72,6 +75,18 @@ public class Contact {
         $.addContent(contactName);
         $.addContent(contactPhoneNum);
         $.addContent(contactEmail);
+
+        return $;
+
+    }
+
+    public Map<String, Object> contactMap() {
+        Map<String, Object> $ = new HashMap<>();
+
+        $.put("id", this.id);
+        $.put("name", this.name);
+        $.put("phoneNumber", this.phoneNumber);
+        $.put("email", this.emailAddress);
 
         return $;
 
