@@ -44,7 +44,7 @@ public class SensorsHandler implements Runnable {
             while (true)
                 try {
                     // System.out.println("sensorhandler about to attempt to accept connection on 40001"); todo: delete after debugging ends
-                    @SuppressWarnings("resource") final Socket client = server1.accept();
+                    final Socket client = server1.accept();
                     new SensorsHandlerThread(client, databaseHandler, type -> {
                         if (type == SensorType.INTERACTIVE)
                             new InteractiveSensorServer((id, out) -> routingMap.put(id, out)).start();

@@ -36,16 +36,12 @@ public class Simple
 	public int square(int x)
 	{
 		if (logger.isDebugEnabled())
-		{
 			logger.debug("x: " + x);
-		}
 
 		int result = x * x;
 
 		if (logger.isDebugEnabled())
-		{
 			logger.debug("result: " + result);
-		}
 
 		return result;
 	}
@@ -53,32 +49,17 @@ public class Simple
 	public int f(int x)
 	{
 		if (logger.isDebugEnabled())
-		{
 			logger.debug("x: " + x);
-		}
-
-		if (x < 0)
-		{
+		if (x < 0) {
 			if (logger.isDebugEnabled())
-			{
 				logger.debug("negative x");
-			}
-
 			return square(x);
 		}
-		else if ((x >= 0) && (x <= 5))
-		{
-			if (logger.isDebugEnabled())
-			{
-				logger.debug("0<=x<=5");
-			}
-
-			return x + 3;
-		}
-		else
-		{
+		if (x < 0 || x > 5)
 			return 2 * x;
-		}
+		if (logger.isDebugEnabled())
+			logger.debug("0<=x<=5");
+		return x + 3;
 	}
 
 	public int sum(Collection c)
@@ -90,17 +71,13 @@ public class Simple
 			int value = ((Number)i.next()).intValue();
 
 			if (logger.isDebugEnabled())
-			{
 				logger.debug("value: " + value);
-			}
 
 			result += value;
 		}
 
 		if (logger.isDebugEnabled())
-		{
 			logger.debug("result: " + result);
-		}
 
 		return result;
 	}

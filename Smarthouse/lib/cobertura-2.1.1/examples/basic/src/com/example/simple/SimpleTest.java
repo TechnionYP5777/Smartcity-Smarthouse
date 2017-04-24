@@ -52,9 +52,9 @@ public class SimpleTest extends TestCase
 	public void testSum()
 	{
 		Collection c = new LinkedList();
-		c.add(new Integer(3));
-		c.add(new Integer(5));
-		c.add(new Integer(8));
+		c.add(Integer.valueOf(3));
+		c.add(Integer.valueOf(5));
+		c.add(Integer.valueOf(8));
 		assertEquals(16, simple.sum(c));
 	}
 }

@@ -27,7 +27,7 @@ public class InteractiveSensorServer extends Thread {
 //            this.router = router1;
             try {
 //                System.out.println("sensorhandler about to attempt to accept connection on 40002"); todo: delete after debugging ends
-                @SuppressWarnings("resource") final Socket sensor = router1.accept();
+                final Socket sensor = router1.accept();
                 new InstructionsSenderThread(sensor, (id, out) -> mapper.store(id, out)).start();
 //                System.out.println("sensorhandler created connection with an interactivesensor"); todo: delete after debugging ends
             } catch (final SocketException e) {
