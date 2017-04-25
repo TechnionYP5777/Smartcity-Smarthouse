@@ -3,8 +3,8 @@ coverage:
   round: nearest
   range: "40...70"
   ignore: 
-    - "src/main/java/il/ac/technion/cs/smarthouse/applications/*"
-    - "src/main/java/il/ac/technion/cs/smarthouse/sensors/sos/gui/*"
-    - "src/main/java/il/ac/technion/cs/smarthouse/sensors/stove/gui/*"
-    - "src/main/java/il/ac/technion/cs/smarthouse/sensors/vitals/gui/*"
-    - "src/main/java/il/ac/technion/cs/smarthouse/system/gui/*"
+    - "Smarthouse/system/src/main/java/il/ac/technion/cs/smarthouse/applications/*"
+    - "Smarthouse/sensors/src/main/java/il/ac/technion/cs/smarthouse/sensors/sos/gui/*"
+    - "Smarthouse/sensors/src/main/java/il/ac/technion/cs/smarthouse/sensors/stove/gui/*"
+    - "Smarthouse/sensors/src/main/java/il/ac/technion/cs/smarthouse/sensors/vitals/gui/*"
+    - "Smarthouse/system_gui/*"
