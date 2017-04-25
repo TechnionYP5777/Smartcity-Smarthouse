@@ -16,61 +16,49 @@ import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 
 public class ContactManager {
 
-    static void isContactInDB(Contact c, GetCallback<ParseObject> o) {
-        DatabaseManager.getObjectByFields("Contact", c.contactMap(), new GetCallback<ParseObject>() {
-            @Override public void done(ParseObject arg0, ParseException arg1) {
-                o.done(arg1 == null && arg0 != null ? arg0 : null, null);
-            }
-        });
+    public static boolean isContactInDB(Contact c) {
+        return DatabaseManager.getObjectByFields("Contact", c.contactMap()) != null;
     }
 
-    public static void saveContact(Contact c, EmergencyLevel l, SaveCallback o) {
+    public static void saveContact(Contact c, EmergencyLevel l) {
         Map<String, Object> contactMap = c.contactMap();
-        contactMap.put("emergencyLevel", (l + ""));
+        contactMap.put("emergencyLevel", l + "");
 
-        isContactInDB(c, new GetCallback<ParseObject>() {
-
-            @Override public void done(ParseObject arg0, ParseException arg1) {
-                if (arg0 == null)
-                    try {
-                        DatabaseManager.putValue("Contact", contactMap);
-                    } catch (ParseException ¢) {
-                        // TODO Auto-generated catch block
-                        ¢.printStackTrace();
-                    }
+        if (!isContactInDB(c))
+            try {
+                DatabaseManager.putValue("Contact", contactMap);
+            } catch (ParseException ¢) {
+                ¢.printStackTrace();
             }
-        });
+
     }
 
     public static Contact getContact(String id) {
         Map<String, Object> $ = new HashMap<>();
         $.put("id", id);
-        DatabaseManager.getObjectByFields("Contact", $, new GetCallback<ParseObject>() {
-            @Override public void done(ParseObject arg0, ParseException arg1) {
-                if (arg0 != null && arg1 == null)
-                    for (String key : arg0.keySet())
-                        $.put(key, arg0.getString(key));
-            }
-        });
-
-        return !$.containsKey("name") ? null
-                : new Contact((String) $.get("id"), (String) $.get("name"), (String) $.get("phoneNumber"), (String) $.get("email"));
+        ParseObject temp = DatabaseManager.getObjectByFields("Contact", $);
+        return temp == null ? null
+                : new Contact(temp.getString("id"), temp.getString("name"), temp.getString("phoneNumber"), temp.getString("email"));
     }
 
+    // TODO: it is inconvenient to send each time the elevel
     public static void updateContact(Contact c, EmergencyLevel l) {
-        isContactInDB(c, new GetCallback<ParseObject>() {
-            @Override public void done(ParseObject arg0, ParseException arg1) {
-                Map<String, Object> cm = c.contactMap();
+        if (!isContactInDB(c))
+            saveContact(c, l);
+        else {
+            Map<String, Object> cm = c.contactMap();
+            DatabaseManager.update("Contact", DatabaseManager.getObjectByFields("Contact", cm).getObjectId(), cm);
+        }
 
-                if (arg0 != null)
-                    DatabaseManager.update("Contact", arg0.getObjectId(), cm);
-                else
-                    saveContact(c, l, new SaveCallback() {
-                        @Override public void done(ParseException arg0) {}
-                    });
-            }
-        });
-
+    }
+    
+    public static void deleteContact(String id){
+        Map<String, Object> $ = new HashMap<>();
+        $.put("id", id);
+        ParseObject temp = DatabaseManager.getObjectByFields("Contact", $);
+        if(temp != null){
+            DatabaseManager.deleteById("Contact", temp.getObjectId());
+        }
     }
 
 }
