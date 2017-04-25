@@ -37,14 +37,17 @@ public final class SensorsManager extends Service {
     public <T extends SensorData> List<SensorApi<T>> getAllSensors(final Class<T> sensorDataClass, String... commercialNames)
             throws SensorNotFoundException {
         List<SensorApi<T>> l = new ArrayList<>();
-        
+
         for (String sensorCommercialName : commercialNames)
             for (String sensorId : systemCore.databaseHandler.getSensors(sensorCommercialName))
                 l.add(new SensorApi<>(systemCore, sensorId, sensorDataClass));
 
         if (l.isEmpty()) {
             log.info("No sensor was found with the commercial names: " + String.join(", ", commercialNames));
-            throw new SensorNotFoundException("COMM_NAME"); // TODO: maybe change the exception class. @RonGatenio
+            throw new SensorNotFoundException("COMM_NAME"); // TODO: maybe
+                                                            // change the
+                                                            // exception class.
+                                                            // @RonGatenio
         }
 
         return l;

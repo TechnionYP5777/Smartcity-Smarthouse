@@ -27,9 +27,9 @@ public class userExpandbleListAdapter extends BaseExpandableListAdapter {
     Map<String , List<String>> userSubProps;
 
 
-    public userExpandbleListAdapter(registeredUser registeredUser, List<String> userProps, Map<String, List<String>> userSubProps) {
+    public userExpandbleListAdapter(registeredUser context, List<String> userProps, Map<String, List<String>> userSubProps) {
 
-        this.context = registeredUser;
+        this.context = context;
         this.userProps = userProps;
         this.userSubProps = userSubProps;
     }
@@ -74,10 +74,8 @@ public class userExpandbleListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String userPropsTitle =(String) getGroup(groupPosition);
 
-        if ( convertView == null   ){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService((context.LAYOUT_INFLATER_SERVICE));
-            convertView = inflater.inflate(R.layout.list_user_properties,null);
-        }
+        if ( convertView == null   )
+            convertView = ((LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_user_properties, null);
         TextView txtUserProps = (TextView) convertView.findViewById(R.id.userProperties);
         txtUserProps.setText(userPropsTitle);
         return convertView;
@@ -89,10 +87,8 @@ public class userExpandbleListAdapter extends BaseExpandableListAdapter {
 
         String userSubPropsTitle =(String) getChild(groupPosition,childPosition);
 
-        if ( convertView == null   ){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService((context.LAYOUT_INFLATER_SERVICE));
-            convertView = inflater.inflate(R.layout.list_subproperties,null);
-        }
+        if ( convertView == null   )
+            convertView = ((LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_subproperties, null);
 
         TextView txtUserSubProps = (TextView) convertView.findViewById(R.id.userSubproperties);
         txtUserSubProps.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +98,7 @@ public class userExpandbleListAdapter extends BaseExpandableListAdapter {
                 builder.setMessage("Do you want to remove?");
                 builder.setCancelable(false);
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                            public void onClick(DialogInterface i, int id) {
                                 List<String> child =  userSubProps.get(userProps.get(groupPosition));
                                 child.remove(childPosition);
                                 notifyDataSetChanged();
@@ -112,8 +108,8 @@ public class userExpandbleListAdapter extends BaseExpandableListAdapter {
                             }
                         });
                 builder.setNegativeButton("No",  new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
+                            public void onClick(DialogInterface i, int id) {
+                                i.cancel();
                             }
                         });
                 AlertDialog alertDialog = builder.create();

@@ -6,8 +6,6 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 
 /** @author Sharon

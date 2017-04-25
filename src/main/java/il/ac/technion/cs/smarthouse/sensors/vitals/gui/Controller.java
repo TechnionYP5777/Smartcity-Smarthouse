@@ -123,10 +123,9 @@ public class Controller implements Initializable {
                 return new Task<Void>() {
 
                     @Override protected Void call() throws Exception {
-                        while (true) {
-                            updateProgress((bpVals[p]), 150);
+                        for (;; Thread.sleep(30)) {
+                            updateProgress(bpVals[p], 150);
                             p = (p + 1) % bpVals.length;
-                            Thread.sleep(30);
                         }
                     }
                 };

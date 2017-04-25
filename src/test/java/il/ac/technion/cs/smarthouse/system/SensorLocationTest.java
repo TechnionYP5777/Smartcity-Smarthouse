@@ -2,12 +2,11 @@ package il.ac.technion.cs.smarthouse.system;
 
 import java.util.Arrays;
 
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
-import org.junit.runner.RunWith;
-
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /** @author Yarden
  * @since 6.4.17 */

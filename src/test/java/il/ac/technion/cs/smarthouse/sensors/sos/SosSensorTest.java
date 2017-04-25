@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.sensors.SensorTest;
-import il.ac.technion.cs.smarthouse.sensors.sos.SosSensor;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.utils.Random;

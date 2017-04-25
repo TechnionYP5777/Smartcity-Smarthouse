@@ -7,9 +7,6 @@ import java.util.function.Consumer;
 import org.junit.Assert;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.utils.ListenableTable;
-import il.ac.technion.cs.smarthouse.utils.Table;
-
 /** @author Inbal Zukerman
  * @since Dec 27, 2016 */
 

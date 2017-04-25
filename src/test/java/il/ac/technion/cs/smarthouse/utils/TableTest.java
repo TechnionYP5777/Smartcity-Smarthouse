@@ -6,7 +6,6 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.utils.Table;
 import il.ac.technion.cs.smarthouse.utils.exceptions.OutOfTableLimit;
 
 /** @author Inbal Zukerman

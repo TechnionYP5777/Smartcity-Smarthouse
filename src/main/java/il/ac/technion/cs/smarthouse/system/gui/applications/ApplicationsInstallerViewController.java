@@ -29,7 +29,7 @@ import javafx.stage.Stage;
 
 public class ApplicationsInstallerViewController implements Initializable {
     private static Logger log = LoggerFactory.getLogger(ApplicationsInstallerViewController.class);
-    
+
     @FXML private Button toggleBtn;
     @FXML private VBox toggleOptionsParent;
     @FXML private HBox toggleOptionBrowse;
@@ -64,13 +64,13 @@ public class ApplicationsInstallerViewController implements Initializable {
     // [start] Private - init FXML elements
     private void initToggleBtn() {
         toggleBtn.setOnAction(new EventHandler<ActionEvent>() {
-            
+
             @Override public void handle(ActionEvent __) {
                 if (ApplicationsInstallerViewController.this.inRealMode)
                     gotoTestMode();
                 else
                     gotoRegularMode();
-                
+
             }
         });
     }

@@ -18,7 +18,7 @@ import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
  * @since 30-12-2016 */
 public class ApplicationPath {
     private static Logger log = LoggerFactory.getLogger(ApplicationPath.class);
-    
+
     public enum PathType {
         JAR_PATH,
         CLASS_NAME,

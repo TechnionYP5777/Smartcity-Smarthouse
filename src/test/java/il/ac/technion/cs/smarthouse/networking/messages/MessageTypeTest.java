@@ -3,8 +3,6 @@ package il.ac.technion.cs.smarthouse.networking.messages;
 import org.junit.Assert;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-
 /** @author Sharon
  * @since 29.12.16 */
 @SuppressWarnings("static-method")

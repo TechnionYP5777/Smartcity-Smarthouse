@@ -3,8 +3,6 @@ package il.ac.technion.cs.smarthouse.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.utils.Tuple;
-
 /** @author Inbal Zukerman
  * @since 8.12.2016 */
 public class TupleTest {

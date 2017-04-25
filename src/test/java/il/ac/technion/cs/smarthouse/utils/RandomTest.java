@@ -3,8 +3,6 @@ package il.ac.technion.cs.smarthouse.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.utils.Random;
-
 /** @author Yarden
  * @since 1.4.17 */
 @SuppressWarnings("static-method")

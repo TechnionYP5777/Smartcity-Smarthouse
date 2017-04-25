@@ -44,11 +44,10 @@ public class MainSystemGuiController implements Initializable {
             homeTab.setContent(homeTabHBox);
             homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
             homePageImageView.setFitHeight(200);
-            //homePageImageView.fitHeightProperty().bind(homeTabHBox.heightProperty().divide(2));
-            BackgroundImage myBI = new BackgroundImage(new Image(getClass().getResourceAsStream("/backgrounds/bg_4.png"), 0, 200, false, false), BackgroundRepeat.REPEAT,
-                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+            // homePageImageView.fitHeightProperty().bind(homeTabHBox.heightProperty().divide(2));
+            BackgroundImage myBI = new BackgroundImage(new Image(getClass().getResourceAsStream("/backgrounds/bg_4.png"), 0, 200, false, false),
+                    BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
             homeTabHBox.setBackground(new Background(myBI));
-            
 
             // user tab:
             loader = new FXMLLoader(this.getClass().getResource("user information.fxml"));

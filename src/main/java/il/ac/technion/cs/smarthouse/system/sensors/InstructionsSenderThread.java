@@ -6,14 +6,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 /** An instructions sender thread is a class that allows sending instructions
  * from the system to a specific sensor.
@@ -43,12 +44,8 @@ public class InstructionsSenderThread extends Thread {
                     continue;
                 }
                 log.info("Received message: " + message + "\n");
-                switch (message.getType()) {
-                    case REGISTRATION:
-                        handleRegisterMessage(out, (RegisterMessage) message);
-                        break;
-                    default:
-                }
+                if (message.getType() == MessageType.REGISTRATION)
+                    handleRegisterMessage(out, (RegisterMessage) message);
                 input = in.readLine();
             }
         } catch (final IOException ¢) {

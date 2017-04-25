@@ -44,8 +44,7 @@ public class registeredUser extends AppCompatActivity {
         userProps.add("Phones");
         userProps.add("Emails");
         getUserData();
-        AlertDialog.Builder aMsgBuilder = new AlertDialog.Builder(this);
-
+        new AlertDialog.Builder(this);
         expandableListView = (ExpandableListView)findViewById(R.id.usersContacts);
         listAdapter = new userExpandbleListAdapter(this,userProps,userSubProps);
         expandableListView.setAdapter(listAdapter);
@@ -71,7 +70,7 @@ public class registeredUser extends AppCompatActivity {
     }
 
     private String m_Text = "";
-    public void addEmailClick(View view) {
+    public void addEmailClick(View v) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add New Email Please");
@@ -83,7 +82,7 @@ public class registeredUser extends AppCompatActivity {
 // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface i, int which) {
                 m_Text = input.getText().toString();
                 emails.add(m_Text);
                 expandableListView.setAdapter(listAdapter);
@@ -91,14 +90,14 @@ public class registeredUser extends AppCompatActivity {
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(DialogInterface i, int which) {
+                i.cancel();
             }
         });
         builder.show();
 
     }
-    public void addPhoneClick(View view) {
+    public void addPhoneClick(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add New Phone Number Please");
 // Set up the input
@@ -109,7 +108,7 @@ public class registeredUser extends AppCompatActivity {
 // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface i, int which) {
                 m_Text = input.getText().toString();
                 phones.add(m_Text);
                 expandableListView.setAdapter(listAdapter);
@@ -117,8 +116,8 @@ public class registeredUser extends AppCompatActivity {
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(DialogInterface i, int which) {
+                i.cancel();
             }
         });
         builder.show();

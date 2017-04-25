@@ -9,8 +9,6 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import il.ac.technion.cs.smarthouse.networking.messages.Message;
-
 /** @author Sharon
  * @since 30.12.16 */
 public abstract class MessageTest {

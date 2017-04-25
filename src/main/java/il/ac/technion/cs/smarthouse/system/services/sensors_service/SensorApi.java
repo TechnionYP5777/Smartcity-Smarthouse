@@ -11,8 +11,8 @@ import java.util.TimerTask;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
@@ -37,8 +37,7 @@ public final class SensorApi<T extends SensorData> {
     private String sensorId;
     private Class<T> sensorDataClass;
 
-    /** This c'tor should be used only by the
-     * {@link SensorsManager}
+    /** This c'tor should be used only by the {@link SensorsManager}
      * @param systemCore a reference to the system's core
      * @param sensorId The ID of the sensor, returned from
      *        inquireAbout(sensorCommercialName)
@@ -81,9 +80,7 @@ public final class SensorApi<T extends SensorData> {
      * @param functionToRun a Consumer that receives
      *        <code>SensorData sensorData</code> and operates on it.
      * @param runOnFx
-     * @return the modified consumer 
-     * [[SuppressWarningsSpartan]]
-     */
+     * @return the modified consumer [[SuppressWarningsSpartan]] */
     private Consumer<String> generateSensorListener(final Consumer<T> functionToRun, boolean runOnFx) {
         final Consumer<T> functionToRunWrapper1 = sensorData -> {
             sensorData.commercialName = getCommercialName();

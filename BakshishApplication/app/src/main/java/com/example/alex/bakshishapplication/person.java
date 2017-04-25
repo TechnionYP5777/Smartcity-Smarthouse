@@ -4,30 +4,30 @@ import android.support.annotation.NonNull;
 
 import java.util.Set;
 
-/**
- * Created by Alex on 06/04/2017.
- * This is a basic class that represents our system user
- * we will assume that the name is uniq
- */
+/** Created by Alex on 06/04/2017. This is a basic class that represents our
+ * system user we will assume that the name is uniq */
 
-public class person implements Comparable<person>{
+public class person implements Comparable<person> {
 
-        private String name;
-        private String password;
-        private Set<String> mailList;
-        private Set<String> phones;
+    private String name;
+    private String password;
+    private Set<String> mailList;
+    private Set<String> phones;
 
-    public person(){
+    public person() {
 
     }
-        public person(String name ,String pass){
+
+    public person(String name, String password) {
         this.name = name;
-        this.password = pass;
+        this.password = password;
     }
-    public void addMail(String newMail){
+
+    public void addMail(String newMail) {
         mailList.add(newMail);
     }
-    public void addPhone(String newPhone){
+
+    public void addPhone(String newPhone) {
         phones.add(newPhone);
     }
 
@@ -46,15 +46,16 @@ public class person implements Comparable<person>{
     public Set<String> getPhones() {
         return phones;
     }
-    public void removeMail(String mailToRemove){
+
+    public void removeMail(String mailToRemove) {
         mailList.remove(mailToRemove);
     }
-    public void removePhone(String phoneToRemove){
+
+    public void removePhone(String phoneToRemove) {
         phones.remove(phoneToRemove);
     }
 
-    @Override
-    public int compareTo(@NonNull person o) {
-        return this.name.compareTo(o.getName());
+    @Override public int compareTo(@NonNull person p) {
+        return this.name.compareTo(p.getName());
     }
 }

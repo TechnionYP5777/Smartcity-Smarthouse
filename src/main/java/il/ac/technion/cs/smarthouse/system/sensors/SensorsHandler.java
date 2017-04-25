@@ -8,12 +8,12 @@ import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 /** A sensors handler is a class dedicated to listening for incoming messages
  * from sensors and sending instructions to them. The class creates two new
@@ -24,13 +24,13 @@ import org.slf4j.Logger;
  * @since 17.12.16 */
 public class SensorsHandler implements Runnable {
     private static Logger log = LoggerFactory.getLogger(SensorsHandler.class);
-    
+
     private final DatabaseHandler databaseHandler;
     private final Map<String, PrintWriter> routingMap = new HashMap<>();
 
     // for testing
     private ServerSocket server;
-    private ServerSocket router;
+    // private ServerSocket router; TODO: needed??
 
     /** Initializes a new sensors handler object.
      * @param databaseHandler database handler of the system */
@@ -43,7 +43,9 @@ public class SensorsHandler implements Runnable {
             this.server = server1;
             while (true)
                 try {
-                    // System.out.println("sensorhandler about to attempt to accept connection on 40001"); todo: delete after debugging ends
+                    // System.out.println("sensorhandler about to attempt to
+                    // accept connection on 40001"); todo: delete after
+                    // debugging ends
                     @SuppressWarnings("resource") final Socket client = server1.accept();
                     new SensorsHandlerThread(client, databaseHandler, type -> {
                         if (type == SensorType.INTERACTIVE)
@@ -51,7 +53,8 @@ public class SensorsHandler implements Runnable {
                     }).start();
                 } catch (final SocketException e) {
                     log.warn("socket closed, SensorsHandler is shutting down", e);
-                    return; // if we closed the sockets we want to shutoff the server
+                    return; // if we closed the sockets we want to shutoff the
+                            // server
                 } catch (final IOException e) {
                     log.error("I/O error occurred while waiting for a connection", e);
                 }
@@ -68,7 +71,7 @@ public class SensorsHandler implements Runnable {
         try {
             server.close();
             // TODO: ELIA remove if you don't need this
-//            router.close();
+            // router.close();
         } catch (IOException e) {
             // TODO: Auto-generated catch block
             log.error("I/O error occurred while closing", e);

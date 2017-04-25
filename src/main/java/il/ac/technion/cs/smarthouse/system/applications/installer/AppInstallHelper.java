@@ -111,9 +111,8 @@ public class AppInstallHelper {
         try (JarFile jarFile = new JarFile(jarFilePath)) {
             for (final Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements();) {
                 final JarEntry je = e.nextElement();
-                if (je.isDirectory() || !je.getName().endsWith(".class"))
-                    continue;
-                $.add(getClassNameFromJarEntry(je));
+                if (!je.isDirectory() && je.getName().endsWith(".class"))
+                    $.add(getClassNameFromJarEntry(je));
             }
         }
         return $;

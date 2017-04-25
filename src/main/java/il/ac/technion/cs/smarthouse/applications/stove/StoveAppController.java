@@ -31,7 +31,7 @@ import javafx.util.Duration;
  * @since 19.12.16 */
 public class StoveAppController implements Initializable {
     static Logger log = LoggerFactory.getLogger(StoveAppController.class);
-    
+
     @FXML public Label timeLabel;
     @FXML public Label tempLabel;
     @FXML public Button stoveConfigButton;

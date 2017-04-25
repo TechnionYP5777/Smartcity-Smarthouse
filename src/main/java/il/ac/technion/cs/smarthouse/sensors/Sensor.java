@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 /** Represents a physical component that can send information.
  * @author Sharon

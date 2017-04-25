@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
-import org.parse4j.callback.GetCallback;
-import org.parse4j.callback.SaveCallback;
 
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
@@ -51,14 +49,13 @@ public class ContactManager {
         }
 
     }
-    
-    public static void deleteContact(String id){
+
+    public static void deleteContact(String id) {
         Map<String, Object> $ = new HashMap<>();
         $.put("id", id);
         ParseObject temp = DatabaseManager.getObjectByFields("Contact", $);
-        if(temp != null){
+        if (temp != null)
             DatabaseManager.deleteById("Contact", temp.getObjectId());
-        }
     }
 
 }

@@ -5,16 +5,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.sensors.Sensor;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorsHandler;
 import il.ac.technion.cs.smarthouse.system.services.Core;
 import il.ac.technion.cs.smarthouse.system.services.Handler;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 /** @author Sharon
  * @author Yarden

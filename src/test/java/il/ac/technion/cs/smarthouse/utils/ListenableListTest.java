@@ -5,8 +5,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.utils.ListenableList;
-
 /** @author Inbal Zukerman
  * @since Dec 26, 2016 */
 public class ListenableListTest {

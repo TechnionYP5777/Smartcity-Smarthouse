@@ -6,20 +6,20 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.JsonObject;
 
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 /** A sensors handler thread is a class that handles a specific connection with
  * a sensor. The class can parse the different incoming messages and act

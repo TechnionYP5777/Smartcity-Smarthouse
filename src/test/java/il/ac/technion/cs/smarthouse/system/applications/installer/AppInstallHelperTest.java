@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
-import il.ac.technion.cs.smarthouse.system.applications.installer.AppInstallHelper;
 import il.ac.technion.cs.smarthouse.system.applications.installer.examples.MyTestClass1;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 

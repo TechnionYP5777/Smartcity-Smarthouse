@@ -22,7 +22,7 @@ import javafx.scene.layout.VBox;
 
 public class ApplicationViewController implements Initializable {
     private static Logger log = LoggerFactory.getLogger(ApplicationViewController.class);
-    
+
     @FXML ListView<String> listView;
     @FXML AnchorPane appView;
     @FXML Button plusButton;

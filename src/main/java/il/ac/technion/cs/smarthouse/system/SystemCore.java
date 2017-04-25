@@ -10,7 +10,7 @@ import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 /** Hold the databases of the smart house, and allow sensors and applications to
  * store and read information about the changes in the environment */
 public class SystemCore implements Savable {
-    
+
     public final ServiceManager serviceManager = new ServiceManager(this);
     public final DatabaseHandler databaseHandler = new DatabaseHandler();
     public final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
@@ -35,9 +35,9 @@ public class SystemCore implements Savable {
     public boolean isUserInitialized() {
         return userInitialized;
     }
-    
+
     public void shutdown() {
         sensorsHandler.closeSockets();
     }
-    
+
 }

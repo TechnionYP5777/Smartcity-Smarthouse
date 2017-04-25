@@ -71,10 +71,9 @@ public class Communicate {
     /** @return a string representing the state of the request, or null if the
      *         request failed */
     public static String throughEmailFromHere(final String toMail, final String msg) {
-        final String $ = "smarthouse5777@gmail.com";
-        return Communicate.throughEmail($, new Authenticator() {
+        return Communicate.throughEmail("smarthouse5777@gmail.com", new Authenticator() {
             @Override protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication($, "smart5house777");
+                return new PasswordAuthentication("smarthouse5777@gmail.com", "smart5house777");
             }
         }, toMail, msg);
     }

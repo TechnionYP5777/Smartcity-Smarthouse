@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
-import org.parse4j.callback.GetCallback;
 import org.parse4j.callback.SaveCallback;
 
 /** @author Inbal Zukerman

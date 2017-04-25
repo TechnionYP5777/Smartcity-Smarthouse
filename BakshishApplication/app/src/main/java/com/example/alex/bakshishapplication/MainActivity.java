@@ -30,52 +30,39 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
            }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu m) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, m);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem i) {
+        return i.getItemId() == R.id.action_settings || super.onOptionsItemSelected(i);
     }
 
-    public void signIn(View view) {
+    public void signIn(View v) {
 
-        String givenName = ((EditText)findViewById(R.id.nameText)).getText().toString();
-        String givenPassword = ((EditText)findViewById(R.id.passwordText)).getText().toString();
+        String givenName = ((EditText) findViewById(R.id.nameText)).getText().toString(),
+                givenPassword = ((EditText) findViewById(R.id.passwordText)).getText().toString();
         AlertDialog.Builder aMsgBuilder = new AlertDialog.Builder(this);
         person prsn =  users.get(givenName);
-        if(prsn == null){
+        if (prsn == null) {
             aMsgBuilder.setMessage("There is no such user").setTitle("Error");
             aMsgBuilder.create().show();
-            return;
-        }
-        if(!prsn.getPassword().equals(givenPassword)){
+        } else if (prsn.getPassword().equals(givenPassword))
+            startActivity(new Intent(MainActivity.this, registeredUser.class).putExtra("user", givenName));
+        else {
             aMsgBuilder.setMessage("Wrong password").setTitle("Error");
             aMsgBuilder.create().show();
-            return;
         }
-        startActivity(new Intent(MainActivity.this,registeredUser.class).putExtra("user",givenName));
     }
-    public void signUp(View view) {
+    public void signUp(View v) {
         AlertDialog.Builder aMsgBuilder = new AlertDialog.Builder(this);
         String givenName = ((EditText)findViewById(R.id.nameText)).getText().toString();
         if(givenName.length() == 0){
@@ -98,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         aMsgBuilder.setMessage("User successfuly created").setPositiveButton("sign in", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface i, int which) {
                 startActivity(new Intent(MainActivity.this,registeredUser.class).putExtra("user",givenName));
             }
         });

@@ -9,8 +9,6 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
-import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.sensors.stove.StoveSensor;
 
 /** @author Sharon

@@ -20,7 +20,7 @@ import javafx.scene.Node;
  * @since 8.12.2016 */
 public abstract class SmartHouseApplication {
     private static Logger log = LoggerFactory.getLogger(SmartHouseApplication.class);
-    
+
     private ServiceManager serviceManager;
     private Node rootNode;
 

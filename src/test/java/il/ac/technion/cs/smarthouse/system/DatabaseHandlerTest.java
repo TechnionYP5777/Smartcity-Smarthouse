@@ -10,8 +10,6 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
-import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 
 public class DatabaseHandlerTest {

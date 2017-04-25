@@ -1,13 +1,11 @@
 package il.ac.technion.cs.smarthouse.database;
 
-import java.util.List;
 import java.util.Map;
 
 import org.parse4j.Parse;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
-import org.parse4j.callback.FindCallback;
 import org.parse4j.callback.GetCallback;
 import org.parse4j.callback.SaveCallback;
 import org.slf4j.Logger;
@@ -24,7 +22,7 @@ public abstract class DatabaseManager {
     public static final String appId = "myAppId";
     public static final String restAPIKey = "ag9h-84j3-ked2-94j5";
 
-   // private static boolean init;
+    // private static boolean init;
 
     private DatabaseManager() {
 
@@ -33,11 +31,11 @@ public abstract class DatabaseManager {
     public static void initialize() {
 
         log.info("Initializing Database");
-        //if (init)
-        //    return;
+        // if (init)
+        // return;
 
         Parse.initialize(appId, restAPIKey, serverUrl);
-       // init = true;
+        // init = true;
     }
 
     /** @param objectClass
@@ -61,7 +59,7 @@ public abstract class DatabaseManager {
         final ParseObject obj = new ParseObject(objectClass);
         for (String key : fields.keySet())
             obj.put(key, fields.get(key));
-        
+
         obj.saveInBackground(c);
     }
 
@@ -117,24 +115,23 @@ public abstract class DatabaseManager {
     /** This method returns (in the callback) the object in objectClass with
      * values matching to the values mapping
      * @param objectClass
-     * @param values Map any field name to a value
-     */
+     * @param values Map any field name to a value */
     public static ParseObject getObjectByFields(final String objectClass, Map<String, Object> values) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(objectClass);
         for (String key : values.keySet())
             query.whereEqualTo(key, values.get(key));
-        
+
         try {
-           
-            if( query.find() != null )
-                   return query.find().get(0);
-        
+
+            if (query.find() != null)
+                return query.find().get(0);
+
         } catch (ParseException e) {
-            //TODO: log error
-            
+            // TODO: log error
+
         }
         return null;
-       
+
     }
 
 }

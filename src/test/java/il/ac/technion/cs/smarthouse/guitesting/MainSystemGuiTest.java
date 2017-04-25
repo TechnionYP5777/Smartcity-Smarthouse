@@ -1,13 +1,12 @@
 package il.ac.technion.cs.smarthouse.guitesting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.loadui.testfx.GuiTest;
 
-import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.gui.MainSystemGui;
 import javafx.application.Platform;
@@ -18,7 +17,7 @@ import javafx.stage.Stage;
 public class MainSystemGuiTest extends GuiTest {
 
     private MainSystemGui gui = new MainSystemGui();
-    //private SosSensorSimulator sosSim;
+    // private SosSensorSimulator sosSim;
     private VitalsSensorSimulator vitalsSim;
 
     @Override protected Parent getRootNode() {

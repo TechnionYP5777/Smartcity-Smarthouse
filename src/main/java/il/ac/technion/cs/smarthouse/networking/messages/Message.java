@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import com.google.gson.Gson;
-
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
 
 /** This class represents a general message that can be sent from a sensor to
  * the system or vice versa.

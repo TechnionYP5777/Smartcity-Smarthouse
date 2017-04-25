@@ -46,16 +46,16 @@ public class ApplicationsCore implements Savable {
         return Collections.unmodifiableList(apps);
     }
     // [end]
-    
+
     // [start] Private functions
     private void initializeApplicationManager(ApplicationManager $) throws Exception {
         $.initialize(systemCore.serviceManager);
     }
     // [end]
-    
+
     @Override public void populate(final String jsonString) throws Exception {
         Savable.super.populate(jsonString);
-        
+
         for (ApplicationManager applicationManager : apps)
             initializeApplicationManager(applicationManager);
     }

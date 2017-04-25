@@ -18,7 +18,7 @@ public enum JavaFxHelper {
                 try {
                     Platform.runLater(() -> functionToRun.accept(x));
                 } catch (IllegalStateException __) {
-                    new Thread(()->functionToRun.accept(x)).start();
+                    new Thread(() -> functionToRun.accept(x)).start();
                 }
         };
     }
