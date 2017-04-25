@@ -114,19 +114,10 @@ public class DatabaseManagerTest {
 
         Assert.assertEquals(true, changed);
 
-        DatabaseManager.getObjectByFields(testParse, m, new GetCallback<ParseObject>() {
-
-            @Override public void done(ParseObject arg0, ParseException arg1) {
-                if (arg0 == null || arg1 != null) {
-                    assert null != null;
-                    return;
-                }
-
-                DatabaseManager.deleteById(testParse, arg0.getObjectId());
-                Assert.assertNull(DatabaseManager.getValue(testParse, arg0.getObjectId()));
-
-            }
-        });
+        ParseObject temp = DatabaseManager.getObjectByFields(testParse, m);
+        DatabaseManager.deleteById(testParse, temp.getObjectId());
+        Assert.assertNull(DatabaseManager.getValue(testParse, temp.getObjectId()));
 
     }
+
 }
