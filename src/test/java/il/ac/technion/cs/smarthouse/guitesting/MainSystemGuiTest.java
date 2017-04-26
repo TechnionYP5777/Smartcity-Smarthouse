@@ -33,7 +33,7 @@ public class MainSystemGuiTest extends GuiTest {
         Thread.sleep(1000);
     }
 
-    @Ignore("Read issue #151 for details") @Test public void testInstalation() throws InterruptedException {
+    @Test public void testInstalation() throws InterruptedException {
         Platform.runLater(() -> {
             try {
                 vitalsSim = new VitalsSensorSimulator();
@@ -54,6 +54,5 @@ public class MainSystemGuiTest extends GuiTest {
         click("#installBtn");
         assertEquals(l.getItems().size(), 1);
         click("Vitals Application");
-        Thread.sleep(3000);
     }
 }
