@@ -83,7 +83,9 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.12</version>
 				<configuration>
-					<skipTests>${guitesting.skipTests}</skipTests>
+					<excludes>
+						<exclude>**/*GuiTest.java</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>
