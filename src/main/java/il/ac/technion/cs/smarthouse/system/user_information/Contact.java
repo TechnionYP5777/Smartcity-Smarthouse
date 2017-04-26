@@ -9,6 +9,7 @@ import org.jdom2.Element;
  * for the system
  * @author Inbal Zukerman
  * @since Dec 28, 2016 */
+
 public class Contact {
 
     private final String id;

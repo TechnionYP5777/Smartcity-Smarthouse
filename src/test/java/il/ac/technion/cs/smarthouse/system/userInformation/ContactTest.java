@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.userInformation;
 
+import java.util.Map;
+
 import org.jdom2.Element;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,4 +48,11 @@ public class ContactTest {
         Assert.assertEquals("Contact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n", contactA + "");
     }
 
+    @Test public void contactMapTest() {
+        Map<String, Object> cm = contactA.contactMap();
+        Assert.assertEquals("123", cm.get("id"));
+        Assert.assertEquals("Alon", cm.get("name"));
+        Assert.assertEquals("0508080123", cm.get("phoneNumber"));
+        Assert.assertEquals("alon@gmail.com", cm.get("email"));
+    }
 }

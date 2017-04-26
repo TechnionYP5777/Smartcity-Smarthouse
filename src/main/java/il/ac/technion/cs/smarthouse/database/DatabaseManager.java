@@ -22,7 +22,7 @@ public abstract class DatabaseManager {
     public static final String appId = "myAppId";
     public static final String restAPIKey = "ag9h-84j3-ked2-94j5";
 
-    // private static boolean init;
+    private static boolean init;
 
     private DatabaseManager() {
 
@@ -31,11 +31,11 @@ public abstract class DatabaseManager {
     public static void initialize() {
 
         log.info("Initializing Database");
-        // if (init)
-        // return;
+        if (init)
+            return;
 
         Parse.initialize(appId, restAPIKey, serverUrl);
-        // init = true;
+        init = true;
     }
 
     /** @param objectClass
