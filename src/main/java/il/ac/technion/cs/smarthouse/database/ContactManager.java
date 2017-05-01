@@ -1,10 +1,13 @@
 package il.ac.technion.cs.smarthouse.database;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
+import org.parse4j.ParseQuery;
 
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
@@ -15,12 +18,13 @@ import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 public class ContactManager {
 
     public static boolean isContactInDB(Contact c) {
-        return DatabaseManager.getObjectByFields("Contact", c.contactMap()) != null;
+
+        return DatabaseManager.getObjectByFields("Contact", c.contactIdentifiresMap()) != null;
     }
 
     public static void saveContact(Contact c, EmergencyLevel l) {
         Map<String, Object> contactMap = c.contactMap();
-        contactMap.put("emergencyLevel", l + "");
+        contactMap.put("emergencyLevel", l == null ? "" : l + "");
 
         if (!isContactInDB(c))
             try {
@@ -39,13 +43,50 @@ public class ContactManager {
                 : new Contact(temp.getString("id"), temp.getString("name"), temp.getString("phoneNumber"), temp.getString("email"));
     }
 
-    // TODO: it is inconvenient to send each time the elevel
-    public static void updateContact(Contact c, EmergencyLevel l) {
+    private static List<ParseObject> getObjectsByElevel(EmergencyLevel l) {
+        // TODO: l is null?
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Contact");
+
+        query.whereEqualTo("emrgencyLevel", l + "");
+
+        try {
+
+            if (query.find() != null)
+                return query.find();
+
+        } catch (ParseException e) {
+            // TODO: log error
+
+        }
+        return null;
+    }
+    
+    public static List<Contact> getContacts(EmergencyLevel l){
+        List<ParseObject> contactsObjs = getObjectsByElevel(l);
+        List<Contact> res = new ArrayList<>();
+        for( ParseObject contactObj : contactsObjs)
+            res.add(new Contact(contactObj));
+        
+        return res;
+    }
+
+    public static void updateContact(Contact c) {
+
+        if (!isContactInDB(c))
+            saveContact(c, null);
+        else
+            DatabaseManager.update("Contact", DatabaseManager.getObjectByFields("Contact", c.contactIdentifiresMap()).getObjectId(), c.contactMap());
+
+    }
+
+    public static void updateEmergencyLevel(Contact c, EmergencyLevel l) {
+
         if (!isContactInDB(c))
             saveContact(c, l);
         else {
-            Map<String, Object> cm = c.contactMap();
-            DatabaseManager.update("Contact", DatabaseManager.getObjectByFields("Contact", cm).getObjectId(), cm);
+            Map<String, Object> $ = new HashMap<>();
+            $.put("emergencyLevel", l == null ? "" : l + "");
+            DatabaseManager.update("Contact", DatabaseManager.getObjectByFields("Contact", c.contactMap()).getObjectId(), $);
         }
 
     }

@@ -6,7 +6,6 @@ import org.parse4j.Parse;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
-import org.parse4j.callback.GetCallback;
 import org.parse4j.callback.SaveCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,19 +96,23 @@ public abstract class DatabaseManager {
      *        which are not included in this mapping will remain untouched. */
     public static void update(final String objectClass, final String id, Map<String, Object> values) {
 
-        ParseQuery.getQuery(objectClass).getInBackground(id, new GetCallback<ParseObject>() {
-            @Override @SuppressWarnings("synthetic-access") public void done(ParseObject arg0, ParseException arg1) {
-                if (arg0 == null || arg1 != null)
-                    return;
-                for (String key : values.keySet())
-                    arg0.put(key, values.get(key));
-                try {
-                    arg0.save();
-                } catch (ParseException ¢) {
-                    log.error("A parse exception has happened", ¢);
-                }
+        try {
+            ParseObject res = ParseQuery.getQuery(objectClass).get(id);
+            if (res == null)
+                return;
+            for (String key : values.keySet())
+                res.put(key, values.get(key));
+            try {
+
+                res.save();
+            } catch (ParseException ¢) {
+                log.error("A parse exception has happened", ¢);
             }
-        });
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     /** This method returns (in the callback) the object in objectClass with
