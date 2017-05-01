@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jdom2.Element;
+import org.parse4j.ParseObject;
 
 /** This class saves information about a contact and implements the required API
  * for the system
@@ -33,6 +34,16 @@ public class Contact {
         emailAddress = contactElement.getChildText("email");
     }
 
+    public Contact( ParseObject contactObj) {
+        
+
+        this.id = contactObj.getString("id");
+        this.name = contactObj.getString("name");
+        this.phoneNumber = contactObj.getString("phoneNumber");
+        this.emailAddress = contactObj.getString("email");
+
+    }
+    
     public String getId() {
         return id;
     }
@@ -88,6 +99,16 @@ public class Contact {
         $.put("name", this.name);
         $.put("phoneNumber", this.phoneNumber);
         $.put("email", this.emailAddress);
+
+        return $;
+
+    }
+
+    public Map<String, Object> contactIdentifiresMap() {
+        Map<String, Object> $ = new HashMap<>();
+
+        $.put("id", this.id);
+        $.put("name", this.name);
 
         return $;
 
