@@ -34,16 +34,15 @@ public class Contact {
         emailAddress = contactElement.getChildText("email");
     }
 
-    public Contact( ParseObject contactObj) {
-        
+    public Contact(final ParseObject contactObj) {
 
-        this.id = contactObj.getString("id");
-        this.name = contactObj.getString("name");
-        this.phoneNumber = contactObj.getString("phoneNumber");
-        this.emailAddress = contactObj.getString("email");
+        id = contactObj.getString("id");
+        name = contactObj.getString("name");
+        phoneNumber = contactObj.getString("phoneNumber");
+        emailAddress = contactObj.getString("email");
 
     }
-    
+
     public String getId() {
         return id;
     }
@@ -93,22 +92,22 @@ public class Contact {
     }
 
     public Map<String, Object> contactMap() {
-        Map<String, Object> $ = new HashMap<>();
+        final Map<String, Object> $ = new HashMap<>();
 
-        $.put("id", this.id);
-        $.put("name", this.name);
-        $.put("phoneNumber", this.phoneNumber);
-        $.put("email", this.emailAddress);
+        $.put("id", id);
+        $.put("name", name);
+        $.put("phoneNumber", phoneNumber);
+        $.put("email", emailAddress);
 
         return $;
 
     }
 
     public Map<String, Object> contactIdentifiresMap() {
-        Map<String, Object> $ = new HashMap<>();
+        final Map<String, Object> $ = new HashMap<>();
 
-        $.put("id", this.id);
-        $.put("name", this.name);
+        $.put("id", id);
+        $.put("name", name);
 
         return $;
 

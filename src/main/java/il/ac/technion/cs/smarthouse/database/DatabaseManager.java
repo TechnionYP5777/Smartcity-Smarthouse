@@ -10,7 +10,8 @@ import org.parse4j.callback.SaveCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** @author Inbal Zukerman
+/** This class implements an API to work with the database on the server.
+ * @author Inbal Zukerman
  * @date Mar 31, 2017 */
 
 public abstract class DatabaseManager {
@@ -22,10 +23,6 @@ public abstract class DatabaseManager {
     public static final String restAPIKey = "ag9h-84j3-ked2-94j5";
 
     private static boolean init;
-
-    private DatabaseManager() {
-
-    }
 
     public static void initialize() {
 
@@ -42,9 +39,9 @@ public abstract class DatabaseManager {
      *        saved as the ParseObject
      * @return The ParseObject which was created
      * @throws ParseException */
-    public static ParseObject putValue(final String objectClass, Map<String, Object> fields) throws ParseException {
+    public static ParseObject putValue(final String objectClass, final Map<String, Object> fields) throws ParseException {
         final ParseObject $ = new ParseObject(objectClass);
-        for (String key : fields.keySet())
+        for (final String key : fields.keySet())
             $.put(key, fields.get(key));
         $.save();
         return $;
@@ -54,9 +51,9 @@ public abstract class DatabaseManager {
      * @param fields Map any field name (string) to an object which will be
      *        saved as the ParseObject
      * @param c callback which will let us get the result */
-    public static void putValue(final String objectClass, Map<String, Object> fields, SaveCallback c) {
+    public static void putValue(final String objectClass, final Map<String, Object> fields, final SaveCallback c) {
         final ParseObject obj = new ParseObject(objectClass);
-        for (String key : fields.keySet())
+        for (final String key : fields.keySet())
             obj.put(key, fields.get(key));
 
         obj.saveInBackground(c);
@@ -64,14 +61,13 @@ public abstract class DatabaseManager {
 
     /** This method deletes an object in the background from class @objectClass
      * with @id */
-    public static void deleteById(final String objectClass, String id) {
+    public static void deleteById(final String objectClass, final String id) {
         final ParseObject obj = new ParseObject(objectClass);
         obj.setObjectId(id);
         try {
             obj.delete();
-        } catch (ParseException ¢) {
-            // TODO Auto-generated catch block
-            ¢.printStackTrace();
+        } catch (final ParseException ¢) {
+            log.error("A parse exception has happened", ¢);
         }
     }
 
@@ -83,7 +79,7 @@ public abstract class DatabaseManager {
     public static ParseObject getValue(final String objectClass, final String id) {
         try {
             return ParseQuery.getQuery(objectClass).get(id);
-        } catch (ParseException ¢) {
+        } catch (final ParseException ¢) {
             log.error("A parse exception has happened", ¢);
         }
         return null;
@@ -94,23 +90,18 @@ public abstract class DatabaseManager {
      * @param id The id of the object which should be updated
      * @param values The new Values to be saved in the object's fields. Fields
      *        which are not included in this mapping will remain untouched. */
-    public static void update(final String objectClass, final String id, Map<String, Object> values) {
+    public static void update(final String objectClass, final String id, final Map<String, Object> values) {
 
         try {
-            ParseObject res = ParseQuery.getQuery(objectClass).get(id);
+            final ParseObject res = ParseQuery.getQuery(objectClass).get(id);
             if (res == null)
                 return;
-            for (String key : values.keySet())
+            for (final String key : values.keySet())
                 res.put(key, values.get(key));
-            try {
+            res.save();
 
-                res.save();
-            } catch (ParseException ¢) {
-                log.error("A parse exception has happened", ¢);
-            }
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (final ParseException e) {
+            log.error("A parse exception has happened", e);
         }
 
     }
@@ -119,9 +110,9 @@ public abstract class DatabaseManager {
      * values matching to the values mapping
      * @param objectClass
      * @param values Map any field name to a value */
-    public static ParseObject getObjectByFields(final String objectClass, Map<String, Object> values) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(objectClass);
-        for (String key : values.keySet())
+    public static ParseObject getObjectByFields(final String objectClass, final Map<String, Object> values) {
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery(objectClass);
+        for (final String key : values.keySet())
             query.whereEqualTo(key, values.get(key));
 
         try {
@@ -129,8 +120,8 @@ public abstract class DatabaseManager {
             if (query.find() != null)
                 return query.find().get(0);
 
-        } catch (ParseException e) {
-            // TODO: log error
+        } catch (final ParseException e) {
+            log.error("A parse exception has happened", e);
 
         }
         return null;

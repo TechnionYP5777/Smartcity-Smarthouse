@@ -27,16 +27,16 @@ public class DatabaseManagerTest {
     @Test @SuppressWarnings("static-method") // JUnit tests cannot be static
     public void dataManagmentTest() {
         try {
-            Map<String, Object> m = new HashMap<>();
+            final Map<String, Object> m = new HashMap<>();
             m.put("col1", "test1");
             m.put("col1", "test1a");
             m.put("col2", 123);
-            ParseObject temp = DatabaseManager.putValue(testParse, m);
+            final ParseObject temp = DatabaseManager.putValue(testParse, m);
 
-            Map<String, Object> m1 = new HashMap<>();
+            final Map<String, Object> m1 = new HashMap<>();
             m1.put("col1", "res1");
             m1.put("col2", 1234);
-            ParseObject temp1 = DatabaseManager.putValue(testParse, m1);
+            final ParseObject temp1 = DatabaseManager.putValue(testParse, m1);
 
             Assert.assertEquals(123, DatabaseManager.getValue(testParse, temp.getObjectId()).getInt("col2"));
             Assert.assertEquals("test1a".compareTo(DatabaseManager.getValue(testParse, temp.getObjectId()).getString("col1")), 0);
@@ -55,7 +55,7 @@ public class DatabaseManagerTest {
 
             countQuery.whereEqualTo("col2", 1234);
             Assert.assertEquals(0, countQuery.count());
-        } catch (ParseException e) {
+        } catch (final ParseException e) {
             assert null != null;
         }
 
@@ -64,16 +64,16 @@ public class DatabaseManagerTest {
     @Test @SuppressWarnings("static-method") public void testingUpdates() {
 
         try {
-            Map<String, Object> m = new HashMap<>();
+            final Map<String, Object> m = new HashMap<>();
             m.put("col1", "one");
             m.put("col2", 1);
 
-            ParseObject mObj = DatabaseManager.putValue(testParse, m);
+            final ParseObject mObj = DatabaseManager.putValue(testParse, m);
 
             Assert.assertEquals("one".compareTo(DatabaseManager.getValue(testParse, mObj.getObjectId()).getString("col1")), 0);
             Assert.assertEquals(1, DatabaseManager.getValue(testParse, mObj.getObjectId()).getInt("col2"));
 
-            Map<String, Object> newVals = new HashMap<>();
+            final Map<String, Object> newVals = new HashMap<>();
             newVals.put("col2", 2);
             DatabaseManager.update(testParse, mObj.getObjectId(), newVals);
 
@@ -91,7 +91,7 @@ public class DatabaseManagerTest {
 
     @Test(timeout = 30000) @SuppressWarnings("static-method") public void savingInBackgound() {
 
-        Map<String, Object> m = new HashMap<>();
+        final Map<String, Object> m = new HashMap<>();
         m.put("col1", "AA");
         m.put("col2", 12);
 
@@ -100,7 +100,7 @@ public class DatabaseManagerTest {
 
         DatabaseManager.putValue(testParse, m, new SaveCallback() {
 
-            @Override public void done(ParseException arg0) {
+            @Override public void done(final ParseException arg0) {
                 if (arg0 != null)
                     value.compareAndSet(false, false);
                 value.compareAndSet(false, true);
@@ -113,7 +113,7 @@ public class DatabaseManagerTest {
 
         Assert.assertEquals(true, changed);
 
-        ParseObject temp = DatabaseManager.getObjectByFields(testParse, m);
+        final ParseObject temp = DatabaseManager.getObjectByFields(testParse, m);
         DatabaseManager.deleteById(testParse, temp.getObjectId());
         Assert.assertNull(DatabaseManager.getValue(testParse, temp.getObjectId()));
 

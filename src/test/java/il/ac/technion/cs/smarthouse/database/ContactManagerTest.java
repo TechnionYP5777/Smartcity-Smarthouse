@@ -32,17 +32,17 @@ public class ContactManagerTest {
         ContactManager.saveContact(contactA, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
 
         ParseQuery<ParseObject> countQuery = ParseQuery.getQuery("Contact");
-        for (String key : contactA.contactMap().keySet())
+        for (final String key : contactA.contactMap().keySet())
             countQuery.whereEqualTo(key, contactA.contactMap().get(key));
         try {
             Assert.assertEquals(1, countQuery.count());
-        } catch (ParseException e) {
+        } catch (final ParseException e) {
             assert null != null;
         }
 
         assert ContactManager.isContactInDB(contactA);
 
-        ParseObject temp = DatabaseManager.getObjectByFields("Contact", contactA.contactMap());
+        final ParseObject temp = DatabaseManager.getObjectByFields("Contact", contactA.contactMap());
 
         assert temp != null;
         Assert.assertEquals("Alon", temp.getString("name"));
@@ -50,11 +50,11 @@ public class ContactManagerTest {
         ContactManager.deleteContact(contactA.getId());
 
         countQuery = ParseQuery.getQuery("Contact");
-        for (String key : contactA.contactMap().keySet())
+        for (final String key : contactA.contactMap().keySet())
             countQuery.whereEqualTo(key, contactA.contactMap().get(key));
         try {
             Assert.assertEquals(0, countQuery.count());
-        } catch (ParseException e) {
+        } catch (final ParseException e) {
             assert null != null;
         }
 
@@ -64,7 +64,7 @@ public class ContactManagerTest {
 
         ContactManager.saveContact(contactA, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
 
-        Contact res = ContactManager.getContact(contactA.getId());
+        final Contact res = ContactManager.getContact(contactA.getId());
 
         assert res != null;
         Assert.assertEquals(contactA.getId(), res.getId());
@@ -77,7 +77,7 @@ public class ContactManagerTest {
 
         ContactManager.updateContact(res);
 
-        Contact res2 = ContactManager.getContact(res.getId());
+        final Contact res2 = ContactManager.getContact(res.getId());
         Assert.assertEquals(res.getPhoneNumber(), res2.getPhoneNumber());
         Assert.assertEquals(res.getEmailAddress(), res2.getEmailAddress());
 
@@ -97,7 +97,7 @@ public class ContactManagerTest {
         List<Contact> res = ContactManager.getContacts(EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
 
         Assert.assertEquals(1, res.size());
-        Contact c = res.get(0);
+        final Contact c = res.get(0);
         Assert.assertEquals(contactA.getId(), c.getId());
         Assert.assertEquals(contactA.getName(), c.getName());
         Assert.assertEquals(contactA.getEmailAddress(), c.getEmailAddress());
