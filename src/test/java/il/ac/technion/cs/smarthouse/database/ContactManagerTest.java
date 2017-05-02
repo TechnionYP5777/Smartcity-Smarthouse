@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.database;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 public class ContactManagerTest {
 
     private final Contact contactA = new Contact("123", "Alon", "0508080123", "alon@gmail.com");
+    private final Contact contactB = new Contact("567", "Emma", "0546421211", "emma1@gmail.com");
 
     @BeforeClass public static void init() {
 
@@ -78,7 +81,34 @@ public class ContactManagerTest {
         Assert.assertEquals(res.getPhoneNumber(), res2.getPhoneNumber());
         Assert.assertEquals(res.getEmailAddress(), res2.getEmailAddress());
 
+        assert !ContactManager.isContactInDB(contactB);
+        ContactManager.updateContact(contactB);
+        assert ContactManager.isContactInDB(contactB);
+
         ContactManager.deleteContact(contactA.getId());
+        ContactManager.deleteContact(contactB.getId());
+
+    }
+
+    @Test public void testEmergencyLevels() {
+        ContactManager.saveContact(contactA, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+        ContactManager.updateContact(contactB);
+
+        List<Contact> res = ContactManager.getContacts(EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+
+        Assert.assertEquals(1, res.size());
+        Contact c = res.get(0);
+        Assert.assertEquals(contactA.getId(), c.getId());
+        Assert.assertEquals(contactA.getName(), c.getName());
+        Assert.assertEquals(contactA.getEmailAddress(), c.getEmailAddress());
+        Assert.assertEquals(contactA.getPhoneNumber(), c.getPhoneNumber());
+
+        ContactManager.updateEmergencyLevel(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        res = ContactManager.getContacts(EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+        Assert.assertEquals(0, res.size());
+
+        ContactManager.deleteContact(contactA.getId());
+        ContactManager.deleteContact(contactB.getId());
 
     }
 

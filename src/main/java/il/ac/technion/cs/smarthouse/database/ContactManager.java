@@ -47,12 +47,14 @@ public class ContactManager {
         // TODO: l is null?
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Contact");
 
-        query.whereEqualTo("emrgencyLevel", l + "");
+        query.whereEqualTo("emergencyLevel", l + "");
 
         try {
 
-            if (query.find() != null)
+            if (query.find() != null) {
+
                 return query.find();
+            }
 
         } catch (ParseException e) {
             // TODO: log error
@@ -60,13 +62,17 @@ public class ContactManager {
         }
         return null;
     }
-    
-    public static List<Contact> getContacts(EmergencyLevel l){
+
+    public static List<Contact> getContacts(EmergencyLevel l) {
         List<ParseObject> contactsObjs = getObjectsByElevel(l);
+
         List<Contact> res = new ArrayList<>();
-        for( ParseObject contactObj : contactsObjs)
+        if (contactsObjs == null) {
+            return res;
+        }
+        for (ParseObject contactObj : contactsObjs)
             res.add(new Contact(contactObj));
-        
+
         return res;
     }
 
