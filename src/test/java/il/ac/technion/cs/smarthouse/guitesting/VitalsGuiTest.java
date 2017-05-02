@@ -49,9 +49,6 @@ public class VitalsGuiTest extends InfastructureMainSystemGuiTest {
         click("#pulseSlider");
         moveBy(25, 0);
         click();
-        Label pulseLabel = find("#pulseLabel");
-        assertEquals("Pulse: " + (int) Math.round(pulseSlider.getValue()), pulseLabel.getText());
-        // click("#sosButton");
-        // assertNodeExists("#killerButton");
+        assertEquals("Pulse: " + (int) Math.round(pulseSlider.getValue()), ((Label) find("#pulseLabel")).getText());
     }
 }
