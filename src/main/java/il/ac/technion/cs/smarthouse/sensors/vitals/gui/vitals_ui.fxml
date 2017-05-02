@@ -16,7 +16,7 @@
 
 <VBox fx:id="mainVBox" prefHeight="400.0" prefWidth="550.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.sensors.vitals.gui.Controller">
    <children>
-      <Label fx:id="pulseLabel" disable="true" text="Pulse: 70" />
+      <Label fx:id="pulseLabelSensor" disable="true" text="Pulse: 70" />
       <Slider fx:id="pulseSlider" max="200.0" value="70.0" />
       <Separator>
          <VBox.margin>
