@@ -57,4 +57,29 @@ public class ContactManagerTest {
 
     }
 
+    @Test public void testUpdates() {
+
+        ContactManager.saveContact(contactA, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+
+        Contact res = ContactManager.getContact(contactA.getId());
+
+        assert res != null;
+        Assert.assertEquals(contactA.getId(), res.getId());
+        Assert.assertEquals(contactA.getName(), res.getName());
+        Assert.assertEquals(contactA.getEmailAddress(), res.getEmailAddress());
+        Assert.assertEquals(contactA.getPhoneNumber(), res.getPhoneNumber());
+
+        res.setEmailAddress("mynewmail@gmail.com");
+        res.setPhoneNumber("0267907070");
+
+        ContactManager.updateContact(res);
+
+        Contact res2 = ContactManager.getContact(res.getId());
+        Assert.assertEquals(res.getPhoneNumber(), res2.getPhoneNumber());
+        Assert.assertEquals(res.getEmailAddress(), res2.getEmailAddress());
+
+        ContactManager.deleteContact(contactA.getId());
+
+    }
+
 }
