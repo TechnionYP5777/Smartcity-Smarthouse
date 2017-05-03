@@ -76,11 +76,11 @@ public class StoveAppController implements Initializable {
         timeline = new Timeline(new KeyFrame(Duration.millis(100), ¢ -> {
             time = time.add(((KeyFrame) ¢.getSource()).getTime());
             timeSeconds.set(time.toSeconds());
-            timeLabel.setText("The Stove is Running for: " + timeSeconds.get() + " (Secs)");
+            timeLabel.setText("The stove is running for: " + timeSeconds.get() + " (Secs)");
             if (timeSeconds.get() <= StoveAppController.this.get_alert_seconds())
                 alertTime = false;
             if (timeSeconds.get() > StoveAppController.this.get_alert_seconds() && !alertTime) {
-                alert("Stove is runnig too long");
+                alert("Stove is running too long");
                 timeLabel.setTextFill(Color.RED);
                 alertTime = true;
             }
@@ -97,11 +97,11 @@ public class StoveAppController implements Initializable {
         time = Duration.ZERO;
         timeLabel.setTextFill(Color.BLACK);
         timeSeconds.set(time.toSeconds());
-        timeLabel.setText("The Stove is: Off");
+        timeLabel.setText("The stove is: Off");
     }
 
     public void updateTemperture(final int temp) {
-        tempLabel.setText("The Stove Temperture is: " + temp);
+        tempLabel.setText("The stove temperature is: " + temp);
         if (temp <= get_alert_temperature()) {
             alertTemp = false;
             tempLabel.setTextFill(Color.BLACK);
