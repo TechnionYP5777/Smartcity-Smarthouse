@@ -27,7 +27,7 @@ public class Controller implements Initializable {
     private StoveSensor sensor;
     private boolean on;
     @FXML public Button onOffButton;
-    @FXML public Label tempLabelSensor;
+    @FXML public Label tempLabel;
     @FXML public Slider tempSlider;
     @FXML public TextFlow console;
 
@@ -38,7 +38,7 @@ public class Controller implements Initializable {
         onOffButton.setOnAction(event -> {
             on = !on;
             onOffButton.setText("Turn " + (on ? "off" : "on"));
-            tempLabelSensor.setDisable(!on);
+            tempLabel.setDisable(!on);
             tempSlider.setDisable(!on);
             sensor.updateSystem(on, (int) Math.round(tempSlider.getValue()));
             printUpdateMessage();
@@ -48,7 +48,7 @@ public class Controller implements Initializable {
                 return;
 
             final int temp = (int) Math.round(newVal.doubleValue());
-            tempLabelSensor.setText("Temperature: " + temp);
+            tempLabel.setText("Temperature: " + temp);
             sensor.updateSystem(true, temp);
             printUpdateMessage();
         });
