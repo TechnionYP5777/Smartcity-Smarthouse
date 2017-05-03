@@ -30,7 +30,7 @@ public class Controller implements Initializable {
     private VitalsSensor sensor;
     private RangeSlider bpRSlider;
     @FXML public Label pulseLabelSensor;
-    @FXML public Label bpLabel;
+    @FXML public Label bpLabelSensor;
     @FXML public Slider pulseSlider;
     @FXML public TextFlow console;
     @FXML public VBox mainVBox;
@@ -40,7 +40,7 @@ public class Controller implements Initializable {
         for (boolean res = false; !res;)
             res = sensor.register();
         pulseLabelSensor.setDisable(false);
-        bpLabel.setDisable(false);
+        bpLabelSensor.setDisable(false);
         bpRSlider = new RangeSlider(0, 200, 80, 120);
         mainVBox.getChildren().add(4, bpRSlider);
         pulseSlider.valueProperty().addListener((ov, oldVal, newVal) -> {
@@ -57,7 +57,7 @@ public class Controller implements Initializable {
                 return;
 
             final int diastolicBP = (int) Math.round(newVal.doubleValue());
-            bpLabel.setText("Blood Pressure: " + (int) Math.round(bpRSlider.getHighValue()) + "/" + diastolicBP);
+            bpLabelSensor.setText("Blood Pressure: " + (int) Math.round(bpRSlider.getHighValue()) + "/" + diastolicBP);
             sensor.updateSystem((int) Math.round(pulseSlider.getValue()), (int) Math.round(bpRSlider.getHighValue()), diastolicBP);
             printUpdateMessage();
         });
@@ -67,7 +67,7 @@ public class Controller implements Initializable {
                 return;
 
             final int systolicBP = (int) Math.round(newVal.doubleValue());
-            bpLabel.setText("Blood Pressure: " + systolicBP + "/" + (int) Math.round(bpRSlider.getLowValue()));
+            bpLabelSensor.setText("Blood Pressure: " + systolicBP + "/" + (int) Math.round(bpRSlider.getLowValue()));
             sensor.updateSystem((int) Math.round(pulseSlider.getValue()), systolicBP, (int) Math.round(bpRSlider.getLowValue()));
             printUpdateMessage();
         });

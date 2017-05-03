@@ -23,7 +23,7 @@
             <Insets />
          </VBox.margin>
       </Separator>
-      <Label fx:id="bpLabel" disable="true" text="Blood Pressure: 120/80" />
+      <Label fx:id="bpLabelSensor" disable="true" text="Blood Pressure: 120/80" />
       <Pane fx:id="rsPane" prefHeight="200.0" prefWidth="200.0" />
       <Separator />
       <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Console">
