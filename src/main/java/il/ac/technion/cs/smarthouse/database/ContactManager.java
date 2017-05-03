@@ -38,11 +38,7 @@ public class ContactManager {
         contactMap.put("emergencyLevel", l == null ? "" : l + "");
 
         if (!isContactInDB(c))
-            try {
-                DatabaseManager.putValue("Contact", contactMap);
-            } catch (final ParseException ¢) {
-                log.error("A parse exception has happened", ¢);
-            }
+            DatabaseManager.putValue("Contact", contactMap);
 
     }
 

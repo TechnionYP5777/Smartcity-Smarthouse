@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,25 +19,29 @@ public class DatabaseManagerTest {
 
     public static String testParse = "DatabaseManagerTest";
 
+    private static ParseObject temp;
+    private static ParseObject temp1;
+    private static ParseObject temp2;
+    private static ParseObject mObj;
+
     @BeforeClass public static void init() {
 
         DatabaseManager.initialize();
 
     }
 
-    @Test @SuppressWarnings("static-method") // JUnit tests cannot be static
-    public void dataManagmentTest() {
+    @Test @SuppressWarnings("static-method") public void dataManagmentTest() {
         try {
             final Map<String, Object> m = new HashMap<>();
             m.put("col1", "test1");
             m.put("col1", "test1a");
             m.put("col2", 123);
-            final ParseObject temp = DatabaseManager.putValue(testParse, m);
+            temp = DatabaseManager.putValue(testParse, m);
 
             final Map<String, Object> m1 = new HashMap<>();
             m1.put("col1", "res1");
             m1.put("col2", 1234);
-            final ParseObject temp1 = DatabaseManager.putValue(testParse, m1);
+            temp1 = DatabaseManager.putValue(testParse, m1);
 
             Assert.assertEquals(123, DatabaseManager.getValue(testParse, temp.getObjectId()).getInt("col2"));
             Assert.assertEquals("test1a".compareTo(DatabaseManager.getValue(testParse, temp.getObjectId()).getString("col1")), 0);
@@ -45,20 +50,22 @@ public class DatabaseManagerTest {
 
             ParseQuery<ParseObject> countQuery = ParseQuery.getQuery(testParse);
             countQuery.whereEqualTo("col2", 123);
+
             Assert.assertEquals(0, countQuery.count());
 
             countQuery = ParseQuery.getQuery(testParse);
             countQuery.whereEqualTo("col2", 1234);
+
             Assert.assertEquals(1, countQuery.count());
 
             DatabaseManager.deleteById(testParse, temp1.getObjectId());
-
             countQuery.whereEqualTo("col2", 1234);
+
             Assert.assertEquals(0, countQuery.count());
+
         } catch (final ParseException e) {
             assert null != null;
         }
-
     }
 
     @Test @SuppressWarnings("static-method") public void testingUpdates() {
@@ -68,7 +75,7 @@ public class DatabaseManagerTest {
             m.put("col1", "one");
             m.put("col2", 1);
 
-            final ParseObject mObj = DatabaseManager.putValue(testParse, m);
+            mObj = DatabaseManager.putValue(testParse, m);
 
             Assert.assertEquals("one".compareTo(DatabaseManager.getValue(testParse, mObj.getObjectId()).getString("col1")), 0);
             Assert.assertEquals(1, DatabaseManager.getValue(testParse, mObj.getObjectId()).getInt("col2"));
@@ -83,7 +90,7 @@ public class DatabaseManagerTest {
 
             DatabaseManager.deleteById(testParse, mObj.getObjectId());
 
-        } catch (ParseException | InterruptedException e) {
+        } catch (InterruptedException e) {
             assert null != null;
         }
 
@@ -113,9 +120,17 @@ public class DatabaseManagerTest {
 
         Assert.assertEquals(true, changed);
 
-        final ParseObject temp = DatabaseManager.getObjectByFields(testParse, m);
+        temp2 = DatabaseManager.getObjectByFields(testParse, m);
+        DatabaseManager.deleteById(testParse, temp2.getObjectId());
+        Assert.assertNull(DatabaseManager.getValue(testParse, temp2.getObjectId()));
+
+    }
+
+    @AfterClass public static void cleanup() {
         DatabaseManager.deleteById(testParse, temp.getObjectId());
-        Assert.assertNull(DatabaseManager.getValue(testParse, temp.getObjectId()));
+        DatabaseManager.deleteById(testParse, temp1.getObjectId());
+        DatabaseManager.deleteById(testParse, temp2.getObjectId());
+        DatabaseManager.deleteById(testParse, mObj.getObjectId());
 
     }
 

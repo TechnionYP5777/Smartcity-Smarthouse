@@ -39,11 +39,15 @@ public abstract class DatabaseManager {
      *        saved as the ParseObject
      * @return The ParseObject which was created
      * @throws ParseException */
-    public static ParseObject putValue(final String objectClass, final Map<String, Object> fields) throws ParseException {
+    public static ParseObject putValue(final String objectClass, final Map<String, Object> fields)  {
         final ParseObject $ = new ParseObject(objectClass);
         for (final String key : fields.keySet())
             $.put(key, fields.get(key));
-        $.save();
+        try {
+            $.save();
+        } catch (ParseException e) {
+            log.error("A parse exception has happened", e);
+        }
         return $;
     }
 
@@ -59,7 +63,7 @@ public abstract class DatabaseManager {
         obj.saveInBackground(c);
     }
 
-    /** This method deletes an object in the background from class @objectClass
+    /** This method deletes an object from class @objectClass
      * with @id */
     public static void deleteById(final String objectClass, final String id) {
         final ParseObject obj = new ParseObject(objectClass);
