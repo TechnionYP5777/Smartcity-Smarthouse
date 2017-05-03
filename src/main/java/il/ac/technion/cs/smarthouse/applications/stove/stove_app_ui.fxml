@@ -16,8 +16,8 @@
    <children>
       <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="timeLabel" text="The Stove is: Off"/>
-            <Label fx:id="tempLabel" text="The Stove Temperture is: 0"/>
+            <Label fx:id="timeLabel" text="The stove is: Off" />
+            <Label fx:id="tempLabel" text="The stove temperature is: 0" />
             <AnchorPane>
                <children>
                   <Button fx:id="stoveConfigButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Stove Config" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
