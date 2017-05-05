@@ -172,6 +172,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 /screenshot*.png
+/Logs/*.log*
 
 # Exclude maven wrapper
 !/.mvn/wrapper/maven-wrapper.jar
