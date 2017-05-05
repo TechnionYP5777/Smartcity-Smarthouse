@@ -1,5 +1,6 @@
 package il.ac.technion.cs.smarthouse.database;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.parse4j.Parse;
@@ -34,16 +35,27 @@ public abstract class DatabaseManager {
         init = true;
     }
 
+    /** This method checks if an object is saved in the database
+     * @param objectClass
+     * @param id
+     * @return true if is in the DB, false otherwise */
+    public static boolean isInDB(final String objectClass, final String id) {
+        Map<String, Object> vals = new HashMap<>();
+        vals.put("objectId", id);
+        return DatabaseManager.getObjectByFields(objectClass, vals) != null;
+    }
+
     /** @param objectClass
      * @param fields Map any field name (string) to an object which will be
      *        saved as the ParseObject
      * @return The ParseObject which was created
      * @throws ParseException */
-    public static ParseObject putValue(final String objectClass, final Map<String, Object> fields)  {
+    public static ParseObject putValue(final String objectClass, final Map<String, Object> fields) {
         final ParseObject $ = new ParseObject(objectClass);
         for (final String key : fields.keySet())
             $.put(key, fields.get(key));
         try {
+
             $.save();
         } catch (ParseException e) {
             log.error("A parse exception has happened", e);
@@ -63,9 +75,10 @@ public abstract class DatabaseManager {
         obj.saveInBackground(c);
     }
 
-    /** This method deletes an object from class @objectClass
-     * with @id */
+    /** This method deletes an object from class @objectClass with @id */
     public static void deleteById(final String objectClass, final String id) {
+        if (!isInDB(objectClass, id))
+            return;
         final ParseObject obj = new ParseObject(objectClass);
         obj.setObjectId(id);
         try {

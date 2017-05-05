@@ -38,6 +38,8 @@ public class DatabaseManagerTest {
             m.put("col2", 123);
             temp = DatabaseManager.putValue(testParse, m);
 
+            assert DatabaseManager.isInDB(testParse, temp.getObjectId());
+
             final Map<String, Object> m1 = new HashMap<>();
             m1.put("col1", "res1");
             m1.put("col2", 1234);
@@ -47,6 +49,7 @@ public class DatabaseManagerTest {
             Assert.assertEquals("test1a".compareTo(DatabaseManager.getValue(testParse, temp.getObjectId()).getString("col1")), 0);
 
             DatabaseManager.deleteById(testParse, temp.getObjectId());
+            assert !DatabaseManager.isInDB(testParse, temp.getObjectId());
 
             ParseQuery<ParseObject> countQuery = ParseQuery.getQuery(testParse);
             countQuery.whereEqualTo("col2", 123);
