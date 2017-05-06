@@ -8,8 +8,8 @@ import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplicatio
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
+import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 /** A class that stores information about the installed application
@@ -63,15 +63,8 @@ public class ApplicationManager {
     /** If the application is installed, but currently closed, this will reopen
      * it. */
     public void reopen(final Pane parentPane) {
-        if (application == null || rootNode == null)
-            return;
-
-        AnchorPane.setTopAnchor(rootNode, 0.0);
-        AnchorPane.setRightAnchor(rootNode, 0.0);
-        AnchorPane.setLeftAnchor(rootNode, 0.0);
-        AnchorPane.setBottomAnchor(rootNode, 0.0);
-
-        parentPane.getChildren().setAll(rootNode);
+        if (application != null && rootNode != null)
+            JavaFxHelper.placeNodeInPane(rootNode, parentPane);
     }
 
     public String getApplicationName() {

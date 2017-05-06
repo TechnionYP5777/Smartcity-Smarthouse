@@ -3,6 +3,7 @@ package il.ac.technion.cs.smarthouse.applications.sos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -18,6 +19,10 @@ public class SosAppGui extends SmartHouseApplication {
     SosController sosController;
     private Button killerButon;
     public boolean shouldAlert = true;
+    
+    public static void main(String[] args) throws Exception {
+        launch(SosSensorSimulator.class);
+    }
 
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");

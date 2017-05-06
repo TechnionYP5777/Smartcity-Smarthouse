@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse.system.gui;
 
 import java.io.IOException;
 
+import il.ac.technion.cs.smarthouse.system.SystemCore;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainSystemGui extends Application {
-
     private static final String APP_NAME = "Smarthouse";
 
     private FXMLLoader loader;
@@ -20,7 +20,6 @@ public class MainSystemGui extends Application {
     }
 
     @Override public void start(final Stage s) throws Exception {
-
         System.out.println("Initializing system ui...");
 
         final Scene scene = new Scene(getRoot(), 1000, 800);
@@ -34,7 +33,7 @@ public class MainSystemGui extends Application {
 
     public void kill() {
         System.out.println("System closing...");
-        ((MainSystemGuiController) loader.getController()).sysCore.sensorsHandler.closeSockets();
+        ((MainSystemGuiController) loader.getController()).getSystemCore().sensorsHandler.closeSockets();
     }
 
     public Parent getRoot() {
@@ -45,5 +44,9 @@ public class MainSystemGui extends Application {
             System.out.println(e);
             return null;
         }
+    }
+    
+    public SystemCore getSystemCore() {
+        return ((MainSystemGuiController) loader.getController()).getSystemCore();
     }
 }

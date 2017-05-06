@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.gson.annotations.Expose;
 
@@ -44,6 +45,13 @@ public class ApplicationsCore implements Savable {
 
     public List<ApplicationManager> getApplicationManagers() {
         return Collections.unmodifiableList(apps);
+    }
+    
+    public List<String> getInstalledApplicationNames() {
+        List<String> l = new ArrayList<>();
+        for (ApplicationManager applicationManager : apps)
+            Optional.ofNullable(applicationManager.getApplicationName()).ifPresent(l::add);
+        return l;
     }
     // [end]
 

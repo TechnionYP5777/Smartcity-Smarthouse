@@ -25,7 +25,7 @@ public class MainSystemGuiController implements Initializable {
     private MappingController mappingController;
     private ApplicationViewController appsController;
     private UserInfoController userController;
-    public SystemCore sysCore;
+    private SystemCore sysCore;
     @FXML Tab homeTab;
     @FXML Tab userTab;
     @FXML Tab appsTab;
@@ -35,9 +35,9 @@ public class MainSystemGuiController implements Initializable {
 
     @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
         try {
-            this.sysCore = new SystemCore();
+            sysCore = new SystemCore(); 
             sysCore.initializeSystemComponents();
-
+            
             FXMLLoader loader;
 
             // home tab:
@@ -70,6 +70,10 @@ public class MainSystemGuiController implements Initializable {
         } catch (final IOException ¢) {
             ¢.printStackTrace();
         }
+    }
+    
+    public SystemCore getSystemCore() {
+        return sysCore;
     }
 
 }
