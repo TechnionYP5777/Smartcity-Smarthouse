@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane prefHeight="277.0" prefWidth="369.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.sensors.shutter.gui.shutter_uiController">
+   <children>
+      <Pane prefHeight="277.0" prefWidth="156.0">
+         <children>
+            <ImageView fitHeight="267.0" fitWidth="360.0" layoutX="7.0" layoutY="6.0">
+               <image>
+                  <Image url="@shutter.jpg" />
+               </image>
+            </ImageView>
+            <Button fx:id="openButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#openClick" prefHeight="49.0" prefWidth="73.0" text="Open" />
+            <Button fx:id="closeButton" layoutX="289.0" layoutY="14.0" mnemonicParsing="false" onAction="#closeClick" prefHeight="49.0" prefWidth="66.0" text="Close" />
+            <Text fx:id="stateText" layoutX="94.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="status " textAlignment="CENTER" wrappingWidth="188.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+   </children>
+</StackPane>

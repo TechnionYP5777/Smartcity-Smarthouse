@@ -123,6 +123,12 @@
 			<groupId>com.github.abdielou</groupId>
 			<artifactId>parse4j</artifactId>
 			<version>1.5-1216d3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->

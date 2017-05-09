@@ -43,8 +43,8 @@ public abstract class SmartHouseApplication {
         
         Thread.sleep(1500);
         
-        String className = new Throwable().getStackTrace()[1].getClassName();
-        m.getSystemCore().applicationsHandler.addApplication(new ApplicationPath(PathType.CLASS_NAME, className));
+        m.getSystemCore().applicationsHandler
+                .addApplication(new ApplicationPath(PathType.CLASS_NAME, new Throwable().getStackTrace()[1].getClassName()));
     }
 
     // [start] Public - Services to the SystemCore
