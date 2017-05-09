@@ -14,4 +14,11 @@ public abstract class Service {
     public Service(final SystemCore $) {
         systemCore = $;
     }
+    
+    /** Get another service from the system
+     * @param $
+     * @return */
+    protected Service getAnotherService(ServiceType $) {
+        return systemCore.serviceManager.getService($);
+    }
 }

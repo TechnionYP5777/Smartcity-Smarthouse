@@ -5,10 +5,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.Communicate;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.services.Service;
+import il.ac.technion.cs.smarthouse.system.services.ServiceType;
+import il.ac.technion.cs.smarthouse.system.services.communication_services.EmailService;
+import il.ac.technion.cs.smarthouse.system.services.communication_services.PhoneService;
+import il.ac.technion.cs.smarthouse.system.services.communication_services.SmsService;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
@@ -31,20 +34,24 @@ public class AlertsManager extends Service {
             log.debug("systemCore.getUser() returned a null");
             return;
         }
+        
+        PhoneService ps = (PhoneService) getAnotherService(ServiceType.PHONE_SERVICE);
+        SmsService ss = (SmsService) getAnotherService(ServiceType.SMS_SERVICE);
+        EmailService es = (EmailService) getAnotherService(ServiceType.EMAIL_SERVICE);
 
         final List<Contact> $ = user.getContacts(eLevel);
         switch (eLevel) {
             case SMS_EMERGENCY_CONTACT:
-                $.stream().forEach(c -> Communicate.throughSms(c.getPhoneNumber(), message));
+                $.stream().forEach(c -> ss.sendMsg(c.getPhoneNumber(), message));
                 break;
             case CALL_EMERGENCY_CONTACT:
             case CONTACT_HOSPITAL:
             case CONTACT_POLICE:
             case CONTACT_FIRE_FIGHTERS:
-                $.stream().forEach(c -> Communicate.throughPhone(c.getPhoneNumber()));
+                $.stream().forEach(c -> ps.makeCall(c.getPhoneNumber()));
                 break;
             case EMAIL_EMERGENCY_CONTACT:
-                $.stream().forEach(c -> Communicate.throughEmailFromHere(c.getEmailAddress(), message));
+                $.stream().forEach(c -> es.sendMsg(c.getEmailAddress(), message));
                 break;
             default:
                 log.warn(eLevel + " is not handled");
