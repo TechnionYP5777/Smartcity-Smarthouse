@@ -2,7 +2,6 @@ package il.ac.technion.cs.smarthouse.system.gui;
 
 import java.io.IOException;
 
-import il.ac.technion.cs.smarthouse.system.SystemCore;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,7 +32,7 @@ public class MainSystemGui extends Application {
 
     public void kill() {
         System.out.println("System closing...");
-        ((MainSystemGuiController) loader.getController()).getSystemCore().sensorsHandler.closeSockets();
+        ((MainSystemGuiController) loader.getController()).cleanModel();
     }
 
     public Parent getRoot() {
@@ -44,9 +43,5 @@ public class MainSystemGui extends Application {
             System.out.println(e);
             return null;
         }
-    }
-    
-    public SystemCore getSystemCore() {
-        return ((MainSystemGuiController) loader.getController()).getSystemCore();
     }
 }

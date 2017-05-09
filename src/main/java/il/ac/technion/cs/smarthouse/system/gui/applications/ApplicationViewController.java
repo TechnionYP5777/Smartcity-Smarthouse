@@ -7,18 +7,18 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
+import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class ApplicationViewController implements Initializable {
+public class ApplicationViewController extends SystemPresenter {
     private static Logger log = LoggerFactory.getLogger(ApplicationViewController.class);
 
     @FXML ListView<String> listView;
@@ -27,15 +27,9 @@ public class ApplicationViewController implements Initializable {
     @FXML VBox vBox;
     File file;
 
-    private ApplicationsCore appsHandler;
+    private ApplicationsCore appsHandler = getModel().applicationsHandler;
 
-    @Override public void initialize(final URL location, final ResourceBundle __) {
-        
-    }
-
-    public void setAppsHandler(final ApplicationsCore appsHandler) {
-        this.appsHandler = appsHandler;
-
+    @Override public void init(SystemCore model, URL location, ResourceBundle __) {
         initVBox();
         initListView();
         initPlusBtn();
@@ -60,11 +54,7 @@ public class ApplicationViewController implements Initializable {
         plusButton.setStyle("-fx-font: 42 arial; -fx-base: #b6e7c9;");
         plusButton.setOnAction(e -> {
             try {
-                final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("applications_installer_view.fxml"));
-                JavaFxHelper.placeNodeInPane(fxmlLoader.load(), appView);
-
-                final ApplicationsInstallerViewController a = (ApplicationsInstallerViewController) fxmlLoader.getController();
-                a.setApplicationsHandler(appsHandler).setApplicationViewController(this);
+                JavaFxHelper.placeNodeInPane(createChildPresenter(getClass().getResource("applications_installer_view.fxml")).getRootViewNode(), appView);
 
             } catch (final Exception e1) {
                 log.error("An exception while loading the ApplicationsInstallerViewController (after pressing the plus button)", e1);

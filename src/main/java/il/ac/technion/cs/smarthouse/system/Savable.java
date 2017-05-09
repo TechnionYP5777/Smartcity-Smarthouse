@@ -46,13 +46,10 @@ public interface Savable {
             Field f = getClass().getDeclaredField(e.getKey());
             f.setAccessible(true);
 
-            if (Savable.class.isAssignableFrom(f.getType())) {
-                Object o = f.get(this);
-                ((Savable) o).populate(e.getValue() + "");
-            } else {
-                Object o = gsonBuilder.create().fromJson(e.getValue(), f.getGenericType());
-                f.set(this, o);
-            }
+            if (Savable.class.isAssignableFrom(f.getType()))
+                ((Savable) f.get(this)).populate(e.getValue() + "");
+            else
+                f.set(this, gsonBuilder.create().fromJson(e.getValue(), f.getGenericType()));
         }
     }
 

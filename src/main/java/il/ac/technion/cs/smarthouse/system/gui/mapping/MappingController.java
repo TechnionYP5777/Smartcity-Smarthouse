@@ -1,6 +1,5 @@
 package il.ac.technion.cs.smarthouse.system.gui.mapping;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,20 +7,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
+import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class MappingController implements Initializable {
-    private DatabaseHandler dbHandler;
+public class MappingController extends SystemPresenter {
+    private DatabaseHandler dbHandler = getModel().databaseHandler;
     private final Map<String, SensorInfoController> sensors = new HashMap<>();
     private final Map<SensorLocation, List<String>> locationsContents = new HashMap<>();
     private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
@@ -30,7 +29,7 @@ public class MappingController implements Initializable {
     @FXML private VBox sensorsPaneList;
     @FXML private Canvas canvas;
 
-    @Override public void initialize(final URL location, final ResourceBundle __) {
+    @Override public void init(SystemCore model, final URL location, final ResourceBundle __) {
         house.addRoom(new Room(320, 320, 150, 150, SensorLocation.LIVING_ROOM));
         house.addRoom(new Room(470, 320, 150, 150, SensorLocation.KITCHEN));
         house.addRoom(new Room(470, 470, 150, 150, SensorLocation.DINING_ROOM));
@@ -47,28 +46,22 @@ public class MappingController implements Initializable {
         } catch (final SensorNotFoundException ¢) {
             ¢.printStackTrace();
         }
-    }
-
-    public MappingController setDatabaseHandler(final DatabaseHandler dbHandler) {
-        this.dbHandler = dbHandler;
-
+        
         dbHandler.addNewSensorsListener(id -> Platform.runLater(() -> {
             try {
                 addSensor(id);
-            } catch (IOException | SensorNotFoundException ¢) {
+            } catch (Exception ¢) {
                 ¢.printStackTrace();
             }
         }));
-
-        return this;
     }
 
-    public void addSensor(final String id) throws IOException, SensorNotFoundException {
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("sensor_info.fxml"));
-        sensorsPaneList.getChildren().add(loader.load());
+    public void addSensor(final String id) throws Exception, SensorNotFoundException {
+        ChildPresenterInfo child = createChildPresenter(getClass().getResource("sensor_info.fxml"));
+        sensorsPaneList.getChildren().add(child.getRootViewNode());
 
-        final SensorInfoController controller = loader.getController();
-        controller.setDatabaseHandler(dbHandler).setMappingController(this).setId(id).setName(dbHandler.getName(id));
+        final SensorInfoController controller = child.getChildPresenter();
+        controller.setId(id).setName(dbHandler.getName(id));
         sensors.put(id, controller);
     }
 

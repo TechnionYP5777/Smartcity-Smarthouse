@@ -60,7 +60,7 @@ public enum JavaFxHelper {
      * @param a the application
      * @param args
      */
-    public static void startGui(Application a, String... args) {
+    public static <T extends Application> T startGui(T a, String... args) {
         DummyApplication.app2launch = a;
         
         try {
@@ -74,6 +74,8 @@ public enum JavaFxHelper {
         } catch (IllegalStateException __) {
             new Thread(() -> Application.launch(DummyApplication.class, args)).start();
         }
+        
+        return a;
     }
     
     public static class DummyApplication extends Application {

@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.applications.PremadeApplications;
+import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
+import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
@@ -16,7 +18,6 @@ import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -27,7 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class ApplicationsInstallerViewController implements Initializable {
+public class ApplicationsInstallerViewController extends SystemPresenter {
     private static Logger log = LoggerFactory.getLogger(ApplicationsInstallerViewController.class);
 
     @FXML private Button toggleBtn;
@@ -38,30 +39,17 @@ public class ApplicationsInstallerViewController implements Initializable {
     @FXML private HBox toggleOptionCombo;
     @FXML private ComboBox<String> comboBox;
     @FXML private Button installBtn;
-
-    private ApplicationViewController applicationViewController;
-    private ApplicationsCore applicationsHandler;
+    
+    private ApplicationsCore applicationsHandler = getModel().applicationsHandler;
     boolean inRealMode;
 
-    @Override public void initialize(final URL location, final ResourceBundle __) {
+    @Override public void init(SystemCore model, URL location, ResourceBundle __) {
         initToggleBtn();
         initComboBox();
         initInstallBtn();
         initBrowseBtn();
         gotoRegularMode();
     }
-
-    // [start] Public - set params
-    public ApplicationsInstallerViewController setApplicationsHandler(final ApplicationsCore ¢) {
-        applicationsHandler = ¢;
-        return this;
-    }
-
-    public ApplicationsInstallerViewController setApplicationViewController(final ApplicationViewController ¢) {
-        applicationViewController = ¢;
-        return this;
-    }
-    // [end]
 
     // [start] Private - init FXML elements
     private void initToggleBtn() {
@@ -93,7 +81,7 @@ public class ApplicationsInstallerViewController implements Initializable {
             else if (comboBox.getValue() != null)
                 installApp(new ApplicationPath(PathType.CLASS_NAME, PremadeApplications.getByName(comboBox.getValue()).getAppClass().getName()));
 
-            applicationViewController.updateListView();
+            this.<ApplicationViewController>getParentPresenter().updateListView();
         });
     }
 

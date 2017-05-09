@@ -3,6 +3,7 @@ package il.ac.technion.cs.smarthouse.system.gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
@@ -12,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -26,10 +26,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
-public class UserInfoController implements Initializable {
-
-    private SystemCore systemCore;
-
+public class UserInfoController extends SystemPresenter {
     @FXML public TextField userNameField;
     @FXML public TextField userIDField;
     @FXML public TextField userPhoneNumField;
@@ -69,19 +66,19 @@ public class UserInfoController implements Initializable {
                     address = userHomeAddressField.getText();
             if (!validateUserInput(name, id, phoneNum, address))
                 alertMessageUnvalidInput();
-            else if (systemCore.isUserInitialized()) {
-                final UserInformation temp = systemCore.getUser();
+            else if (getModel().isUserInitialized()) {
+                final UserInformation temp = getModel().getUser();
                 temp.setHomeAddress(address);
                 temp.setPhoneNumber(phoneNum);
             } else {
-                systemCore.initializeUser(name, id, phoneNum, address);
+                getModel().initializeUser(name, id, phoneNum, address);
                 userNameField.setEditable(false);
                 userIDField.setEditable(false);
             }
         });
 
         saveButton.setOnAction(event -> {
-            if (systemCore.isUserInitialized())
+            if (getModel().isUserInitialized())
                 if (validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(), addEmailField.getText()))
                     addContactToTable(event);
                 else
@@ -115,10 +112,9 @@ public class UserInfoController implements Initializable {
                 ComboBoxTableCell.<ContactGUI, String> forTableColumn(FXCollections.observableArrayList(EmergencyLevel.stringValues())));
         eLevelColumn.setOnEditCommit(new EventHandler<CellEditEvent<ContactGUI, String>>() {
 
-            @Override @SuppressWarnings("synthetic-access") public void handle(final CellEditEvent<ContactGUI, String> ¢) {
-                systemCore.getUser().setContactEmergencyLevel(¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact.getId(),
+            @Override public void handle(final CellEditEvent<ContactGUI, String> ¢) {
+                getModel().getUser().setContactEmergencyLevel(¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact.getId(),
                         ¢.getNewValue());
-
             }
 
         });
@@ -160,14 +156,9 @@ public class UserInfoController implements Initializable {
         alert.showAndWait();
     }
 
-    public UserInfoController setSystemCore(final SystemCore sysCore) {
-        systemCore = sysCore;
-        return this;
-    }
-
     @FXML private void addContactToTable(final ActionEvent __) {
         final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(), addEmailField.getText());
-        systemCore.getUser().addContact(contact, addELevelField.getValue());
+        getModel().getUser().addContact(contact, addELevelField.getValue());
         final ContactGUI guiContact = new ContactGUI(contact, addELevelField.getValue());
         addNameField.clear();
         addIDField.clear();
@@ -178,12 +169,10 @@ public class UserInfoController implements Initializable {
 
     }
 
-    @Override public void initialize(final URL arg0, final ResourceBundle arg1) {
-
+    @Override public void init(SystemCore model, URL location, ResourceBundle __) {
         setButtons();
         setCellsFactories();
         costumizeContactsTab();
-
     }
 
 }
