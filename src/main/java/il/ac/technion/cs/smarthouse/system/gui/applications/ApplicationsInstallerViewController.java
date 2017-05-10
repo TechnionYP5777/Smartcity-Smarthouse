@@ -40,10 +40,12 @@ public class ApplicationsInstallerViewController extends SystemPresenter {
     @FXML private ComboBox<String> comboBox;
     @FXML private Button installBtn;
     
-    private ApplicationsCore applicationsHandler = getModel().applicationsHandler;
+    private ApplicationsCore applicationsHandler;
     boolean inRealMode;
 
     @Override public void init(SystemCore model, URL location, ResourceBundle __) {
+        applicationsHandler = model.applicationsHandler;
+        
         initToggleBtn();
         initComboBox();
         initInstallBtn();

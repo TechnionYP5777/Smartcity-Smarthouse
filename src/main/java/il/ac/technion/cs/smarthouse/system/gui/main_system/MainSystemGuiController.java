@@ -1,12 +1,14 @@
-package il.ac.technion.cs.smarthouse.system.gui;
+package il.ac.technion.cs.smarthouse.system.gui.main_system;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
+import il.ac.technion.cs.smarthouse.system.gui.applications.ApplicationViewController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -17,6 +19,9 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 
 public class MainSystemGuiController extends SystemPresenter {
+    PresenterInfo appsPresenterInfo;
+    
+    @FXML TabPane tabs;
     @FXML Tab homeTab;
     @FXML Tab userTab;
     @FXML Tab appsTab;
@@ -36,16 +41,22 @@ public class MainSystemGuiController extends SystemPresenter {
             homeTabHBox.setBackground(new Background(myBI));
 
             // user tab:
-            userTab.setContent(createChildPresenter(this.getClass().getResource("user information.fxml")).getRootViewNode());
+            userTab.setContent(createChildPresenter(this.getClass().getResource("../user_info/user information.fxml")).getRootViewNode());
 
             // sensors tab:
-            sensorsTab.setContent(createChildPresenter(this.getClass().getResource("mapping/house_mapping.fxml")).getRootViewNode());
+            sensorsTab.setContent(createChildPresenter(this.getClass().getResource("../mapping/house_mapping.fxml")).getRootViewNode());
 
             // applications tab:
-            appsTab.setContent(createChildPresenter(this.getClass().getResource("applications/application_view.fxml")).getRootViewNode());
+            appsPresenterInfo = createChildPresenter(this.getClass().getResource("../applications/application_view.fxml"));
+            appsTab.setContent(appsPresenterInfo.getRootViewNode());
 
         } catch (final Exception ¢) {
             ¢.printStackTrace();
         }
+    }
+    
+    public void gotoAppsTab() {
+        tabs.getSelectionModel().select(appsTab);
+        appsPresenterInfo.<ApplicationViewController>getPresenter().selectFirstApp();
     }
 }

@@ -5,7 +5,9 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.gui.MainSystemGui;
+import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
+import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
+import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGui;
 import il.ac.technion.cs.smarthouse.system.services.Service;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -34,15 +36,17 @@ public abstract class SmartHouseApplication {
         MainSystemGui m = new MainSystemGui();
         JavaFxHelper.startGui(m);
         
-        Thread.sleep(500);
+        m.getPresenter().waitUntilLoaded();        
         
         for (Class<? extends Application> s : sensors)
             JavaFxHelper.startGui(s.newInstance());
         
         Thread.sleep(1500);
-        //TODO: NOT READY YET...
-//        m.getSystemCore().applicationsHandler
-//                .addApplication(new ApplicationPath(PathType.CLASS_NAME, new Throwable().getStackTrace()[1].getClassName()));
+        
+        m.getPresenter().getModel().applicationsHandler
+            .addApplication(new ApplicationPath(PathType.CLASS_NAME, new Throwable().getStackTrace()[1].getClassName()));
+        
+        m.getPresenter().gotoAppsTab();
     }
 
     // [start] Public - Services to the SystemCore

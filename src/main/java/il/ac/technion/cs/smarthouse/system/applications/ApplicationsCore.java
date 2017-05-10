@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import com.google.gson.annotations.Expose;
 
-import il.ac.technion.cs.smarthouse.system.Savable;
+import il.ac.technion.cs.smarthouse.system.ChildCore;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
@@ -20,14 +19,14 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  * @author Inbal Zukerman
  * @author RON
  * @since Dec 13, 2016 */
-public class ApplicationsCore implements Savable {
+public class ApplicationsCore extends ChildCore {
     @Expose private List<ApplicationManager> apps = new ArrayList<>();
-    private SystemCore systemCore;
+    private Runnable onAppsChange;
 
     /** Initialize the applicationHandler with the database responsible of
      * managing the data in the current session */
     public ApplicationsCore(final SystemCore systemCore) {
-        this.systemCore = systemCore;
+        super(systemCore);
     }
 
     // [start] Services to the SystemCore
@@ -40,6 +39,7 @@ public class ApplicationsCore implements Savable {
         final ApplicationManager $ = new ApplicationManager(UuidGenerator.GenerateUniqueIDstring(), appPath);
         initializeApplicationManager($);
         apps.add($);
+        Optional.ofNullable(onAppsChange).ifPresent((a) -> a.run());
         return $;
     }
 
@@ -53,6 +53,10 @@ public class ApplicationsCore implements Savable {
             Optional.ofNullable(applicationManager.getApplicationName()).ifPresent(l::add);
         return l;
     }
+    
+    public void setOnAppsListChange(Runnable onAppsChange) {
+        this.onAppsChange = onAppsChange;
+    }
     // [end]
 
     // [start] Private functions
@@ -62,7 +66,7 @@ public class ApplicationsCore implements Savable {
     // [end]
 
     @Override public void populate(final String jsonString) throws Exception {
-        Savable.super.populate(jsonString);
+        super.populate(jsonString);
 
         for (ApplicationManager applicationManager : apps)
             initializeApplicationManager(applicationManager);

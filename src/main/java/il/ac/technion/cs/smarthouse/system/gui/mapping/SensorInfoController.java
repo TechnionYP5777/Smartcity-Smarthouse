@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 
 public class SensorInfoController extends SystemPresenter {
-    private DatabaseHandler dbHandler = getModel().databaseHandler;
+    private DatabaseHandler dbHandler;
 
     private String name;
     private String id;
@@ -24,6 +24,8 @@ public class SensorInfoController extends SystemPresenter {
     @FXML private ComboBox<String> room;
 
     @Override public void init(SystemCore model, URL location, ResourceBundle __) {
+        dbHandler = model.databaseHandler;
+        
         for (final SensorLocation ¢ : SensorLocation.values())
             room.getItems().add(¢ + "");
 

@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class MappingController extends SystemPresenter {
-    private DatabaseHandler dbHandler = getModel().databaseHandler;
+    private DatabaseHandler dbHandler;
     private final Map<String, SensorInfoController> sensors = new HashMap<>();
     private final Map<SensorLocation, List<String>> locationsContents = new HashMap<>();
     private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
@@ -29,7 +29,9 @@ public class MappingController extends SystemPresenter {
     @FXML private VBox sensorsPaneList;
     @FXML private Canvas canvas;
 
-    @Override public void init(SystemCore model, final URL location, final ResourceBundle __) {
+    @Override public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+        dbHandler = model.databaseHandler;
+        
         house.addRoom(new Room(320, 320, 150, 150, SensorLocation.LIVING_ROOM));
         house.addRoom(new Room(470, 320, 150, 150, SensorLocation.KITCHEN));
         house.addRoom(new Room(470, 470, 150, 150, SensorLocation.DINING_ROOM));
@@ -57,10 +59,10 @@ public class MappingController extends SystemPresenter {
     }
 
     public void addSensor(final String id) throws Exception, SensorNotFoundException {
-        ChildPresenterInfo child = createChildPresenter(getClass().getResource("sensor_info.fxml"));
+        PresenterInfo child = createChildPresenter(getClass().getResource("sensor_info.fxml"));
         sensorsPaneList.getChildren().add(child.getRootViewNode());
 
-        final SensorInfoController controller = child.getChildPresenter();
+        final SensorInfoController controller = child.getPresenter();
         controller.setId(id).setName(dbHandler.getName(id));
         sensors.put(id, controller);
     }

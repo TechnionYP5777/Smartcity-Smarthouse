@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.gui;
+package il.ac.technion.cs.smarthouse.system.gui.user_info;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

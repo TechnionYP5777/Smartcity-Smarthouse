@@ -11,6 +11,7 @@ import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,9 +28,13 @@ public class ApplicationViewController extends SystemPresenter {
     @FXML VBox vBox;
     File file;
 
-    private ApplicationsCore appsHandler = getModel().applicationsHandler;
+    private ApplicationsCore appsHandler;
 
     @Override public void init(SystemCore model, URL location, ResourceBundle __) {
+        appsHandler = model.applicationsHandler;
+        
+        model.applicationsHandler.setOnAppsListChange(this::updateListView);
+        
         initVBox();
         initListView();
         initPlusBtn();
@@ -64,5 +69,10 @@ public class ApplicationViewController extends SystemPresenter {
 
     public void updateListView() {
         listView.setItems(FXCollections.observableArrayList(appsHandler.getInstalledApplicationNames()));
+    }
+    
+    public void selectFirstApp() {
+        if (!appsHandler.getApplicationManagers().isEmpty())
+            Platform.runLater(() -> appsHandler.getApplicationManagers().get(0).reopen(appView));
     }
 }

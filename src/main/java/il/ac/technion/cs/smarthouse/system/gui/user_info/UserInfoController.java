@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.gui;
+package il.ac.technion.cs.smarthouse.system.gui.user_info;
 
 import java.net.URL;
 import java.util.ResourceBundle;

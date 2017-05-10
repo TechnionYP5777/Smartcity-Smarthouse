@@ -7,7 +7,7 @@ import org.loadui.testfx.GuiTest;
 import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
-import il.ac.technion.cs.smarthouse.system.gui.MainSystemGui;
+import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGui;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.stage.Stage;

@@ -3,6 +3,9 @@ package il.ac.technion.cs.smarthouse.mvp;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.utils.BoolLatch;
 import javafx.fxml.FXMLLoader;
@@ -10,13 +13,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 
 public abstract class SystemPresenter implements Initializable {
+    private static Logger log = LoggerFactory.getLogger(SystemPresenter.class);
+    
     private SystemPresenter parent;
+    private SystemCore systemCore;
     
-    private static SystemCore systemCore;
     private BoolLatch startedLatch = new BoolLatch();
+    private boolean securityBoolean;
     
-    @SuppressWarnings("static-method")
     public final SystemCore getModel() {
+        securityCheck();
+        
         if (systemCore != null)
             return systemCore;
         
@@ -26,35 +33,35 @@ public abstract class SystemPresenter implements Initializable {
         return systemCore;
     }
     
-    @SuppressWarnings("static-method")
     public final void cleanModel() {
         systemCore.shutdown();
         systemCore = null;
     }
 
     @Override public final void initialize(URL location, ResourceBundle b) {
+        securityBoolean = true;
         init(getModel(), location, b);
         notifyOnLoaded();
     }
     
-    public abstract void init(SystemCore model, URL location, ResourceBundle b);
+    public abstract void init(final SystemCore model, final URL location, final ResourceBundle b);
     
     public void waitUntilLoaded() {
         startedLatch.blockUntilTrue();
     }
     
     private void notifyOnLoaded() {
-        System.out.println("Loaded " + getClass().getName());
+        log.info("Loaded Presenter: " + getClass().getName());
         startedLatch.setTrueAndRelease();
     }
     
-    public class ChildPresenterInfo {
+    public static class PresenterInfo {
         private Node rootViewNode;
-        private SystemPresenter childPresenter;
+        private SystemPresenter presenter;
         
-        ChildPresenterInfo(Node rootViewNode, SystemPresenter childPresenter) {
+        PresenterInfo(Node rootViewNode, SystemPresenter presenter) {
             this.rootViewNode = rootViewNode;
-            this.childPresenter = childPresenter;
+            this.presenter = presenter;
         }
 
         public Node getRootViewNode() {
@@ -62,27 +69,54 @@ public abstract class SystemPresenter implements Initializable {
         }
         
         @SuppressWarnings("unchecked")
-        public <T extends SystemPresenter> T getChildPresenter() {
-            return (T) childPresenter;
+        public <T extends SystemPresenter> T getPresenter() {
+            return (T) presenter;
         }
     }
     
-    protected final ChildPresenterInfo createChildPresenter(URL fxmlLocation) throws Exception {
+    protected final PresenterInfo createChildPresenter(URL fxmlLocation) throws Exception {
         FXMLLoader loader = new FXMLLoader(fxmlLocation);
+        loader.setControllerFactory(param-> {
+                try {
+                    SystemPresenter p = (SystemPresenter) param.newInstance();
+                    p.systemCore = getModel();
+                    p.parent = this;
+                    return p;
+                } catch (Exception e) {
+                    log.error("Couldn't start child controller", e);
+                }
+                return null;
+            });
         
-        Node n = loader.load();
-        Object child = loader.getController();
-        
-        if (!SystemPresenter.class.isAssignableFrom(child.getClass()))
-            throw new Exception("Child (" + child.getClass() + ") must extend " + SystemPresenter.class);
-        
-        SystemPresenter p = (SystemPresenter) child;
-        p.parent = this;
-        return new ChildPresenterInfo(n, p);
+        return loadPresenter(loader);
     }
 
     @SuppressWarnings("unchecked")
     public <T extends SystemPresenter> T getParentPresenter() {
+        securityCheck();
         return (T) parent;
+    }
+    
+    private void securityCheck() {
+        if (securityBoolean)
+            return;
+        
+        RuntimeException r = new RuntimeException("Can't call " + new Throwable().getStackTrace()[1].getMethodName() + " before init");
+        log.error(r.getMessage());
+        throw r;
+    }
+    
+    public static PresenterInfo createRootPresenter(URL fxmlLocation) throws Exception {
+        return loadPresenter((new FXMLLoader(fxmlLocation)));
+    }
+    
+    private static PresenterInfo loadPresenter(FXMLLoader l) throws Exception {
+        Node n = l.load();
+        Object child = l.getController();
+        
+        if (!SystemPresenter.class.isAssignableFrom(child.getClass()))
+            throw new Exception("Child (" + child.getClass() + ") must extend " + SystemPresenter.class);
+        
+        return new PresenterInfo(n, (SystemPresenter) child);
     }
 }

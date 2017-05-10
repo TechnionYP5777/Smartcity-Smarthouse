@@ -1,9 +1,8 @@
-package il.ac.technion.cs.smarthouse.system.gui;
+package il.ac.technion.cs.smarthouse.system.gui.main_system;
 
-import java.io.IOException;
-
+import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
+import il.ac.technion.cs.smarthouse.mvp.SystemPresenter.PresenterInfo;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -12,7 +11,7 @@ import javafx.stage.Stage;
 public class MainSystemGui extends Application {
     private static final String APP_NAME = "Smarthouse";
 
-    private FXMLLoader loader;
+    private PresenterInfo childPresenterInfo;
 
     public static void main(final String[] args) {
         launch(args);
@@ -32,16 +31,23 @@ public class MainSystemGui extends Application {
 
     public void kill() {
         System.out.println("System closing...");
-        ((MainSystemGuiController) loader.getController()).cleanModel();
+        childPresenterInfo.getPresenter().cleanModel();
     }
 
-    public Parent getRoot() {
+    public synchronized Parent getRoot() {
         try {
-            loader = new FXMLLoader(getClass().getResource("main_system_ui.fxml"));
-            return loader.load();
-        } catch (IOException e) {
+            childPresenterInfo = SystemPresenter.createRootPresenter(getClass().getResource("main_system_ui.fxml"));
+            notifyAll();
+            return (Parent) childPresenterInfo.getRootViewNode();
+        } catch (Exception e) {
             System.out.println(e);
             return null;
         }
+    }
+    
+    public synchronized MainSystemGuiController getPresenter() throws InterruptedException {
+        while (childPresenterInfo == null)
+            wait();
+        return childPresenterInfo.getPresenter();
     }
 }
