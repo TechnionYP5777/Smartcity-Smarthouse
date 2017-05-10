@@ -59,7 +59,7 @@ public class ApplicationViewController extends SystemPresenter {
         plusButton.setStyle("-fx-font: 42 arial; -fx-base: #b6e7c9;");
         plusButton.setOnAction(e -> {
             try {
-                JavaFxHelper.placeNodeInPane(createChildPresenter(getClass().getResource("applications_installer_view.fxml")).getRootViewNode(), appView);
+                JavaFxHelper.placeNodeInPane(createChildPresenter("applications_installer_view.fxml").getRootViewNode(), appView);
 
             } catch (final Exception e1) {
                 log.error("An exception while loading the ApplicationsInstallerViewController (after pressing the plus button)", e1);

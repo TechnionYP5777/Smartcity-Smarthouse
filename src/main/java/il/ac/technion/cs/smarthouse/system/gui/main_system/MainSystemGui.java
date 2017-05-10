@@ -36,7 +36,7 @@ public class MainSystemGui extends Application {
 
     public synchronized Parent getRoot() {
         try {
-            presenterInfo = SystemPresenter.createRootPresenter(getClass().getResource("main_system_ui.fxml"));
+            presenterInfo = SystemPresenter.createRootPresenter("main_system_ui.fxml");
             notifyAll();
             return (Parent) presenterInfo.getRootViewNode();
         } catch (Exception e) {

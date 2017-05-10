@@ -15,6 +15,8 @@ import javafx.scene.Node;
 public abstract class SystemPresenter implements Initializable {
     private static Logger log = LoggerFactory.getLogger(SystemPresenter.class);
     
+    public static String FXML_BASE_PATH = "/fxmls/system/";
+    
     private SystemPresenter parent;
     private SystemCore systemCore;
     
@@ -74,7 +76,7 @@ public abstract class SystemPresenter implements Initializable {
         }
     }
     
-    protected final PresenterInfo createChildPresenter(URL fxmlLocation) throws Exception {
+    private final PresenterInfo createChildPresenter(URL fxmlLocation) throws Exception {
         FXMLLoader loader = new FXMLLoader(fxmlLocation);
         loader.setControllerFactory(param-> {
                 try {
@@ -89,6 +91,10 @@ public abstract class SystemPresenter implements Initializable {
             });
         
         return loadPresenter(loader);
+    }
+    
+    protected final PresenterInfo createChildPresenter(String fxmlFileName) throws Exception {
+        return createChildPresenter(SystemPresenter.class.getResource(FXML_BASE_PATH + fxmlFileName));
     }
 
     @SuppressWarnings("unchecked")
@@ -106,8 +112,12 @@ public abstract class SystemPresenter implements Initializable {
         throw r;
     }
     
-    public static PresenterInfo createRootPresenter(URL fxmlLocation) throws Exception {
+    private static PresenterInfo createRootPresenter(URL fxmlLocation) throws Exception {
         return loadPresenter((new FXMLLoader(fxmlLocation)));
+    }
+    
+    public static PresenterInfo createRootPresenter(String fxmlFileName) throws Exception {
+        return createRootPresenter(SystemPresenter.class.getResource(FXML_BASE_PATH + fxmlFileName));
     }
     
     private static PresenterInfo loadPresenter(FXMLLoader l) throws Exception {

@@ -41,13 +41,13 @@ public class MainSystemGuiController extends SystemPresenter {
             homeTabHBox.setBackground(new Background(myBI));
 
             // user tab:
-            userTab.setContent(createChildPresenter(this.getClass().getResource("../user_info/user information.fxml")).getRootViewNode());
+            userTab.setContent(createChildPresenter("user information.fxml").getRootViewNode());
 
             // sensors tab:
-            sensorsTab.setContent(createChildPresenter(this.getClass().getResource("../mapping/house_mapping.fxml")).getRootViewNode());
+            sensorsTab.setContent(createChildPresenter("house_mapping.fxml").getRootViewNode());
 
             // applications tab:
-            appsPresenterInfo = createChildPresenter(this.getClass().getResource("../applications/application_view.fxml"));
+            appsPresenterInfo = createChildPresenter("application_view.fxml");
             appsTab.setContent(appsPresenterInfo.getRootViewNode());
 
         } catch (final Exception ¢) {

@@ -59,7 +59,7 @@ public class MappingController extends SystemPresenter {
     }
 
     public void addSensor(final String id) throws Exception, SensorNotFoundException {
-        PresenterInfo child = createChildPresenter(getClass().getResource("sensor_info.fxml"));
+        PresenterInfo child = createChildPresenter("sensor_info.fxml");
         sensorsPaneList.getChildren().add(child.getRootViewNode());
 
         final SensorInfoController controller = child.getPresenter();
