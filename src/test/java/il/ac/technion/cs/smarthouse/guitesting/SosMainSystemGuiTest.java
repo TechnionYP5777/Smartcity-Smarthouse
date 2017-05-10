@@ -14,6 +14,8 @@ import static org.loadui.testfx.Assertions.assertNodeExists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.applications.sos.SosAppGui;
+
 public class SosMainSystemGuiTest extends InfastructureMainSystemGuiTest {
 
     private static Logger log = LoggerFactory.getLogger(SosMainSystemGuiTest.class);
@@ -22,15 +24,11 @@ public class SosMainSystemGuiTest extends InfastructureMainSystemGuiTest {
         openSOSSensor();
     }
 
-    @Test public void testSosSensor() {
+    @Test public void testSosSensor() throws Exception {
         click("#appsTab");
         ListView<String> l = find("#listView");
         assert l.getItems().isEmpty();
-        click("#plusButton");
-        click("#toggleBtn");
-        click("#comboBox");
-        click("SOS Application");
-        click("#installBtn");
+        installAppOnSystem(SosAppGui.class);
         assertEquals(l.getItems().size(), 1);
         click("SOS Application");
         Stage stage1 = (Stage) find("#sosButton").getScene().getWindow();

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.applications.stove.StoveModuleGui;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -31,15 +32,11 @@ public class StoveGuiTest extends InfastructureMainSystemGuiTest {
         openStoveSensor();
     }
 
-    @Test public void testStoveSensor() {
+    @Test public void testStoveSensor() throws Exception {
         click("#appsTab");
         ListView<String> l = find("#listView");
         assert l.getItems().isEmpty();
-        click("#plusButton");
-        click("#toggleBtn");
-        click("#comboBox");
-        click("Stove Application");
-        click("#installBtn");
+        installAppOnSystem(StoveModuleGui.class);
         assertEquals(l.getItems().size(), 1);
         click("Stove Application");
         Slider tempSlider = find("#tempSlider");

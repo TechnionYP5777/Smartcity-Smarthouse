@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.applications.vitals.VitalsApp;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.RangeSlider;
 
@@ -32,15 +33,11 @@ public class VitalsGuiTest extends InfastructureMainSystemGuiTest {
         openVitalsSensor();
     }
 
-    @Test public void testVitalsSensor() {
+    @Test public void testVitalsSensor() throws Exception {
         click("#appsTab");
         ListView<String> l = find("#listView");
         assert l.getItems().isEmpty();
-        click("#plusButton");
-        click("#toggleBtn");
-        click("#comboBox");
-        click("Vitals Application");
-        click("#installBtn");
+        installAppOnSystem(VitalsApp.class);
         assertEquals(l.getItems().size(), 1);
         click("Vitals Application");
         Slider pulseSlider = find("#pulseSlider");
