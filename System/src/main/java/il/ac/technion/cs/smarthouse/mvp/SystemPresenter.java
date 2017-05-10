@@ -76,7 +76,7 @@ public abstract class SystemPresenter implements Initializable {
         }
     }
     
-    private final PresenterInfo createChildPresenter(URL fxmlLocation) throws Exception {
+    private PresenterInfo createChildPresenter(URL fxmlLocation) throws Exception {
         FXMLLoader loader = new FXMLLoader(fxmlLocation);
         loader.setControllerFactory(param-> {
                 try {
