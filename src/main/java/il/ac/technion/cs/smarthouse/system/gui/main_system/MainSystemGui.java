@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class MainSystemGui extends Application {
     private static final String APP_NAME = "Smarthouse";
 
-    private PresenterInfo childPresenterInfo;
+    private PresenterInfo presenterInfo;
 
     public static void main(final String[] args) {
         launch(args);
@@ -31,14 +31,14 @@ public class MainSystemGui extends Application {
 
     public void kill() {
         System.out.println("System closing...");
-        childPresenterInfo.getPresenter().cleanModel();
+        presenterInfo.getPresenter().cleanModel();
     }
 
     public synchronized Parent getRoot() {
         try {
-            childPresenterInfo = SystemPresenter.createRootPresenter(getClass().getResource("main_system_ui.fxml"));
+            presenterInfo = SystemPresenter.createRootPresenter(getClass().getResource("main_system_ui.fxml"));
             notifyAll();
-            return (Parent) childPresenterInfo.getRootViewNode();
+            return (Parent) presenterInfo.getRootViewNode();
         } catch (Exception e) {
             System.out.println(e);
             return null;
@@ -46,8 +46,8 @@ public class MainSystemGui extends Application {
     }
     
     public synchronized MainSystemGuiController getPresenter() throws InterruptedException {
-        while (childPresenterInfo == null)
+        while (presenterInfo == null)
             wait();
-        return childPresenterInfo.getPresenter();
+        return presenterInfo.getPresenter();
     }
 }

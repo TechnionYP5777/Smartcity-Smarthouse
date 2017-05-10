@@ -3,6 +3,7 @@ package il.ac.technion.cs.smarthouse.applications.vitals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -21,13 +22,17 @@ public class VitalsApp extends SmartHouseApplication {
     boolean highPulseAlert;
     boolean lowBPAlert;
     int highBPAlert;
+    
+    public static void main(String[] args) throws Exception {
+        launch(VitalsSensorSimulator.class);
+    }
 
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
 
         SensorsManager sensorsManager = (SensorsManager) super.getService(ServiceType.SENSORS_SERVICE);
         AlertsManager alertsManager = (AlertsManager) super.getService(ServiceType.ALERTS_SERVICE);
-
+        
         sensorsManager.getDefaultSensor(VitalsSensor.class, "iVitals").subscribe(vitals -> {
             final int pulse = vitals.getPulse(), systolicBP = vitals.getSystolicBP(), diastolicBP = vitals.getDiastolicBP();
             final String t = "Client has pulse of " + pulse + " and blood pressure of " + systolicBP + "/" + diastolicBP + " mmHg";
