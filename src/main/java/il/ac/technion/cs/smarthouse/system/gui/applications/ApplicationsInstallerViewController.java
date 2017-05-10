@@ -2,87 +2,41 @@ package il.ac.technion.cs.smarthouse.system.gui.applications;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.applications.PremadeApplications;
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ApplicationsInstallerViewController extends SystemPresenter {
     private static Logger log = LoggerFactory.getLogger(ApplicationsInstallerViewController.class);
-
-    @FXML private Button toggleBtn;
-    @FXML private VBox toggleOptionsParent;
-    @FXML private HBox toggleOptionBrowse;
+    
     @FXML private TextField browseText;
     @FXML private Button browseBtn;
-    @FXML private HBox toggleOptionCombo;
-    @FXML private ComboBox<String> comboBox;
     @FXML private Button installBtn;
-    
-    private ApplicationsCore applicationsHandler;
-    boolean inRealMode;
 
     @Override public void init(SystemCore model, URL location, ResourceBundle __) {
-        applicationsHandler = model.applicationsHandler;
-        
-        initToggleBtn();
-        initComboBox();
         initInstallBtn();
         initBrowseBtn();
-        gotoRegularMode();
     }
 
     // [start] Private - init FXML elements
-    private void initToggleBtn() {
-        toggleBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override public void handle(ActionEvent __) {
-                if (ApplicationsInstallerViewController.this.inRealMode)
-                    gotoTestMode();
-                else
-                    gotoRegularMode();
-
-            }
-        });
-    }
-
-    private void initComboBox() {
-        comboBox.setPromptText("Choose File");
-        comboBox.getItems().addAll(Arrays.stream(PremadeApplications.values()).map(x -> x.getAppName()).toArray(String[]::new));
-
-    }
-
     private void initInstallBtn() {
         installBtn.setOnAction(e -> {
-            if (applicationsHandler == null)
-                return;
-
-            if (inRealMode)
-                installApp(new ApplicationPath(PathType.JAR_PATH, browseText.getText()));
-            else if (comboBox.getValue() != null)
-                installApp(new ApplicationPath(PathType.CLASS_NAME, PremadeApplications.getByName(comboBox.getValue()).getAppClass().getName()));
-
+            installApp(new ApplicationPath(PathType.JAR_PATH, browseText.getText()));
             this.<ApplicationViewController>getParentPresenter().updateListView();
         });
     }
@@ -92,7 +46,7 @@ public class ApplicationsInstallerViewController extends SystemPresenter {
             final Stage stage = new Stage();
             final FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Resource File");
-            browseText.setText(fileChooser.showOpenDialog(stage).getAbsolutePath());
+            Optional.ofNullable(fileChooser.showOpenDialog(stage)).ifPresent(a->browseText.setText(a.getAbsolutePath()));
         });
     }
     // [end]
@@ -100,9 +54,7 @@ public class ApplicationsInstallerViewController extends SystemPresenter {
     // [start] install app and alert if needed
     private void installApp(final ApplicationPath p) {
         try {
-            applicationsHandler.addApplication(p);
-            if (!inRealMode)
-                comboBox.getItems().remove(comboBox.getValue());
+            getModel().applicationsHandler.addApplication(p);
         } catch (AppInstallerException $) {
             log.debug("An exception while installing: " + p, $);
             alert("Installer Error: " + $.getMessage());
@@ -124,25 +76,4 @@ public class ApplicationsInstallerViewController extends SystemPresenter {
     }
     // [end]
 
-    // [start] set mode functions
-    void gotoTestMode() {
-        inRealMode = false;
-        toggleBtn.setText("Test Mode");
-
-        toggleOptionBrowse.setVisible(false);
-        toggleOptionCombo.setVisible(true);
-
-        // toggleOptionsParent.getChildren().setAll(toggleOptionCombo);
-    }
-
-    void gotoRegularMode() {
-        inRealMode = true;
-        toggleBtn.setText("Real Mode");
-
-        toggleOptionBrowse.setVisible(true);
-        toggleOptionCombo.setVisible(false);
-
-        // toggleOptionsParent.getChildren().setAll(toggleOptionBrowse);
-    }
-    // [end]
 }
