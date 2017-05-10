@@ -20,7 +20,7 @@ public abstract class MessageTest {
 
     @Test public void testMessageDeliveryWithoutResponse() {
         final Message message = defaultMessage();
-        @SuppressWarnings("resource") final PrintWriter pw = Mockito.mock(PrintWriter.class);
+        final PrintWriter pw = Mockito.mock(PrintWriter.class);
 
         Assert.assertNull(message.send(pw, null));
         Mockito.verify(pw, Mockito.times(1)).println(Matchers.anyString());
@@ -28,8 +28,8 @@ public abstract class MessageTest {
 
     @Test public void testMessageDeliveryWithResponse() throws IOException {
         final Message message = defaultMessage();
-        @SuppressWarnings("resource") final PrintWriter pw = Mockito.mock(PrintWriter.class);
-        @SuppressWarnings("resource") final BufferedReader br = Mockito.mock(BufferedReader.class);
+        final PrintWriter pw = Mockito.mock(PrintWriter.class);
+        final BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("A response");
 
         Assert.assertEquals("A response", message.send(pw, br));
