@@ -34,6 +34,7 @@ public abstract class SmartHouseApplication {
     @SafeVarargs
     public static void launch(final Class<? extends Application>... sensors) throws Exception {
         MainSystemGui m = new MainSystemGui();
+        m.addOnKillListener(()->System.exit(0));
         JavaFxHelper.startGui(m);
         
         m.getPresenter().waitUntilLoaded();        
