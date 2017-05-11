@@ -34,9 +34,9 @@ public class AppInstallHelper {
      * @throws IOException */
     public static SmartHouseApplication loadApplication(final String jarFilePath) throws AppInstallerException, IOException {
         final URL[] urls = { new URL("jar:file:" + jarFilePath + "!/") };
-        try (URLClassLoader $ = URLClassLoader.newInstance(urls)) {
-            return loadApplication_aux(getClassNamesFromJar(jarFilePath), $);
-        }
+        URLClassLoader $ = URLClassLoader.newInstance(urls);
+    	System.out.println("ON "+((ClassLoader)$).getResource("/sos_app_ui.fxml"));
+        return loadApplication_aux(getClassNamesFromJar(jarFilePath), $);
     }
 
     /** Dynamically loads the classes to the JVM. Finds the one class that
