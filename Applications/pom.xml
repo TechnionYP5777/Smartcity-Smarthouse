@@ -9,9 +9,6 @@
 	<artifactId>Applications</artifactId>
 	<packaging>pom</packaging>
 	<name>Applications</name>
-	<properties>
-		<jar.runnable.main.class>no.class</jar.runnable.main.class>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>Technion</groupId>
@@ -26,33 +23,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<configuration>
-						<descriptorRefs>
-							<descriptorRef>jar-with-dependencies</descriptorRef>
-						</descriptorRefs>
-						<archive>
-							<manifest>
-								<mainClass>${jar.runnable.main.class}</mainClass>
-							</manifest>
-						</archive>
-					</configuration>
-					<executions>
-						<execution>
-							<phase>package</phase>
-							<goals>
-								<goal>single</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
 	<modules>
 		<module>Sos</module>
 		<module>Stove</module>
