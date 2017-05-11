@@ -46,7 +46,7 @@ public abstract class SystemPresenter implements Initializable {
         notifyOnLoaded();
     }
     
-    public abstract void init(final SystemCore model, final URL location, final ResourceBundle b);
+    public abstract void init(SystemCore model, URL location, ResourceBundle b);
     
     public void waitUntilLoaded() {
         startedLatch.blockUntilTrue();
@@ -113,7 +113,7 @@ public abstract class SystemPresenter implements Initializable {
     }
     
     private static PresenterInfo createRootPresenter(URL fxmlLocation) throws Exception {
-        return loadPresenter((new FXMLLoader(fxmlLocation)));
+        return loadPresenter(new FXMLLoader(fxmlLocation));
     }
     
     public static PresenterInfo createRootPresenter(String fxmlFileName) throws Exception {

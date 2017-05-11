@@ -1,10 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>Technion</groupId>
-    <artifactId>Applications</artifactId>
-    <version>1.01</version>
-  </parent>
-  <artifactId>Sos</artifactId>
-  <name>Sos</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>Technion</groupId>
+		<artifactId>Applications</artifactId>
+		<version>1.01</version>
+	</parent>
+	<artifactId>Sos</artifactId>
+	<name>Sos</name>
+	<properties>
+		<jar.runnable.main.class>il.ac.technion.cs.smarthouse.applications.sos.SosAppGui</jar.runnable.main.class>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
