@@ -15,7 +15,7 @@ public class ShutterSensorSimulator  extends Application{
     }
 
     @Override public void start(final Stage primaryStage) throws Exception {
-        final Parent root = FXMLLoader.load(getClass().getResource("shutter_ui.fxml"));
+        final Parent root = FXMLLoader.load(getClass().getResource("/sensors/shutter/shutter_ui.fxml"));
         final Scene scene = new Scene(root);
         primaryStage.setTitle("Shutter Sensor Simulator");
         primaryStage.setScene(scene);

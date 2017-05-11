@@ -38,7 +38,7 @@ public class ConfigController implements Initializable {
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
 
-        mainController = new FXMLLoader(getClass().getResource("stove_app_ui.fxml")).getController();
+        mainController = new FXMLLoader(getClass().getResource("/stove_app_ui.fxml")).getController();
 
         HBox.setHgrow(Apply, Priority.ALWAYS);
         HBox.setHgrow(Cancel, Priority.ALWAYS);

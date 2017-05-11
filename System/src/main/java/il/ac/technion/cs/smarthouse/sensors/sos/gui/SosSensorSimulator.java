@@ -24,7 +24,7 @@ public class SosSensorSimulator extends Application {
         sensor = new SosSensor(Random.sensorId(), "iSOS", "127.0.0.1", 40001);
         for (boolean res = false; !res;)
             res = sensor.register();
-        final Image sosImage = new Image(getClass().getResourceAsStream("sos_icon.png"), 320, 0, true, true);
+        final Image sosImage = new Image(getClass().getResourceAsStream("/sensors/sos/sos_icon.png"), 320, 0, true, true);
         final Button sosButton = new Button();
         sosButton.setId("sosButton");
         sosButton.setGraphic(new ImageView(sosImage));

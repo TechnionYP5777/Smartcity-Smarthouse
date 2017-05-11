@@ -15,7 +15,7 @@ public class StoveSensorSimulator extends Application {
     }
 
     @Override public void start(final Stage s) throws Exception {
-        final Parent root = FXMLLoader.load(getClass().getResource("stove_ui.fxml"));
+        final Parent root = FXMLLoader.load(getClass().getResource("/sensors/stove/stove_ui.fxml"));
         final Scene scene = new Scene(root);
         s.setTitle("Stove Sensor Simulator");
         s.setScene(scene);

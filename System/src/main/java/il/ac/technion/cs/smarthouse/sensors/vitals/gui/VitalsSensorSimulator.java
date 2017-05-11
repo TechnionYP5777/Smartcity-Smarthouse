@@ -15,7 +15,7 @@ public class VitalsSensorSimulator extends Application {
     }
 
     @Override public void start(final Stage s) throws Exception {
-        final Parent root = FXMLLoader.load(getClass().getResource("vitals_ui.fxml"));
+        final Parent root = FXMLLoader.load(getClass().getResource("/sensors/vitals/vitals_ui.fxml"));
         final Scene scene = new Scene(root);
         s.setTitle("Vitals Sensor Simulator");
         s.setScene(scene);

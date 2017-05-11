@@ -18,49 +18,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
-				<executions>
-					<execution>
-						<id>main</id>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>il.ac.technion.cs.smarthouse.system.gui.MainSystemGui</mainClass>
-						</configuration>
-					</execution>
-					<execution>
-						<id>sensor_sim_sos</id>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator</mainClass>
-						</configuration>
-					</execution>
-					<execution>
-						<id>sensor_sim_stove</id>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator</mainClass>
-						</configuration>
-					</execution>
-					<execution>
-						<id>sensor_sim_vitals</id>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator</mainClass>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.7.201606060606</version>

@@ -39,7 +39,7 @@ public class SosAppGui extends SmartHouseApplication {
             log.debug("App msg (from function subscibed to sos sensor): " + t + " | Sensor is located at: " + sos.getSensorLocation());
         });
 
-        sosController = super.setContentView(getClass().getResource("sos_app_ui.fxml"));
+        sosController = super.setContentView(getClass().getResource("/sos_app_ui.fxml"));
 
         killerButon = sosController.getBtn();
         killerButon.setOnAction(__ -> {
