@@ -1,14 +1,5 @@
 package il.ac.technion.cs.smarthouse.networking.messages;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-
-import il.ac.technion.cs.smarthouse.sensors.SensorType;
-import il.ac.technion.cs.smarthouse.sensors.stove.StoveSensor;
-
 /** @author Sharon
  * @author Yarden
  * @since 11.12.16 */

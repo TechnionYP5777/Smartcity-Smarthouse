@@ -1,8 +1,5 @@
 package il.ac.technion.cs.smarthouse.networking.messages;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-
 /** This singleton is used to transform a JSon String (originally made from a
  * Message) back to a Message object.
  * @author Sharon

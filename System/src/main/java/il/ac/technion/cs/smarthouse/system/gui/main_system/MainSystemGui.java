@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse.system.gui.main_system;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter.PresenterInfo;
 import javafx.application.Application;

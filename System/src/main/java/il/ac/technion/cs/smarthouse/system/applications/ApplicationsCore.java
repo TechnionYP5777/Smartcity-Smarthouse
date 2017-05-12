@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.system.ChildCore;

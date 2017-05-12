@@ -1,10 +1,9 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.gson.annotations.Expose;
-
-import org.junit.Assert;
 
 public class SavableTest {
     static int DEFAULT_MY_INT = 52;

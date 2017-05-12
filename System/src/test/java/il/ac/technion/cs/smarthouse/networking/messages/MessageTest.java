@@ -1,14 +1,5 @@
 package il.ac.technion.cs.smarthouse.networking.messages;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
 /** @author Sharon
  * @since 30.12.16 */
 

@@ -1,13 +1,5 @@
 package il.ac.technion.cs.smarthouse.networking.messages;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-
-
-
 /** @author Sharon
  * @since 29.12.16 *//*
 @SuppressWarnings("static-method")

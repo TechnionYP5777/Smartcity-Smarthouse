@@ -28,12 +28,12 @@ public class SensorsHandlerThread extends Thread {
 
     private final Socket client;
     private final DatabaseHandler databaseHandler;
-    private TypeHandler typeHandler;
+//    private TypeHandler typeHandler;
 
     public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler, final TypeHandler typeHandler) {
         this.client = client;
         this.databaseHandler = databaseHandler;
-        this.typeHandler = typeHandler;
+       // this.typeHandler = typeHandler;
         DatabaseManager.initialize();
     }
 

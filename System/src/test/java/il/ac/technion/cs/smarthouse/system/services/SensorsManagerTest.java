@@ -1,25 +1,5 @@
 package il.ac.technion.cs.smarthouse.system.services;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-
-import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
-import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
-import il.ac.technion.cs.smarthouse.system.sensors.SensorsHandler;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
-import il.ac.technion.cs.smarthouse.utils.Random;
-
 /** @author Elia Traore
  * @since Apr 1, 2017 */
 
