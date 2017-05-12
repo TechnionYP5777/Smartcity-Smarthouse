@@ -6,13 +6,13 @@ import com.google.gson.JsonParser;
 /** This singleton is used to transform a JSon String (originally made from a
  * Message) back to a Message object.
  * @author Sharon
- * @since 14.12.16 */
+ * @since 14.12.16 *//*
 public enum MessageFactory {
     ;
 
     /** Creates and returns a message given its JSon encoding.
      * @param json JSon encoding of the message
-     * @return message encoded extracted from the JSon string */
+     * @return message encoded extracted from the JSon string *//*
     public static Message create(final String json) {
         final String type = new JsonParser().parse(json).getAsJsonObject().get("type").getAsString().toLowerCase();
 
@@ -31,3 +31,4 @@ public enum MessageFactory {
 
     }
 }
+*/

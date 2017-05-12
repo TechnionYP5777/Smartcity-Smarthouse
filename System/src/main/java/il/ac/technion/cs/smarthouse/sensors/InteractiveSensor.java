@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
+
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 
@@ -75,12 +75,15 @@ public abstract class InteractiveSensor extends Sensor {
      *         (or if there is no waiting instruction), <code>false</code>
      *         otherwise */
     public boolean operate() {
-        try {
-            return instIn.ready() && handler.applyInstruction(((UpdateMessage) MessageFactory.create(instIn.readLine())).getData());
+    	
+    	return false; //TODO: inbal, fix this :(
+        /*try {
+        	
+        	//return instIn.ready() && handler.applyInstruction(((UpdateMessage) MessageFactory.create(instIn.readLine())).getData());
         } catch (IOException e) {
             log.error("I/O error occurred", e);
             return false;
-        }
+        }*/
     }
 
     /** Checks for waiting instructions by polling the connection repeatedly

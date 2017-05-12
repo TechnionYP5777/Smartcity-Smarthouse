@@ -12,10 +12,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 
 /** Represents a physical component that can send information.
@@ -71,8 +68,8 @@ public abstract class Sensor {
             log.error("I/O error occurred when the sensor's socket was created", e);
         }
         //final String $ = new RegisterMessage(id, commName, sType).send(out, in);
-        String $ =  Message.createMessage(this.id, this.commName, MessageType.REGISTRATION, "");
-        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;  //TODO: inbal, change that
+        String $ =  Message.send(Message.createMessage(this.id, this.commName, MessageType.REGISTRATION, ""), out, in);
+        return $ != null && $.contains("success");  //TODO: inbal, change that
     }
 
     /** Sends an update message to the system with the given observations. The

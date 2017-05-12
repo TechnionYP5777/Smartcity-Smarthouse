@@ -34,6 +34,7 @@ public class SensorsHandlerThread extends Thread {
         this.client = client;
         this.databaseHandler = databaseHandler;
         this.typeHandler = typeHandler;
+        DatabaseManager.initialize();
     }
 
     @Override public void run() {
@@ -88,17 +89,18 @@ public class SensorsHandlerThread extends Thread {
         Message.send(answerMessage, out, null);
         
         
-        //new AnswerMessage(Answer.SUCCESS).send(out, null); 	TODO: inbal erase that
-        //typeHandler.accept(¢.sensorType);
+      
     }
 
     private void handleUpdateMessage(final String m) {
     	
         //m.getData().entrySet().forEach(entry -> json.addProperty(entry.getKey(), entry.getValue()));
 
-    	//TODO: inbal, add saving the message here
+
     	Map<String, Object> vals = new HashMap<>();
-    	vals.put("info", "sensormessage@"+m);
+    	vals.put("info", "sensormessage@" + m); 	//TODO: inbal, update that
+    	
+    	
     	DatabaseManager.putValue("maindb", vals);
     	
     	/*
