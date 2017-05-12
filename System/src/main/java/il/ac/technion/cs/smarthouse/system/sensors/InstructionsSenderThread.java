@@ -9,8 +9,6 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
@@ -19,6 +17,7 @@ import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
 /** An instructions sender thread is a class that allows sending instructions
  * from the system to a specific sensor.
  * @author Yarden
+ * @author Inbal Zukerman
  * @since 30.3.17 */
 public class InstructionsSenderThread extends Thread {
     private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);
@@ -40,7 +39,8 @@ public class InstructionsSenderThread extends Thread {
             for (String input = in.readLine(); input != null;) {
                 final Message message = MessageFactory.create(input);
                 if (message == null) {
-                    new AnswerMessage(Answer.FAILURE).send(out, null);
+                	String answerMessage = Message.createMessage("", "", MessageType.ANSWER, "FAILURE");
+                	Message.send(answerMessage, out, null);
                     continue;
                 }
                 log.info("Received message: " + message + "\n");
@@ -65,6 +65,7 @@ public class InstructionsSenderThread extends Thread {
 
     private void handleRegisterMessage(final PrintWriter out, final RegisterMessage ¢) {
         mapper.store(¢.sensorId, out);
-        new AnswerMessage(Answer.SUCCESS).send(out, null);
+        String answerMessage = Message.createMessage("", "", MessageType.ANSWER	, "SUCCESS");
+        Message.send(answerMessage, out, null);
     }
 }

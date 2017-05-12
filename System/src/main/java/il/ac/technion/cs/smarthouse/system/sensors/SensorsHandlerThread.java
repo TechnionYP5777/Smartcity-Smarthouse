@@ -5,26 +5,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.JsonObject;
-
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
+import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
-import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
-import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 
 /** A sensors handler thread is a class that handles a specific connection with
  * a sensor. The class can parse the different incoming messages and act
  * accordingly.
  * @author Yarden
+ * @author Inbal Zukerman
  * @since 24.12.16 */
 public class SensorsHandlerThread extends Thread {
     private static Logger log = LoggerFactory.getLogger(SensorsHandlerThread.class);
@@ -46,21 +43,27 @@ public class SensorsHandlerThread extends Thread {
             out = new PrintWriter(client.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             for (String input = in.readLine(); input != null;) {
-                final Message message = MessageFactory.create(input);
-                if (message == null) {
-                    new AnswerMessage(Answer.FAILURE).send(out, null);
+                //final Message message = MessageFactory.create(input);
+                if ( input == ""){
+                	String answerMessage = Message.createMessage("", "", MessageType.ANSWER, "FAILURE");
+                	Message.send(answerMessage, out, null);
+                    //new AnswerMessage(Answer.FAILURE).send(out, null);
                     continue;
                 }
-                log.info("Received message: " + message + "\n");
-                switch (message.getType()) {
-                    case REGISTRATION:
-                        handleRegisterMessage(out, (RegisterMessage) message);
-                        break;
-                    case UPDATE:
-                        handleUpdateMessage((UpdateMessage) message);
-                        break;
-                    default:
+                log.info("Received message: " + input + "\n");
+                
+                if(Message.isInMessage(input, "registration")){
+                	handleRegisterMessage(out, input);
                 }
+                else{
+                	if (Message.isInMessage(input,"UPDATE")){
+                		handleUpdateMessage(input);
+                	}
+                	else{
+                		//TODO: inbal - log error
+                	}
+                }
+                
                 input = in.readLine();
             }
         } catch (final IOException e) {
@@ -78,21 +81,34 @@ public class SensorsHandlerThread extends Thread {
         }
     }
 
-    private void handleRegisterMessage(final PrintWriter out, final RegisterMessage ¢) {
-        databaseHandler.addSensor(¢.sensorId, ¢.sensorCommName, 100);
-        new AnswerMessage(Answer.SUCCESS).send(out, null);
-        typeHandler.accept(¢.sensorType);
+    private void handleRegisterMessage(final PrintWriter out, String ¢) {
+    	String[] parsedMessage = ¢.split("@");
+        databaseHandler.addSensor(parsedMessage[0], parsedMessage[1], 100);
+        String answerMessage = Message.createMessage("", "", MessageType.ANSWER	, "SUCCESS");
+        Message.send(answerMessage, out, null);
+        
+        
+        //new AnswerMessage(Answer.SUCCESS).send(out, null); 	TODO: inbal erase that
+        //typeHandler.accept(¢.sensorType);
     }
 
-    private void handleUpdateMessage(final UpdateMessage m) {
-        final JsonObject json = new JsonObject();
-        m.getData().entrySet().forEach(entry -> json.addProperty(entry.getKey(), entry.getValue()));
+    private void handleUpdateMessage(final String m) {
+    	
+        //m.getData().entrySet().forEach(entry -> json.addProperty(entry.getKey(), entry.getValue()));
 
+    	//TODO: inbal, add saving the message here
+    	Map<String, Object> vals = new HashMap<>();
+    	vals.put("info", "sensormessage@"+m);
+    	DatabaseManager.putValue("maindb", vals);
+    	
+    	/*
         try {
-            databaseHandler.getList(m.sensorId).add(json + "");
+           // databaseHandler.getList(m.sensorId).add(json + "");
+        	
         } catch (final SensorNotFoundException e) {
             log.debug("Failed to store data, no matching sensor was found", e);
         }
+        */
     }
 
 }

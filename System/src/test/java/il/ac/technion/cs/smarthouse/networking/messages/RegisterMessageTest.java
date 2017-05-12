@@ -12,6 +12,8 @@ import il.ac.technion.cs.smarthouse.sensors.stove.StoveSensor;
 /** @author Sharon
  * @author Yarden
  * @since 11.12.16 */
+
+/*
 @SuppressWarnings("static-method")
 public class RegisterMessageTest extends MessageTest {
     @Override protected Message defaultMessage() {
@@ -45,3 +47,5 @@ public class RegisterMessageTest extends MessageTest {
         assert $.contains("iStoves");
     }
 }
+
+*/

@@ -8,20 +8,20 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
+import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
-import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 
 /** Represents a physical component that can send information.
  * @author Sharon
  * @author Yarden
+ * @author Inbal Zukerman
  * @since 7.12.16 */
 public abstract class Sensor {
     private static Logger log = LoggerFactory.getLogger(Sensor.class);
@@ -70,15 +70,16 @@ public abstract class Sensor {
         } catch (final IOException e) {
             log.error("I/O error occurred when the sensor's socket was created", e);
         }
-        final String $ = new RegisterMessage(id, commName, sType).send(out, in);
-        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
+        //final String $ = new RegisterMessage(id, commName, sType).send(out, in);
+        String $ =  Message.createMessage(this.id, this.commName, MessageType.REGISTRATION, "");
+        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;  //TODO: inbal, change that
     }
 
     /** Sends an update message to the system with the given observations. The
      * observations are represented as a map from the names of the observations,
      * to their values.
      * @param data observations to send to the system */
-    public void updateSystem(final Map<String, String> data) {
+    public void updateSystem(final String data) {
         final long currMillis = System.currentTimeMillis();
         for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
             if (currMillis - lastMessagesMillis.get(¢) > 1000)
@@ -88,14 +89,15 @@ public abstract class Sensor {
             return;
 
         lastMessagesMillis.add(currMillis);
-        new UpdateMessage(id, data).send(out, null);
+        //new UpdateMessage(id, data).send(out, null);
+        Message.send(Message.createMessage(id, commName, MessageType.UPDATE, data), out, null);
     }
 
     /** Returns the names of the parameters that will be sent to the system.
      * These names will be used to pass data to system as a dictionary of (type,
      * value) tuples.
      * @return array of names of the data this sensor observers */
-    public abstract String[] getObservationsNames();
+    /*public abstract String[] getObservationsNames();*/
 
     /** @return id of the sensor */
     public String getId() {

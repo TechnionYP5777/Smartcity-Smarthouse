@@ -1,12 +1,10 @@
 package il.ac.technion.cs.smarthouse.sensors.shutter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 
 /** This class represents shutters sensor and contains its logic.
  * @author Alex
+ * @author Inbal Zukerman
  * @since 8.5.17 */
 public class ShutterSensor extends Sensor {
 
@@ -16,17 +14,15 @@ public class ShutterSensor extends Sensor {
     
     
     public void updateSystem(final boolean open, final int fromTime , final int toTime) {
-        final Map<String, String> data = new HashMap<>();
-        data.put("open", open + "");
-        data.put("fromTime", fromTime + "");
-        data.put("toTime", toTime + "");       
+        String data = "open@" + open + "@time" + fromTime ;
+               
         super.updateSystem(data);
     }
     
 
-    @Override public String[] getObservationsNames() {
+   /* @Override public String[] getObservationsNames() {
         return new String[] { "open", "fromTime", "toTime" };
        
-    }
+    }*/
 
 }

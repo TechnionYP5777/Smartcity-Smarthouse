@@ -22,6 +22,9 @@ import il.ac.technion.cs.smarthouse.utils.Random;
 
 /** @author Elia Traore
  * @since Apr 1, 2017 */
+
+
+/*
 public class SensorsManagerTest {
     public static class TestData {
         String sId, commName;
@@ -74,6 +77,8 @@ public class SensorsManagerTest {
     // private String currentTestName;
     private TestData currentInfo;
 
+
+
     /* @BeforeClass public static void setup_DacurrentTestNametaMaps(){//todo:
      * something less WET // SensorsManagerTest javaIsStupid = new
      * SensorsManagerTest(); DO NOT DELETE
@@ -106,7 +111,7 @@ public class SensorsManagerTest {
      * 
      * test = "sendingInstructionToExistingWorks"; testsInfo.put(test, new
      * TestData(test)); testsInfo.get(test).setObserNames(new String[]{"b"});
-     * } */
+     * } *//*
 
     @AfterClass public static void teardown_killSensorHandler() {
         Thread t = core.getSensorHandlerThread();
@@ -166,7 +171,7 @@ public class SensorsManagerTest {
         Assert.assertEquals(true, $[0]);
     }
 
-    /** [[SuppressWarningsSpartan]] */
+    /** [[SuppressWarningsSpartan]] *//*
     @Test public void receiveLastEntriesOfExistingWorks() throws SensorNotFoundException, InterruptedException {
         List<Boolean> dataToBeSent = Arrays.asList(false, true, false);
 
@@ -211,3 +216,5 @@ public class SensorsManagerTest {
         Assert.assertEquals(true + "", $[0]);
     }
 }
+
+*/

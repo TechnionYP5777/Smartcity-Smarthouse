@@ -11,6 +11,9 @@ import org.mockito.Mockito;
 
 /** @author Sharon
  * @since 30.12.16 */
+
+
+/*
 public abstract class MessageTest {
     protected abstract Message defaultMessage();
 
@@ -37,3 +40,4 @@ public abstract class MessageTest {
         Mockito.verify(br, Mockito.times(1)).readLine();
     }
 }
+*/

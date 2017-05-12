@@ -12,10 +12,9 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
+import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
-import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 
 /** This class represents a sensor that can get instructions and operate
@@ -61,8 +60,8 @@ public abstract class InteractiveSensor extends Sensor {
         } catch (final IOException e) {
             log.error("I/O error occurred when the sensor's instructions socket was created", e);
         }
-        final String $ = new RegisterMessage(id, commName, sType).send(instOut, instIn);
-        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
+        final String $ = Message.send( Message.createMessage(id, commName, MessageType.REGISTRATION, sType.toString()),    instOut, instIn);
+        return $ != null && $.contains("success");
     }
 
     /** Sets the operation to be made when instruction is received. This method

@@ -1,13 +1,12 @@
 package il.ac.technion.cs.smarthouse.sensors.shutter.gui;
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 /** This class is responsible for the visual part of the shutters sensor.
 * @author Alex
