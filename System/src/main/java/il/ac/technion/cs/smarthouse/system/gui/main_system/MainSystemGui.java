@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.gui.main_system;
 
+import java.util.ArrayList;
+import java.util.List;
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter.PresenterInfo;
 import javafx.application.Application;
@@ -12,6 +14,7 @@ public class MainSystemGui extends Application {
     private static final String APP_NAME = "Smarthouse";
 
     private PresenterInfo presenterInfo;
+    private List<Runnable> onKillListeners = new ArrayList<>();
 
     public static void main(final String[] args) {
         launch(args);
@@ -32,6 +35,7 @@ public class MainSystemGui extends Application {
     public void kill() {
         System.out.println("System closing...");
         presenterInfo.getPresenter().cleanModel();
+        onKillListeners.forEach(a -> a.run());
     }
 
     public synchronized Parent getRoot() {
@@ -49,5 +53,9 @@ public class MainSystemGui extends Application {
         while (presenterInfo == null)
             wait();
         return presenterInfo.getPresenter();
+    }
+    
+    public void addOnKillListener(Runnable listner) {
+    	onKillListeners.add(listner);
     }
 }

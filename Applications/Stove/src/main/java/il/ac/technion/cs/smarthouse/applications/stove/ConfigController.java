@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -25,21 +24,13 @@ public class ConfigController implements Initializable {
     @FXML public HBox ButtonBox;
     @FXML public TextField secs;
     @FXML public TextField cels;
-    StoveAppController mainController;
 
     static boolean validateInput(final String time, final String degrees) {
         return time != null && degrees != null && !"".equals(degrees) && !"".equals(time) && time.chars().allMatch(Character::isDigit)
                 && degrees.chars().allMatch(Character::isDigit);
     }
 
-    public void subscribe(final StoveAppController mainContr) {
-        mainController = mainContr;
-    }
-
-    @Override public void initialize(final URL location, final ResourceBundle __) {
-
-        mainController = new FXMLLoader(getClass().getResource("/stove_app_ui.fxml")).getController();
-
+    public void subscribe(final StoveAppController mainController) {        
         HBox.setHgrow(Apply, Priority.ALWAYS);
         HBox.setHgrow(Cancel, Priority.ALWAYS);
 
@@ -72,4 +63,6 @@ public class ConfigController implements Initializable {
             }
         });
     }
+
+    @Override public void initialize(final URL location, final ResourceBundle __) { }
 }

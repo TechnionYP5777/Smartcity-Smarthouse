@@ -39,7 +39,7 @@ public class ApplicationsCore extends ChildCore {
         final ApplicationManager $ = new ApplicationManager(UuidGenerator.GenerateUniqueIDstring(), appPath);
         initializeApplicationManager($);
         apps.add($);
-        Optional.ofNullable(onAppsChange).ifPresent((a) -> a.run());
+        Optional.ofNullable(onAppsChange).ifPresent(a -> a.run());
         return $;
     }
 

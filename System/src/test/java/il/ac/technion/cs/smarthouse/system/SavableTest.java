@@ -57,23 +57,23 @@ public class SavableTest {
         }
     }
 
-    @SuppressWarnings("static-method")
-    @Test public void savableInSavableTest() throws Exception {
+    @Test
+    @SuppressWarnings("static-method") public void savableInSavableTest() throws Exception {
         A a = new A();
 
         Assert.assertEquals(A.constructorCalledCounter, 1);
         Assert.assertEquals(B.constructorCalledCounter, 1);
         Assert.assertEquals(C.constructorCalledCounter, 1);
 
-        System.out.println((a + ""));
+        System.out.println(a + "");
 
         a.myInt1 = a.myInt2 = a.b.myInt1 = a.b.myInt2 = a.c.myInt1 = a.c.myInt2 = NEW_MY_INT;
 
-        System.out.println((a + ""));
+        System.out.println(a + "");
 
         a.populate(a.toJsonString());
 
-        System.out.println((a + ""));
+        System.out.println(a + "");
 
         Assert.assertEquals(A.constructorCalledCounter, 1);
         Assert.assertEquals(B.constructorCalledCounter, 1);
@@ -91,14 +91,14 @@ public class SavableTest {
         //----
         
         A aa = new A();
-        System.out.println((aa + ""));
+        System.out.println(aa + "");
         
         Assert.assertEquals(A.constructorCalledCounter, 2);
         Assert.assertEquals(B.constructorCalledCounter, 2);
         Assert.assertEquals(C.constructorCalledCounter, 3);
         
         aa.populate(a.toJsonString());
-        System.out.println((aa + ""));
+        System.out.println(aa + "");
         
         Assert.assertEquals(A.constructorCalledCounter, 2);
         Assert.assertEquals(B.constructorCalledCounter, 2);

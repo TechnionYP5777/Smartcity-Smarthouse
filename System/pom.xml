@@ -8,6 +8,9 @@
 	</parent>
 	<artifactId>System</artifactId>
 	<name>System</name>
+	<properties>
+		<jar.runnable.main.class>il.ac.technion.cs.smarthouse.Entry</jar.runnable.main.class>
+	</properties>
 	<build>
 		<plugins>
 
@@ -27,24 +30,6 @@
 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>il.ac.technion.cs.smarthouse.Entry</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

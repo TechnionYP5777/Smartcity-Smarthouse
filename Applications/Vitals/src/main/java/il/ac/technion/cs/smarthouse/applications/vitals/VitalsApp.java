@@ -74,7 +74,7 @@ public class VitalsApp extends SmartHouseApplication {
                 highBPAlert = 0;
         });
 
-        controller = super.setContentView(getClass().getResource("/vitals_app_ui.fxml"));
+        controller = super.setContentView("vitals_app_ui.fxml");
     }
 
     @Override public String getApplicationName() {

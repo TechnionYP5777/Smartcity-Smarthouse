@@ -31,7 +31,7 @@ public class StoveModuleGui extends SmartHouseApplication {
             log.debug("App msg (from function subscibed to stove sensor): " + t + " | Sensor is located at: " + stove.getSensorLocation());
         });
 
-        controller = super.setContentView(getClass().getResource("/stove_app_ui.fxml"));
+        controller = super.setContentView("stove_app_ui.fxml");
         controller.setInstance(this);
     }
 

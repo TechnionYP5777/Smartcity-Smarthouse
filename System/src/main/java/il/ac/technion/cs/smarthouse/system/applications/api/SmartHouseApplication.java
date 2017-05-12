@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.applications.api;
 
 import java.net.URL;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ public abstract class SmartHouseApplication {
     @SafeVarargs
     public static void launch(final Class<? extends Application>... sensors) throws Exception {
         MainSystemGui m = new MainSystemGui();
+        m.addOnKillListener(()->System.exit(0));
         JavaFxHelper.startGui(m);
         
         m.getPresenter().waitUntilLoaded();        
@@ -50,8 +52,9 @@ public abstract class SmartHouseApplication {
     }
 
     // [start] Public - Services to the SystemCore
-    public void setServiceManager(final ServiceManager $) {
+    public final SmartHouseApplication setServiceManager(final ServiceManager $) {
         serviceManager = $;
+        return this;
     }
 
     public final Node getRootNode() {
@@ -62,10 +65,11 @@ public abstract class SmartHouseApplication {
     // [start] Public - Services to application developers
     /** Set the fxml file that will be used
      * @param location of the fxml file
-     * @return */
-    public <T extends Initializable> T setContentView(URL location) {
+     * @return */    
+    public <T extends Initializable> T setContentView(String fxmlFileName) {
         try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(location);
+        	final FXMLLoader fxmlLoader = createFXMLLoader(fxmlFileName);
+            fxmlLoader.setClassLoader(getClass().getClassLoader());
             rootNode = fxmlLoader.load();
             return fxmlLoader.getController();
         } catch (Exception e) {
@@ -73,6 +77,18 @@ public abstract class SmartHouseApplication {
             log.error("Couldn't load the application's fxml. The rootNode is null", e);
         }
         return null;
+    }
+    
+    public URL getResource(String resourcePath) {
+    	return Optional.ofNullable(getClass().getClassLoader().getResource(resourcePath)).orElse(getClass().getResource(resourcePath));
+    }
+    
+    public FXMLLoader createFXMLLoader(String fxmlFileName) {
+    	URL url = getResource(fxmlFileName);
+    	FXMLLoader fxmlLoader = new FXMLLoader(url);
+    	fxmlLoader.setClassLoader(getClass().getClassLoader());
+    	log.warn("Creating FXML for app: "+ getApplicationName() + " (" + getClass().getName() + ") from: " + url);
+    	return fxmlLoader;
     }
 
     /** Get a service from the system
