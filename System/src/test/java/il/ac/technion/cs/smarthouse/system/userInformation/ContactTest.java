@@ -33,16 +33,7 @@ public class ContactTest {
         Assert.assertEquals(contactA.getEmailAddress(), "alon100@gmail.com");
     }
 
-    @Test public void xmlTest() {
-        final Element contactAElement = contactA.toXmlElement();
-        final Contact newContactA = new Contact(contactAElement);
-
-        assert newContactA != null;
-        Assert.assertEquals(contactA.getId(), newContactA.getId());
-        Assert.assertEquals(contactA.getName(), newContactA.getName());
-        Assert.assertEquals(contactA.getPhoneNumber(), newContactA.getPhoneNumber());
-        Assert.assertEquals(contactA.getEmailAddress(), newContactA.getEmailAddress());
-    }
+   
 
     @Test public void toStringTest() {
         assert contactA + "" != null;

@@ -8,10 +8,13 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
+import il.ac.technion.cs.smarthouse.database.InfoType;
+import il.ac.technion.cs.smarthouse.database.ServerManager;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
@@ -34,7 +37,7 @@ public class SensorsHandlerThread extends Thread {
         this.client = client;
         this.databaseHandler = databaseHandler;
        // this.typeHandler = typeHandler;
-        DatabaseManager.initialize();
+        ServerManager.initialize();
     }
 
     @Override public void run() {
@@ -97,20 +100,14 @@ public class SensorsHandlerThread extends Thread {
         //m.getData().entrySet().forEach(entry -> json.addProperty(entry.getKey(), entry.getValue()));
 
 
-    	Map<String, Object> vals = new HashMap<>();
-    	vals.put("info", "sensormessage@" + m); 	//TODO: inbal, update that
+    	try {
+			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, m);
+		} catch (ParseException e) {
+			log.error("Failed to store data", e);
+		}
     	
     	
-    	DatabaseManager.putValue("maindb", vals);
     	
-    	/*
-        try {
-           // databaseHandler.getList(m.sensorId).add(json + "");
-        	
-        } catch (final SensorNotFoundException e) {
-            log.debug("Failed to store data, no matching sensor was found", e);
-        }
-        */
     }
 
 }

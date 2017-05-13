@@ -23,24 +23,7 @@ public class ContactsInformation {
             data.put(elevel, new HashMap<>());
     }
 
-    public ContactsInformation(final Element cInfoElement) {
-        for (final EmergencyLevel elevel : EmergencyLevel.values())
-            data.put(elevel, new HashMap<>());
-
-        EmergencyLevel elevel;
-
-        final List<Element> eLevels = cInfoElement.getChildren();
-        for (int i = 0; i < eLevels.size(); ++i) {
-
-            elevel = EmergencyLevel.fromString(eLevels.get(i).getName());
-            final List<Element> contacts = eLevels.get(i).getChildren();
-            for (int j = 0; j < contacts.size(); ++j) {
-                final Contact temp = new Contact(contacts.get(j));
-                data.get(elevel).put(temp.getId(), temp);
-            }
-        }
-    }
-
+  
     /** Adds a contact with a specific emergency level
      * @param c contact to add
      * @param elevel emergency level to inform this contact at */
@@ -93,27 +76,7 @@ public class ContactsInformation {
         return $;
     }
 
-    public Element toXmlElement() {
-        final Element $ = new Element("contactsInformation");
-        Map<String, Contact> temp;
-
-        Element emergencyLevel;
-        for (final EmergencyLevel elvl : EmergencyLevel.values()) {
-            temp = data.get(elvl);
-            if (temp.isEmpty())
-                continue;
-
-            emergencyLevel = new Element(elvl + "");
-
-            for (final Contact ¢ : temp.values())
-                emergencyLevel.addContent(¢.toXmlElement());
-
-            $.addContent(emergencyLevel);
-        }
-
-        return $;
-
-    }
+   
 
     // For debug mainly, leaving it implemented for future use
     @Override public String toString() {

@@ -72,27 +72,7 @@ public class ContactsInformationTest {
 
     }
 
-    @Test public void xmlTest() {
-        contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
-        contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
-
-        final Element contactsInfoElement = contactsInfo.toXmlElement();
-        final ContactsInformation newContactsInfo = new ContactsInformation(contactsInfoElement);
-
-        assert newContactsInfo != null;
-        final Contact newContactA = newContactsInfo.getContact(contactA.getId());
-        assert newContactA != null;
-
-        Assert.assertEquals(contactA.getId(), newContactA.getId());
-        Assert.assertEquals(contactA.getName(), newContactA.getName());
-
-        assert newContactsInfo.getContact(contactB.getId()) != null;
-
-        assert newContactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT) != null;
-        Assert.assertEquals(0, newContactsInfo.getContacts(EmergencyLevel.CONTACT_HOSPITAL).size());
-
-    }
-
+  
     @Test public void toStringTest() {
         assert contactsInfo + "" != null;
         Assert.assertEquals("", contactsInfo + "");

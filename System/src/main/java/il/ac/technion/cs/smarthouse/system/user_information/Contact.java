@@ -26,13 +26,7 @@ public class Contact {
 
     }
 
-    public Contact(final Element contactElement) {
-
-        id = contactElement.getChildText("Id");
-        name = contactElement.getChildText("name");
-        phoneNumber = contactElement.getChildText("phoneNumber");
-        emailAddress = contactElement.getChildText("email");
-    }
+   
 
     public Contact(final ParseObject contactObj) {
 
@@ -67,29 +61,7 @@ public class Contact {
         this.emailAddress = emailAddress;
     }
 
-    public Element toXmlElement() {
-
-        final Element $ = new Element("contact"), contactId = new Element("Id");
-
-        contactId.setText(id);
-
-        final Element contactName = new Element("name");
-        contactName.setText(name);
-
-        final Element contactPhoneNum = new Element("phoneNumber");
-        contactPhoneNum.setText(phoneNumber);
-
-        final Element contactEmail = new Element("email");
-        contactEmail.setText(emailAddress);
-
-        $.addContent(contactId);
-        $.addContent(contactName);
-        $.addContent(contactPhoneNum);
-        $.addContent(contactEmail);
-
-        return $;
-
-    }
+   
 
     public Map<String, Object> contactMap() {
         final Map<String, Object> $ = new HashMap<>();

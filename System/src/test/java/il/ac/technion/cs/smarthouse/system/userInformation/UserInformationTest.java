@@ -1,6 +1,5 @@
 package il.ac.technion.cs.smarthouse.system.userInformation;
 
-import java.io.File;
 import java.util.List;
 
 import org.junit.Assert;
@@ -10,6 +9,10 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
+/**
+ * 
+ * @author Inbal Zukerman
+ */
 public class UserInformationTest {
 
     private final UserInformation userInfo = new UserInformation("Alon", "789", "0509535200", "Hertzel avn. 7, Jerusalem");
@@ -58,27 +61,7 @@ public class UserInformationTest {
         assert temp.contains(contactA);
     }
 
-    @Test public void xmlTesting() {
-
-        userInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
-        userInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
-
-        userInfo.toXml("xmldata.xml");
-
-        final File userInfoFile = new File("xmldata.xml");
-        final UserInformation ui2 = new UserInformation(userInfoFile);
-
-        assert ui2 != null;
-        Assert.assertEquals(userInfo.getId(), ui2.getId());
-        Assert.assertEquals(userInfo.getName(), ui2.getName());
-        Assert.assertEquals(userInfo.getHomeAddress(), ui2.getHomeAddress());
-        Assert.assertEquals(userInfo.getPhoneNumber(), ui2.getPhoneNumber());
-        assert ui2.getContact(contactA.getId()) != null;
-        assert ui2.getContact(contactB.getId()) != null;
-
-        userInfoFile.delete();
-
-    }
+   
 
     @Test public void toStringTest() {
         assert userInfo + "" != null;

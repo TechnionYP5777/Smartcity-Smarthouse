@@ -74,14 +74,13 @@ public abstract class InteractiveSensor extends Sensor {
      *         otherwise */
     public boolean operate() {
     	
-    	return false; //TODO: inbal, fix this :(
-        /*try {
-        	
-        	//return instIn.ready() && handler.applyInstruction(((UpdateMessage) MessageFactory.create(instIn.readLine())).getData());
+    	
+        try {
+        	return instIn.ready() && handler.applyInstruction( instIn.readLine());
         } catch (IOException e) {
             log.error("I/O error occurred", e);
             return false;
-        }*/
+        }
     }
 
     /** Checks for waiting instructions by polling the connection repeatedly

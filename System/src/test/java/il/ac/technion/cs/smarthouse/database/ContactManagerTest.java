@@ -14,7 +14,7 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 
 /** @author Inbal Zukerman
- * @date Apr 24, 2017 */
+ * @date Apr 24, 2017 *//*
 public class ContactManagerTest {
 
     private static final Contact contactA = new Contact("123", "Alon", "0508080123", "alon@gmail.com");
@@ -128,4 +128,4 @@ public class ContactManagerTest {
         ContactManager.deleteContact(contactB.getId());
 
     }
-}
+}*/

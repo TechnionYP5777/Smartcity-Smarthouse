@@ -17,14 +17,14 @@ import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 /** This class implements an API to manage contacts in the database on the
  * server.
  * @author Inbal Zukerman
- * @date Apr 22, 2017 */
+ * @date Apr 22, 2017 *//*
 
 public class ContactManager {
 
     private static Logger log = LoggerFactory.getLogger(ContactManager.class);
 
     /** This method checks if a contact is saved in the database
-     * @param c The contact to be checked if saved in DB */
+     * @param c The contact to be checked if saved in DB *//*
     public static boolean isContactInDB(final Contact c) {
 
         return DatabaseManager.getObjectByFields("Contact", c.contactIdentifiresMap()) != null;
@@ -32,7 +32,7 @@ public class ContactManager {
 
     /** This methods saves a contact in the DB
      * @param c the contact to be saved in the DB
-     * @param l the emergency level of the new contact, might be null */
+     * @param l the emergency level of the new contact, might be null *//*
     public static void saveContact(final Contact c, final EmergencyLevel l) {
         final Map<String, Object> contactMap = c.contactMap();
         contactMap.put("emergencyLevel", l == null ? "" : l + "");
@@ -44,7 +44,7 @@ public class ContactManager {
 
     /** Retrieves a contact by his id from the DB
      * @param id the contact's id
-     * @return the contact by the data from the DB, or null if was not found */
+     * @return the contact by the data from the DB, or null if was not found *//*
     public static Contact getContact(final String id) {
         final Map<String, Object> $ = new HashMap<>();
         $.put("id", id);
@@ -53,7 +53,7 @@ public class ContactManager {
     }
 
     /** help method which retrieves all save objects with a certain emergency
-     * level */
+     * level *//*
     private static List<ParseObject> getObjectsByElevel(final EmergencyLevel l) {
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Contact");
@@ -72,7 +72,7 @@ public class ContactManager {
     }
 
     /** This method returns all contacts saved with a certain emergency level
-     * @param l required emergency level */
+     * @param l required emergency level *//*
     public static List<Contact> getContacts(final EmergencyLevel l) {
         final List<ParseObject> contactsObjs = getObjectsByElevel(l);
 
@@ -85,7 +85,7 @@ public class ContactManager {
 
     /** Update a contact on the database. If the contact is not saved on the DB,
      * he will be saved with a null emergency level
-     * @param c the contact to save */
+     * @param c the contact to save *//*
     public static void updateContact(final Contact c) {
 
         if (!isContactInDB(c))
@@ -97,7 +97,7 @@ public class ContactManager {
     /** Update a contact's emergency level. If the contact is not saved on the
      * DB, he will be saved.
      * @param c the contact to save
-     * @param l the new emergency level */
+     * @param l the new emergency level *//*
     public static void updateEmergencyLevel(final Contact c, final EmergencyLevel l) {
 
         if (!isContactInDB(c))
@@ -111,7 +111,7 @@ public class ContactManager {
     }
 
     /** Delete a contact from the database.
-     * @param id the ID of the contact to be deleted */
+     * @param id the ID of the contact to be deleted *//*
     public static void deleteContact(final String id) {
         final Map<String, Object> $ = new HashMap<>();
         $.put("id", id);
@@ -120,4 +120,4 @@ public class ContactManager {
             DatabaseManager.deleteById("Contact", temp.getObjectId());
     }
 
-}
+}*/
