@@ -12,8 +12,7 @@ public class SosSensor extends Sensor {
     }
 
     public void updateSystem() {
-        String data = "pressed@" + true ;
-        super.updateSystem(data);
+        super.updateSystem("pressed@" + true);
     }
 
     /*@Override public String[] getObservationsNames() {

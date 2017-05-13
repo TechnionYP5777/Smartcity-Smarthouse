@@ -2,7 +2,7 @@ package il.ac.technion.cs.smarthouse.database;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+//import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
-import org.parse4j.callback.SaveCallback;
+
 
 /** @author Inbal Zukerman
  * @date Apr 5, 2017 */
@@ -21,7 +21,7 @@ public class ServerManagerTest {
 
     private static ParseObject temp;
     private static ParseObject temp1;
-    private static ParseObject temp2;
+    //private static ParseObject temp2;
     private static ParseObject mObj;
 
     @BeforeClass public static void init() {
@@ -132,7 +132,7 @@ public class ServerManagerTest {
     @AfterClass public static void cleanup() {
         ServerManager.deleteById(testParse, temp.getObjectId());
         ServerManager.deleteById(testParse, temp1.getObjectId());
-        ServerManager.deleteById(testParse, temp2.getObjectId());
+        //ServerManager.deleteById(testParse, temp2.getObjectId());
         ServerManager.deleteById(testParse, mObj.getObjectId());
 
     }

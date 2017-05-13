@@ -29,7 +29,7 @@ public class SensorsHandler implements Runnable {
 
     // for testing
     private ServerSocket server;
-    // private ServerSocket router; TODO: needed??
+ 
 
     /** Initializes a new sensors handler object.
      * @param databaseHandler database handler of the system */
@@ -63,9 +63,7 @@ public class SensorsHandler implements Runnable {
     }
 
     public void sendInstruction(String instruction) {
-    	String [] parts = instruction.split("@");
-    	
-        routingMap.get(parts[0]).println(instruction);
+    	routingMap.get(instruction.split("@")[0]).println(instruction);
     }
 
     public void closeSockets() { // for testing

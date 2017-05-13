@@ -75,13 +75,9 @@ public abstract class Message {
 		return null;
 	}
 
-	public static String createMessage(final String sensorId, final String sensorCommName, MessageType type,
+	public static String createMessage(final String sensorId, final String sensorCommName, MessageType t,
 			String info) {
-		String message = "";
-		if (sensorId != "" && sensorCommName != "")
-			message = sensorId + "@" + sensorCommName + "@";
-
-		message += type.toString();
+		String message = (sensorId == "" || sensorCommName == "" ? "" : sensorId + "@" + sensorCommName + "@") + t.toString();
 		if (info != "")
 			message += "@" + info;
 

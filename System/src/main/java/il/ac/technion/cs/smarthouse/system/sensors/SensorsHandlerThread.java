@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.parse4j.ParseException;
 import org.slf4j.Logger;
@@ -20,98 +18,90 @@ import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 
-/** A sensors handler thread is a class that handles a specific connection with
- * a sensor. The class can parse the different incoming messages and act
+/**
+ * A sensors handler thread is a class that handles a specific connection with a
+ * sensor. The class can parse the different incoming messages and act
  * accordingly.
+ * 
  * @author Yarden
  * @author Inbal Zukerman
- * @since 24.12.16 */
+ * @since 24.12.16
+ */
 public class SensorsHandlerThread extends Thread {
-    private static Logger log = LoggerFactory.getLogger(SensorsHandlerThread.class);
+	private static Logger log = LoggerFactory.getLogger(SensorsHandlerThread.class);
 
-    private final Socket client;
-    private final DatabaseHandler databaseHandler;
-//    private TypeHandler typeHandler;
+	private final Socket client;
+	private final DatabaseHandler databaseHandler;
+	// private TypeHandler typeHandler;
 
-    public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler, final TypeHandler typeHandler) {
-        this.client = client;
-        this.databaseHandler = databaseHandler;
-       // this.typeHandler = typeHandler;
-        ServerManager.initialize();
-    }
+	public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler,
+			final TypeHandler typeHandler) {
+		this.client = client;
+		this.databaseHandler = databaseHandler;
+		// this.typeHandler = typeHandler;
+		ServerManager.initialize();
+	}
 
-    @Override public void run() {
-        PrintWriter out = null;
-        BufferedReader in = null;
-        try {
-            out = new PrintWriter(client.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            for (String input = in.readLine(); input != null;) {
-                //final Message message = MessageFactory.create(input);
-                if ( input == ""){
-                	String answerMessage = Message.createMessage("", "", MessageType.ANSWER, "FAILURE");
-                	Message.send(answerMessage, out, null);
-                    //new AnswerMessage(Answer.FAILURE).send(out, null);
-                    continue;
-                }
-                log.info("Received message: " + input + "\n");
-                
-                if(Message.isInMessage(input, "registration")){
-                	handleRegisterMessage(out, input);
-                }
-                else{
-                	if (Message.isInMessage(input,"UPDATE")){
-                		handleUpdateMessage(input);
-                	}
-                	else{
-                		//TODO: inbal - log error
-                	}
-                }
-                
-                input = in.readLine();
-            }
-        } catch (final IOException e) {
-            log.error("I/O error occurred", e);
-        } finally {
-            try {
-                if (out != null)
-                    out.close();
+	@Override
+	public void run() {
+		PrintWriter out = null;
+		BufferedReader in = null;
+		try {
+			out = new PrintWriter(client.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			for (String input = in.readLine(); input != null;) {
 
-                if (in != null)
-                    in.close();
-            } catch (final IOException e) {
-                log.error("I/O error occurred while closing", e);
-            }
-        }
-    }
+				if (input == "") {
+					String answerMessage = Message.createMessage("", "", MessageType.ANSWER, "FAILURE");
+					Message.send(answerMessage, out, null);
 
-    private void handleRegisterMessage(final PrintWriter out, String ¢) {
-    	String[] parsedMessage = ¢.split("@");
-        databaseHandler.addSensor(parsedMessage[0], parsedMessage[1], 100);
-        String answerMessage = Message.createMessage("", "", MessageType.ANSWER	, "SUCCESS");
-        Message.send(answerMessage, out, null);
-        
-        
-      
-    }
+					continue;
+				}
+				log.info("Received message: " + input + "\n");
 
-    private void handleUpdateMessage(final String m) {
-    	
-        //m.getData().entrySet().forEach(entry -> json.addProperty(entry.getKey(), entry.getValue()));
+				if (Message.isInMessage(input, "registration"))
+					handleRegisterMessage(out, input);
+				else if (Message.isInMessage(input, "UPDATE"))
+					handleUpdateMessage(input);
+				else
+					log.error("message could not be parsed");
 
+				input = in.readLine();
+			}
+		} catch (final IOException e) {
+			log.error("I/O error occurred", e);
+		} finally {
+			try {
+				if (out != null)
+					out.close();
 
-    	try {
+				if (in != null)
+					in.close();
+			} catch (final IOException e) {
+				log.error("I/O error occurred while closing", e);
+			}
+		}
+	}
+
+	private void handleRegisterMessage(final PrintWriter out, String ¢) {
+		String[] parsedMessage = ¢.split("@");
+		databaseHandler.addSensor(parsedMessage[0], parsedMessage[1], 100);
+		Message.send(Message.createMessage("", "", MessageType.ANSWER, "SUCCESS"), out, null);
+
+	}
+
+	private void handleUpdateMessage(final String m) {
+
+		try {
 			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, m);
 		} catch (ParseException e) {
 			log.error("Failed to store data", e);
 		}
-    	
-    	
-    	
-    }
+
+	}
 
 }
 
 interface TypeHandler {
-    void accept(SensorType t);
+	void accept(SensorType t);
 }

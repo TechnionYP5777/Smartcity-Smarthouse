@@ -1,5 +1,5 @@
 package il.ac.technion.cs.smarthouse.database;
-
+/*
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

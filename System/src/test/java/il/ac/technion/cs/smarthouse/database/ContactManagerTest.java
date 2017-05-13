@@ -1,5 +1,5 @@
 package il.ac.technion.cs.smarthouse.database;
-
+/*
 import java.util.List;
 
 import org.junit.AfterClass;

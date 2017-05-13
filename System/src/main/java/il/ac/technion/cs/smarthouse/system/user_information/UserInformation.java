@@ -54,7 +54,7 @@ public class UserInformation {
 	public void setPhoneNumber(final String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 		try {
-
+			DatabaseManager.deleteInfo(InfoType.USER$PHONE_NUMBER);
 			DatabaseManager.addInfo(InfoType.USER$PHONE_NUMBER, phoneNumber);
 
 		} catch (ParseException e) {
@@ -70,7 +70,7 @@ public class UserInformation {
 		this.homeAddress = homeAddress;
 
 		try {
-
+			DatabaseManager.deleteInfo(InfoType.USER$HOME_ADDRESS);
 			DatabaseManager.addInfo(InfoType.USER$HOME_ADDRESS, homeAddress);
 		} catch (ParseException e) {
 			log.error("User could not be updated", e);
@@ -93,12 +93,7 @@ public class UserInformation {
 
 	}
 
-	// the next methods might seem redundant, but when we will change this class
-	// to save a profile for each application separately, these methods will be
-	// changed to receive also appId.
-	// In my opinion implementing them now will be easier in the future when the
-	// changes mentioned above will take place.
-
+	
 	public void addContact(final Contact c, final EmergencyLevel elevel) {
 		emergencyContacts.addContact(c, elevel);
 	}

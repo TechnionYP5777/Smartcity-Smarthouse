@@ -14,9 +14,7 @@ public class ShutterSensor extends Sensor {
     
     
     public void updateSystem(final boolean open, final int fromTime , final int toTime) {
-        String data = "open@" + open + "@time" + fromTime ;
-               
-        super.updateSystem(data);
+        super.updateSystem("open@" + open + "@time" + fromTime);
     }
     
 
