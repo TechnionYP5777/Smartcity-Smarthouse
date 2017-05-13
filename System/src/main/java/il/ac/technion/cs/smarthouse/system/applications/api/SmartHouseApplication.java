@@ -87,7 +87,7 @@ public abstract class SmartHouseApplication {
     	URL url = getResource(fxmlFileName);
     	FXMLLoader fxmlLoader = new FXMLLoader(url);
     	fxmlLoader.setClassLoader(getClass().getClassLoader());
-    	log.warn("Creating FXML for app: "+ getApplicationName() + " (" + getClass().getName() + ") from: " + url);
+    	log.info("Creating FXML for app: "+ getApplicationName() + " (" + getClass().getName() + ") from: " + url);
     	return fxmlLoader;
     }
 
@@ -101,14 +101,14 @@ public abstract class SmartHouseApplication {
     /** Saves the app's data to the system's database
      * @param data
      * @return true if the data was saved to the system, or false otherwise */
-    @SuppressWarnings("static-method") public final boolean saveToDatabase(final String data) {
+    public final boolean saveToDatabase(final String data) {
         log.warn("This function is not implemented yet");
         return data != null;
     }
 
     /** Loads the app's data from the system's database
      * @return a string with the data */
-    @SuppressWarnings("static-method") public final String loadFromDatabase() {
+    public final String loadFromDatabase() {
         log.warn("This function is not implemented yet");
         return null;
     }
