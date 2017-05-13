@@ -16,15 +16,17 @@ public class SosSensorTest extends SensorTest {
         id = Random.sensorId();
         sensor = new SosSensor(id, "iSOS", "127.0.0.1", 40001);
         commName = "iSOS";
-        observations = new String[] { "pressed" };
+        
 
     }
-/*   TODO: inbal, fix this
+  //TODO: inbal, fix this
+    /*
     @Test public void updateSystemWorks() throws SensorNotFoundException, InterruptedException {
         ((SosSensor) sensor).updateSystem();
 
         Thread.sleep(5000);
 
         Assert.assertEquals(true, sensorsManager.getDefaultSensor(TestSensorData.class, commName).receiveLastEntry().pressed);
-    }*/
+    }
+    */
 }

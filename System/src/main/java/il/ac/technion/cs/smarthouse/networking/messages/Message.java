@@ -7,8 +7,6 @@ import java.io.PrintWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-
 /**
  * This class represents a general message that can be sent from a sensor to the
  * system or vice versa.
@@ -18,34 +16,20 @@ import com.google.gson.Gson;
  * @since 11.12.16
  */
 public abstract class Message {
-	private final MessageType type;
+	
 	private static Logger log = LoggerFactory.getLogger(Message.class);
 
-	/**
-	 * Creates a new message object.
-	 * 
-	 * @param type
-	 *            type of this message
-	 */
-	public Message(final MessageType type) {
-		this.type = type;
+	
+	public static String createMessage(final String sensorId, final String sensorCommName, MessageType t,
+			String info) {
+		String message = (sensorId == "" || sensorCommName == "" ? "" : sensorId + "@" + sensorCommName + "@") + t.toString();
+		if (info != "")
+			message += "@" + info;
+
+		return message.toLowerCase();
 	}
 
-	/** @return type of this message */
-	public MessageType getType() {
-		return type;
-	}
-
-	/**
-	 * Converts the contents of this message into JSON format.
-	 * 
-	 * @return JSON formatted string
-	 */
-	public String toJson() {
-		return new Gson().toJson(this);
-	}
-
-	/**
+	/** TODO: inbal, update documentation
 	 * Sends the message to the specified destination.
 	 * 
 	 * @param out
@@ -75,17 +59,10 @@ public abstract class Message {
 		return null;
 	}
 
-	public static String createMessage(final String sensorId, final String sensorCommName, MessageType t,
-			String info) {
-		String message = (sensorId == "" || sensorCommName == "" ? "" : sensorId + "@" + sensorCommName + "@") + t.toString();
-		if (info != "")
-			message += "@" + info;
-
-		return message.toLowerCase();
-	}
+	
 	
 	public static boolean isInMessage(String message, String part){
-		return message.toLowerCase().contains("@"+part.toLowerCase()) || message.toLowerCase().contains(part.toLowerCase() + "@");
+		return message.toLowerCase().contains(part.toLowerCase());
 	}
 
 }

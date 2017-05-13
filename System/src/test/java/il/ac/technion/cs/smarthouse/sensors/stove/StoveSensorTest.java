@@ -16,7 +16,7 @@ public class StoveSensorTest extends SensorTest {
         id = Random.sensorId();
         sensor = new StoveSensor(id, "iStove", "127.0.0.1", 40001);
         commName = "iStove";
-        observations = new String[] { "on", "temperature" };
+
 
     }
 
