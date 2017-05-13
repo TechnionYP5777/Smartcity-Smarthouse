@@ -17,7 +17,7 @@ public class VitalsSensorTest extends SensorTest {
         id = Random.sensorId();
         sensor = new VitalsSensor(id, "iVitals", "127.0.0.1", 40001);
         commName = "iVitals";
-        observations = new String[] { "pulse", "systolicBP", "diastolicBP" };
+
 
     }
 

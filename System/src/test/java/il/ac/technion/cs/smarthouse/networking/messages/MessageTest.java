@@ -1,34 +1,32 @@
 package il.ac.technion.cs.smarthouse.networking.messages;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 /** @author Sharon
  * @since 30.12.16 */
 
 
-/*
-public abstract class MessageTest {
-    protected abstract Message defaultMessage();
 
-    @Test public void testMessageDeliveryWithoutInput() {
-        Assert.assertNull(defaultMessage().send(null, null));
-    }
+public  class MessageTest {
+    
 
-    @Test public void testMessageDeliveryWithoutResponse() {
-        final Message message = defaultMessage();
-        final PrintWriter pw = Mockito.mock(PrintWriter.class);
+	@Test public void testMessage(){
+		String m1 = Message.createMessage("11", "sensor11", MessageType.REGISTRATION, "");
+		Assert.assertEquals("11@sensor11@registration", m1);
+		
+		m1 = Message.createMessage("", "", MessageType.ANSWER, "success");
+		Assert.assertEquals("answer@success", m1);
+		
+		Assert.assertNull(Message.send(m1, null, null));
+		
+		//TODO: inbal test more sending options
+		
+		
+		//TODO: inbal, make sure to change this
+		Assert.assertTrue(Message.isInMessage(m1, "answer"));
+		Assert.assertFalse(Message.isInMessage(m1, "failure"));
+	}
 
-        Assert.assertNull(message.send(pw, null));
-        Mockito.verify(pw, Mockito.times(1)).println(Matchers.anyString());
-    }
-
-    @Test public void testMessageDeliveryWithResponse() throws IOException {
-        final Message message = defaultMessage();
-        final PrintWriter pw = Mockito.mock(PrintWriter.class);
-        final BufferedReader br = Mockito.mock(BufferedReader.class);
-        Mockito.when(br.readLine()).thenReturn("A response");
-
-        Assert.assertEquals("A response", message.send(pw, br));
-        Mockito.verify(pw, Mockito.times(1)).println(Matchers.anyString());
-        Mockito.verify(br, Mockito.times(1)).readLine();
-    }
+    
 }
-*/

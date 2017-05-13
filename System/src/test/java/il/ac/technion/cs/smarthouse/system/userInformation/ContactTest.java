@@ -41,34 +41,4 @@ public class ContactTest {
 				contactA + "");
 	}
 
-	/*
-	 * 
-	 * @Test public void contactMapsTest() { final Map<String, Object> cm =
-	 * contactA.contactMap(); Assert.assertEquals("123", cm.get("id"));
-	 * Assert.assertEquals("Alon", cm.get("name"));
-	 * Assert.assertEquals("0508080123", cm.get("phoneNumber"));
-	 * Assert.assertEquals("alon@gmail.com", cm.get("email"));
-	 * 
-	 * final Map<String, Object> cim = contactA.contactIdentifiresMap();
-	 * Assert.assertEquals(cm.get("id"), cim.get("id"));
-	 * Assert.assertEquals(cm.get("name"), cim.get("name"));
-	 * 
-	 * /* TODO: inbal... 
-	 * final ParseObject contactObject =
-	 * ParseObject.create("ContactTest");
-	 * 
-	 * contactObject.put("id", contactA.getId()); contactObject.put("name",
-	 * contactA.getName()); contactObject.put("phoneNumber",
-	 * contactA.getPhoneNumber()); contactObject.put("email",
-	 * contactA.getEmailAddress());
-	 * 
-	 * final Contact fromPO = new Contact(contactObject);
-	 * Assert.assertEquals(contactA.getId(), fromPO.getId());
-	 * Assert.assertEquals(contactA.getName(), fromPO.getName());
-	 * Assert.assertEquals(contactA.getPhoneNumber(), fromPO.getPhoneNumber());
-	 * Assert.assertEquals(contactA.getEmailAddress(),
-	 * fromPO.getEmailAddress());
-	 * 
-	 * }
-	 */
 }
