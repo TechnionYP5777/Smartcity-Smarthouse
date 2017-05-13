@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
@@ -16,7 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
-import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.Message;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
@@ -140,12 +140,12 @@ public final class SensorApi<T extends SensorData> {
     /** Send a message to a sensor.
      * @param instruction the message that the sensor will receive
      * @throws SensorLostRuntimeException */
-    public void instruct(final Map<String, String> instruction) throws SensorLostRuntimeException {
+    public void instruct(final String instruction) throws SensorLostRuntimeException {
         if (!systemCore.databaseHandler.sensorExists(sensorId)) {
             log.error(LOG_MSG_RUNTIME_THROW + " This is because " + sensorId + " Doesn't exist");
             throw new SensorLostRuntimeException(null);
         }
-        systemCore.sensorsHandler.sendInstruction(new UpdateMessage(sensorId, instruction));
+        systemCore.sensorsHandler.sendInstruction( Message.createMessage(sensorId, getCommercialName(), MessageType.UPDATE, instruction));
     }
 
     // [start] timer functions

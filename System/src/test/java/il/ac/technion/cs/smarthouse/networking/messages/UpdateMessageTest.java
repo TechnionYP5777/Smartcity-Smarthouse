@@ -1,18 +1,7 @@
 package il.ac.technion.cs.smarthouse.networking.messages;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-
-import il.ac.technion.cs.smarthouse.sensors.stove.StoveSensor;
-
 /** @author Sharon
- * @since 11.12.16 */
+ * @since 11.12.16 *//*
 @SuppressWarnings("static-method")
 public class UpdateMessageTest {
     @Test public void basicUpdateMessageTest() {
@@ -96,4 +85,4 @@ public class UpdateMessageTest {
         assert $.contains("temp");
         assert $.contains("100");
     }
-}
+}*/

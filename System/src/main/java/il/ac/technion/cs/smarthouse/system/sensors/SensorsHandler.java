@@ -11,7 +11,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 
@@ -63,8 +62,10 @@ public class SensorsHandler implements Runnable {
         }
     }
 
-    public void sendInstruction(UpdateMessage instruction) {
-        routingMap.get(instruction.sensorId).println(instruction.toJson());
+    public void sendInstruction(String instruction) {
+    	String [] parts = instruction.split("@");
+    	
+        routingMap.get(parts[0]).println(instruction);
     }
 
     public void closeSockets() { // for testing
@@ -73,7 +74,6 @@ public class SensorsHandler implements Runnable {
             // TODO: ELIA remove if you don't need this
             // router.close();
         } catch (IOException e) {
-            // TODO: Auto-generated catch block
             log.error("I/O error occurred while closing", e);
         }
     }
