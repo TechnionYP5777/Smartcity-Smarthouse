@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.database.InfoType;
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
 /**
@@ -21,11 +20,11 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
 public class UserInformation {
 
-	private String name;
-	private String id;
+	private final String name;
+	private final String id;
 	private String phoneNumber;
 	private String homeAddress;
-	private ContactsInformation emergencyContacts;
+	private final ContactsInformation emergencyContacts;
 
 	private static Logger log = LoggerFactory.getLogger(UserInformation.class);
 
@@ -42,7 +41,7 @@ public class UserInformation {
 			DatabaseManager.addInfo(InfoType.USER$ID, id);
 			DatabaseManager.addInfo(InfoType.USER$PHONE_NUMBER, phoneNumber);
 			DatabaseManager.addInfo(InfoType.USER$HOME_ADDRESS, homeAddress);
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			log.error("User could not be saved", e);
 		}
 
@@ -58,7 +57,7 @@ public class UserInformation {
 			DatabaseManager.deleteInfo(InfoType.USER$PHONE_NUMBER);
 			DatabaseManager.addInfo(InfoType.USER$PHONE_NUMBER, phoneNumber);
 
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			log.error("User could not be updated", e);
 		}
 	}
@@ -73,7 +72,7 @@ public class UserInformation {
 		try {
 			DatabaseManager.deleteInfo(InfoType.USER$HOME_ADDRESS);
 			DatabaseManager.addInfo(InfoType.USER$HOME_ADDRESS, homeAddress);
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			log.error("User could not be updated", e);
 		}
 	}
@@ -94,14 +93,13 @@ public class UserInformation {
 
 	}
 
-	
 	public void addContact(final Contact c, final EmergencyLevel elevel) {
 		emergencyContacts.addContact(c, elevel);
 	}
-	
-	public void removeContact(final String contactID){
+
+	public void removeContact(final String contactID) {
 		emergencyContacts.removeContact(contactID);
-	
+
 	}
 
 	public Contact getContact(final String contactId) {

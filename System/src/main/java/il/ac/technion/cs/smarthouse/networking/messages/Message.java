@@ -16,21 +16,20 @@ import org.slf4j.LoggerFactory;
  * @since 11.12.16
  */
 public abstract class Message {
-	
+
 	private static Logger log = LoggerFactory.getLogger(Message.class);
 
-	
-	public static String createMessage(final String sensorId, final String sensorCommName, MessageType t,
-			String info) {
-		String message = (sensorId == "" || sensorCommName == "" ? "" : sensorId + "@" + sensorCommName + "@") + t.toString();
+	public static String createMessage(final String sensorId, final MessageType t, final String info) {
+		String message = (sensorId == "" ? "" : sensorId + ".") + t.toString();
 		if (info != "")
-			message += "@" + info;
+			message += "." + info;
 
 		return message.toLowerCase();
 	}
 
-	/** TODO: inbal, update documentation
-	 * Sends the message to the specified destination.
+	/**
+	 * TODO: inbal, update documentation Sends the message to the specified
+	 * destination.
 	 * 
 	 * @param out
 	 *            a PrintWrite object that was created from a socket connected
@@ -59,10 +58,16 @@ public abstract class Message {
 		return null;
 	}
 
-	
-	
-	public static boolean isInMessage(String message, String part){
+	public static boolean isInMessage(final String message, final String part) {
 		return message.toLowerCase().contains(part.toLowerCase());
+	}
+
+	public static boolean isSuccessMessage(final String message) {
+		return message.toLowerCase().contains("success");
+	}
+
+	public static boolean isFailureMessage(final String message) {
+		return message.toLowerCase().contains("failure");
 	}
 
 }

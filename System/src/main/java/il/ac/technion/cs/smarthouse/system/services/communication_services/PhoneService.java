@@ -4,12 +4,12 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
 
 public class PhoneService extends CommunicationService {
 
-    public PhoneService(SystemCore $) {
-        super($);
-    }
+	public PhoneService(final SystemCore $) {
+		super($);
+	}
 
-    @SuppressWarnings("static-method")
-    public void makeCall(String phoneNumber) {
-        Communicate.throughPhone(phoneNumber);
-    }
+	@SuppressWarnings("static-method")
+	public void makeCall(final String phoneNumber) {
+		Communicate.throughPhone(phoneNumber);
+	}
 }

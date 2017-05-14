@@ -44,7 +44,7 @@ public class ContactsInformation {
 
 		try {
 			DatabaseManager.addContactInfo(c.getId(), c.getName(), c.getPhoneNumber(), c.getEmailAddress(), elevel);
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			log.error("Contact could not be saved", e);
 		}
 
@@ -73,7 +73,7 @@ public class ContactsInformation {
 					DatabaseManager.deleteContactInfo(id);
 					DatabaseManager.addContactInfo(id, contact.getName(), contact.getPhoneNumber(),
 							contact.getEmailAddress(), newELevel);
-				} catch (ParseException e) {
+				} catch (final ParseException e) {
 					log.error("Contact could not be updated", e);
 				}
 			}

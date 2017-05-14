@@ -34,7 +34,6 @@ public abstract class Sensor {
 	private final List<Long> lastMessagesMillis = new ArrayList<>();
 
 	protected String id;
-	protected String commName;
 
 	protected String systemIP;
 	protected int systemPort;
@@ -59,12 +58,12 @@ public abstract class Sensor {
 	 * @param systemPort
 	 *            port on which the system listens to incoming messages
 	 */
-	public Sensor(final String id, final String commName, final String systemIP, final int systemPort) {
+	public Sensor(final String id, final String systemIP, final int systemPort) {
 		this.id = id;
-		this.commName = commName;
+
 		this.systemIP = systemIP;
 		this.systemPort = systemPort;
-		this.sType = SensorType.NON_INTERACTIVE;
+		sType = SensorType.NON_INTERACTIVE;
 	}
 
 	/**
@@ -83,8 +82,8 @@ public abstract class Sensor {
 			log.error("I/O error occurred when the sensor's socket was created", e);
 		}
 
-		String $ = Message.send(Message.createMessage(this.id, this.commName, MessageType.REGISTRATION, ""), out, in);
-		return $ != null && Message.isInMessage($, "success"); // TODO: inbal...
+		final String $ = Message.send(Message.createMessage(id, MessageType.REGISTRATION, ""), out, in);
+		return $ != null && Message.isSuccessMessage($);
 	}
 
 	/**
@@ -106,17 +105,12 @@ public abstract class Sensor {
 
 		lastMessagesMillis.add(currMillis);
 
-		Message.send(Message.createMessage(id, commName, MessageType.UPDATE, data), out, null);
+		Message.send(Message.createMessage(id, MessageType.UPDATE, data), out, null);
 	}
 
 	/** @return id of the sensor */
 	public String getId() {
 		return id;
-	}
-
-	/** @return sensor's commercial name */
-	public String getCommName() {
-		return commName;
 	}
 
 	/** @return sensor's type */

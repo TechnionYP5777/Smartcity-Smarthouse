@@ -20,92 +20,95 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class MappingController extends SystemPresenter {
-    private DatabaseHandler dbHandler;
-    private final Map<String, SensorInfoController> sensors = new HashMap<>();
-    private final Map<SensorLocation, List<String>> locationsContents = new HashMap<>();
-    private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
-    private final House house = new House();
+	private DatabaseHandler dbHandler;
+	private final Map<String, SensorInfoController> sensors = new HashMap<>();
+	private final Map<SensorLocation, List<String>> locationsContents = new HashMap<>();
+	private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
+	private final House house = new House();
 
-    @FXML private VBox sensorsPaneList;
-    @FXML private Canvas canvas;
+	@FXML
+	private VBox sensorsPaneList;
+	@FXML
+	private Canvas canvas;
 
-    @Override public void init(final SystemCore model, final URL location, final ResourceBundle __) {
-        dbHandler = model.databaseHandler;
-        
-        house.addRoom(new Room(320, 320, 150, 150, SensorLocation.LIVING_ROOM));
-        house.addRoom(new Room(470, 320, 150, 150, SensorLocation.KITCHEN));
-        house.addRoom(new Room(470, 470, 150, 150, SensorLocation.DINING_ROOM));
-        house.addRoom(new Room(320, 170, 150, 150, SensorLocation.HALLWAY));
-        house.addRoom(new Room(170, 170, 150, 150, SensorLocation.BEDROOM));
-        house.addRoom(new Room(20, 170, 150, 150, SensorLocation.BATHROOM));
-        house.addRoom(new Room(320, 20, 150, 150, SensorLocation.PORCH));
+	@Override
+	public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+		dbHandler = model.databaseHandler;
 
-        canvas.setWidth(2000);
-        canvas.setHeight(2000);
+		house.addRoom(new Room(320, 320, 150, 150, SensorLocation.LIVING_ROOM));
+		house.addRoom(new Room(470, 320, 150, 150, SensorLocation.KITCHEN));
+		house.addRoom(new Room(470, 470, 150, 150, SensorLocation.DINING_ROOM));
+		house.addRoom(new Room(320, 170, 150, 150, SensorLocation.HALLWAY));
+		house.addRoom(new Room(170, 170, 150, 150, SensorLocation.BEDROOM));
+		house.addRoom(new Room(20, 170, 150, 150, SensorLocation.BATHROOM));
+		house.addRoom(new Room(320, 20, 150, 150, SensorLocation.PORCH));
 
-        try {
-            drawMapping();
-        } catch (final SensorNotFoundException ¢) {
-            ¢.printStackTrace();
-        }
-        
-        dbHandler.addNewSensorsListener(id -> Platform.runLater(() -> {
-            try {
-                addSensor(id);
-            } catch (Exception ¢) {
-                ¢.printStackTrace();
-            }
-        }));
-    }
+		canvas.setWidth(2000);
+		canvas.setHeight(2000);
 
-    public void addSensor(final String id) throws Exception, SensorNotFoundException {
-        PresenterInfo child = createChildPresenter("sensor_info.fxml");
-        sensorsPaneList.getChildren().add(child.getRootViewNode());
+		try {
+			drawMapping();
+		} catch (final SensorNotFoundException ¢) {
+			¢.printStackTrace();
+		}
 
-        final SensorInfoController controller = child.getPresenter();
-        controller.setId(id).setName(dbHandler.getName(id));
-        sensors.put(id, controller);
-    }
+		dbHandler.addNewSensorsListener(id -> Platform.runLater(() -> {
+			try {
+				addSensor(id);
+			} catch (final Exception ¢) {
+				¢.printStackTrace();
+			}
+		}));
+	}
 
-    public void updateSensorLocation(final String id, final SensorLocation l) {
-        if (sensorsLocations.containsKey(id) && locationsContents.containsKey(sensorsLocations.get(id)))
-            locationsContents.get(sensorsLocations.get(id)).remove(id);
+	public void addSensor(final String id) throws Exception, SensorNotFoundException {
+		final PresenterInfo child = createChildPresenter("sensor_info.fxml");
+		sensorsPaneList.getChildren().add(child.getRootViewNode());
 
-        sensorsLocations.put(id, l);
+		final SensorInfoController controller = child.getPresenter();
+		controller.setId(id).setName(dbHandler.getName(id));
+		sensors.put(id, controller);
+	}
 
-        if (!locationsContents.containsKey(l))
-            locationsContents.put(l, new ArrayList<>());
+	public void updateSensorLocation(final String id, final SensorLocation l) {
+		if (sensorsLocations.containsKey(id) && locationsContents.containsKey(sensorsLocations.get(id)))
+			locationsContents.get(sensorsLocations.get(id)).remove(id);
 
-        locationsContents.get(l).add(id);
+		sensorsLocations.put(id, l);
 
-        try {
-            drawMapping();
-        } catch (final SensorNotFoundException ¢) {
-            ¢.printStackTrace();
-        }
-    }
+		if (!locationsContents.containsKey(l))
+			locationsContents.put(l, new ArrayList<>());
 
-    private void drawMapping() throws SensorNotFoundException {
-        final GraphicsContext g = canvas.getGraphicsContext2D();
+		locationsContents.get(l).add(id);
 
-        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        g.setStroke(Color.BLACK);
+		try {
+			drawMapping();
+		} catch (final SensorNotFoundException ¢) {
+			¢.printStackTrace();
+		}
+	}
 
-        for (final Room room : house.getRooms()) {
-            g.strokeRect(room.x, room.y, room.width, room.height);
-            g.strokeLine(room.x, room.y + 20, room.x + room.width, room.y + 20);
-            g.setFill(Color.BLACK);
-            g.fillText(room.location.name(), room.x + 4, room.y + 15);
-            g.setFill(Color.BLUE);
+	private void drawMapping() throws SensorNotFoundException {
+		final GraphicsContext g = canvas.getGraphicsContext2D();
 
-            if (locationsContents.containsKey(room.location)) {
-                int dy = 20;
+		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		g.setStroke(Color.BLACK);
 
-                for (final String id : locationsContents.get(room.location)) {
-                    g.fillText(dbHandler.getName(id) + " (" + id + ")", room.x + 10, room.y + dy + 20);
-                    dy += 20;
-                }
-            }
-        }
-    }
+		for (final Room room : house.getRooms()) {
+			g.strokeRect(room.x, room.y, room.width, room.height);
+			g.strokeLine(room.x, room.y + 20, room.x + room.width, room.y + 20);
+			g.setFill(Color.BLACK);
+			g.fillText(room.location.name(), room.x + 4, room.y + 15);
+			g.setFill(Color.BLUE);
+
+			if (locationsContents.containsKey(room.location)) {
+				int dy = 20;
+
+				for (final String id : locationsContents.get(room.location)) {
+					g.fillText(dbHandler.getName(id) + " (" + id + ")", room.x + 10, room.y + dy + 20);
+					dy += 20;
+				}
+			}
+		}
+	}
 }

@@ -24,7 +24,7 @@ public abstract class SensorTest {
 	private static Logger log = LoggerFactory.getLogger(SensorTest.class);
 
 	protected Sensor sensor;
-	protected String commName = "iTest";
+
 	protected String id;
 
 	protected static Core core;
@@ -51,7 +51,7 @@ public abstract class SensorTest {
 			try {
 				if (sensor.register())
 					break;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				log.error("I/O error occurred, can't regester", e);
 			}
 			if (i == 100) {
@@ -64,15 +64,10 @@ public abstract class SensorTest {
 	@AfterClass
 	public static void close() {
 		log.debug("SensorTest: Core closing");
-		Thread t = core.getSensorHandlerThread();
+		final Thread t = core.getSensorHandlerThread();
 		if (t.isAlive())
 			t.interrupt();
 		((SensorsHandler) core.getHandler(Handler.SENSORS)).closeSockets();
-	}
-
-	@Test
-	public void initializedNameIsCorrect() {
-		Assert.assertEquals(commName, sensor.getCommName());
 	}
 
 	@Test

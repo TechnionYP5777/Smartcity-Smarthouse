@@ -2,7 +2,6 @@ package il.ac.technion.cs.smarthouse.system.sensors;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-
 import java.net.SocketException;
 
 import org.slf4j.Logger;
@@ -13,15 +12,15 @@ import org.slf4j.LoggerFactory;
  * sensor to connect via its instructions connection.
  * 
  * @author Yarden
- * @author Inbal Zukerman 
+ * @author Inbal Zukerman
  * @since 6.4.17
  */
 public class InteractiveSensorServer extends Thread {
 	private static Logger log = LoggerFactory.getLogger(InteractiveSensorServer.class);
 
-	private OutputMapper mapper;
+	private final OutputMapper mapper;
 
-	public InteractiveSensorServer(OutputMapper mapper) {
+	public InteractiveSensorServer(final OutputMapper mapper) {
 		this.mapper = mapper;
 	}
 

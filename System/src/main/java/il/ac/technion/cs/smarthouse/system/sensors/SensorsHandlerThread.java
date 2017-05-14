@@ -52,7 +52,7 @@ public class SensorsHandlerThread extends Thread {
 			for (String input = in.readLine(); input != null;) {
 
 				if (input == "") {
-					String answerMessage = Message.createMessage("", "", MessageType.ANSWER, "FAILURE");
+					final String answerMessage = Message.createMessage("", MessageType.ANSWER, "FAILURE");
 					Message.send(answerMessage, out, null);
 
 					continue;
@@ -83,10 +83,10 @@ public class SensorsHandlerThread extends Thread {
 		}
 	}
 
-	private void handleRegisterMessage(final PrintWriter out, String ¢) {
-		String[] parsedMessage = ¢.split("@");
+	private void handleRegisterMessage(final PrintWriter out, final String ¢) {
+		final String[] parsedMessage = ¢.split("@");
 		databaseHandler.addSensor(parsedMessage[0], parsedMessage[1], 100);
-		Message.send(Message.createMessage("", "", MessageType.ANSWER, "SUCCESS"), out, null);
+		Message.send(Message.createMessage("", MessageType.ANSWER, "SUCCESS"), out, null);
 
 	}
 
@@ -94,7 +94,7 @@ public class SensorsHandlerThread extends Thread {
 
 		try {
 			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, m);
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			log.error("Failed to store data", e);
 		}
 

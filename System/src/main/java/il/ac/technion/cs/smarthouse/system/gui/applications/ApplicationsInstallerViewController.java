@@ -22,58 +22,63 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ApplicationsInstallerViewController extends SystemPresenter {
-    private static Logger log = LoggerFactory.getLogger(ApplicationsInstallerViewController.class);
-    
-    @FXML private TextField browseText;
-    @FXML private Button browseBtn;
-    @FXML private Button installBtn;
+	private static Logger log = LoggerFactory.getLogger(ApplicationsInstallerViewController.class);
 
-    @Override public void init(SystemCore model, URL location, ResourceBundle __) {
-        initInstallBtn();
-        initBrowseBtn();
-    }
+	@FXML
+	private TextField browseText;
+	@FXML
+	private Button browseBtn;
+	@FXML
+	private Button installBtn;
 
-    // [start] Private - init FXML elements
-    private void initInstallBtn() {
-        installBtn.setOnAction(e -> {
-            installApp(new ApplicationPath(PathType.JAR_PATH, browseText.getText()));
-            this.<ApplicationViewController>getParentPresenter().updateListView();
-        });
-    }
+	@Override
+	public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+		initInstallBtn();
+		initBrowseBtn();
+	}
 
-    private void initBrowseBtn() {
-        browseBtn.setOnAction(e -> {
-            final Stage stage = new Stage();
-            final FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Open Resource File");
-            Optional.ofNullable(fileChooser.showOpenDialog(stage)).ifPresent(a->browseText.setText(a.getAbsolutePath()));
-        });
-    }
-    // [end]
+	// [start] Private - init FXML elements
+	private void initInstallBtn() {
+		installBtn.setOnAction(e -> {
+			installApp(new ApplicationPath(PathType.JAR_PATH, browseText.getText()));
+			this.<ApplicationViewController>getParentPresenter().updateListView();
+		});
+	}
 
-    // [start] install app and alert if needed
-    private void installApp(final ApplicationPath p) {
-        try {
-            getModel().applicationsHandler.addApplication(p);
-        } catch (AppInstallerException $) {
-            log.debug("An exception while installing: " + p, $);
-            alert("Installer Error: " + $.getMessage());
-        } catch (final IOException $) {
-            log.debug("An exception while installing: " + p, $);
-            alert("IO Error: " + $.getMessage());
-        } catch (final Exception $) {
-            log.debug("An exception while installing: " + p, $);
-            alert($.getClass().getName() + ": " + $.getMessage());
-        }
-    }
+	private void initBrowseBtn() {
+		browseBtn.setOnAction(e -> {
+			final Stage stage = new Stage();
+			final FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Open Resource File");
+			Optional.ofNullable(fileChooser.showOpenDialog(stage))
+					.ifPresent(a -> browseText.setText(a.getAbsolutePath()));
+		});
+	}
+	// [end]
 
-    private static void alert(final String messege) {
-        final Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle("ALERT");
-        alert.setHeaderText("Installation Error");
-        alert.setContentText(messege);
-        alert.show();
-    }
-    // [end]
+	// [start] install app and alert if needed
+	private void installApp(final ApplicationPath p) {
+		try {
+			getModel().applicationsHandler.addApplication(p);
+		} catch (final AppInstallerException $) {
+			log.debug("An exception while installing: " + p, $);
+			alert("Installer Error: " + $.getMessage());
+		} catch (final IOException $) {
+			log.debug("An exception while installing: " + p, $);
+			alert("IO Error: " + $.getMessage());
+		} catch (final Exception $) {
+			log.debug("An exception while installing: " + p, $);
+			alert($.getClass().getName() + ": " + $.getMessage());
+		}
+	}
+
+	private static void alert(final String messege) {
+		final Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("ALERT");
+		alert.setHeaderText("Installation Error");
+		alert.setContentText(messege);
+		alert.show();
+	}
+	// [end]
 
 }
