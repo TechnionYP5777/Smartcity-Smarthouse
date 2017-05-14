@@ -84,8 +84,8 @@ public class SensorsHandlerThread extends Thread {
 	}
 
 	private void handleRegisterMessage(final PrintWriter out, final String ¢) {
-		final String[] parsedMessage = ¢.split("@");
-		databaseHandler.addSensor(parsedMessage[0], parsedMessage[1], 100);
+		final String[] parsedMessage = ¢.split(".");
+		databaseHandler.addSensor(parsedMessage[0],  100);
 		Message.send(Message.createMessage("", MessageType.ANSWER, "SUCCESS"), out, null);
 
 	}

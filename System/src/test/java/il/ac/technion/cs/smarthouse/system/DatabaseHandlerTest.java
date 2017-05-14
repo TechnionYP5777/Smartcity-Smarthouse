@@ -12,6 +12,11 @@ import org.mockito.Mockito;
 
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 
+/**
+ * @author Sharon
+ * @author Inbal Zukerman
+ */
+
 public class DatabaseHandlerTest {
 	private DatabaseHandler handler;
 	private boolean listenerUpdated;
@@ -21,54 +26,7 @@ public class DatabaseHandlerTest {
 		handler = new DatabaseHandler();
 	}
 
-	@Test
-	public void emptyCommNameListWhenNoSensors() {
-		Assert.assertEquals(new ArrayList<>(), handler.getSensors("iStoves"));
-	}
-
-	@Test
-	public void oneSensorIdInOneCommName() {
-		handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
-
-		Assert.assertEquals(1, handler.getSensors("iStoves").size());
-		Assert.assertEquals(new ArrayList<>(Arrays.asList("00:11:22:33:44:55")), handler.getSensors("iStoves"));
-	}
-
-	@Test
-	public void manySensorsIdsInOneCommName() {
-		handler.addSensor("00:11:22:33:44:55", "hiney", 100);
-		handler.addSensor("11:11:22:33:44:55", "hiney", 100);
-		handler.addSensor("22:11:22:33:44:55", "hiney", 100);
-		handler.addSensor("33:11:22:33:44:55", "hiney", 100);
-		handler.addSensor("44:11:22:33:44:55", "hiney", 100);
-		handler.addSensor("55:11:22:33:44:55", "hiney", 100);
-
-		Assert.assertEquals(6, handler.getSensors("hiney").size());
-		Assert.assertEquals(new ArrayList<>(Arrays.asList("00:11:22:33:44:55", "11:11:22:33:44:55", "22:11:22:33:44:55",
-				"33:11:22:33:44:55", "44:11:22:33:44:55", "55:11:22:33:44:55")), handler.getSensors("hiney"));
-	}
-
-	@Test
-	public void multipleCommNames() {
-		handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
-		handler.addSensor("11:11:22:33:44:55", "iStoves", 100);
-		handler.addSensor("22:11:22:33:44:55", "iStoves", 100);
-
-		handler.addSensor("33:11:22:33:44:55", "hiney", 100);
-		handler.addSensor("44:11:22:33:44:55", "hiney", 100);
-		handler.addSensor("55:11:22:33:44:55", "hiney", 100);
-
-		Assert.assertEquals(3, handler.getSensors("iStoves").size());
-		Assert.assertEquals(
-				new ArrayList<>(Arrays.asList("00:11:22:33:44:55", "11:11:22:33:44:55", "22:11:22:33:44:55")),
-				handler.getSensors("iStoves"));
-
-		Assert.assertEquals(3, handler.getSensors("hiney").size());
-		Assert.assertEquals(
-				new ArrayList<>(Arrays.asList("33:11:22:33:44:55", "44:11:22:33:44:55", "55:11:22:33:44:55")),
-				handler.getSensors("hiney"));
-	}
-
+	
 	@Test(expected = SensorNotFoundException.class)
 	public void throwsExceptionWhenAddingListenerToNonExistingSensor() throws SensorNotFoundException {
 		handler.addListener("Some id", null);
@@ -76,7 +34,7 @@ public class DatabaseHandlerTest {
 
 	@Test
 	public void addListenerToExistingSensorWithoutException() throws SensorNotFoundException {
-		handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
+		handler.addSensor("00:11:22:33:44:55", 100);
 		handler.addListener("00:11:22:33:44:55", null);
 	}
 
@@ -90,7 +48,7 @@ public class DatabaseHandlerTest {
 		@SuppressWarnings("unchecked")
 		final Consumer<String> listener = Mockito.mock(Consumer.class);
 
-		handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
+		handler.addSensor("00:11:22:33:44:55", 100);
 		handler.removeListener("00:11:22:33:44:55", handler.addListener("00:11:22:33:44:55", listener));
 
 		handler.getList("00:11:22:33:44:55").add("sup");
@@ -101,7 +59,7 @@ public class DatabaseHandlerTest {
 	public void addTwoListenersAndRemoveOne() throws SensorNotFoundException {
 		@SuppressWarnings("unchecked")
 		final Consumer<String> listener = Mockito.mock(Consumer.class), listener2 = Mockito.mock(Consumer.class);
-		handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
+		handler.addSensor("00:11:22:33:44:55", 100);
 		handler.removeListener("00:11:22:33:44:55", handler.addListener("00:11:22:33:44:55", listener));
 		handler.addListener("00:11:22:33:44:55", listener2);
 
@@ -117,7 +75,7 @@ public class DatabaseHandlerTest {
 
 	@Test
 	public void getTableOfExistingSensorWithoutException() throws SensorNotFoundException {
-		handler.addSensor("00:11:22:33:44:55", "iStoves", 100);
+		handler.addSensor("00:11:22:33:44:55", 100);
 		handler.getList("00:11:22:33:44:55");
 	}
 
@@ -126,7 +84,7 @@ public class DatabaseHandlerTest {
 		@SuppressWarnings("unchecked")
 		final Consumer<String> listener = Mockito.mock(Consumer.class);
 
-		handler.addSensor("00:22:44:66:88:00", "iStoves", 100);
+		handler.addSensor("00:22:44:66:88:00", 100);
 		handler.addListener("00:22:44:66:88:00", listener);
 		handler.getList("00:22:44:66:88:00").add(null);
 
@@ -138,7 +96,7 @@ public class DatabaseHandlerTest {
 		@SuppressWarnings("unchecked")
 		final Consumer<String> listener = Mockito.mock(Consumer.class);
 
-		handler.addSensor("00:22:44:66:88:00", "iStoves", 100);
+		handler.addSensor("00:22:44:66:88:00", 100);
 		handler.addListener("00:22:44:66:88:00", listener);
 		handler.getList("00:22:44:66:88:00").add(null);
 		handler.getList("00:22:44:66:88:00").add(null);
@@ -155,14 +113,14 @@ public class DatabaseHandlerTest {
 
 	@Test
 	public void lastEntryIsNullIfThereAreNoEntries() {
-		handler.addSensor("0000", "yes", 100);
+		handler.addSensor("0000", 100);
 
 		Assert.assertEquals(false, handler.getLastEntryOf("0000").isPresent());
 	}
 
 	@Test
 	public void getLastEntryOfSomeSensor() throws SensorNotFoundException {
-		handler.addSensor("0000", "yes", 100);
+		handler.addSensor("0000", 100);
 		handler.getList("0000").add("sup");
 		handler.getList("0000").add("sup2");
 		handler.getList("0000").add("sup3");
@@ -182,37 +140,24 @@ public class DatabaseHandlerTest {
 
 	@Test
 	public void newSensorLocationIsUndefined() throws SensorNotFoundException {
-		handler.addSensor("00", "yes", 100);
+		handler.addSensor("00", 100);
 		Assert.assertEquals(SensorLocation.UNDEFINED, handler.getSensorLocation("00"));
 	}
 
 	@Test
 	public void correctlySetSensorLocation() throws SensorNotFoundException {
-		handler.addSensor("00", "yes", 100);
+		handler.addSensor("00", 100);
 		handler.setSensorLocation("00", SensorLocation.BATHROOM);
 		Assert.assertEquals(SensorLocation.BATHROOM, handler.getSensorLocation("00"));
 	}
 
-	@Test
-	public void getNameTest() throws SensorNotFoundException {
-		handler.addSensor("00:11:22:33", "iStoves", 100);
-
-		Assert.assertEquals(1, handler.getSensors("iStoves").size());
-		Assert.assertEquals("iStoves", handler.getName("00:11:22:33"));
-	}
-
-	@Test(expected = SensorNotFoundException.class)
-	public void throwsExceptionGetName() throws SensorNotFoundException {
-
-		handler.getName("01:12:23");
-
-	}
+	
 
 	@Test
 	public void addNewSensorsListenerTest() {
 
 		handler.addNewSensorsListener(x -> listenerUpdated = true);
-		handler.addSensor("01:12:23", "iSOS", 100);
+		handler.addSensor("01:12:23", 100);
 
 		assert listenerUpdated;
 	}

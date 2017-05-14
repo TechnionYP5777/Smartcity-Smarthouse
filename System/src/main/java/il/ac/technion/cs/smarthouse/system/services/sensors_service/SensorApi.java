@@ -60,16 +60,6 @@ public final class SensorApi<T extends SensorData> {
 		this.sensorDataClass = sensorDataClass;
 	}
 
-	/** @return the sensors commercial name */
-	public String getCommercialName() {
-		try {
-			return systemCore.databaseHandler.getName(sensorId);
-		} catch (final SensorNotFoundException e) {
-			log.error(LOG_MSG_SENSOR_NOT_FOUND, e);
-			throw new SensorLostRuntimeException(e);
-		}
-	}
-
 	/**
 	 * Queries the system for the sensor's current location
 	 * 
@@ -101,7 +91,7 @@ public final class SensorApi<T extends SensorData> {
 	 */
 	private Consumer<String> generateSensorListener(final Consumer<T> functionToRun, final boolean runOnFx) {
 		final Consumer<T> functionToRunWrapper1 = sensorData -> {
-			sensorData.commercialName = getCommercialName();
+			
 			sensorData.sensorLocation = getSensorLocation();
 			functionToRun.accept(sensorData);
 		}, functionToRunWrapper2 = !runOnFx ? functionToRunWrapper1

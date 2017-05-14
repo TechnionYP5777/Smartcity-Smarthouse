@@ -19,6 +19,7 @@ import il.ac.technion.cs.smarthouse.system.services.Service;
  * @author RON
  * @since 02-04-2017
  */
+@Deprecated
 public final class SensorsManager extends Service {
 
 	private static Logger log = LoggerFactory.getLogger(SensorsManager.class);
@@ -45,11 +46,13 @@ public final class SensorsManager extends Service {
 	public <T extends SensorData> List<SensorApi<T>> getAllSensors(final Class<T> sensorDataClass,
 			final String... commercialNames) throws SensorNotFoundException {
 		final List<SensorApi<T>> l = new ArrayList<>();
-
-		for (final String sensorCommercialName : commercialNames)
-			for (final String sensorId : systemCore.databaseHandler.getSensors(sensorCommercialName))
-				l.add(new SensorApi<>(systemCore, sensorId, sensorDataClass));
-
+		/*
+		 * TODO: inbal for (final String sensorCommercialName : commercialNames)
+		 * 
+		 * for (final String sensorId :
+		 * systemCore.databaseHandler.getSensors(sensorCommercialName))
+		 * l.add(new SensorApi<>(systemCore, sensorId, sensorDataClass));
+		 */
 		if (l.isEmpty()) {
 			log.info("No sensor was found with the commercial names: " + String.join(", ", commercialNames));
 			throw new SensorNotFoundException("COMM_NAME"); // TODO: maybe

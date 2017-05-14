@@ -27,8 +27,8 @@ public class DatabaseHandler {
 
 	private static Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
 
-	private final Map<String, String> sensorsIdToName = new HashMap<>();
-	private final Map<String, List<String>> commNames = new HashMap<>();
+	
+	
 	private final Map<String, ListenableList<String>> sensors = new HashMap<>();
 	private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
 
@@ -44,53 +44,22 @@ public class DatabaseHandler {
 	 * @param sizeLimit
 	 *            limit of the information List for this sensor
 	 */
-	public void addSensor(final String sensorId, final String commName, final int sizeLimit) {
-		if (commNames.containsKey(commName))
-			commNames.get(commName).add(sensorId);
-		else
-			commNames.put(commName, new ArrayList<>(Arrays.asList(sensorId)));
-
+	public void addSensor(final String sensorId, final int sizeLimit) {
+		
 		sensors.put(sensorId, new ListenableList<String>(sizeLimit));
 		sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
-		sensorsIdToName.put(sensorId, commName);
+		
 
 		newSensorsListeners.forEach(consumer -> consumer.accept(sensorId));
 	}
 
-	/**
-	 * Fetches a list of all the sensor IDs registered to the system with the
-	 * given commercial name.
-	 * 
-	 * @param commName
-	 *            commercial name
-	 * @return list of sensor IDs with the given commercial name
-	 */
-	public List<String> getSensors(final String commName) {
-		return !commNames.containsKey(commName) ? new ArrayList<>() : commNames.get(commName);
-	}
 
 	public Boolean sensorExists(final String id) {// TODO - move method to
 													// sensorsHandler
 		return sensors.containsKey(id);
 	}
 
-	/**
-	 * Returns the commercial name associated with the required sensor.
-	 * 
-	 * @param sensorId
-	 *            sensor'd id
-	 * @return commercial name associated with this id
-	 * @throws SensorNotFoundException
-	 *             if id was not found
-	 */
-	public String getName(final String sensorId) throws SensorNotFoundException {
-		if (!sensorsIdToName.containsKey(sensorId)) {
-			log.error("Sensor was not found");
-			throw new SensorNotFoundException(sensorId);
-		}
-
-		return sensorsIdToName.get(sensorId);
-	}
+	
 
 	/**
 	 * Adds a new listener to the list of consumers that will be notified each

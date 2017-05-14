@@ -5,6 +5,7 @@ import org.junit.Test;
 
 /**
  * @author Sharon
+ * @author Inbal Zukerman 
  * @since 30.12.16
  */
 
@@ -13,10 +14,10 @@ public class MessageTest {
 	@Test
 	public void testMessage() {
 		String m1 = Message.createMessage("11", MessageType.REGISTRATION, "");
-		Assert.assertEquals("11@sensor11@registration", m1);
+		Assert.assertEquals("11.registration", m1);
 
 		m1 = Message.createMessage("", MessageType.ANSWER, "success");
-		Assert.assertEquals("answer@success", m1);
+		Assert.assertEquals("answer.success", m1);
 
 		Assert.assertNull(Message.send(m1, null, null));
 

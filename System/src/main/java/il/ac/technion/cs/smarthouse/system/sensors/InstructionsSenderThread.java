@@ -66,7 +66,7 @@ public class InstructionsSenderThread extends Thread {
 	}
 
 	private void handleRegisterMessage(final PrintWriter out, final String ¢) {
-		final String[] parts = ¢.split("@");
+		final String[] parts = ¢.split(".");
 		mapper.store(parts[0], out);
 		Message.send(Message.createMessage("", MessageType.ANSWER, "SUCCESS"), out, null);
 	}

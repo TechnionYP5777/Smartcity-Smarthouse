@@ -68,7 +68,7 @@ public class SensorsHandler implements Runnable {
 	}
 
 	public void sendInstruction(final String instruction) {
-		routingMap.get(instruction.split("@")[0]).println(instruction);
+		routingMap.get(instruction.split(".")[0]).println(instruction);
 	}
 
 	public void closeSockets() { // for testing

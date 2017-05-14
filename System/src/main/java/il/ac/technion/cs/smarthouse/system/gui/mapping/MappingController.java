@@ -66,7 +66,7 @@ public class MappingController extends SystemPresenter {
 		sensorsPaneList.getChildren().add(child.getRootViewNode());
 
 		final SensorInfoController controller = child.getPresenter();
-		controller.setId(id).setName(dbHandler.getName(id));
+		controller.setId(id);
 		sensors.put(id, controller);
 	}
 
@@ -105,7 +105,7 @@ public class MappingController extends SystemPresenter {
 				int dy = 20;
 
 				for (final String id : locationsContents.get(room.location)) {
-					g.fillText(dbHandler.getName(id) + " (" + id + ")", room.x + 10, room.y + dy + 20);
+					g.fillText( " (" + id + ")", room.x + 10, room.y + dy + 20);
 					dy += 20;
 				}
 			}
