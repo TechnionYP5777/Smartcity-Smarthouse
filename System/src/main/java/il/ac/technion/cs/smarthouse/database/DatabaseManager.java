@@ -8,6 +8,7 @@ import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
 
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
+import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
 /**
  * 
@@ -56,6 +57,8 @@ public class DatabaseManager {
 		
 	}
 	
+	
+	
 	public static void deleteInfo(InfoType t){
 		ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 		findQuery.whereContains("info", t.toString().toLowerCase());
@@ -67,5 +70,23 @@ public class DatabaseManager {
 		}
 		
 	}
+	
+	
+	
+	/*
+	 * TODO: inbal, is needed?
+	public static void deleteAllInfo(InfoType t){
+		ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
+		findQuery.whereContains("info", t.toString().toLowerCase());
+		try {
+			for(int i = 0; i< findQuery.find().size(); i++)
+				ServerManager.deleteById(parseClass, findQuery.find().get(1).getObjectId());
+		} catch (ParseException e) {
+			// TODO inbal - log or throw
+			e.printStackTrace();
+		}
+		
+	}
+	*/
 }
 

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,108 +12,131 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
-/** This class saves all necessary information and implements the required API
- * to save information about the client's emergency contacts
+/**
+ * This class saves all necessary information and implements the required API to
+ * save information about the client's emergency contacts
+ * 
  * @author Inbal Zukerman
- * @since Dec 29, 2016 */
+ * @since Dec 29, 2016
+ */
 
 public class ContactsInformation {
 
-    private final Map<EmergencyLevel, Map<String, Contact>> data = new HashMap<>();
-    
-    private static Logger log = LoggerFactory.getLogger(ContactsInformation.class);
+	private final Map<EmergencyLevel, Map<String, Contact>> data = new HashMap<>();
 
-    public ContactsInformation() {
-        for (final EmergencyLevel elevel : EmergencyLevel.values())
-            data.put(elevel, new HashMap<>());
-    }
+	private static Logger log = LoggerFactory.getLogger(ContactsInformation.class);
 
-  
-    /** Adds a contact with a specific emergency level
-     * @param c contact to add
-     * @param elevel emergency level to inform this contact at */
-    public void addContact(final Contact c, final EmergencyLevel elevel) {
-        data.get(elevel).put(c.getId(), c);
-        
+	public ContactsInformation() {
+		for (final EmergencyLevel elevel : EmergencyLevel.values())
+			data.put(elevel, new HashMap<>());
+	}
 
-        try {
+	/**
+	 * Adds a contact with a specific emergency level
+	 * 
+	 * @param c
+	 *            contact to add
+	 * @param elevel
+	 *            emergency level to inform this contact at
+	 */
+	public void addContact(final Contact c, final EmergencyLevel elevel) {
+		data.get(elevel).put(c.getId(), c);
+
+		try {
 			DatabaseManager.addContactInfo(c.getId(), c.getName(), c.getPhoneNumber(), c.getEmailAddress(), elevel);
 		} catch (ParseException e) {
 			log.error("Contact could not be saved", e);
 		}
 
-    }
+	}
 
-    /** @param id the id of the contact required
-     * @return the contact with the required id or null if does not exist */
-    public Contact getContact(final String id) {
-        for (final EmergencyLevel $ : EmergencyLevel.values())
-            if (data.get($).containsKey(id))
-                return data.get($).get(id);
-        return null;
-    }
+	/**
+	 * @param id
+	 *            the id of the contact required
+	 * @return the contact with the required id or null if does not exist
+	 */
+	public Contact getContact(final String id) {
+		for (final EmergencyLevel $ : EmergencyLevel.values())
+			if (data.get($).containsKey(id))
+				return data.get($).get(id);
+		return null;
+	}
 
-    public void setContactEmergencyLevel(final String id, final EmergencyLevel newELevel) {
-        for (final EmergencyLevel $ : EmergencyLevel.values())
-            if (data.get($).containsKey(id)) {
-                final Contact contact = data.get($).get(id);
-                data.get($).remove(id);
-                data.get(newELevel).put(id, contact);
-                
-                try {
-        			DatabaseManager.deleteContactInfo(id);
-        			DatabaseManager.addContactInfo(id, contact.getName(), contact.getPhoneNumber(), contact.getEmailAddress(), newELevel);
-        		} catch (ParseException e) {
-        			log.error("Contact could not be updated", e);
-        		}
-            }
+	public void setContactEmergencyLevel(final String id, final EmergencyLevel newELevel) {
+		for (final EmergencyLevel $ : EmergencyLevel.values())
+			if (data.get($).containsKey(id)) {
+				final Contact contact = data.get($).get(id);
+				data.get($).remove(id);
+				data.get(newELevel).put(id, contact);
 
-    }
+				try {
+					DatabaseManager.deleteContactInfo(id);
+					DatabaseManager.addContactInfo(id, contact.getName(), contact.getPhoneNumber(),
+							contact.getEmailAddress(), newELevel);
+				} catch (ParseException e) {
+					log.error("Contact could not be updated", e);
+				}
+			}
 
-    /** @param elvl emergency level of the required contacts
-     * @return list of all the contacts to be informed at required emergency
-     *         level */
-    public List<Contact> getContacts(final EmergencyLevel elvl) {
-        final Map<String, Contact> temp = data.get(elvl);
-        final ArrayList<Contact> $ = new ArrayList<>();
-        for (final Contact ¢ : temp.values())
-            $.add(¢);
+	}
 
-        return $;
-    }
+	public void removeContact(final String id) {
+		for (final EmergencyLevel $ : EmergencyLevel.values())
+			if (data.get($).containsKey(id)) {
 
-    /** @return all the contacts saved in this instance */
-    public List<Contact> getContacts() {
-        final ArrayList<Contact> $ = new ArrayList<>();
-        Map<String, Contact> temp;
+				data.get($).remove(id);
 
-        for (final EmergencyLevel elvl : EmergencyLevel.values()) {
-            temp = data.get(elvl);
-            $.addAll(temp.values());
-        }
+				DatabaseManager.deleteContactInfo(id);
+			}
 
-        return $;
-    }
+	}
 
-   
+	/**
+	 * @param elvl
+	 *            emergency level of the required contacts
+	 * @return list of all the contacts to be informed at required emergency
+	 *         level
+	 */
+	public List<Contact> getContacts(final EmergencyLevel elvl) {
+		final Map<String, Contact> temp = data.get(elvl);
+		final ArrayList<Contact> $ = new ArrayList<>();
+		for (final Contact ¢ : temp.values())
+			$.add(¢);
 
-    // For debug mainly, leaving it implemented for future use
-    @Override public String toString() {
-        String $ = "";
-        Map<String, Contact> temp;
+		return $;
+	}
 
-        for (final EmergencyLevel elvl : EmergencyLevel.values()) {
-            temp = data.get(elvl);
-            if (temp.isEmpty())
-                continue;
-            $ += "Elvl is: " + elvl;
+	/** @return all the contacts saved in this instance */
+	public List<Contact> getContacts() {
+		final ArrayList<Contact> $ = new ArrayList<>();
+		Map<String, Contact> temp;
 
-            for (final Contact ¢ : temp.values())
-                $ += "\n\t" + ¢;
+		for (final EmergencyLevel elvl : EmergencyLevel.values()) {
+			temp = data.get(elvl);
+			$.addAll(temp.values());
+		}
 
-            $ += "\n";
-        }
+		return $;
+	}
 
-        return $;
-    }
+	// For debug mainly, leaving it implemented for future use
+	@Override
+	public String toString() {
+		String $ = "";
+		Map<String, Contact> temp;
+
+		for (final EmergencyLevel elvl : EmergencyLevel.values()) {
+			temp = data.get(elvl);
+			if (temp.isEmpty())
+				continue;
+			$ += "Elvl is: " + elvl;
+
+			for (final Contact ¢ : temp.values())
+				$ += "\n\t" + ¢;
+
+			$ += "\n";
+		}
+
+		return $;
+	}
 }

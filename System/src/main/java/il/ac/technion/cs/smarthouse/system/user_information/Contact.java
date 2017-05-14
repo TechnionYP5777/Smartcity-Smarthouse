@@ -51,12 +51,12 @@ public class Contact {
 	public void setPhoneNumber(final String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 
-		try {
+		/*try {
 			DatabaseManager.deleteContactInfo(id);
 			DatabaseManager.addContactInfo(id, name, phoneNumber, emailAddress);
 		} catch (ParseException e) {
 			log.error("Contact could not be updated", e);
-		}
+		}*/
 	}
 
 	public String getEmailAddress() {
@@ -66,12 +66,12 @@ public class Contact {
 	public void setEmailAddress(final String emailAddress) {
 		this.emailAddress = emailAddress;
 
-		try {
+		/*try {
 			DatabaseManager.deleteContactInfo(id);
 			DatabaseManager.addContactInfo(id, name, phoneNumber, emailAddress);
 		} catch (ParseException e) {
 			log.error("Contact could not be updated", e);
-		}
+		}*/
 	}
 
 	// For debug mainly, leaving it implemented for future use

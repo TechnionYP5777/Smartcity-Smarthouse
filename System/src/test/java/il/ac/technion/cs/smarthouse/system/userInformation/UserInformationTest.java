@@ -2,9 +2,14 @@ package il.ac.technion.cs.smarthouse.system.userInformation;
 
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import il.ac.technion.cs.smarthouse.database.DatabaseManager;
+import il.ac.technion.cs.smarthouse.database.InfoType;
+import il.ac.technion.cs.smarthouse.database.ServerManager;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
@@ -15,10 +20,18 @@ import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
  */
 public class UserInformationTest {
 
+	
     private final UserInformation userInfo = new UserInformation("Alon", "789", "0509535200", "Hertzel avn. 7, Jerusalem");
     private final Contact contactA = new Contact("123", "Dan", "0508080123", "alon@gmail.com");
     private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
 
+    
+    @BeforeClass public static void init(){
+    	ServerManager.initialize();
+    }
+    
+    
+    
     @Test public void initTest() {
         Assert.assertEquals("Alon", userInfo.getName());
         Assert.assertEquals("789", userInfo.getId());
@@ -59,6 +72,9 @@ public class UserInformationTest {
         temp = userInfo.getContacts(EmergencyLevel.CONTACT_HOSPITAL);
         Assert.assertEquals(1, temp.size());
         assert temp.contains(contactA);
+        
+        userInfo.removeContact(contactA.getId());
+        userInfo.removeContact(contactB.getId());
     }
 
    
@@ -66,6 +82,11 @@ public class UserInformationTest {
     @Test public void toStringTest() {
         assert userInfo + "" != null;
         Assert.assertEquals("User:\nuserId= 789\tname=Alon\tphone= 0509535200\taddress= Hertzel avn. 7, Jerusalem\n", userInfo + "");
+    }
+    
+    @AfterClass public static void cleanup(){
+    	//TODO: inbal
+    	
     }
 
 }

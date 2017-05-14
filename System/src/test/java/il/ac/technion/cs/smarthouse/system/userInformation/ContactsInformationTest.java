@@ -3,8 +3,11 @@ package il.ac.technion.cs.smarthouse.system.userInformation;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import il.ac.technion.cs.smarthouse.database.DatabaseManager;
+import il.ac.technion.cs.smarthouse.database.ServerManager;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.ContactsInformation;
@@ -20,6 +23,11 @@ public class ContactsInformationTest {
 	private final Contact contactA = new Contact("123", "Alon", "0508080123", "alon@gmail.com");
 	private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
 
+	@BeforeClass public static void init(){
+		ServerManager.initialize();
+	}
+	
+	
 	@Test
 	public void singleContactTest() {
 		contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
@@ -27,6 +35,9 @@ public class ContactsInformationTest {
 		Assert.assertNull(contactsInfo.getContact("456"));
 		contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
 		Assert.assertEquals(contactB, contactsInfo.getContact("456"));
+		
+		DatabaseManager.deleteContactInfo(contactA.getId());
+		DatabaseManager.deleteContactInfo(contactB.getId());
 	}
 
 	@Test
@@ -49,6 +60,10 @@ public class ContactsInformationTest {
 		temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
 		Assert.assertEquals(1, temp.size());
 		assert temp.contains(contactB);
+		
+
+		DatabaseManager.deleteContactInfo(contactA.getId());
+		DatabaseManager.deleteContactInfo(contactB.getId());
 
 	}
 
@@ -73,6 +88,10 @@ public class ContactsInformationTest {
 		temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
 		Assert.assertEquals(2, temp.size());
 		assert temp.contains(contactA);
+		
+
+		DatabaseManager.deleteContactInfo(contactA.getId());
+		DatabaseManager.deleteContactInfo(contactB.getId());
 
 	}
 
@@ -87,6 +106,8 @@ public class ContactsInformationTest {
 		Assert.assertEquals(
 				"Elvl is: CALL_EMERGENCY_CONTACT\n\tContact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n\n",
 				contactsInfo + "");
+		
+		DatabaseManager.deleteContactInfo(contactA.getId());
 
 	}
 }

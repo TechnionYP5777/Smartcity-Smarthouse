@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.database.InfoType;
+import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
 /**
@@ -96,6 +97,11 @@ public class UserInformation {
 	
 	public void addContact(final Contact c, final EmergencyLevel elevel) {
 		emergencyContacts.addContact(c, elevel);
+	}
+	
+	public void removeContact(final String contactID){
+		emergencyContacts.removeContact(contactID);
+	
 	}
 
 	public Contact getContact(final String contactId) {
