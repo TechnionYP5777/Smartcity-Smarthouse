@@ -1,18 +1,19 @@
 package il.ac.technion.cs.smarthouse.system;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
+import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.database.DatabaseManager;
+import il.ac.technion.cs.smarthouse.database.InfoType;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
-import il.ac.technion.cs.smarthouse.utils.ListenableList;
+import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**
  * The API required by ApplicationHandler in order to allow it desired
@@ -27,12 +28,9 @@ public class DatabaseHandler {
 
 	private static Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
 
-	
-	
-	private final Map<String, ListenableList<String>> sensors = new HashMap<>();
+	private final List<String> sensors = new ArrayList<>();
 	private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
-
-	private final List<Consumer<String>> newSensorsListeners = new ArrayList<>();
+	private final Map<String, Map<String, Consumer<String>>> listeners = new HashMap<>();
 
 	/**
 	 * Adds a new sensor to the system, initializing its information List.
@@ -45,31 +43,15 @@ public class DatabaseHandler {
 	 *            limit of the information List for this sensor
 	 */
 	public void addSensor(final String sensorId, final int sizeLimit) {
-		
-		sensors.put(sensorId, new ListenableList<String>(sizeLimit));
+
+		sensors.add(sensorId);
 		sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
-		
 
-		newSensorsListeners.forEach(consumer -> consumer.accept(sensorId));
 	}
 
+	public Boolean sensorExists(final String id) {
 
-	public Boolean sensorExists(final String id) {// TODO - move method to
-													// sensorsHandler
-		return sensors.containsKey(id);
-	}
-
-	
-
-	/**
-	 * Adds a new listener to the list of consumers that will be notified each
-	 * time a new sensor is registered to the system.
-	 * 
-	 * @param listener
-	 *            consumer to be called when a sensor is added
-	 */
-	public void addNewSensorsListener(final Consumer<String> listener) {
-		newSensorsListeners.add(listener);
+		return sensors.contains(id);
 	}
 
 	/**
@@ -81,17 +63,19 @@ public class DatabaseHandler {
 	 * @param notifee
 	 *            The consumer to be called on a change, with the whole list of
 	 *            the sensor
-	 * @return The id of the listener, to be used in any future reference to it
 	 * @throws SensorNotFoundException
 	 */
-	public String addListener(final String $, final Consumer<String> notifee) throws SensorNotFoundException {
-		try {
-			return sensors.get($).addListener(notifee);
-		} catch (final Exception ¢) {
-			log.error("Sensor was not found", ¢);
-			throw new SensorNotFoundException($); // TODO: are we sure about
-													// this?
-		}
+	public String addListener(final String $, final Consumer<String> notifee) {
+
+		if (!listeners.containsKey($))
+			listeners.put($, new HashMap<>());
+
+		
+		final String id = UuidGenerator.GenerateUniqueIDstring();
+		
+		listeners.get($).put(id, notifee);
+		return id;
+
 	}
 
 	/**
@@ -103,38 +87,12 @@ public class DatabaseHandler {
 	 *            The id given when the listener was added to the system
 	 * @throws SensorNotFoundException
 	 */
-	public void removeListener(final String sensorId, final String listenerId) throws SensorNotFoundException {
-		if (!sensors.containsKey(sensorId)) {
-			log.error("Sensor was not found");
-			throw new SensorNotFoundException(sensorId);
+	public void removeListener(final String keyWord, final String listenerId)  {
+		if (!listeners.containsKey(keyWord)) {
+			log.error("Key Word was not found");
+			//TODO: inbal - shoud throw too?
 		}
-		sensors.get(sensorId).removeListener(listenerId);
-	}
-
-	/**
-	 * Queries the info of a sensor.
-	 * 
-	 * @param sensorCommercialName
-	 *            The name of sensor, agreed upon in an external platform
-	 * @return the most updated data of the sensor, or Optional.empty() if the
-	 *         request couldn't be completed for any reason
-	 */
-	public Optional<String> getLastEntryOf(final String sensorId) {
-		return Optional.ofNullable(sensors.get(sensorId)).filter(t -> !t.isEmpty()).map(t -> t.get(t.size() - 1));
-	}
-
-	/**
-	 * @param sensorId
-	 *            the ID of the sensor's who's List is required
-	 * @return the List with the information of the wanted sensor
-	 * @throws SensorNotFoundException
-	 */
-	public ListenableList<String> getList(final String sensorId) throws SensorNotFoundException {
-		if (!sensors.containsKey(sensorId)) {
-			log.error("Sensor was not found");
-			throw new SensorNotFoundException(sensorId);
-		}
-		return sensors.get(sensorId);
+		listeners.get(keyWord).remove(listenerId);
 	}
 
 	/**
@@ -170,4 +128,23 @@ public class DatabaseHandler {
 
 		System.out.println(sensorsLocations.get(sensorId));
 	}
+
+
+	public void handleUpdateMessage(String message){
+		try {
+			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, message);
+		} catch (ParseException e) {
+			// TODO inbal
+			e.printStackTrace();
+		}
+		
+		for (String keyWord : listeners.keySet()){
+			if (message.contains(keyWord.toLowerCase())){
+				listeners.get(keyWord).values().forEach(listener -> listener.accept(message));
+			}
+		}
+	}
+
+
+
 }

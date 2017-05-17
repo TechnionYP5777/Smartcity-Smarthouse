@@ -7,7 +7,6 @@ import org.junit.Test;
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.database.InfoType;
 import il.ac.technion.cs.smarthouse.database.ServerManager;
-import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
 /**
@@ -16,9 +15,9 @@ import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
  */
 public class UserInformationTest {
 
-	// private static
-	private final Contact contactA = new Contact("123", "Dan", "0508080123", "alon@gmail.com");
-	private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
+	// TODO inbal
+	//private final Contact contactA = new Contact("123", "Dan", "0508080123", "alon@gmail.com");
+	//private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
 
 	@BeforeClass
 	public static void init() {

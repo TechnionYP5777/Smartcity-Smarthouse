@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class MappingController extends SystemPresenter {
-	private DatabaseHandler dbHandler;
+	private DatabaseHandler dbHandler; 
 	private final Map<String, SensorInfoController> sensors = new HashMap<>();
 	private final Map<SensorLocation, List<String>> locationsContents = new HashMap<>();
 	private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
@@ -52,13 +52,14 @@ public class MappingController extends SystemPresenter {
 			¢.printStackTrace();
 		}
 
-		dbHandler.addNewSensorsListener(id -> Platform.runLater(() -> {
+		/* TODO: is needed?
+		 * dbHandler.addNewSensorsListener(id -> Platform.runLater(() -> {
 			try {
 				addSensor(id);
 			} catch (final Exception ¢) {
 				¢.printStackTrace();
 			}
-		}));
+		}));*/
 	}
 
 	public void addSensor(final String id) throws Exception, SensorNotFoundException {

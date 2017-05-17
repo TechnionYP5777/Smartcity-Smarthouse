@@ -27,6 +27,7 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
  * sensor.
  * 
  * @author RON
+ * @author Inbal Zukerman
  * @since 07-04-2017
  * @param <T>
  *            the sensor's messages will be deserialize into this class. T must
@@ -78,7 +79,7 @@ public final class SensorApi<T extends SensorData> {
 	 * Wraps the <code>functionToRun</code> Consumer with helpful wrappers.
 	 * <p>
 	 * 1. A wrapper that sets the <code>sensorData</code>'s
-	 * <code>commercialName</code> and <code>sensorLocation</code>
+	 *  <code>sensorLocation</code>
 	 * <p>
 	 * 2. Surrounds the given function with a Platform.runLater, if
 	 * <code>runOnFx == true</code>
@@ -108,13 +109,8 @@ public final class SensorApi<T extends SensorData> {
 	 *            with the newest data from the sensor
 	 * @throws SensorLostRuntimeException
 	 */
-	public void subscribe(final Consumer<T> functionToRun) throws SensorLostRuntimeException {
-		try {
-			systemCore.databaseHandler.addListener(sensorId, generateSensorListener(functionToRun, true));
-		} catch (final SensorNotFoundException e) {
-			log.error(LOG_MSG_SENSOR_NOT_FOUND, e);
-			throw new SensorLostRuntimeException(e);
-		}
+	public void subscribe(final Consumer<T> functionToRun) throws SensorLostRuntimeException, SensorNotFoundException {
+		systemCore.databaseHandler.addListener(sensorId, generateSensorListener(functionToRun, true));
 	}
 
 	/**
@@ -135,34 +131,7 @@ public final class SensorApi<T extends SensorData> {
 				localTimeToDate(t));
 	}
 
-	/**
-	 * Request for the latest k entries of data received by a sensor
-	 * 
-	 * @param numOfEntries
-	 *            the number of entries desired
-	 * @return the list of the <code> &lt;=k </code> available entries
-	 * @throws SensorLostRuntimeException
-	 */
-	public List<T> receiveLastEntries(final int numOfEntries) throws SensorLostRuntimeException {
-		try {
-			return systemCore.databaseHandler.getList(sensorId).getLastKEntries(numOfEntries).stream()
-					.map(jsonData -> new Gson().fromJson(jsonData, sensorDataClass)).collect(Collectors.toList());
-		} catch (final SensorNotFoundException e) {
-			log.error(LOG_MSG_SENSOR_NOT_FOUND, e);
-			throw new SensorLostRuntimeException(e);
-		}
-	}
-
-	/**
-	 * Request the latest data received by the sensor in the system
-	 * 
-	 * @return the latest data or null if none is available
-	 * @throws SensorLostRuntimeException
-	 */
-	public T receiveLastEntry() throws SensorLostRuntimeException {
-		final List<T> $ = receiveLastEntries(1);
-		return $.isEmpty() ? null : $.get(0);
-	}
+	
 
 	/**
 	 * Send a message to a sensor.

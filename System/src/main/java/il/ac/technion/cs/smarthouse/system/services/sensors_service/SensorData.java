@@ -7,17 +7,14 @@ import il.ac.technion.cs.smarthouse.system.SensorLocation;
  * SmartHouseApplication
  * 
  * @author RON
+ * @author Inbal Zukerman
  * @since 28-12-2016
  */
 public class SensorData {
-	protected String commercialName;
+	
 	protected SensorLocation sensorLocation;
 
 	public SensorData() {
-	}
-
-	public String getCommercialName() {
-		return commercialName;
 	}
 
 	public SensorLocation getSensorLocation() {

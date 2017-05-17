@@ -6,12 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.database.DatabaseManager;
-import il.ac.technion.cs.smarthouse.database.InfoType;
 import il.ac.technion.cs.smarthouse.database.ServerManager;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
@@ -52,7 +49,8 @@ public class SensorsHandlerThread extends Thread {
 			for (String input = in.readLine(); input != null;) {
 
 				if (input == "") {
-					final String answerMessage = Message.createMessage("", MessageType.ANSWER, "FAILURE");
+					final String answerMessage = Message.createMessage("", MessageType.ANSWER, "FAILURE"); // TODO
+																											// inbal
 					Message.send(answerMessage, out, null);
 
 					continue;
@@ -85,18 +83,14 @@ public class SensorsHandlerThread extends Thread {
 
 	private void handleRegisterMessage(final PrintWriter out, final String ¢) {
 		final String[] parsedMessage = ¢.split(".");
-		databaseHandler.addSensor(parsedMessage[0],  100);
+		databaseHandler.addSensor(parsedMessage[0], 100);
 		Message.send(Message.createMessage("", MessageType.ANSWER, "SUCCESS"), out, null);
 
 	}
 
 	private void handleUpdateMessage(final String m) {
 
-		try {
-			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, m);
-		} catch (final ParseException e) {
-			log.error("Failed to store data", e);
-		}
+		databaseHandler.handleUpdateMessage(m);
 
 	}
 
