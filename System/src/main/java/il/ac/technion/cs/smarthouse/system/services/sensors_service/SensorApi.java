@@ -1,14 +1,6 @@
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +71,7 @@ public final class SensorApi<T extends SensorData> {
 	 * Wraps the <code>functionToRun</code> Consumer with helpful wrappers.
 	 * <p>
 	 * 1. A wrapper that sets the <code>sensorData</code>'s
-	 *  <code>sensorLocation</code>
+	 * <code>sensorLocation</code>
 	 * <p>
 	 * 2. Surrounds the given function with a Platform.runLater, if
 	 * <code>runOnFx == true</code>
@@ -92,7 +84,7 @@ public final class SensorApi<T extends SensorData> {
 	 */
 	private Consumer<String> generateSensorListener(final Consumer<T> functionToRun, final boolean runOnFx) {
 		final Consumer<T> functionToRunWrapper1 = sensorData -> {
-			
+
 			sensorData.sensorLocation = getSensorLocation();
 			functionToRun.accept(sensorData);
 		}, functionToRunWrapper2 = !runOnFx ? functionToRunWrapper1
@@ -114,26 +106,6 @@ public final class SensorApi<T extends SensorData> {
 	}
 
 	/**
-	 * Allows registration to a sensor. on time, the sensor will be polled and
-	 * 
-	 * @param t
-	 *            the time when a polling is requested
-	 * @param functionToRun
-	 *            A consumer that will receive a seneorClass object initialized
-	 *            with the newest data from the sensor
-	 * @param repeat
-	 *            <code>false</code> if you want to query the sensor on the
-	 *            given time only once, <code>true</code> otherwise (query at
-	 *            this time FOREVER)
-	 */
-	public void subscribe(final LocalTime t, final Consumer<T> functionToRun, final Boolean repeat) {
-		new Timer().schedule(new QueryTimerTask(sensorId, t, generateSensorListener(functionToRun, true), repeat),
-				localTimeToDate(t));
-	}
-
-	
-
-	/**
 	 * Send a message to a sensor.
 	 * 
 	 * @param instruction
@@ -148,37 +120,4 @@ public final class SensorApi<T extends SensorData> {
 		systemCore.sensorsHandler.sendInstruction(Message.createMessage(sensorId, MessageType.UPDATE, instruction));
 	}
 
-	// [start] timer functions
-	static Date localTimeToDate(final LocalTime ¢) {
-		return Date.from(¢.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
-	}
-
-	private class QueryTimerTask extends TimerTask {
-		Boolean repeat;
-		String sensorId1;
-		LocalTime t;
-		Consumer<String> notifee;
-
-		QueryTimerTask(final String sensorId1, final LocalTime t, final Consumer<String> notifee,
-				final Boolean repeat) {
-			this.repeat = repeat;
-			this.notifee = notifee;
-			this.t = t;
-			this.sensorId1 = sensorId1;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.util.TimerTask#run()
-		 */
-		@Override
-		@SuppressWarnings("synthetic-access")
-		public void run() {
-			notifee.accept(systemCore.databaseHandler.getLastEntryOf(sensorId1).orElse(new String()));
-			if (repeat)
-				new Timer().schedule(this, localTimeToDate(t));
-		}
-	}
-	// [end]
 }
