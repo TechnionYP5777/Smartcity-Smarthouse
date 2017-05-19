@@ -23,21 +23,12 @@ public class DatabaseHandlerTest {
 		handler = new DatabaseHandler();
 	}
 
-	@Test(expected = SensorNotFoundException.class)
-	public void throwsExceptionWhenAddingListenerToNonExistingSensor() throws SensorNotFoundException {
-		handler.addListener("Some id", null);
-	}
-
 	@Test
 	public void addListenerToExistingSensorWithoutException() throws SensorNotFoundException {
 		handler.addSensor("00:11:22:33:44:55", 100);
 		handler.addListener("00:11:22:33:44:55", null);
 	}
 
-	@Test(expected = SensorNotFoundException.class)
-	public void removeNotAddedListenerAndGetException() throws SensorNotFoundException {
-		handler.removeListener("1111", "2222");
-	}
 
 	@Test
 	public void listenerIsCalledWhenAddingEntryToSensorTable() throws SensorNotFoundException {
