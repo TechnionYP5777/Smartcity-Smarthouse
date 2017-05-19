@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Sharon
  * @author Yarden
+ * @author Inbal Zukerman
  * @since 11.12.16
  */
 public abstract class Message {

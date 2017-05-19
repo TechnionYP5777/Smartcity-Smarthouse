@@ -17,10 +17,10 @@ public class StoveSensor extends Sensor {
 	}
 
 	public void updateSystem(final boolean on, final int temperature) {
-		String data = "on." + on;
+		String data = "stove.on." + on;
 		super.updateSystem(data);
 
-		data = "temperature." + temperature;
+		data = "stove.temperature." + temperature;
 		super.updateSystem(data);
 	}
 

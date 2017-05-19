@@ -55,6 +55,7 @@ public class DatabaseHandler {
 	}
 
 	/**
+	 * TODO inbal update doc
 	 * Adds a listener to a certain sensor, to be called on <strong>any</strong>
 	 * update from that sensor
 	 * 
@@ -70,9 +71,8 @@ public class DatabaseHandler {
 		if (!listeners.containsKey($))
 			listeners.put($, new HashMap<>());
 
-		
 		final String id = UuidGenerator.GenerateUniqueIDstring();
-		
+
 		listeners.get($).put(id, notifee);
 		return id;
 
@@ -87,10 +87,10 @@ public class DatabaseHandler {
 	 *            The id given when the listener was added to the system
 	 * @throws SensorNotFoundException
 	 */
-	public void removeListener(final String keyWord, final String listenerId)  {
+	public void removeListener(final String keyWord, final String listenerId) {
 		if (!listeners.containsKey(keyWord)) {
 			log.error("Key Word was not found");
-			//TODO: inbal - shoud throw too?
+			// TODO: inbal - shoud throw too?
 		}
 		listeners.get(keyWord).remove(listenerId);
 	}
@@ -129,22 +129,19 @@ public class DatabaseHandler {
 		System.out.println(sensorsLocations.get(sensorId));
 	}
 
-
-	public void handleUpdateMessage(String message){
+	public void handleUpdateMessage(String message) {
 		try {
 			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, message);
 		} catch (ParseException e) {
-			// TODO inbal
-			e.printStackTrace();
+			log.error("Update message was not handled properly", e);
+
 		}
-		
-		for (String keyWord : listeners.keySet()){
-			if (message.contains(keyWord.toLowerCase())){
+
+		for (String keyWord : listeners.keySet()) {
+			if (message.contains(keyWord.toLowerCase())) {
 				listeners.get(keyWord).values().forEach(listener -> listener.accept(message));
 			}
 		}
 	}
-
-
 
 }

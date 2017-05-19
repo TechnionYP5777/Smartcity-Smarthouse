@@ -73,22 +73,6 @@ public abstract class ServerManager {
 		return $;
 	}
 
-	/**
-	 * @param objectClass
-	 * @param fields
-	 *            Map any field name (string) to an object which will be saved
-	 *            as the ParseObject
-	 * @param c
-	 *            callback which will let us get the result
-	 *//*
-		 * TODO: inbal... public static void putValue(final String objectClass,
-		 * final Map<String, Object> fields, final SaveCallback c) { final
-		 * ParseObject obj = new ParseObject(objectClass); for (final String key
-		 * : fields.keySet()) obj.put(key, fields.get(key));
-		 * 
-		 * obj.saveInBackground(c); }
-		 */
-
 	/** This method deletes an object from class @objectClass with @id */
 	public static void deleteById(final String objectClass, final String id) {
 		if (!isInDB(objectClass, id))

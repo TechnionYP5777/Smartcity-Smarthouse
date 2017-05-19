@@ -15,11 +15,11 @@ public class VitalsSensor extends Sensor {
 	}
 
 	public void updateSystem(final int pulse, final int systolicBP, final int diastolicBP) {
-		String data = "pulse." + pulse;
+		String data = "vitals.pulse." + pulse;
 		super.updateSystem(data);
-		data = "systolicBP." + systolicBP;
+		data = "vitals.systolicBP." + systolicBP;
 		super.updateSystem(data);
-		data = "diastolicBP." + diastolicBP;
+		data = "vitals.diastolicBP." + diastolicBP;
 		super.updateSystem(data);
 	}
 

@@ -74,8 +74,6 @@ public class SensorsHandler implements Runnable {
 	public void closeSockets() { // for testing
 		try {
 			server.close();
-			// TODO: ELIA remove if you don't need this
-			// router.close();
 		} catch (final IOException e) {
 			log.error("I/O error occurred while closing", e);
 		}
