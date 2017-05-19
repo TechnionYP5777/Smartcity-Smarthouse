@@ -5,7 +5,7 @@ import org.junit.Test;
 
 /**
  * @author Sharon
- * @author Inbal Zukerman 
+ * @author Inbal Zukerman
  * @since 30.12.16
  */
 
@@ -23,9 +23,8 @@ public class MessageTest {
 
 		// TODO: inbal test more sending options
 
-		// TODO: inbal, make sure to change this
-		Assert.assertTrue(Message.isInMessage(m1, "answer"));
-		Assert.assertFalse(Message.isInMessage(m1, "failure"));
+		assert Message.isInMessage(m1, "answer");
+		assert !Message.isInMessage(m1, "failure");
 	}
 
 }

@@ -14,18 +14,15 @@ import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
  * @author Inbal Zukerman
  */
 
-
-//TODO: inbal
+// TODO: inbal
 public class DatabaseHandlerTest {
 	private DatabaseHandler handler;
-	
 
 	@Before
 	public void init() {
 		handler = new DatabaseHandler();
 	}
 
-	
 	@Test(expected = SensorNotFoundException.class)
 	public void throwsExceptionWhenAddingListenerToNonExistingSensor() throws SensorNotFoundException {
 		handler.addListener("Some id", null);
@@ -42,7 +39,6 @@ public class DatabaseHandlerTest {
 		handler.removeListener("1111", "2222");
 	}
 
-	
 	@Test
 	public void listenerIsCalledWhenAddingEntryToSensorTable() throws SensorNotFoundException {
 		@SuppressWarnings("unchecked")
@@ -51,9 +47,6 @@ public class DatabaseHandlerTest {
 		handler.addSensor("00:22:44:66:88:00", 100);
 		handler.addListener("00:22:44:66:88:00", listener);
 	}
-
-	
-	
 
 	@Test(expected = SensorNotFoundException.class)
 	public void getLocationOfNotAddedSensorThrows() throws SensorNotFoundException {
@@ -78,5 +71,4 @@ public class DatabaseHandlerTest {
 		Assert.assertEquals(SensorLocation.BATHROOM, handler.getSensorLocation("00"));
 	}
 
-	
 }

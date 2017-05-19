@@ -11,7 +11,7 @@ import il.ac.technion.cs.smarthouse.system.SensorLocation;
  * @since 28-12-2016
  */
 public class SensorData {
-	
+
 	protected SensorLocation sensorLocation;
 
 	public SensorData() {

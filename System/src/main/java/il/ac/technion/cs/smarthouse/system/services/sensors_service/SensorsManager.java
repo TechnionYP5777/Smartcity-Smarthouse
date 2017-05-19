@@ -19,7 +19,7 @@ import il.ac.technion.cs.smarthouse.system.services.Service;
  * @author RON
  * @since 02-04-2017
  */
-//@Deprecated
+@Deprecated
 public final class SensorsManager extends Service {
 
 	private static Logger log = LoggerFactory.getLogger(SensorsManager.class);

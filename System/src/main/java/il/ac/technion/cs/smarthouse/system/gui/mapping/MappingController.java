@@ -8,11 +8,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class MappingController extends SystemPresenter {
-	private DatabaseHandler dbHandler; 
 	private final Map<String, SensorInfoController> sensors = new HashMap<>();
 	private final Map<SensorLocation, List<String>> locationsContents = new HashMap<>();
 	private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
@@ -33,8 +30,6 @@ public class MappingController extends SystemPresenter {
 
 	@Override
 	public void init(final SystemCore model, final URL location, final ResourceBundle __) {
-		dbHandler = model.databaseHandler;
-
 		house.addRoom(new Room(320, 320, 150, 150, SensorLocation.LIVING_ROOM));
 		house.addRoom(new Room(470, 320, 150, 150, SensorLocation.KITCHEN));
 		house.addRoom(new Room(470, 470, 150, 150, SensorLocation.DINING_ROOM));
@@ -52,14 +47,11 @@ public class MappingController extends SystemPresenter {
 			¢.printStackTrace();
 		}
 
-		/* TODO: is needed?
-		 * dbHandler.addNewSensorsListener(id -> Platform.runLater(() -> {
-			try {
-				addSensor(id);
-			} catch (final Exception ¢) {
-				¢.printStackTrace();
-			}
-		}));*/
+		/*
+		 * TODO: is needed? dbHandler.addNewSensorsListener(id ->
+		 * Platform.runLater(() -> { try { addSensor(id); } catch (final
+		 * Exception ¢) { ¢.printStackTrace(); } }));
+		 */
 	}
 
 	public void addSensor(final String id) throws Exception, SensorNotFoundException {
@@ -106,7 +98,7 @@ public class MappingController extends SystemPresenter {
 				int dy = 20;
 
 				for (final String id : locationsContents.get(room.location)) {
-					g.fillText( " (" + id + ")", room.x + 10, room.y + dy + 20);
+					g.fillText(" (" + id + ")", room.x + 10, room.y + dy + 20);
 					dy += 20;
 				}
 			}

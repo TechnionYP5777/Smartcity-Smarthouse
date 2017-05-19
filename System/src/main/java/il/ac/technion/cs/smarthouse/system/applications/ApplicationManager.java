@@ -1,4 +1,4 @@
- package il.ac.technion.cs.smarthouse.system.applications;
+package il.ac.technion.cs.smarthouse.system.applications;
 
 import java.io.IOException;
 

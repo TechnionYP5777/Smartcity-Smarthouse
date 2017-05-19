@@ -55,9 +55,8 @@ public class DatabaseHandler {
 	}
 
 	/**
-	 * TODO inbal update doc
-	 * Adds a listener to a certain sensor, to be called on <strong>any</strong>
-	 * update from that sensor
+	 * TODO inbal update doc Adds a listener to a certain sensor, to be called
+	 * on <strong>any</strong> update from that sensor
 	 * 
 	 * @param sensorId
 	 *            The sensorId
@@ -88,10 +87,9 @@ public class DatabaseHandler {
 	 * @throws SensorNotFoundException
 	 */
 	public void removeListener(final String keyWord, final String listenerId) {
-		if (!listeners.containsKey(keyWord)) {
+		if (!listeners.containsKey(keyWord))
 			log.error("Key Word was not found");
 			// TODO: inbal - shoud throw too?
-		}
 		listeners.get(keyWord).remove(listenerId);
 	}
 
@@ -129,19 +127,17 @@ public class DatabaseHandler {
 		System.out.println(sensorsLocations.get(sensorId));
 	}
 
-	public void handleUpdateMessage(String message) {
+	public void handleUpdateMessage(final String message) {
 		try {
 			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, message);
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			log.error("Update message was not handled properly", e);
 
 		}
 
-		for (String keyWord : listeners.keySet()) {
-			if (message.contains(keyWord.toLowerCase())) {
+		for (final String keyWord : listeners.keySet())
+			if (message.contains(keyWord.toLowerCase()))
 				listeners.get(keyWord).values().forEach(listener -> listener.accept(message));
-			}
-		}
 	}
 
 }

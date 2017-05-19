@@ -62,7 +62,7 @@ public class DatabaseManager {
 	public static void deleteInfo(final InfoType t) {
 		final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 		findQuery.whereContains("info", t.toString().toLowerCase());
-		
+
 		try {
 			ServerManager.deleteById(parseClass, findQuery.find().get(0).getObjectId());
 		} catch (final ParseException e) {
