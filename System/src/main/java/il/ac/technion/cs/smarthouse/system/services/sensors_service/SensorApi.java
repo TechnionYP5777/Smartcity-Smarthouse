@@ -1,6 +1,14 @@
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,9 +109,29 @@ public final class SensorApi<T extends SensorData> {
 	 *            with the newest data from the sensor
 	 * @throws SensorLostRuntimeException
 	 */
-	public void subscribe(final Consumer<T> functionToRun) throws SensorLostRuntimeException, SensorNotFoundException {
+	public void subscribe(final Consumer<T> functionToRun) throws SensorLostRuntimeException {
 		systemCore.databaseHandler.addListener(sensorId, generateSensorListener(functionToRun, true));
 	}
+
+	/**
+	 * Allows registration to a sensor. on time, the sensor will be polled and
+	 * 
+	 * @param t
+	 *            the time when a polling is requested
+	 * @param functionToRun
+	 *            A consumer that will receive a seneorClass object initialized
+	 *            with the newest data from the sensor
+	 * @param repeat
+	 *            <code>false</code> if you want to query the sensor on the
+	 *            given time only once, <code>true</code> otherwise (query at
+	 *            this time FOREVER)
+	 */
+	public void subscribe(final LocalTime t, final Consumer<T> functionToRun, final Boolean repeat) {
+		new Timer().schedule(new QueryTimerTask(sensorId, t, generateSensorListener(functionToRun, true), repeat),
+				localTimeToDate(t));
+	}
+
+	
 
 	/**
 	 * Send a message to a sensor.
@@ -120,4 +148,37 @@ public final class SensorApi<T extends SensorData> {
 		systemCore.sensorsHandler.sendInstruction(Message.createMessage(sensorId, MessageType.UPDATE, instruction));
 	}
 
+	// [start] timer functions
+	static Date localTimeToDate(final LocalTime ¢) {
+		return Date.from(¢.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+	private class QueryTimerTask extends TimerTask {
+		Boolean repeat;
+		String sensorId1;
+		LocalTime t;
+		Consumer<String> notifee;
+
+		QueryTimerTask(final String sensorId1, final LocalTime t, final Consumer<String> notifee,
+				final Boolean repeat) {
+			this.repeat = repeat;
+			this.notifee = notifee;
+			this.t = t;
+			this.sensorId1 = sensorId1;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.util.TimerTask#run()
+		 */
+		@Override
+		@SuppressWarnings("synthetic-access")
+		public void run() {
+//			notifee.accept(systemCore.databaseHandler.getLastEntryOf(sensorId1).orElse(new String()));
+//			if (repeat)
+//				new Timer().schedule(this, localTimeToDate(t));
+		}
+	}
+	// [end]
 }
