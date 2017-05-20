@@ -29,6 +29,6 @@ public class MessagesTree {
 	}
 	
 	public MessageNode get(String path) {
-		
+		return null;
 	}
 }
