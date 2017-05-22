@@ -37,4 +37,14 @@ public interface DatabaseAPI {
 	 */
 	public void deleteInfo(String info);
 
+	/**
+	 * This method allows to query the last record saved in the DB on a specific
+	 * path
+	 * 
+	 * @param path
+	 *            The path to find the last entry of
+	 * @return The last entry (full path+value)
+	 */
+	public String getLastEntry(String... path);
+
 }
