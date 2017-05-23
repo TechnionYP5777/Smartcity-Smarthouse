@@ -33,12 +33,19 @@ And the following command to install the JavaFX library:
 
 These three commands will install the java development kit, java runtime environment and the JavaFX library. Another option would be to go to the official Oracle download page, download the java binaries and do the installation manually.
 
-## Running the application from the command line
-The application can be launched from the command line with the following commands:
-- `mvn exec:java@main` - launches the system
-- `mvn exec:java@sensor_sim_sos` - launches the SOS sensor
-- `mvn exec:java@sensor_sim_stove` - launches the Stove sensor
-- `mvn exec:java@sensor_sim_vitals` - launches the Vitals sensor
+## Building the application
+From the root directory, run
+`mvn clean package -DskipTests`
+
+The following jar files will be created in the `target` folder:
+- `System-1.01-jar-with-dependencies.jar` - the smarthouse system
+- `Sos-1.01-jar-with-dependencies.jar` - the sos application runner
+- `Stove-1.01-jar-with-dependencies.jar` - the stove application runner
+- `Vitals-1.01-jar-with-dependencies.jar` - the vitals application runner
+- `Shutter-1.01-jar-with-dependencies.jar` - the shutter application runner
+
+You can run any of those jar files with the command:
+`java -jar <JAR_FILE_NAME>`
 
 ## About
 Icons by www.icons8.com

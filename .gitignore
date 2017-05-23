@@ -103,7 +103,6 @@ $.*
 *.tsv
 *.vrb
 *.vtc
-*.xml
 *.yy.c
 *.yy.cpp
 *.yy.h
@@ -172,7 +171,11 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 /screenshot*.png
-/Logs/*.log*
+*.log*
 
 # Exclude maven wrapper
 !/.mvn/wrapper/maven-wrapper.jar
+
+!*/pom.xml
+!pom.xml
+!/libs/*

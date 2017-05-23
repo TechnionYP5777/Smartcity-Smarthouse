@@ -1,78 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Technion</groupId>
-	<artifactId>ElderlySupport</artifactId>
-	<version>0.99</version>
-	<packaging>jar</packaging>
-	<name>ElderlySupport</name>
-	<url>http://maven.apache.org</url>
+	<artifactId>SmartcitySmarthouse</artifactId>
+	<version>1.01</version>
+	<packaging>pom</packaging>
+	<name>SmartcitySmarthouse</name>
+	<modules>
+		<module>System</module>
+		<module>Applications</module>
+	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<configuration>
+						<descriptorRefs>
+							<descriptorRef>jar-with-dependencies</descriptorRef>
+						</descriptorRefs>
+						<archive>
+							<manifest>
+								<mainClass>${jar.runnable.main.class}</mainClass>
+							</manifest>
+						</archive>
+						<outputDirectory>${session.executionRootDirectory}/target</outputDirectory>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.7.201606060606</version>
 				<executions>
 					<execution>
-						<id>main</id>
 						<goals>
-							<goal>java</goal>
+							<goal>prepare-agent</goal>
 						</goals>
-						<configuration>
-							<mainClass>il.ac.technion.cs.smarthouse.system.gui.MainSystemGui</mainClass>
-						</configuration>
 					</execution>
 					<execution>
-						<id>sensor_sim_sos</id>
+						<id>report</id>
+						<phase>test</phase>
 						<goals>
-							<goal>java</goal>
+							<goal>report</goal>
 						</goals>
-						<configuration>
-							<mainClass>il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator</mainClass>
-						</configuration>
-					</execution>
-					<execution>
-						<id>sensor_sim_stove</id>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator</mainClass>
-						</configuration>
-					</execution>
-					<execution>
-						<id>sensor_sim_vitals</id>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator</mainClass>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<formats>
-						<format>html</format>
-						<format>xml</format>
-					</formats>
-					<check />
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -137,6 +130,13 @@
 			<artifactId>controlsfx</artifactId>
 			<version>8.40.12</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.controlsfx</groupId>
+			<artifactId>openjfx-dialogs</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.jdom/jdom -->
 		<dependency>
