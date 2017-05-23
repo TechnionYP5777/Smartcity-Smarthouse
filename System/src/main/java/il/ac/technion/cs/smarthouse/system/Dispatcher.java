@@ -2,7 +2,7 @@ package il.ac.technion.cs.smarthouse.system;
 
 import java.util.function.Consumer;
 
-import il.ac.technion.cs.smarthouse.database.InfoType;
+
 
 /**
  * @author Inbal Zukerman

@@ -7,7 +7,9 @@ import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
 
+import il.ac.technion.cs.smarthouse.system.DispatcherCore;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
+import il.ac.technion.cs.smarthouse.system.InfoType;
 
 /**
  * 
@@ -17,6 +19,8 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 public class DatabaseManager {
 
 	public static String parseClass = "mainDB";
+	public static String pathCol = "path"; 	// TODO inbal replace to match this
+	public static String valueCol = "value"; // TODO inbal replace to match this
 
 	public static ParseObject addInfo(final InfoType t, final String info) throws ParseException {
 		final Map<String, Object> m = new HashMap<>();
@@ -69,6 +73,27 @@ public class DatabaseManager {
 			// TODO inbal - log or throw
 			e.printStackTrace();
 		}
+
+	}
+	
+	public static String getLastEntry(String... path){
+		final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
+		
+		
+		
+		findQuery.whereContains("info", DispatcherCore.getPathAsString(path).toLowerCase());
+		
+		try {
+			if (!findQuery.find().isEmpty()) {
+				findQuery.orderByDescending("createdAt");
+				return findQuery.find().get(0).getString("info");
+			}
+		} catch (ParseException e) {
+			// TODO throw? return ""?
+			e.printStackTrace();
+		}
+			
+		return ""; // TODO: inbal.... same question applies..
 
 	}
 

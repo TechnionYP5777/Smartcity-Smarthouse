@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
-import il.ac.technion.cs.smarthouse.database.InfoType;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
@@ -30,7 +29,7 @@ public class DatabaseHandler {
 
 	private final List<String> sensors = new ArrayList<>();
 	private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
-	private final Map<String, Map<String, Consumer<String>>> listeners = new HashMap<>();
+	
 
 	/**
 	 * Adds a new sensor to the system, initializing its information List.
@@ -54,44 +53,7 @@ public class DatabaseHandler {
 		return sensors.contains(id);
 	}
 
-	/**
-	 * TODO inbal update doc Adds a listener to a certain sensor, to be called
-	 * on <strong>any</strong> update from that sensor
-	 * 
-	 * @param sensorId
-	 *            The sensorId
-	 * @param notifee
-	 *            The consumer to be called on a change, with the whole list of
-	 *            the sensor
-	 * @throws SensorNotFoundException
-	 */
-	public String addListener(final String $, final Consumer<String> notifee) {
-
-		if (!listeners.containsKey($))
-			listeners.put($, new HashMap<>());
-
-		final String id = UuidGenerator.GenerateUniqueIDstring();
-
-		listeners.get($).put(id, notifee);
-		return id;
-
-	}
-
-	/**
-	 * Remove a previously added listener
-	 * 
-	 * @param sensorId
-	 *            is the id of the sensor which it's listener is to be removed
-	 * @param listenerId
-	 *            The id given when the listener was added to the system
-	 * @throws SensorNotFoundException
-	 */
-	public void removeListener(final String keyWord, final String listenerId) {
-		if (!listeners.containsKey(keyWord))
-			log.error("Key Word was not found");
-			// TODO: inbal - shoud throw too?
-		listeners.get(keyWord).remove(listenerId);
-	}
+	
 
 	/**
 	 * Queries the location of a sensor
@@ -135,9 +97,12 @@ public class DatabaseHandler {
 
 		}
 
-		for (final String keyWord : listeners.keySet())
+	/* TODO: inbal
+		  for (final String keyWord : listeners.keySet())
 			if (message.contains(keyWord.toLowerCase()))
+			
 				listeners.get(keyWord).values().forEach(listener -> listener.accept(message));
+			*/	
 	}
 
 }

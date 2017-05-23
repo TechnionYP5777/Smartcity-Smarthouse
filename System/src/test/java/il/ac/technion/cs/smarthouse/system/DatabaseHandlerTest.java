@@ -23,21 +23,7 @@ public class DatabaseHandlerTest {
 		handler = new DatabaseHandler();
 	}
 
-	@Test
-	public void addListenerToExistingSensorWithoutException() throws SensorNotFoundException {
-		handler.addSensor("00:11:22:33:44:55", 100);
-		handler.addListener("00:11:22:33:44:55", null);
-	}
-
-
-	@Test
-	public void listenerIsCalledWhenAddingEntryToSensorTable() throws SensorNotFoundException {
-		@SuppressWarnings("unchecked")
-		final Consumer<String> listener = Mockito.mock(Consumer.class);
-
-		handler.addSensor("00:22:44:66:88:00", 100);
-		handler.addListener("00:22:44:66:88:00", listener);
-	}
+	
 
 	@Test(expected = SensorNotFoundException.class)
 	public void getLocationOfNotAddedSensorThrows() throws SensorNotFoundException {

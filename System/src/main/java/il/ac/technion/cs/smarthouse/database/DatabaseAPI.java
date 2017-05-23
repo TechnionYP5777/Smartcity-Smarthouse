@@ -3,6 +3,8 @@ package il.ac.technion.cs.smarthouse.database;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 
+import il.ac.technion.cs.smarthouse.system.InfoType;
+
 /**
  * @author Inbal Zukerman
  * @date May 22, 2017

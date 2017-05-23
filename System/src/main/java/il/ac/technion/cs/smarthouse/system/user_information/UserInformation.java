@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
-import il.ac.technion.cs.smarthouse.database.InfoType;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
+import il.ac.technion.cs.smarthouse.system.InfoType;
 
 /**
  * This class represents all the data which is relevant to the system about the

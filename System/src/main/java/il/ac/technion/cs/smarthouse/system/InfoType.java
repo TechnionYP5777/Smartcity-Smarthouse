@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.database;
+package il.ac.technion.cs.smarthouse.system;
 
 /**
  * @author Inbal Zukerman

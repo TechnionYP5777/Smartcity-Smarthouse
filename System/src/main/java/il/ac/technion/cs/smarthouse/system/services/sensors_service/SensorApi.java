@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
+import il.ac.technion.cs.smarthouse.system.DispatcherCore;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
@@ -110,7 +111,8 @@ public final class SensorApi<T extends SensorData> {
 	 * @throws SensorLostRuntimeException
 	 */
 	public void subscribe(final Consumer<T> functionToRun) throws SensorLostRuntimeException {
-		systemCore.databaseHandler.addListener(sensorId, generateSensorListener(functionToRun, true));
+		// TODO: inbal ...
+		//DispatcherCore.subscribe(sensorId, generateSensorListener(functionToRun, true));
 	}
 
 	/**
