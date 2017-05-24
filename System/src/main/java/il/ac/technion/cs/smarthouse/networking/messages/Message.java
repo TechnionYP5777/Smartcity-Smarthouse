@@ -20,12 +20,14 @@ import il.ac.technion.cs.smarthouse.system.Dispatcher;
  */
 public abstract class Message {
 
-	private static final String SENSOR_ID = "sensorid-";
+	public static final String SENSOR_ID = "sensorid-";
 	private static Logger log = LoggerFactory.getLogger(Message.class);
 
 	public static String createMessage(final MessageType t, final String info, final String sensorId) {
-		return (t.toString() + Dispatcher.DELIMITER + info + (Dispatcher.DELIMITER + SENSOR_ID + sensorId))
-				.toLowerCase();
+		String message = t.toString() + Dispatcher.DELIMITER;
+		if(info != "")
+			message += info + Dispatcher.DELIMITER ;
+		return (message + SENSOR_ID + sensorId).toLowerCase();
 	}
 
 	public static String createMessage(final MessageType t, final MessageType status) {

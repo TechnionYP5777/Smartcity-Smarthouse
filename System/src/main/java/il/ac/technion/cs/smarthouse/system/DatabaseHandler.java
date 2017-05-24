@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 
 /**
@@ -39,7 +40,7 @@ public class DatabaseHandler {
 	 * @param sizeLimit
 	 *            limit of the information List for this sensor
 	 */
-	public void addSensor(final String sensorId, final int sizeLimit) {
+	public void addSensor(final String sensorId) {
 
 		sensors.add(sensorId);
 		sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
@@ -89,7 +90,7 @@ public class DatabaseHandler {
 
 	public void handleUpdateMessage(final String message) {
 		try {
-			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, message);
+			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, message.replace((MessageType.UPDATE.toString() + Dispatcher.DELIMITER).toLowerCase(), ""));
 		} catch (final ParseException e) {
 			log.error("Update message was not handled properly", e);
 

@@ -14,6 +14,7 @@ import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
+import il.ac.technion.cs.smarthouse.system.Dispatcher;
 
 /**
  * A sensors handler thread is a class that handles a specific connection with a
@@ -81,8 +82,11 @@ public class SensorsHandlerThread extends Thread {
 	}
 
 	private void handleRegisterMessage(final PrintWriter out, final String ¢) {
-		final String[] parsedMessage = ¢.split(".");
-		databaseHandler.addSensor(parsedMessage[0], 100);
+		//TODO inbal
+		final String[] parsedMessage = ¢.split("\\"+Dispatcher.DELIMITER);
+		
+		databaseHandler.addSensor(parsedMessage[1].replaceAll(Message.SENSOR_ID, ""));
+		System.out.println("\n\n" + parsedMessage[1] +"\n\n");
 		Message.send(Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS), out, null);
 
 	}

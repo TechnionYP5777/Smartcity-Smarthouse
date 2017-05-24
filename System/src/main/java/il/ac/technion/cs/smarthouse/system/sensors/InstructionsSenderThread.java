@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
+import il.ac.technion.cs.smarthouse.system.Dispatcher;
 
 /**
  * An instructions sender thread is a class that allows sending instructions
@@ -66,8 +67,9 @@ public class InstructionsSenderThread extends Thread {
 	}
 
 	private void handleRegisterMessage(final PrintWriter out, final String ¢) {
-		final String[] parts = ¢.split(".");
-		mapper.store(parts[0], out);
+		//TODO inbal
+		final String[] parts = ¢.split("\\"+Dispatcher.DELIMITER);
+		mapper.store(parts[1].replaceAll(Message.SENSOR_ID, ""), out);
 		Message.send(Message.createMessage( MessageType.ANSWER, MessageType.SUCCESS), out, null);
 	}
 }
