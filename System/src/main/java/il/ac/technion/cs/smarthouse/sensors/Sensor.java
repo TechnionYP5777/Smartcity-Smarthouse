@@ -82,7 +82,7 @@ public abstract class Sensor {
 			log.error("I/O error occurred when the sensor's socket was created", e);
 		}
 
-		final String $ = Message.send(Message.createMessage(id, MessageType.REGISTRATION, ""), out, in);
+		final String $ = Message.send(Message.createMessage( MessageType.REGISTRATION, "", id), out, in);
 		return $ != null && Message.isSuccessMessage($);
 	}
 
@@ -105,7 +105,7 @@ public abstract class Sensor {
 
 		lastMessagesMillis.add(currMillis);
 
-		Message.send(Message.createMessage(id, MessageType.UPDATE, data), out, null);
+		Message.send(Message.createMessage( MessageType.UPDATE, data, id), out, null);
 	}
 
 	/** @return id of the sensor */

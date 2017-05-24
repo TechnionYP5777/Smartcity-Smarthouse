@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import org.parse4j.ParseException;
 import org.slf4j.Logger;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
-import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**
  * The API required by ApplicationHandler in order to allow it desired
@@ -96,13 +94,8 @@ public class DatabaseHandler {
 			log.error("Update message was not handled properly", e);
 
 		}
-
-	/* TODO: inbal
-		  for (final String keyWord : listeners.keySet())
-			if (message.contains(keyWord.toLowerCase()))
-			
-				listeners.get(keyWord).values().forEach(listener -> listener.accept(message));
-			*/	
+		// TODO: inbal
+	
 	}
 
 }

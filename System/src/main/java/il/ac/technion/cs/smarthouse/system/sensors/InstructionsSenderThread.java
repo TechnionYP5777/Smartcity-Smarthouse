@@ -41,7 +41,7 @@ public class InstructionsSenderThread extends Thread {
 			for (String input = in.readLine(); input != null;) {
 				// final Message message = MessageFactory.create(input);
 				if (input == "") {
-					final String answerMessage = Message.createMessage("", MessageType.ANSWER, "FAILURE");
+					final String answerMessage = Message.createMessage( MessageType.ANSWER, MessageType.FAILURE);
 					Message.send(answerMessage, out, null);
 					continue;
 				}
@@ -68,6 +68,6 @@ public class InstructionsSenderThread extends Thread {
 	private void handleRegisterMessage(final PrintWriter out, final String ¢) {
 		final String[] parts = ¢.split(".");
 		mapper.store(parts[0], out);
-		Message.send(Message.createMessage("", MessageType.ANSWER, "SUCCESS"), out, null);
+		Message.send(Message.createMessage( MessageType.ANSWER, MessageType.SUCCESS), out, null);
 	}
 }

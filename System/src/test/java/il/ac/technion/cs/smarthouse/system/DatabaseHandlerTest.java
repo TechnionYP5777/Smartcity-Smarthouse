@@ -1,11 +1,8 @@
 package il.ac.technion.cs.smarthouse.system;
 
-import java.util.function.Consumer;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 

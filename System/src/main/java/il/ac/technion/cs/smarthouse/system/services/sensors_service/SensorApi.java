@@ -4,11 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import com.google.gson.Gson;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.system.DispatcherCore;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
@@ -147,7 +144,7 @@ public final class SensorApi<T extends SensorData> {
 			log.error(LOG_MSG_RUNTIME_THROW + " This is because " + sensorId + " Doesn't exist");
 			throw new SensorLostRuntimeException(null);
 		}
-		systemCore.sensorsHandler.sendInstruction(Message.createMessage(sensorId, MessageType.UPDATE, instruction));
+		systemCore.sensorsHandler.sendInstruction(Message.createMessage( MessageType.UPDATE, instruction, sensorId));
 	}
 
 	// [start] timer functions

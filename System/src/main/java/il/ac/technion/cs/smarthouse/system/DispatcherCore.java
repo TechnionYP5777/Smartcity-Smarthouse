@@ -16,7 +16,7 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  */
 public class DispatcherCore implements Dispatcher{
 
-	private static final Map<String, Map<String, Consumer<String>>> listeners = new HashMap<>();
+	private static final Map<String, Map<String, Consumer<String>>> subscribers = new HashMap<>();
 	private static Logger log = LoggerFactory.getLogger(DispatcherCore.class);
 
 	public static String getPathAsString(String... pathNodes) {
@@ -24,24 +24,27 @@ public class DispatcherCore implements Dispatcher{
 	}
 
 	public String subscribe(Consumer<String> subscriber, String... path){
-		if (!listeners.containsKey(getPathAsString(path)))
-			listeners.put(getPathAsString(path), new HashMap<>());
+		if (!subscribers.containsKey(getPathAsString(path)))
+			subscribers.put(getPathAsString(path), new HashMap<>());
 
 		final String id = UuidGenerator.GenerateUniqueIDstring();
 
-		listeners.get(getPathAsString(path)).put(id, subscriber);
+		subscribers.get(getPathAsString(path)).put(id, subscriber);
 		return id;
 	}
 
 	public void unsubscribe(String subscriberId, String... path){
-		if (!listeners.containsKey(getPathAsString(path)))
+		if (!subscribers.containsKey(getPathAsString(path)))
 			log.error("Key Word was not found");
 			// TODO: inbal - shoud throw too?
-		listeners.get(getPathAsString(path)).remove(subscriberId);
+		subscribers.get(getPathAsString(path)).remove(subscriberId);
 	}
 
 	public void sendMessage(InfoType infoType, String value, String... path){
-		
+		String message = infoType.toString() + DELIMITER + getPathAsString(path) + DELIMITER + value;
+		for (String prefix : subscribers.keySet())
+			if (message.startsWith(prefix))
+				subscribers.get(prefix).values().forEach(listener -> listener.accept(message));
 	}
 
 }

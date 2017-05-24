@@ -49,17 +49,16 @@ public class SensorsHandlerThread extends Thread {
 			for (String input = in.readLine(); input != null;) {
 
 				if (input == "") {
-					final String answerMessage = Message.createMessage("", MessageType.ANSWER, "FAILURE"); // TODO
-																											// inbal
+					final String answerMessage = Message.createMessage( MessageType.ANSWER, MessageType.FAILURE); 
 					Message.send(answerMessage, out, null);
 
 					continue;
 				}
 				log.info("Received message: " + input + "\n");
 
-				if (Message.isInMessage(input, "registration"))
+				if (Message.isInMessage(input, MessageType.REGISTRATION.toString()))
 					handleRegisterMessage(out, input);
-				else if (Message.isInMessage(input, "UPDATE"))
+				else if (Message.isInMessage(input, MessageType.UPDATE.toString()))
 					handleUpdateMessage(input);
 				else
 					log.error("message could not be parsed");
@@ -84,7 +83,7 @@ public class SensorsHandlerThread extends Thread {
 	private void handleRegisterMessage(final PrintWriter out, final String ¢) {
 		final String[] parsedMessage = ¢.split(".");
 		databaseHandler.addSensor(parsedMessage[0], 100);
-		Message.send(Message.createMessage("", MessageType.ANSWER, "SUCCESS"), out, null);
+		Message.send(Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS), out, null);
 
 	}
 
