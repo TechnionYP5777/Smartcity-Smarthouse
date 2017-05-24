@@ -13,16 +13,16 @@ import javafx.stage.Stage;
  * @since 9.12.16
  */
 public class StoveSensorSimulator extends Application {
-	public static void main(final String[] args) {
-		launch(args);
-	}
+    public static void main(final String[] args) {
+        launch(args);
+    }
 
-	@Override
-	public void start(final Stage s) throws Exception {
-		final Parent root = FXMLLoader.load(getClass().getResource("/sensors/stove/stove_ui.fxml"));
-		final Scene scene = new Scene(root);
-		s.setTitle("Stove Sensor Simulator");
-		s.setScene(scene);
-		s.show();
-	}
+    @Override
+    public void start(final Stage s) throws Exception {
+        final Parent root = FXMLLoader.load(getClass().getResource("/sensors/stove/stove_ui.fxml"));
+        final Scene scene = new Scene(root);
+        s.setTitle("Stove Sensor Simulator");
+        s.setScene(scene);
+        s.show();
+    }
 }

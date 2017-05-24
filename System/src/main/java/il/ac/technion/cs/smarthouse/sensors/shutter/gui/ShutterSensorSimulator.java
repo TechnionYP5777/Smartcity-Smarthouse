@@ -14,18 +14,18 @@ import javafx.stage.Stage;
  */
 
 public class ShutterSensorSimulator extends Application {
-	public static void main(final String[] args) {
-		launch(args);
-	}
+    public static void main(final String[] args) {
+        launch(args);
+    }
 
-	@Override
-	public void start(final Stage primaryStage) throws Exception {
-		final Parent root = FXMLLoader.load(getClass().getResource("/sensors/shutter/shutter_ui.fxml"));
-		final Scene scene = new Scene(root);
-		primaryStage.setTitle("Shutter Sensor Simulator");
-		primaryStage.setScene(scene);
-		primaryStage.show();
+    @Override
+    public void start(final Stage primaryStage) throws Exception {
+        final Parent root = FXMLLoader.load(getClass().getResource("/sensors/shutter/shutter_ui.fxml"));
+        final Scene scene = new Scene(root);
+        primaryStage.setTitle("Shutter Sensor Simulator");
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
-	}
+    }
 
 }

@@ -26,56 +26,56 @@ import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
  * @since 17.12.16
  */
 public class SensorsHandler implements Runnable {
-	private static Logger log = LoggerFactory.getLogger(SensorsHandler.class);
+    private static Logger log = LoggerFactory.getLogger(SensorsHandler.class);
 
-	private final DatabaseHandler databaseHandler;
-	private final Map<String, PrintWriter> routingMap = new HashMap<>();
+    private final DatabaseHandler databaseHandler;
+    private final Map<String, PrintWriter> routingMap = new HashMap<>();
 
-	// for testing
-	private ServerSocket server;
+    // for testing
+    private ServerSocket server;
 
-	/**
-	 * Initializes a new sensors handler object.
-	 * 
-	 * @param databaseHandler
-	 *            database handler of the system
-	 */
-	public SensorsHandler(final DatabaseHandler databaseHandler) {
-		this.databaseHandler = databaseHandler;
-	}
+    /**
+     * Initializes a new sensors handler object.
+     * 
+     * @param databaseHandler
+     *            database handler of the system
+     */
+    public SensorsHandler(final DatabaseHandler databaseHandler) {
+        this.databaseHandler = databaseHandler;
+    }
 
-	@Override
-	public void run() {
-		try (ServerSocket server1 = new ServerSocket(40001)) {
-			server = server1;
-			while (true)
-				try {
-					final Socket client = server1.accept();
-					new SensorsHandlerThread(client, databaseHandler, type -> {
-						if (type == SensorType.INTERACTIVE)
-							new InteractiveSensorServer((id, out) -> routingMap.put(id, out)).start();
-					}).start();
-				} catch (final SocketException e) {
-					log.warn("socket closed, SensorsHandler is shutting down", e);
-					return; // if we closed the sockets we want to shutoff the
-							// server
-				} catch (final IOException e) {
-					log.error("I/O error occurred while waiting for a connection", e);
-				}
-		} catch (final IOException e) {
-			log.error("I/O error occurred when the socket was opened", e);
-		}
-	}
+    @Override
+    public void run() {
+        try (ServerSocket server1 = new ServerSocket(40001)) {
+            server = server1;
+            while (true)
+                try {
+                    final Socket client = server1.accept();
+                    new SensorsHandlerThread(client, databaseHandler, type -> {
+                        if (type == SensorType.INTERACTIVE)
+                            new InteractiveSensorServer((id, out) -> routingMap.put(id, out)).start();
+                    }).start();
+                } catch (final SocketException e) {
+                    log.warn("socket closed, SensorsHandler is shutting down", e);
+                    return; // if we closed the sockets we want to shutoff the
+                            // server
+                } catch (final IOException e) {
+                    log.error("I/O error occurred while waiting for a connection", e);
+                }
+        } catch (final IOException e) {
+            log.error("I/O error occurred when the socket was opened", e);
+        }
+    }
 
-	public void sendInstruction(final String instruction) {
-		routingMap.get(instruction.split(".")[0]).println(instruction);
-	}
+    public void sendInstruction(final String instruction) {
+        routingMap.get(instruction.split(".")[0]).println(instruction);
+    }
 
-	public void closeSockets() { // for testing
-		try {
-			server.close();
-		} catch (final IOException e) {
-			log.error("I/O error occurred while closing", e);
-		}
-	}
+    public void closeSockets() { // for testing
+        try {
+            server.close();
+        } catch (final IOException e) {
+            log.error("I/O error occurred while closing", e);
+        }
+    }
 }

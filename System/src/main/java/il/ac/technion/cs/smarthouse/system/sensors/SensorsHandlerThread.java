@@ -26,79 +26,79 @@ import il.ac.technion.cs.smarthouse.system.Dispatcher;
  * @since 24.12.16
  */
 public class SensorsHandlerThread extends Thread {
-	private static Logger log = LoggerFactory.getLogger(SensorsHandlerThread.class);
+    private static Logger log = LoggerFactory.getLogger(SensorsHandlerThread.class);
 
-	private final Socket client;
-	private final DatabaseHandler databaseHandler;
-	// private TypeHandler typeHandler;
+    private final Socket client;
+    private final DatabaseHandler databaseHandler;
+    // private TypeHandler typeHandler;
 
-	public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler,
-			final TypeHandler typeHandler) {
-		this.client = client;
-		this.databaseHandler = databaseHandler;
-		// this.typeHandler = typeHandler;
-		ServerManager.initialize();
-	}
+    public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler,
+                    final TypeHandler typeHandler) {
+        this.client = client;
+        this.databaseHandler = databaseHandler;
+        // this.typeHandler = typeHandler;
+        ServerManager.initialize();
+    }
 
-	@Override
-	public void run() {
-		PrintWriter out = null;
-		BufferedReader in = null;
-		try {
-			out = new PrintWriter(client.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			for (String input = in.readLine(); input != null;) {
+    @Override
+    public void run() {
+        PrintWriter out = null;
+        BufferedReader in = null;
+        try {
+            out = new PrintWriter(client.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            for (String input = in.readLine(); input != null;) {
 
-				if (input == "") {
-					final String answerMessage = Message.createMessage( MessageType.ANSWER, MessageType.FAILURE); 
-					Message.send(answerMessage, out, null);
+                if (input == "") {
+                    final String answerMessage = Message.createMessage(MessageType.ANSWER, MessageType.FAILURE);
+                    Message.send(answerMessage, out, null);
 
-					continue;
-				}
-				log.info("Received message: " + input + "\n");
+                    continue;
+                }
+                log.info("Received message: " + input + "\n");
 
-				if (Message.isInMessage(input, MessageType.REGISTRATION.toString()))
-					handleRegisterMessage(out, input);
-				else if (Message.isInMessage(input, MessageType.UPDATE.toString()))
-					handleUpdateMessage(input);
-				else
-					log.error("message could not be parsed");
+                if (Message.isInMessage(input, MessageType.REGISTRATION.toString()))
+                    handleRegisterMessage(out, input);
+                else if (Message.isInMessage(input, MessageType.UPDATE.toString()))
+                    handleUpdateMessage(input);
+                else
+                    log.error("message could not be parsed");
 
-				input = in.readLine();
-			}
-		} catch (final IOException e) {
-			log.error("I/O error occurred", e);
-		} finally {
-			try {
-				if (out != null)
-					out.close();
+                input = in.readLine();
+            }
+        } catch (final IOException e) {
+            log.error("I/O error occurred", e);
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
 
-				if (in != null)
-					in.close();
-			} catch (final IOException e) {
-				log.error("I/O error occurred while closing", e);
-			}
-		}
-	}
+                if (in != null)
+                    in.close();
+            } catch (final IOException e) {
+                log.error("I/O error occurred while closing", e);
+            }
+        }
+    }
 
-	private void handleRegisterMessage(final PrintWriter out, final String ¢) {
-		//TODO inbal
-		final String[] parsedMessage = ¢.split("\\"+Dispatcher.DELIMITER);
-		
-		databaseHandler.addSensor(parsedMessage[1].replaceAll(Message.SENSOR_ID, ""));
-		System.out.println("\n\n" + parsedMessage[1] +"\n\n");
-		Message.send(Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS), out, null);
+    private void handleRegisterMessage(final PrintWriter out, final String ¢) {
+        // TODO inbal
+        final String[] parsedMessage = ¢.split("\\" + Dispatcher.DELIMITER);
 
-	}
+        databaseHandler.addSensor(parsedMessage[1].replaceAll(Message.SENSOR_ID, ""));
+        System.out.println("\n\n" + parsedMessage[1] + "\n\n");
+        Message.send(Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS), out, null);
 
-	private void handleUpdateMessage(final String m) {
+    }
 
-		databaseHandler.handleUpdateMessage(m);
+    private void handleUpdateMessage(final String m) {
 
-	}
+        databaseHandler.handleUpdateMessage(m);
+
+    }
 
 }
 
 interface TypeHandler {
-	void accept(SensorType t);
+    void accept(SensorType t);
 }

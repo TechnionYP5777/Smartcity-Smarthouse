@@ -18,10 +18,12 @@ public class SensorListViewController implements Initializable {
     @FXML private TableColumn<SensorData, String> locationColumn;
     private SimulatorController mainController;
 
-    @Override public void initialize(URL location, ResourceBundle __) {
+    @Override
+    public void initialize(URL location, ResourceBundle __) {
         // TODO Auto-generated method stub
         NameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
-        locationColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getLocation().getFieldDescription()));
+        locationColumn.setCellValueFactory(
+                        cellData -> new ReadOnlyStringWrapper(cellData.getValue().getLocation().getFieldDescription()));
         sensorTable.setEditable(false);
     }
 

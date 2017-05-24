@@ -22,67 +22,63 @@ import javafx.scene.text.TextFlow;
  * @since 9.12.16
  */
 public class Controller implements Initializable {
-	private static final String STYLE_REG = "-fx-fill: #4d4d4c; -fx-font-weight: bold;";
-	private static final String STYLE_ON = "-fx-fill: #718c00; -fx-font-weight: bold;";
-	private static final String STYLE_OFF = "-fx-fill: #c82829; -fx-font-weight: bold;";
-	private static final String STYLE_TEMP = "-fx-fill: #4271ae; -fx-font-weight: bold;";
+    private static final String STYLE_REG = "-fx-fill: #4d4d4c; -fx-font-weight: bold;";
+    private static final String STYLE_ON = "-fx-fill: #718c00; -fx-font-weight: bold;";
+    private static final String STYLE_OFF = "-fx-fill: #c82829; -fx-font-weight: bold;";
+    private static final String STYLE_TEMP = "-fx-fill: #4271ae; -fx-font-weight: bold;";
 
-	private StoveSensor sensor;
-	private boolean on;
-	@FXML
-	public Button onOffButton;
-	@FXML
-	public Label tempLabelSensor;
-	@FXML
-	public Slider tempSlider;
-	@FXML
-	public TextFlow console;
+    private StoveSensor sensor;
+    private boolean on;
+    @FXML public Button onOffButton;
+    @FXML public Label tempLabelSensor;
+    @FXML public Slider tempSlider;
+    @FXML public TextFlow console;
 
-	@Override
-	public void initialize(final URL location, final ResourceBundle __) {
-		sensor = new StoveSensor(Random.sensorId(), "127.0.0.1", 40001);
-		for (boolean res = false; !res;)
-			res = sensor.register();
-		onOffButton.setOnAction(event -> {
-			on = !on;
-			onOffButton.setText("Turn " + (on ? "off" : "on"));
-			tempLabelSensor.setDisable(!on);
-			tempSlider.setDisable(!on);
-			sensor.updateSystem(on, (int) Math.round(tempSlider.getValue()));
-			printUpdateMessage();
-		});
-		tempSlider.valueProperty().addListener((ov, oldVal, newVal) -> {
-			if (Math.round(oldVal.doubleValue()) == Math.round(newVal.doubleValue()))
-				return;
+    @Override
+    public void initialize(final URL location, final ResourceBundle __) {
+        sensor = new StoveSensor(Random.sensorId(), "127.0.0.1", 40001);
+        for (boolean res = false; !res;)
+            res = sensor.register();
+        onOffButton.setOnAction(event -> {
+            on = !on;
+            onOffButton.setText("Turn " + (on ? "off" : "on"));
+            tempLabelSensor.setDisable(!on);
+            tempSlider.setDisable(!on);
+            sensor.updateSystem(on, (int) Math.round(tempSlider.getValue()));
+            printUpdateMessage();
+        });
+        tempSlider.valueProperty().addListener((ov, oldVal, newVal) -> {
+            if (Math.round(oldVal.doubleValue()) == Math.round(newVal.doubleValue()))
+                return;
 
-			final int temp = (int) Math.round(newVal.doubleValue());
-			tempLabelSensor.setText("Temperature: " + temp);
-			sensor.updateSystem(true, temp);
-			printUpdateMessage();
-		});
-	}
+            final int temp = (int) Math.round(newVal.doubleValue());
+            tempLabelSensor.setText("Temperature: " + temp);
+            sensor.updateSystem(true, temp);
+            printUpdateMessage();
+        });
+    }
 
-	private void printUpdateMessage() {
-		final ObservableList<Node> children = console.getChildren();
+    private void printUpdateMessage() {
+        final ObservableList<Node> children = console.getChildren();
 
-		Text text = new Text("Sending update message: {on: ");
-		text.setStyle(STYLE_REG);
-		children.add(0, text);
+        Text text = new Text("Sending update message: {on: ");
+        text.setStyle(STYLE_REG);
+        children.add(0, text);
 
-		text = new Text(on + "");
-		text.setStyle(on ? STYLE_ON : STYLE_OFF);
-		children.add(1, text);
+        text = new Text(on + "");
+        text.setStyle(on ? STYLE_ON : STYLE_OFF);
+        children.add(1, text);
 
-		text = new Text(", temperature: ");
-		text.setStyle(STYLE_REG);
-		children.add(2, text);
+        text = new Text(", temperature: ");
+        text.setStyle(STYLE_REG);
+        children.add(2, text);
 
-		text = new Text((int) tempSlider.getValue() + "");
-		text.setStyle(STYLE_TEMP);
-		children.add(3, text);
+        text = new Text((int) tempSlider.getValue() + "");
+        text.setStyle(STYLE_TEMP);
+        children.add(3, text);
 
-		text = new Text("}\n");
-		text.setStyle(STYLE_REG);
-		children.add(4, text);
-	}
+        text = new Text("}\n");
+        text.setStyle(STYLE_REG);
+        children.add(4, text);
+    }
 }

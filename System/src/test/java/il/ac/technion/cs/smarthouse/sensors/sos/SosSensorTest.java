@@ -10,25 +10,25 @@ import il.ac.technion.cs.smarthouse.utils.Random;
  */
 public class SosSensorTest extends SensorTest {
 
-	class TestSensorData extends SensorData {
-		public boolean pressed;
-	}
+    class TestSensorData extends SensorData {
+        public boolean pressed;
+    }
 
-	@Override
-	public void customInitSensor() {
-		id = Random.sensorId();
-		sensor = new SosSensor(id, "127.0.0.1", 40001);
+    @Override
+    public void customInitSensor() {
+        id = Random.sensorId();
+        sensor = new SosSensor(id, "127.0.0.1", 40001);
 
-	}
-	// TODO: inbal, fix this
-	/*
-	 * @Test public void updateSystemWorks() throws SensorNotFoundException,
-	 * InterruptedException { ((SosSensor) sensor).updateSystem();
-	 * 
-	 * Thread.sleep(5000);
-	 * 
-	 * Assert.assertEquals(true,
-	 * sensorsManager.getDefaultSensor(TestSensorData.class,
-	 * commName).receiveLastEntry().pressed); }
-	 */
+    }
+    // TODO: inbal, fix this
+    /*
+     * @Test public void updateSystemWorks() throws SensorNotFoundException,
+     * InterruptedException { ((SosSensor) sensor).updateSystem();
+     * 
+     * Thread.sleep(5000);
+     * 
+     * Assert.assertEquals(true,
+     * sensorsManager.getDefaultSensor(TestSensorData.class,
+     * commName).receiveLastEntry().pressed); }
+     */
 }

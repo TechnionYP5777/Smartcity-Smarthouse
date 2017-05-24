@@ -20,102 +20,102 @@ import il.ac.technion.cs.smarthouse.system.InfoType;
 
 public class UserInformation {
 
-	private final String name;
-	private final String id;
-	private String phoneNumber;
-	private String homeAddress;
-	private final ContactsInformation emergencyContacts;
+    private final String name;
+    private final String id;
+    private String phoneNumber;
+    private String homeAddress;
+    private final ContactsInformation emergencyContacts;
 
-	private static Logger log = LoggerFactory.getLogger(UserInformation.class);
+    private static Logger log = LoggerFactory.getLogger(UserInformation.class);
 
-	public UserInformation(final String name, final String id, final String phoneNumber, final String homeAddress) {
+    public UserInformation(final String name, final String id, final String phoneNumber, final String homeAddress) {
 
-		this.name = name;
-		this.id = id;
-		this.phoneNumber = phoneNumber;
-		this.homeAddress = homeAddress;
-		emergencyContacts = new ContactsInformation();
+        this.name = name;
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.homeAddress = homeAddress;
+        emergencyContacts = new ContactsInformation();
 
-		try {
-			DatabaseManager.addInfo(InfoType.USER$NAME, name);
-			DatabaseManager.addInfo(InfoType.USER$ID, id);
-			DatabaseManager.addInfo(InfoType.USER$PHONE_NUMBER, phoneNumber);
-			DatabaseManager.addInfo(InfoType.USER$HOME_ADDRESS, homeAddress);
-		} catch (final ParseException e) {
-			log.error("User could not be saved", e);
-		}
+        try {
+            DatabaseManager.addInfo(InfoType.USER$NAME, name);
+            DatabaseManager.addInfo(InfoType.USER$ID, id);
+            DatabaseManager.addInfo(InfoType.USER$PHONE_NUMBER, phoneNumber);
+            DatabaseManager.addInfo(InfoType.USER$HOME_ADDRESS, homeAddress);
+        } catch (final ParseException e) {
+            log.error("User could not be saved", e);
+        }
 
-	}
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setPhoneNumber(final String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-		try {
-			DatabaseManager.deleteInfo(InfoType.USER$PHONE_NUMBER);
-			DatabaseManager.addInfo(InfoType.USER$PHONE_NUMBER, phoneNumber);
+    public void setPhoneNumber(final String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        try {
+            DatabaseManager.deleteInfo(InfoType.USER$PHONE_NUMBER);
+            DatabaseManager.addInfo(InfoType.USER$PHONE_NUMBER, phoneNumber);
 
-		} catch (final ParseException e) {
-			log.error("User could not be updated", e);
-		}
-	}
+        } catch (final ParseException e) {
+            log.error("User could not be updated", e);
+        }
+    }
 
-	public String getHomeAddress() {
-		return homeAddress;
-	}
+    public String getHomeAddress() {
+        return homeAddress;
+    }
 
-	public void setHomeAddress(final String homeAddress) {
-		this.homeAddress = homeAddress;
+    public void setHomeAddress(final String homeAddress) {
+        this.homeAddress = homeAddress;
 
-		try {
-			DatabaseManager.deleteInfo(InfoType.USER$HOME_ADDRESS);
-			DatabaseManager.addInfo(InfoType.USER$HOME_ADDRESS, homeAddress);
-		} catch (final ParseException e) {
-			log.error("User could not be updated", e);
-		}
-	}
+        try {
+            DatabaseManager.deleteInfo(InfoType.USER$HOME_ADDRESS);
+            DatabaseManager.addInfo(InfoType.USER$HOME_ADDRESS, homeAddress);
+        } catch (final ParseException e) {
+            log.error("User could not be updated", e);
+        }
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	// For debug mainly, leaving it implemented for future use
-	@Override
-	public String toString() {
-		return "User:\nuserId= " + id + "\tname=" + name + "\tphone= " + phoneNumber + "\taddress= " + homeAddress
-				+ "\n" + emergencyContacts;
+    // For debug mainly, leaving it implemented for future use
+    @Override
+    public String toString() {
+        return "User:\nuserId= " + id + "\tname=" + name + "\tphone= " + phoneNumber + "\taddress= " + homeAddress
+                        + "\n" + emergencyContacts;
 
-	}
+    }
 
-	public void addContact(final Contact c, final EmergencyLevel elevel) {
-		emergencyContacts.addContact(c, elevel);
-	}
+    public void addContact(final Contact c, final EmergencyLevel elevel) {
+        emergencyContacts.addContact(c, elevel);
+    }
 
-	public void removeContact(final String contactID) {
-		emergencyContacts.removeContact(contactID);
+    public void removeContact(final String contactID) {
+        emergencyContacts.removeContact(contactID);
 
-	}
+    }
 
-	public Contact getContact(final String contactId) {
-		return emergencyContacts.getContact(contactId);
-	}
+    public Contact getContact(final String contactId) {
+        return emergencyContacts.getContact(contactId);
+    }
 
-	public List<Contact> getContacts(final EmergencyLevel elvl) {
-		return emergencyContacts.getContacts(elvl);
-	}
+    public List<Contact> getContacts(final EmergencyLevel elvl) {
+        return emergencyContacts.getContacts(elvl);
+    }
 
-	public List<Contact> getContacts() {
-		return emergencyContacts.getContacts();
-	}
+    public List<Contact> getContacts() {
+        return emergencyContacts.getContacts();
+    }
 
-	public void setContactEmergencyLevel(final String id, final String eLevel) {
-		emergencyContacts.setContactEmergencyLevel(id, EmergencyLevel.fromString(eLevel));
-	}
+    public void setContactEmergencyLevel(final String id, final String eLevel) {
+        emergencyContacts.setContactEmergencyLevel(id, EmergencyLevel.fromString(eLevel));
+    }
 
 }

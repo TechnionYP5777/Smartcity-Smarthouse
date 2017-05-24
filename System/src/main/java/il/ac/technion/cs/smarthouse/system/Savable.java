@@ -23,50 +23,50 @@ import com.google.gson.annotations.Expose;
  * @since 21-04-2017
  */
 public interface Savable {
-	final GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+    final GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
 
-	/**
-	 * Serialize the object to Json string
-	 * 
-	 * @return Json String
-	 */
-	default String toJsonString() {
-		return gsonBuilder.create().toJson(this);
-	}
+    /**
+     * Serialize the object to Json string
+     * 
+     * @return Json String
+     */
+    default String toJsonString() {
+        return gsonBuilder.create().toJson(this);
+    }
 
-	/**
-	 * Populates the object with data from the jsonString.
-	 * <p>
-	 * Only fields without {@link Expose} Annotation will be populated.
-	 * <p>
-	 * <code>Populate</code> will be called recursively for fields that also
-	 * implement {@link Savable}<br>
-	 * (not including collections).
-	 * <p>
-	 * Override this function in order to define what to do after
-	 * populating.<br>
-	 * You should still call <code>Savable.super.populate(jsonString);</code>
-	 * 
-	 * @param jsonString
-	 * @throws Exception
-	 */
-	default void populate(final String jsonString) throws Exception {
-		for (final Entry<String, JsonElement> e : new JsonParser().parse(jsonString).getAsJsonObject().entrySet()) {
-			final Field f = getClass().getDeclaredField(e.getKey());
-			f.setAccessible(true);
+    /**
+     * Populates the object with data from the jsonString.
+     * <p>
+     * Only fields without {@link Expose} Annotation will be populated.
+     * <p>
+     * <code>Populate</code> will be called recursively for fields that also
+     * implement {@link Savable}<br>
+     * (not including collections).
+     * <p>
+     * Override this function in order to define what to do after
+     * populating.<br>
+     * You should still call <code>Savable.super.populate(jsonString);</code>
+     * 
+     * @param jsonString
+     * @throws Exception
+     */
+    default void populate(final String jsonString) throws Exception {
+        for (final Entry<String, JsonElement> e : new JsonParser().parse(jsonString).getAsJsonObject().entrySet()) {
+            final Field f = getClass().getDeclaredField(e.getKey());
+            f.setAccessible(true);
 
-			if (Savable.class.isAssignableFrom(f.getType()))
-				((Savable) f.get(this)).populate(e.getValue() + "");
-			else
-				f.set(this, gsonBuilder.create().fromJson(e.getValue(), f.getGenericType()));
-		}
-	}
+            if (Savable.class.isAssignableFrom(f.getType()))
+                ((Savable) f.get(this)).populate(e.getValue() + "");
+            else
+                f.set(this, gsonBuilder.create().fromJson(e.getValue(), f.getGenericType()));
+        }
+    }
 
-	default void populateFromFile(final InputStream s) throws Exception {
-		populate(IOUtils.toString(s));
-	}
+    default void populateFromFile(final InputStream s) throws Exception {
+        populate(IOUtils.toString(s));
+    }
 
-	default void toJsonFile(final OutputStream s) throws IOException {
-		s.write(Byte.valueOf(gsonBuilder.create().toJson(this)));
-	}
+    default void toJsonFile(final OutputStream s) throws IOException {
+        s.write(Byte.valueOf(gsonBuilder.create().toJson(this)));
+    }
 }

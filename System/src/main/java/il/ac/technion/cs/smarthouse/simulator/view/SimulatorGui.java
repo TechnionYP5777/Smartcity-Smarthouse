@@ -10,9 +10,10 @@ public class SimulatorGui extends Application {
 
     Circle circle_Red, circle_Green, circle_Blue;
 
-    @Override public void start(Stage s) throws Exception {
+    @Override
+    public void start(Stage s) throws Exception {
         final Parent root = FXMLLoader.load(getClass().getResource("main_simulator_window.fxml"));
-        final Scene scene = new Scene(root,1250,580);
+        final Scene scene = new Scene(root, 1250, 580);
         s.setTitle("Sensor Simulator");
         s.setScene(scene);
         s.setResizable(false);

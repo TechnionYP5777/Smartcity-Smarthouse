@@ -19,93 +19,93 @@ import il.ac.technion.cs.smarthouse.system.user_information.ContactsInformation;
 
 public class ContactsInformationTest {
 
-	private final ContactsInformation contactsInfo = new ContactsInformation();
-	private final Contact contactA = new Contact("123", "Alon", "0508080123", "alon@gmail.com");
-	private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
+    private final ContactsInformation contactsInfo = new ContactsInformation();
+    private final Contact contactA = new Contact("123", "Alon", "0508080123", "alon@gmail.com");
+    private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
 
-	@BeforeClass
-	public static void init() {
-		ServerManager.initialize();
-	}
+    @BeforeClass
+    public static void init() {
+        ServerManager.initialize();
+    }
 
-	@Test
-	public void singleContactTest() {
-		contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
-		Assert.assertEquals(contactA, contactsInfo.getContact("123"));
-		Assert.assertNull(contactsInfo.getContact("456"));
-		contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
-		Assert.assertEquals(contactB, contactsInfo.getContact("456"));
+    @Test
+    public void singleContactTest() {
+        contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        Assert.assertEquals(contactA, contactsInfo.getContact("123"));
+        Assert.assertNull(contactsInfo.getContact("456"));
+        contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        Assert.assertEquals(contactB, contactsInfo.getContact("456"));
 
-		DatabaseManager.deleteContactInfo(contactA.getId());
-		DatabaseManager.deleteContactInfo(contactB.getId());
-	}
+        DatabaseManager.deleteContactInfo(contactA.getId());
+        DatabaseManager.deleteContactInfo(contactB.getId());
+    }
 
-	@Test
-	public void getContactsTest() {
-		contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
-		contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
+    @Test
+    public void getContactsTest() {
+        contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
 
-		List<Contact> temp = contactsInfo.getContacts();
-		Assert.assertEquals(2, temp.size());
-		assert temp.contains(contactA);
-		assert temp.contains(contactB);
+        List<Contact> temp = contactsInfo.getContacts();
+        Assert.assertEquals(2, temp.size());
+        assert temp.contains(contactA);
+        assert temp.contains(contactB);
 
-		temp = contactsInfo.getContacts(EmergencyLevel.CONTACT_FIRE_FIGHTERS);
-		Assert.assertEquals(0, temp.size());
+        temp = contactsInfo.getContacts(EmergencyLevel.CONTACT_FIRE_FIGHTERS);
+        Assert.assertEquals(0, temp.size());
 
-		temp = contactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT);
-		Assert.assertEquals(1, temp.size());
-		assert temp.contains(contactA);
+        temp = contactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        Assert.assertEquals(1, temp.size());
+        assert temp.contains(contactA);
 
-		temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
-		Assert.assertEquals(1, temp.size());
-		assert temp.contains(contactB);
+        temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        Assert.assertEquals(1, temp.size());
+        assert temp.contains(contactB);
 
-		DatabaseManager.deleteContactInfo(contactA.getId());
-		DatabaseManager.deleteContactInfo(contactB.getId());
+        DatabaseManager.deleteContactInfo(contactA.getId());
+        DatabaseManager.deleteContactInfo(contactB.getId());
 
-	}
+    }
 
-	@Test
-	public void setContactEmergencyLevelTest() {
-		contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
-		contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
+    @Test
+    public void setContactEmergencyLevelTest() {
+        contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        contactsInfo.addContact(contactB, EmergencyLevel.SMS_EMERGENCY_CONTACT);
 
-		List<Contact> temp = contactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT);
-		Assert.assertEquals(1, temp.size());
-		assert temp.contains(contactA);
+        List<Contact> temp = contactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        Assert.assertEquals(1, temp.size());
+        assert temp.contains(contactA);
 
-		temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
-		Assert.assertEquals(1, temp.size());
-		assert temp.contains(contactB);
+        temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        Assert.assertEquals(1, temp.size());
+        assert temp.contains(contactB);
 
-		contactsInfo.setContactEmergencyLevel(contactA.getId(), EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        contactsInfo.setContactEmergencyLevel(contactA.getId(), EmergencyLevel.SMS_EMERGENCY_CONTACT);
 
-		temp = contactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT);
-		Assert.assertEquals(0, temp.size());
+        temp = contactsInfo.getContacts(EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        Assert.assertEquals(0, temp.size());
 
-		temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
-		Assert.assertEquals(2, temp.size());
-		assert temp.contains(contactA);
+        temp = contactsInfo.getContacts(EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        Assert.assertEquals(2, temp.size());
+        assert temp.contains(contactA);
 
-		DatabaseManager.deleteContactInfo(contactA.getId());
-		DatabaseManager.deleteContactInfo(contactB.getId());
+        DatabaseManager.deleteContactInfo(contactA.getId());
+        DatabaseManager.deleteContactInfo(contactB.getId());
 
-	}
+    }
 
-	@Test
-	public void toStringTest() {
-		assert contactsInfo + "" != null;
-		Assert.assertEquals("", contactsInfo + "");
+    @Test
+    public void toStringTest() {
+        assert contactsInfo + "" != null;
+        Assert.assertEquals("", contactsInfo + "");
 
-		contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
-		assert contactsInfo + "" != null;
+        contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        assert contactsInfo + "" != null;
 
-		Assert.assertEquals(
-				"Elvl is: CALL_EMERGENCY_CONTACT\n\tContact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n\n",
-				contactsInfo + "");
+        Assert.assertEquals(
+                        "Elvl is: CALL_EMERGENCY_CONTACT\n\tContact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n\n",
+                        contactsInfo + "");
 
-		DatabaseManager.deleteContactInfo(contactA.getId());
+        DatabaseManager.deleteContactInfo(contactA.getId());
 
-	}
+    }
 }

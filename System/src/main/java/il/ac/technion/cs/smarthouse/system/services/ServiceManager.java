@@ -19,22 +19,22 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
  * @since 02-04-2017
  */
 public final class ServiceManager {
-	private static Logger log = LoggerFactory.getLogger(ServiceManager.class);
+    private static Logger log = LoggerFactory.getLogger(ServiceManager.class);
 
-	private final Map<ServiceType, Service> services = new HashMap<>();
+    private final Map<ServiceType, Service> services = new HashMap<>();
 
-	public ServiceManager(final SystemCore systemCore) {
-		for (final ServiceType s : ServiceType.values())
-			try {
-				services.put(s, s.getServiceClass().getDeclaredConstructor(SystemCore.class).newInstance(systemCore));
-				log.info("Service " + s + " started");
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				log.error("Service " + s + " can't start ", e);
-			}
-	}
+    public ServiceManager(final SystemCore systemCore) {
+        for (final ServiceType s : ServiceType.values())
+            try {
+                services.put(s, s.getServiceClass().getDeclaredConstructor(SystemCore.class).newInstance(systemCore));
+                log.info("Service " + s + " started");
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                            | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                log.error("Service " + s + " can't start ", e);
+            }
+    }
 
-	public Service getService(final ServiceType t) {
-		return services.get(t);
-	}
+    public Service getService(final ServiceType t) {
+        return services.get(t);
+    }
 }

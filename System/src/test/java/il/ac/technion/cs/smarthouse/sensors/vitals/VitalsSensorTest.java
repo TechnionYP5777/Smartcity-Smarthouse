@@ -9,31 +9,31 @@ import il.ac.technion.cs.smarthouse.utils.Random;
  * @since 31.3.17
  */
 public class VitalsSensorTest extends SensorTest {
-	class TestSensorData extends SensorData {
-		int pulse;
-		int systolicBP;
-		int diastolicBP;
-	}
+    class TestSensorData extends SensorData {
+        int pulse;
+        int systolicBP;
+        int diastolicBP;
+    }
 
-	@Override
-	public void customInitSensor() {
-		id = Random.sensorId();
-		sensor = new VitalsSensor(id, "127.0.0.1", 40001);
+    @Override
+    public void customInitSensor() {
+        id = Random.sensorId();
+        sensor = new VitalsSensor(id, "127.0.0.1", 40001);
 
-	}
+    }
 
-	/*
-	 * TODO: inbal, fix this
-	 * 
-	 * @Test public void updateSystemWorks() throws SensorNotFoundException,
-	 * InterruptedException { ((VitalsSensor) sensor).updateSystem(80, 120, 90);
-	 * 
-	 * Thread.sleep(5000);
-	 * 
-	 * SensorApi<TestSensorData> s =
-	 * sensorsManager.getDefaultSensor(TestSensorData.class, commName);
-	 * Assert.assertEquals(80, s.receiveLastEntry().pulse);
-	 * Assert.assertEquals(120, s.receiveLastEntry().systolicBP);
-	 * Assert.assertEquals(90, s.receiveLastEntry().diastolicBP); }
-	 */
+    /*
+     * TODO: inbal, fix this
+     * 
+     * @Test public void updateSystemWorks() throws SensorNotFoundException,
+     * InterruptedException { ((VitalsSensor) sensor).updateSystem(80, 120, 90);
+     * 
+     * Thread.sleep(5000);
+     * 
+     * SensorApi<TestSensorData> s =
+     * sensorsManager.getDefaultSensor(TestSensorData.class, commName);
+     * Assert.assertEquals(80, s.receiveLastEntry().pulse);
+     * Assert.assertEquals(120, s.receiveLastEntry().systolicBP);
+     * Assert.assertEquals(90, s.receiveLastEntry().diastolicBP); }
+     */
 }

@@ -57,7 +57,8 @@ public class RoomViewController implements Initializable {
         return pane;
     }
 
-    @Override public void initialize(URL location1, ResourceBundle __) {
+    @Override
+    public void initialize(URL location1, ResourceBundle __) {
         pane = new Pane();
         pane.setOnMouseClicked(event -> {
             if (event.getTarget() == pane && inEditMode)
@@ -66,7 +67,8 @@ public class RoomViewController implements Initializable {
 
         editButton.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override public void handle(ActionEvent __1) {
+            @Override
+            public void handle(ActionEvent __1) {
                 String buttonText = RoomViewController.this.inEditMode ? "Edit" : "Save";
                 editButton.setText(buttonText);
                 for (SensorLabel ¢ : RoomViewController.this.labels)
@@ -79,7 +81,8 @@ public class RoomViewController implements Initializable {
 
     public RoomViewController setImageUrl(String location) {
         this.image_url = location;
-        imagePane.getChildren().addAll((new StackPane(new ImageView(new Image(getClass().getResourceAsStream(image_url))), pane)));
+        imagePane.getChildren().addAll(
+                        (new StackPane(new ImageView(new Image(getClass().getResourceAsStream(image_url))), pane)));
         return this;
     }
 

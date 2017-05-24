@@ -59,7 +59,8 @@ public class SimulatorController implements Initializable {
         tableController.setData(sensors);
     }
 
-    @Override public void initialize(URL location, ResourceBundle __) {
+    @Override
+    public void initialize(URL location, ResourceBundle __) {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("room_ui.fxml"));
 
         tab1.setText("Bedroom");

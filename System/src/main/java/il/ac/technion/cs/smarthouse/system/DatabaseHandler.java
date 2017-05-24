@@ -24,79 +24,77 @@ import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
  */
 public class DatabaseHandler {
 
-	private static Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
+    private static Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
 
-	private final List<String> sensors = new ArrayList<>();
-	private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
-	
+    private final List<String> sensors = new ArrayList<>();
+    private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
 
-	/**
-	 * Adds a new sensor to the system, initializing its information List.
-	 * 
-	 * @param sensorId
-	 *            sensor'd id
-	 * @param commName
-	 *            sensor's commercial name
-	 * @param sizeLimit
-	 *            limit of the information List for this sensor
-	 */
-	public void addSensor(final String sensorId) {
+    /**
+     * Adds a new sensor to the system, initializing its information List.
+     * 
+     * @param sensorId
+     *            sensor'd id
+     * @param commName
+     *            sensor's commercial name
+     * @param sizeLimit
+     *            limit of the information List for this sensor
+     */
+    public void addSensor(final String sensorId) {
 
-		sensors.add(sensorId);
-		sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
+        sensors.add(sensorId);
+        sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
 
-	}
+    }
 
-	public Boolean sensorExists(final String id) {
+    public Boolean sensorExists(final String id) {
 
-		return sensors.contains(id);
-	}
+        return sensors.contains(id);
+    }
 
-	
+    /**
+     * Queries the location of a sensor
+     * 
+     * @param sensorId
+     *            the Id of the sensor it's location to be returned
+     * @return the location of the sensor with sensorId
+     * @throws SensorNotFoundException
+     */
+    public SensorLocation getSensorLocation(final String sensorId) throws SensorNotFoundException {
+        if (sensorsLocations.get(sensorId) == null) {
+            log.error("Sensor was not found");
+            throw new SensorNotFoundException(sensorId);
+        }
+        return sensorsLocations.get(sensorId);
+    }
 
-	/**
-	 * Queries the location of a sensor
-	 * 
-	 * @param sensorId
-	 *            the Id of the sensor it's location to be returned
-	 * @return the location of the sensor with sensorId
-	 * @throws SensorNotFoundException
-	 */
-	public SensorLocation getSensorLocation(final String sensorId) throws SensorNotFoundException {
-		if (sensorsLocations.get(sensorId) == null) {
-			log.error("Sensor was not found");
-			throw new SensorNotFoundException(sensorId);
-		}
-		return sensorsLocations.get(sensorId);
-	}
+    /**
+     * Updates the location of a sensor
+     * 
+     * @param sensorId
+     *            the Id of the sensor it's location to be changed
+     * @throws SensorNotFoundException
+     */
+    public void setSensorLocation(final String sensorId, final SensorLocation l) throws SensorNotFoundException {
+        if (!sensorsLocations.containsKey(sensorId)) {
+            log.error("Sensor was not found");
+            throw new SensorNotFoundException(sensorId);
+        }
 
-	/**
-	 * Updates the location of a sensor
-	 * 
-	 * @param sensorId
-	 *            the Id of the sensor it's location to be changed
-	 * @throws SensorNotFoundException
-	 */
-	public void setSensorLocation(final String sensorId, final SensorLocation l) throws SensorNotFoundException {
-		if (!sensorsLocations.containsKey(sensorId)) {
-			log.error("Sensor was not found");
-			throw new SensorNotFoundException(sensorId);
-		}
+        sensorsLocations.put(sensorId, l);
 
-		sensorsLocations.put(sensorId, l);
+        System.out.println(sensorsLocations.get(sensorId));
+    }
 
-		System.out.println(sensorsLocations.get(sensorId));
-	}
+    public void handleUpdateMessage(final String message) {
+        try {
+            DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE,
+                            message.replace((MessageType.UPDATE.toString() + Dispatcher.DELIMITER).toLowerCase(), ""));
+        } catch (final ParseException e) {
+            log.error("Update message was not handled properly", e);
 
-	public void handleUpdateMessage(final String message) {
-		try {
-			DatabaseManager.addInfo(InfoType.SENSOR_MESSAGE, message.replace((MessageType.UPDATE.toString() + Dispatcher.DELIMITER).toLowerCase(), ""));
-		} catch (final ParseException e) {
-			log.error("Update message was not handled properly", e);
+        }
+        // TODO: inbal
 
-		}
-		// TODO: inbal
-	
-	}
+    }
 
 }

@@ -78,8 +78,8 @@ public class SensorLabel extends StackPane {
             getStyleClass().add("editable-text");
             FontMetrics metrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(getFont());
             setPrefWidth(RIGHT_MARGIN);
-            textProperty().addListener(
-                    (observable, oldTextString, newTextString) -> setPrefWidth(metrics.computeStringWidth(newTextString) + RIGHT_MARGIN));
+            textProperty().addListener((observable, oldTextString,
+                            newTextString) -> setPrefWidth(metrics.computeStringWidth(newTextString) + RIGHT_MARGIN));
 
             Platform.runLater(this::requestFocus);
         }

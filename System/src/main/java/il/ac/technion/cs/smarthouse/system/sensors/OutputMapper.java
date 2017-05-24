@@ -9,6 +9,6 @@ import java.io.PrintWriter;
  * @since 6.4.17
  */
 public interface OutputMapper {
-	void store(String id, PrintWriter out);
+    void store(String id, PrintWriter out);
 
 }

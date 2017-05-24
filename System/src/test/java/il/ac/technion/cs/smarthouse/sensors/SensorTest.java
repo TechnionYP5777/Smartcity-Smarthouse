@@ -21,53 +21,53 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManag
 
 // TODO inbal
 public abstract class SensorTest {
-	private static Logger log = LoggerFactory.getLogger(SensorTest.class);
+    private static Logger log = LoggerFactory.getLogger(SensorTest.class);
 
-	protected Sensor sensor;
+    protected Sensor sensor;
 
-	protected String id;
+    protected String id;
 
-	protected static Core core;
-	protected SensorsManager sensorsManager;
+    protected static Core core;
+    protected SensorsManager sensorsManager;
 
-	/**
-	 * Here you should initialize the fields: sensor, id, observations. It is
-	 * recommended to change commName as well. Initialization is based on the a
-	 * concrete sensor (not the abstract Sensor).
-	 */
-	public abstract void customInitSensor();
+    /**
+     * Here you should initialize the fields: sensor, id, observations. It is
+     * recommended to change commName as well. Initialization is based on the a
+     * concrete sensor (not the abstract Sensor).
+     */
+    public abstract void customInitSensor();
 
-	@BeforeClass
-	public static void initCore() {
-		log.debug("SensorTest: Core starting");
-		core = new Core();
-	}
+    @BeforeClass
+    public static void initCore() {
+        log.debug("SensorTest: Core starting");
+        core = new Core();
+    }
 
-	@Before
-	public void initSensor() throws Exception {
-		sensorsManager = (SensorsManager) core.serviceManager.getService(ServiceType.SENSORS_SERVICE);
-		customInitSensor();
-		for (int i = 0;; ++i) {
-			try {
-				if (sensor.register())
-					break;
-			} catch (final Exception e) {
-				log.error("I/O error occurred, can't regester", e);
-			}
-			if (i == 100) {
-				log.debug("SensorTest: Registration failed");
-				throw new Exception("SensorTest: Registration failed");
-			}
-		}
-	}
+    @Before
+    public void initSensor() throws Exception {
+        sensorsManager = (SensorsManager) core.serviceManager.getService(ServiceType.SENSORS_SERVICE);
+        customInitSensor();
+        for (int i = 0;; ++i) {
+            try {
+                if (sensor.register())
+                    break;
+            } catch (final Exception e) {
+                log.error("I/O error occurred, can't regester", e);
+            }
+            if (i == 100) {
+                log.debug("SensorTest: Registration failed");
+                throw new Exception("SensorTest: Registration failed");
+            }
+        }
+    }
 
-	@AfterClass
-	public static void close() {
-		log.debug("SensorTest: Core closing");
-		final Thread t = core.getSensorHandlerThread();
-		if (t.isAlive())
-			t.interrupt();
-		((SensorsHandler) core.getHandler(Handler.SENSORS)).closeSockets();
-	}
+    @AfterClass
+    public static void close() {
+        log.debug("SensorTest: Core closing");
+        final Thread t = core.getSensorHandlerThread();
+        if (t.isAlive())
+            t.interrupt();
+        ((SensorsHandler) core.getHandler(Handler.SENSORS)).closeSockets();
+    }
 
 }

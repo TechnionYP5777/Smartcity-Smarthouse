@@ -56,14 +56,16 @@ public class SensorData {
         return myId;
     }
 
-    @Override public int hashCode() {
-        return 31
-                * (myId + 31 * (((location == null) ? 0 : location.hashCode())
-                        + 31 * (((label == null) ? 0 : label.hashCode()) + 31 * (((fields == null) ? 0 : fields.hashCode()) + 31))))
-                + ((name == null) ? 0 : name.hashCode());
+    @Override
+    public int hashCode() {
+        return 31 * (myId + 31 * (((location == null) ? 0 : location.hashCode())
+                        + 31 * (((label == null) ? 0 : label.hashCode())
+                                        + 31 * (((fields == null) ? 0 : fields.hashCode()) + 31))))
+                        + ((name == null) ? 0 : name.hashCode());
     }
 
-    @Override public boolean equals(Object ¢) {
+    @Override
+    public boolean equals(Object ¢) {
         return ¢ instanceof SensorData && this.myId == ((SensorData) ¢).getMyId();
     }
 }

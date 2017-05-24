@@ -11,7 +11,7 @@ import il.ac.technion.cs.smarthouse.system.services.Service;
  */
 abstract class CommunicationService extends Service {
 
-	public CommunicationService(final SystemCore $) {
-		super($);
-	}
+    public CommunicationService(final SystemCore $) {
+        super($);
+    }
 }

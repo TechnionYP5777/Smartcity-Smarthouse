@@ -16,31 +16,31 @@ import org.slf4j.LoggerFactory;
  * @since 6.4.17
  */
 public class InteractiveSensorServer extends Thread {
-	private static Logger log = LoggerFactory.getLogger(InteractiveSensorServer.class);
+    private static Logger log = LoggerFactory.getLogger(InteractiveSensorServer.class);
 
-	private final OutputMapper mapper;
+    private final OutputMapper mapper;
 
-	public InteractiveSensorServer(final OutputMapper mapper) {
-		this.mapper = mapper;
-	}
+    public InteractiveSensorServer(final OutputMapper mapper) {
+        this.mapper = mapper;
+    }
 
-	@Override
-	public void run() {
-		try (ServerSocket router1 = new ServerSocket(40002)) {
-			// TODO: ELIA if you still need this, add a private field here and
-			// delete the previous one at SensorsHandler
-			// this.router = router1;
-			try {
-				new InstructionsSenderThread(router1.accept(), (id, out) -> mapper.store(id, out)).start();
-			} catch (final SocketException e) {
-				log.warn("socket closed, InteractiveSensorServer is shutting down", e);
-				return; // if we closed the sockets we want to shutoff the
-						// server
-			} catch (final IOException e) {
-				log.error("I/O error occurred while waiting for a connection", e);
-			}
-		} catch (final IOException e) {
-			log.error("I/O error occurred when the socket was opened", e);
-		}
-	}
+    @Override
+    public void run() {
+        try (ServerSocket router1 = new ServerSocket(40002)) {
+            // TODO: ELIA if you still need this, add a private field here and
+            // delete the previous one at SensorsHandler
+            // this.router = router1;
+            try {
+                new InstructionsSenderThread(router1.accept(), (id, out) -> mapper.store(id, out)).start();
+            } catch (final SocketException e) {
+                log.warn("socket closed, InteractiveSensorServer is shutting down", e);
+                return; // if we closed the sockets we want to shutoff the
+                        // server
+            } catch (final IOException e) {
+                log.error("I/O error occurred while waiting for a connection", e);
+            }
+        } catch (final IOException e) {
+            log.error("I/O error occurred when the socket was opened", e);
+        }
+    }
 }

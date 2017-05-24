@@ -13,17 +13,17 @@ import javafx.stage.Stage;
  * @since 16.1.17
  */
 public class VitalsSensorSimulator extends Application {
-	public static void main(final String[] args) {
-		launch(args);
-	}
+    public static void main(final String[] args) {
+        launch(args);
+    }
 
-	@Override
-	public void start(final Stage s) throws Exception {
-		final Parent root = FXMLLoader.load(getClass().getResource("/sensors/vitals/vitals_ui.fxml"));
-		final Scene scene = new Scene(root);
-		s.setTitle("Vitals Sensor Simulator");
-		s.setScene(scene);
-		s.show();
-	}
+    @Override
+    public void start(final Stage s) throws Exception {
+        final Parent root = FXMLLoader.load(getClass().getResource("/sensors/vitals/vitals_ui.fxml"));
+        final Scene scene = new Scene(root);
+        s.setTitle("Vitals Sensor Simulator");
+        s.setScene(scene);
+        s.show();
+    }
 
 }

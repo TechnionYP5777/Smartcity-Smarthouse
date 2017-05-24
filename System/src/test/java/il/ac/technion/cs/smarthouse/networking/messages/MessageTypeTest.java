@@ -9,7 +9,6 @@ import org.junit.Test;
  */
 @SuppressWarnings("static-method")
 public class MessageTypeTest {
-	
-	
-	//TODO inbal
+
+    // TODO inbal
 }

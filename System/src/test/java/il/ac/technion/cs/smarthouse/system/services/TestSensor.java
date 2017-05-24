@@ -10,14 +10,14 @@ import il.ac.technion.cs.smarthouse.utils.Random;
  */
 public class TestSensor extends InteractiveSensor {
 
-	/**
-	 * @param commName
-	 * @param obserNames
-	 *            the params that will be sent to the system
-	 */
-	public TestSensor(final String id) {
-		super(id != null ? id : Random.sensorId(), "127.0.0.1", 40001, 40002);
+    /**
+     * @param commName
+     * @param obserNames
+     *            the params that will be sent to the system
+     */
+    public TestSensor(final String id) {
+        super(id != null ? id : Random.sensorId(), "127.0.0.1", 40001, 40002);
 
-	}
+    }
 
 }

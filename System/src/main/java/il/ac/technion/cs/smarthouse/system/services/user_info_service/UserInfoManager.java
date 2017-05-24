@@ -5,8 +5,8 @@ import il.ac.technion.cs.smarthouse.system.services.Service;
 
 public class UserInfoManager extends Service {
 
-	public UserInfoManager(final SystemCore $) {
-		super($);
-	}
+    public UserInfoManager(final SystemCore $) {
+        super($);
+    }
 
 }

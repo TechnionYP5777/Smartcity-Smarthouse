@@ -7,10 +7,10 @@ import org.junit.Test;
  * @since Jan 16, 2017
  */
 public class CommunicateTest {
-	// JUnits shouldnt be static!
-	@Test
-	@SuppressWarnings("static-method")
-	public void sendEmailFromHouseTest() {
-		assert Communicate.throughEmailFromHere("smarthouse5777@gmail.com", "ya bishhhh #worksss") != null;
-	}
+    // JUnits shouldnt be static!
+    @Test
+    @SuppressWarnings("static-method")
+    public void sendEmailFromHouseTest() {
+        assert Communicate.throughEmailFromHere("smarthouse5777@gmail.com", "ya bishhhh #worksss") != null;
+    }
 }

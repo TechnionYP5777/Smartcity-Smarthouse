@@ -14,15 +14,18 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManag
  * @since 02-04-2017
  */
 public enum ServiceType {
-	SENSORS_SERVICE(SensorsManager.class), ALERTS_SERVICE(AlertsManager.class), EMAIL_SERVICE(
-			EmailService.class), PHONE_SERVICE(PhoneService.class), SMS_SERVICE(SmsService.class);
-	private Class<? extends Service> serviceClass;
+    SENSORS_SERVICE(SensorsManager.class),
+    ALERTS_SERVICE(AlertsManager.class),
+    EMAIL_SERVICE(EmailService.class),
+    PHONE_SERVICE(PhoneService.class),
+    SMS_SERVICE(SmsService.class);
+    private Class<? extends Service> serviceClass;
 
-	private ServiceType(final Class<? extends Service> serviceClass) {
-		this.serviceClass = serviceClass;
-	}
+    private ServiceType(final Class<? extends Service> serviceClass) {
+        this.serviceClass = serviceClass;
+    }
 
-	public Class<? extends Service> getServiceClass() {
-		return serviceClass;
-	}
+    public Class<? extends Service> getServiceClass() {
+        return serviceClass;
+    }
 }

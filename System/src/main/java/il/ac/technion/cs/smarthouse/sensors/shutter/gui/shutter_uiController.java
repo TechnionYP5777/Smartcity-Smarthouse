@@ -16,29 +16,26 @@ import javafx.scene.text.Text;
  * @since 9.05.17
  */
 public class shutter_uiController implements Initializable {
-	@FXML
-	private Button openButton;
-	@FXML
-	private Button closeButton;
-	@FXML
-	private Text stateText;
+    @FXML private Button openButton;
+    @FXML private Button closeButton;
+    @FXML private Text stateText;
 
-	// Event Listener on Button[#openButton].onAction
-	@FXML
-	public void openClick(final ActionEvent e) {
+    // Event Listener on Button[#openButton].onAction
+    @FXML
+    public void openClick(final ActionEvent e) {
 
-		stateText.setText("Shutters Open");
-	}
+        stateText.setText("Shutters Open");
+    }
 
-	// Event Listener on Button[#closeButton].onAction
-	@FXML
-	public void closeClick(final ActionEvent e) {
-		stateText.setText("Shutters closed");
-	}
+    // Event Listener on Button[#closeButton].onAction
+    @FXML
+    public void closeClick(final ActionEvent e) {
+        stateText.setText("Shutters closed");
+    }
 
-	@Override
-	public void initialize(final URL location, final ResourceBundle b) {
-		// TODO Auto-generated method stub
+    @Override
+    public void initialize(final URL location, final ResourceBundle b) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 }

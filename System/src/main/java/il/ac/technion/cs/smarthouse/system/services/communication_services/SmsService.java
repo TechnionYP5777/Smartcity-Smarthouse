@@ -4,13 +4,13 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
 
 public class SmsService extends CommunicationService {
 
-	public SmsService(final SystemCore $) {
-		super($);
-	}
+    public SmsService(final SystemCore $) {
+        super($);
+    }
 
-	@SuppressWarnings("static-method")
-	public void sendMsg(final String destPhoneNumber, final String msg) {
-		Communicate.throughSms(destPhoneNumber, msg);
-	}
+    @SuppressWarnings("static-method")
+    public void sendMsg(final String destPhoneNumber, final String msg) {
+        Communicate.throughSms(destPhoneNumber, msg);
+    }
 
 }

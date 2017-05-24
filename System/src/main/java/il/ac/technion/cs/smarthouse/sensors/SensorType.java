@@ -7,6 +7,7 @@ package il.ac.technion.cs.smarthouse.sensors;
  * @since 6.4.17
  */
 public enum SensorType {
-	NON_INTERACTIVE, INTERACTIVE
+    NON_INTERACTIVE,
+    INTERACTIVE
 
 }

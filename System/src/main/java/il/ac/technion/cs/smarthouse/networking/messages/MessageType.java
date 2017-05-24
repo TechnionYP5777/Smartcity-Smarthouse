@@ -9,7 +9,10 @@ package il.ac.technion.cs.smarthouse.networking.messages;
  * @since 11.12.16
  */
 public enum MessageType {
-	REGISTRATION, UPDATE, ANSWER, SUCCESS, FAILURE;
+    REGISTRATION,
+    UPDATE,
+    ANSWER,
+    SUCCESS,
+    FAILURE;
 
-	
 }

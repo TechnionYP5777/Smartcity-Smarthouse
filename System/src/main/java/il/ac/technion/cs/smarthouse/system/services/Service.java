@@ -12,19 +12,19 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
  */
 public abstract class Service {
 
-	protected SystemCore systemCore;
+    protected SystemCore systemCore;
 
-	public Service(final SystemCore $) {
-		systemCore = $;
-	}
+    public Service(final SystemCore $) {
+        systemCore = $;
+    }
 
-	/**
-	 * Get another service from the system
-	 * 
-	 * @param $
-	 * @return
-	 */
-	protected Service getAnotherService(final ServiceType $) {
-		return systemCore.serviceManager.getService($);
-	}
+    /**
+     * Get another service from the system
+     * 
+     * @param $
+     * @return
+     */
+    protected Service getAnotherService(final ServiceType $) {
+        return systemCore.serviceManager.getService($);
+    }
 }

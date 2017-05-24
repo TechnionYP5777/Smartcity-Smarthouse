@@ -12,12 +12,11 @@ import il.ac.technion.cs.smarthouse.system.SensorLocation;
  */
 public class SensorData {
 
-	protected SensorLocation sensorLocation;
+    protected SensorLocation sensorLocation;
 
-	public SensorData() {
-	}
+    public SensorData() {}
 
-	public SensorLocation getSensorLocation() {
-		return sensorLocation;
-	}
+    public SensorLocation getSensorLocation() {
+        return sensorLocation;
+    }
 }

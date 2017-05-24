@@ -24,62 +24,61 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  * @since Dec 13, 2016
  */
 public class ApplicationsCore extends ChildCore {
-	@Expose
-	private final List<ApplicationManager> apps = new ArrayList<>();
-	private Runnable onAppsChange;
+    @Expose private final List<ApplicationManager> apps = new ArrayList<>();
+    private Runnable onAppsChange;
 
-	/**
-	 * Initialize the applicationHandler with the database responsible of
-	 * managing the data in the current session
-	 */
-	public ApplicationsCore(final SystemCore systemCore) {
-		super(systemCore);
-	}
+    /**
+     * Initialize the applicationHandler with the database responsible of
+     * managing the data in the current session
+     */
+    public ApplicationsCore(final SystemCore systemCore) {
+        super(systemCore);
+    }
 
-	// [start] Services to the SystemCore
-	/**
-	 * Adds a new application to the system, and initializes it
-	 * 
-	 * @throws IOException
-	 * @throws AppInstallerException
-	 * @throws Exception
-	 * @throws ApplicationInitializationException
-	 */
-	public ApplicationManager addApplication(final ApplicationPath appPath) throws Exception {
-		final ApplicationManager $ = new ApplicationManager(UuidGenerator.GenerateUniqueIDstring(), appPath);
-		initializeApplicationManager($);
-		apps.add($);
-		Optional.ofNullable(onAppsChange).ifPresent(a -> a.run());
-		return $;
-	}
+    // [start] Services to the SystemCore
+    /**
+     * Adds a new application to the system, and initializes it
+     * 
+     * @throws IOException
+     * @throws AppInstallerException
+     * @throws Exception
+     * @throws ApplicationInitializationException
+     */
+    public ApplicationManager addApplication(final ApplicationPath appPath) throws Exception {
+        final ApplicationManager $ = new ApplicationManager(UuidGenerator.GenerateUniqueIDstring(), appPath);
+        initializeApplicationManager($);
+        apps.add($);
+        Optional.ofNullable(onAppsChange).ifPresent(a -> a.run());
+        return $;
+    }
 
-	public List<ApplicationManager> getApplicationManagers() {
-		return Collections.unmodifiableList(apps);
-	}
+    public List<ApplicationManager> getApplicationManagers() {
+        return Collections.unmodifiableList(apps);
+    }
 
-	public List<String> getInstalledApplicationNames() {
-		final List<String> l = new ArrayList<>();
-		for (final ApplicationManager applicationManager : apps)
-			Optional.ofNullable(applicationManager.getApplicationName()).ifPresent(l::add);
-		return l;
-	}
+    public List<String> getInstalledApplicationNames() {
+        final List<String> l = new ArrayList<>();
+        for (final ApplicationManager applicationManager : apps)
+            Optional.ofNullable(applicationManager.getApplicationName()).ifPresent(l::add);
+        return l;
+    }
 
-	public void setOnAppsListChange(final Runnable onAppsChange) {
-		this.onAppsChange = onAppsChange;
-	}
-	// [end]
+    public void setOnAppsListChange(final Runnable onAppsChange) {
+        this.onAppsChange = onAppsChange;
+    }
+    // [end]
 
-	// [start] Private functions
-	private void initializeApplicationManager(final ApplicationManager $) throws Exception {
-		$.initialize(systemCore.serviceManager);
-	}
-	// [end]
+    // [start] Private functions
+    private void initializeApplicationManager(final ApplicationManager $) throws Exception {
+        $.initialize(systemCore.serviceManager);
+    }
+    // [end]
 
-	@Override
-	public void populate(final String jsonString) throws Exception {
-		super.populate(jsonString);
+    @Override
+    public void populate(final String jsonString) throws Exception {
+        super.populate(jsonString);
 
-		for (final ApplicationManager applicationManager : apps)
-			initializeApplicationManager(applicationManager);
-	}
+        for (final ApplicationManager applicationManager : apps)
+            initializeApplicationManager(applicationManager);
+    }
 }

@@ -6,10 +6,10 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 
 public class Entry {
 
-	public static void main(final String[] args) throws InterruptedException {
-		JavaFxHelper.startGui(new MainSystemGui(), args);
-		Thread.sleep(500);
-		JavaFxHelper.startGui(new SosSensorSimulator(), args);
-	}
+    public static void main(final String[] args) throws InterruptedException {
+        JavaFxHelper.startGui(new MainSystemGui(), args);
+        Thread.sleep(500);
+        JavaFxHelper.startGui(new SosSensorSimulator(), args);
+    }
 
 }

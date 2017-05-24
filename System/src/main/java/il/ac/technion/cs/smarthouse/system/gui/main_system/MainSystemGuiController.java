@@ -19,54 +19,47 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 
 public class MainSystemGuiController extends SystemPresenter {
-	PresenterInfo appsPresenterInfo;
+    PresenterInfo appsPresenterInfo;
 
-	@FXML
-	TabPane tabs;
-	@FXML
-	Tab homeTab;
-	@FXML
-	Tab userTab;
-	@FXML
-	Tab appsTab;
-	@FXML
-	Tab sensorsTab;
-	@FXML
-	ImageView homePageImageView;
-	@FXML
-	HBox homeTabHBox;
+    @FXML TabPane tabs;
+    @FXML Tab homeTab;
+    @FXML Tab userTab;
+    @FXML Tab appsTab;
+    @FXML Tab sensorsTab;
+    @FXML ImageView homePageImageView;
+    @FXML HBox homeTabHBox;
 
-	@Override
-	public void init(final SystemCore model, final URL location, final ResourceBundle __) {
-		try {
-			// home tab:
-			homeTab.setContent(homeTabHBox);
-			homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
-			homePageImageView.setFitHeight(200);
-			// homePageImageView.fitHeightProperty().bind(homeTabHBox.heightProperty().divide(2));
-			final BackgroundImage myBI = new BackgroundImage(
-					new Image(getClass().getResourceAsStream("/backgrounds/bg_4.png"), 0, 200, false, false),
-					BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-					BackgroundSize.DEFAULT);
-			homeTabHBox.setBackground(new Background(myBI));
+    @Override
+    public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+        try {
+            // home tab:
+            homeTab.setContent(homeTabHBox);
+            homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
+            homePageImageView.setFitHeight(200);
+            // homePageImageView.fitHeightProperty().bind(homeTabHBox.heightProperty().divide(2));
+            final BackgroundImage myBI = new BackgroundImage(
+                            new Image(getClass().getResourceAsStream("/backgrounds/bg_4.png"), 0, 200, false, false),
+                            BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                            BackgroundSize.DEFAULT);
+            homeTabHBox.setBackground(new Background(myBI));
 
-			// user tab:
-			userTab.setContent(createChildPresenter("user information.fxml").getRootViewNode());
+            // user tab:
+            userTab.setContent(createChildPresenter("user information.fxml").getRootViewNode());
 
-			// sensors tab:
-			sensorsTab.setContent(createChildPresenter("house_mapping.fxml").getRootViewNode());
+            // sensors tab:
+            sensorsTab.setContent(createChildPresenter("house_mapping.fxml").getRootViewNode());
 
-			// applications tab:
-			appsPresenterInfo = createChildPresenter("application_view.fxml");
-			appsTab.setContent(appsPresenterInfo.getRootViewNode());
+            // applications tab:
+            appsPresenterInfo = createChildPresenter("application_view.fxml");
+            appsTab.setContent(appsPresenterInfo.getRootViewNode());
 
-		} catch (final Exception ¢) {
-			¢.printStackTrace();
-		}
-	}
+        } catch (final Exception ¢) {
+            ¢.printStackTrace();
+        }
+    }
 
-	public void gotoAppsTab() {
-		tabs.getSelectionModel().select(appsTab);
-		appsPresenterInfo.<ApplicationViewController>getPresenter().selectFirstApp();
-	}
+    public void gotoAppsTab() {
+        tabs.getSelectionModel().select(appsTab);
+        appsPresenterInfo.<ApplicationViewController>getPresenter().selectFirstApp();
+    }
 }
