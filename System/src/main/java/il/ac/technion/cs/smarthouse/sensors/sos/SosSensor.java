@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.sensors.sos;
 
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
+import il.ac.technion.cs.smarthouse.system.Dispatcher;
 
 /**
  * This class represents an SOS button and contains its logic.
@@ -15,7 +16,7 @@ public class SosSensor extends Sensor {
     }
 
     public void updateSystem() {
-        super.updateSystem("sos.pressed." + true);
+        super.updateSystem(true, "sos" + Dispatcher.DELIMITER + "pressed" );
     }
 
 }

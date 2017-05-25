@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
+import il.ac.technion.cs.smarthouse.system.DispatcherCore;
 
 /**
  * Represents a physical component that can send information.
@@ -82,7 +83,7 @@ public abstract class Sensor {
             log.error("I/O error occurred when the sensor's socket was created", e);
         }
 
-        final String $ = Message.send(Message.createMessage(MessageType.REGISTRATION, "", id), out, in);
+        final String $ = Message.send(Message.createMessage(MessageType.REGISTRATION, "", "", id), out, in);
         return $ != null && Message.isSuccessMessage($);
     }
 
@@ -94,7 +95,7 @@ public abstract class Sensor {
      * @param data
      *            observations to send to the system
      */
-    public void updateSystem(final String data) {
+    public void updateSystem( final Object value, final String... path) {
         final long currMillis = System.currentTimeMillis();
         for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
             if (currMillis - lastMessagesMillis.get(¢) > 1000)
@@ -105,7 +106,7 @@ public abstract class Sensor {
 
         lastMessagesMillis.add(currMillis);
 
-        Message.send(Message.createMessage(MessageType.UPDATE, data, id), out, null);
+        Message.send(Message.createMessage(MessageType.UPDATE, DispatcherCore.getPathAsString(path), value.toString(), id), out, null);
     }
 
     /** @return id of the sensor */

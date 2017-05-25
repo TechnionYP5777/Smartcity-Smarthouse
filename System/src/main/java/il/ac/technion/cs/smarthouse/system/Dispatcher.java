@@ -16,6 +16,12 @@ public interface Dispatcher {
     public static final String DELIMITER = ".";
 
     /**
+     * SEPARATOR is the const string we will use to part the path of the message
+     * from the value it updates
+     */
+    public static final String SEPARATOR = "=";
+
+    /**
      * This methods allows to subscribe to new messages on a certain path.
      * 
      * @param path

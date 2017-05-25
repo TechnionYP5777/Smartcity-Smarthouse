@@ -23,6 +23,7 @@ public class DispatcherCore implements Dispatcher {
         return String.join(Dispatcher.DELIMITER, pathNodes);
     }
 
+    @Override
     public String subscribe(Consumer<String> subscriber, String... path) {
         if (!subscribers.containsKey(getPathAsString(path)))
             subscribers.put(getPathAsString(path), new HashMap<>());
@@ -33,6 +34,7 @@ public class DispatcherCore implements Dispatcher {
         return id;
     }
 
+    @Override
     public void unsubscribe(String subscriberId, String... path) {
         if (!subscribers.containsKey(getPathAsString(path)))
             log.error("Key Word was not found");
@@ -40,7 +42,9 @@ public class DispatcherCore implements Dispatcher {
         subscribers.get(getPathAsString(path)).remove(subscriberId);
     }
 
+    @Override
     public void sendMessage(InfoType infoType, String value, String... path) {
+        //TODO: inbal - should get a message or path + value? maybe overload?
         String message = infoType.toString() + DELIMITER + getPathAsString(path) + DELIMITER + value;
         for (String prefix : subscribers.keySet())
             if (message.startsWith(prefix))

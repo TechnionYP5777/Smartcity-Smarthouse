@@ -143,7 +143,7 @@ public final class SensorApi<T extends SensorData> {
             log.error(LOG_MSG_RUNTIME_THROW + " This is because " + sensorId + " Doesn't exist");
             throw new SensorLostRuntimeException(null);
         }
-        systemCore.sensorsHandler.sendInstruction(Message.createMessage(MessageType.UPDATE, instruction, sensorId));
+        systemCore.sensorsHandler.sendInstruction(Message.createMessage(MessageType.UPDATE, instruction, "", sensorId));
     }
 
     // [start] timer functions
@@ -151,7 +151,9 @@ public final class SensorApi<T extends SensorData> {
         return Date.from(¢.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
     }
 
+    @SuppressWarnings("unused")
     private class QueryTimerTask extends TimerTask {
+       
         Boolean repeat;
         String sensorId1;
         LocalTime t;
@@ -171,7 +173,6 @@ public final class SensorApi<T extends SensorData> {
          * @see java.util.TimerTask#run()
          */
         @Override
-        @SuppressWarnings("synthetic-access")
         public void run() {
             // notifee.accept(systemCore.databaseHandler.getLastEntryOf(sensorId1).orElse(new
             // String()));

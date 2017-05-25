@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.sensors.shutter;
 
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
+import il.ac.technion.cs.smarthouse.system.Dispatcher;
 
 /**
  * This class represents shutters sensor and contains its logic.
@@ -16,7 +17,10 @@ public class ShutterSensor extends Sensor {
     }
 
     public void updateSystem(final boolean open, final int fromTime, final int toTime) {
-        super.updateSystem("shutter.open." + open + ".time." + fromTime);
+        
+        super.updateSystem(open, "shutter" + Dispatcher.DELIMITER + "open");
+        super.updateSystem(fromTime, "shutter" + Dispatcher.DELIMITER + "time");
+
     }
 
 }
