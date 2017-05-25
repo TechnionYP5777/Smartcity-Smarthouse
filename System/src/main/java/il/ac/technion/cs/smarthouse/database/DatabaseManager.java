@@ -32,8 +32,9 @@ public class DatabaseManager {
 
     public static ParseObject addContactInfo(final String id, final String name, final String phone, final String email)
                     throws ParseException {
+        //TODO: inbal!
         final Map<String, Object> m = new HashMap<>();
-        m.put("info", InfoType.USER$CONTACT.toString().toLowerCase() + "@" + id + "@" + name + "@" + phone + "@"
+        m.put("info", InfoType.CONTACT.toString().toLowerCase() + "@" + id + "@" + name + "@" + phone + "@"
                         + email);
 
         return ServerManager.putValue(parseClass, m);
@@ -42,8 +43,9 @@ public class DatabaseManager {
 
     public static ParseObject addContactInfo(final String id, final String name, final String phone, final String email,
                     final EmergencyLevel elevel) throws ParseException {
+        //TODO: inbal!
         final Map<String, Object> m = new HashMap<>();
-        m.put("info", InfoType.USER$CONTACT.toString().toLowerCase() + "@" + id + "@" + name + "@" + phone + "@" + email
+        m.put("info", InfoType.CONTACT.toString().toLowerCase() + "@" + id + "@" + name + "@" + phone + "@" + email
                         + "@" + elevel.toString());
 
         return ServerManager.putValue(parseClass, m);
@@ -51,8 +53,9 @@ public class DatabaseManager {
     }
 
     public static void deleteContactInfo(final String id) {
+        //TODO: inbal!
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
-        findQuery.whereContains("info", InfoType.USER$CONTACT.toString().toLowerCase());
+        findQuery.whereContains("info", InfoType.CONTACT.toString().toLowerCase());
         findQuery.whereContains("info", id);
         try {
             ServerManager.deleteById(parseClass, findQuery.find().get(0).getObjectId());

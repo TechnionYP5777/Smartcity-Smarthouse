@@ -34,10 +34,11 @@ public class UserInformationTest {
         Assert.assertEquals("0509535200", userInfo.getPhoneNumber());
         Assert.assertEquals("Hertzel avn. 7, Jerusalem", userInfo.getHomeAddress());
 
-        DatabaseManager.deleteInfo(InfoType.USER$ID);
-        DatabaseManager.deleteInfo(InfoType.USER$NAME);
-        DatabaseManager.deleteInfo(InfoType.USER$PHONE_NUMBER);
-        DatabaseManager.deleteInfo(InfoType.USER$HOME_ADDRESS);
+        //TODO: inbal!
+        DatabaseManager.deleteInfo(InfoType.ID);
+        DatabaseManager.deleteInfo(InfoType.NAME);
+        DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
+        DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
     }
 
     @Test
@@ -49,10 +50,11 @@ public class UserInformationTest {
         userInfo.setPhoneNumber("026895246");
         Assert.assertEquals("026895246", userInfo.getPhoneNumber());
 
-        DatabaseManager.deleteInfo(InfoType.USER$ID);
-        DatabaseManager.deleteInfo(InfoType.USER$NAME);
-        DatabaseManager.deleteInfo(InfoType.USER$PHONE_NUMBER);
-        DatabaseManager.deleteInfo(InfoType.USER$HOME_ADDRESS);
+        //TODO: inbal!
+        DatabaseManager.deleteInfo(InfoType.ID);
+        DatabaseManager.deleteInfo(InfoType.NAME);
+        DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
+        DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
     }
     /*
      * TODO: inbal

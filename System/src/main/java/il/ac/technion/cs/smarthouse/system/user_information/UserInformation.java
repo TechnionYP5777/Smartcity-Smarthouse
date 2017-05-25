@@ -37,10 +37,11 @@ public class UserInformation {
         emergencyContacts = new ContactsInformation();
 
         try {
-            DatabaseManager.addInfo(InfoType.USER$NAME, name);
-            DatabaseManager.addInfo(InfoType.USER$ID, id);
-            DatabaseManager.addInfo(InfoType.USER$PHONE_NUMBER, phoneNumber);
-            DatabaseManager.addInfo(InfoType.USER$HOME_ADDRESS, homeAddress);
+            //TODO: inbal!
+            DatabaseManager.addInfo(InfoType.NAME, name);
+            DatabaseManager.addInfo(InfoType.ID, id);
+            DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
+            DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
         } catch (final ParseException e) {
             log.error("User could not be saved", e);
         }
@@ -54,8 +55,9 @@ public class UserInformation {
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
         try {
-            DatabaseManager.deleteInfo(InfoType.USER$PHONE_NUMBER);
-            DatabaseManager.addInfo(InfoType.USER$PHONE_NUMBER, phoneNumber);
+            //TODO: inbal!
+            DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
+            DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
 
         } catch (final ParseException e) {
             log.error("User could not be updated", e);
@@ -70,8 +72,9 @@ public class UserInformation {
         this.homeAddress = homeAddress;
 
         try {
-            DatabaseManager.deleteInfo(InfoType.USER$HOME_ADDRESS);
-            DatabaseManager.addInfo(InfoType.USER$HOME_ADDRESS, homeAddress);
+            //TODO: inbal!
+            DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
+            DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
         } catch (final ParseException e) {
             log.error("User could not be updated", e);
         }
