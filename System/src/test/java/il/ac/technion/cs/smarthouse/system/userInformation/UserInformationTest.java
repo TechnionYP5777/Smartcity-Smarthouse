@@ -4,9 +4,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.database.ServerManager;
-import il.ac.technion.cs.smarthouse.system.InfoType;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
 /**
@@ -34,11 +32,13 @@ public class UserInformationTest {
         Assert.assertEquals("0509535200", userInfo.getPhoneNumber());
         Assert.assertEquals("Hertzel avn. 7, Jerusalem", userInfo.getHomeAddress());
 
-        //TODO: inbal!
-        DatabaseManager.deleteInfo(InfoType.ID);
-        DatabaseManager.deleteInfo(InfoType.NAME);
-        DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
-        DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
+        // TODO: inbal!
+        /*
+         * DatabaseManager.deleteInfo(InfoType.ID);
+         * DatabaseManager.deleteInfo(InfoType.NAME);
+         * DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
+         * DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
+         */
     }
 
     @Test
@@ -50,11 +50,13 @@ public class UserInformationTest {
         userInfo.setPhoneNumber("026895246");
         Assert.assertEquals("026895246", userInfo.getPhoneNumber());
 
-        //TODO: inbal!
-        DatabaseManager.deleteInfo(InfoType.ID);
-        DatabaseManager.deleteInfo(InfoType.NAME);
-        DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
-        DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
+        // TODO: inbal!
+        /*
+         * DatabaseManager.deleteInfo(InfoType.ID);
+         * DatabaseManager.deleteInfo(InfoType.NAME);
+         * DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
+         * DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
+         */
     }
     /*
      * TODO: inbal

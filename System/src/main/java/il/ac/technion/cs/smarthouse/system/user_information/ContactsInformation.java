@@ -5,11 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.parse4j.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
 /**
@@ -23,8 +18,6 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 public class ContactsInformation {
 
     private final Map<EmergencyLevel, Map<String, Contact>> data = new HashMap<>();
-
-    private static Logger log = LoggerFactory.getLogger(ContactsInformation.class);
 
     public ContactsInformation() {
         for (final EmergencyLevel elevel : EmergencyLevel.values())
@@ -41,12 +34,6 @@ public class ContactsInformation {
      */
     public void addContact(final Contact c, final EmergencyLevel elevel) {
         data.get(elevel).put(c.getId(), c);
-
-        try {
-            DatabaseManager.addContactInfo(c.getId(), c.getName(), c.getPhoneNumber(), c.getEmailAddress(), elevel);
-        } catch (final ParseException e) {
-            log.error("Contact could not be saved", e);
-        }
 
     }
 
@@ -69,13 +56,6 @@ public class ContactsInformation {
                 data.get($).remove(id);
                 data.get(newELevel).put(id, contact);
 
-                try {
-                    DatabaseManager.deleteContactInfo(id);
-                    DatabaseManager.addContactInfo(id, contact.getName(), contact.getPhoneNumber(),
-                                    contact.getEmailAddress(), newELevel);
-                } catch (final ParseException e) {
-                    log.error("Contact could not be updated", e);
-                }
             }
 
     }
@@ -86,7 +66,6 @@ public class ContactsInformation {
 
                 data.get($).remove(id);
 
-                DatabaseManager.deleteContactInfo(id);
             }
 
     }

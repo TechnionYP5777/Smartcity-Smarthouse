@@ -2,13 +2,7 @@ package il.ac.technion.cs.smarthouse.system.user_information;
 
 import java.util.List;
 
-import org.parse4j.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
-import il.ac.technion.cs.smarthouse.system.InfoType;
 
 /**
  * This class represents all the data which is relevant to the system about the
@@ -26,8 +20,6 @@ public class UserInformation {
     private String homeAddress;
     private final ContactsInformation emergencyContacts;
 
-    private static Logger log = LoggerFactory.getLogger(UserInformation.class);
-
     public UserInformation(final String name, final String id, final String phoneNumber, final String homeAddress) {
 
         this.name = name;
@@ -36,15 +28,13 @@ public class UserInformation {
         this.homeAddress = homeAddress;
         emergencyContacts = new ContactsInformation();
 
-        try {
-            //TODO: inbal!
-            DatabaseManager.addInfo(InfoType.NAME, name);
-            DatabaseManager.addInfo(InfoType.ID, id);
-            DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
-            DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
-        } catch (final ParseException e) {
-            log.error("User could not be saved", e);
-        }
+        // TODO: inbal!
+        /*
+         * DatabaseManager.addInfo(InfoType.NAME, name);
+         * DatabaseManager.addInfo(InfoType.ID, id);
+         * DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
+         * DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
+         */
 
     }
 
@@ -54,14 +44,13 @@ public class UserInformation {
 
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
-        try {
-            //TODO: inbal!
-            DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
-            DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
 
-        } catch (final ParseException e) {
-            log.error("User could not be updated", e);
-        }
+        // TODO: inbal!
+        /*
+         * DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
+         * DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
+         */
+
     }
 
     public String getHomeAddress() {
@@ -71,13 +60,12 @@ public class UserInformation {
     public void setHomeAddress(final String homeAddress) {
         this.homeAddress = homeAddress;
 
-        try {
-            //TODO: inbal!
-            DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
-            DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
-        } catch (final ParseException e) {
-            log.error("User could not be updated", e);
-        }
+        // TODO: inbal!
+        /*
+         * DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
+         * DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
+         */
+
     }
 
     public String getName() {

@@ -87,8 +87,10 @@ public class DatabaseHandler {
 
     public void handleUpdateMessage(final String message) {
         try {
+            String[] parts = message.split(Dispatcher.SEPARATOR);
             DatabaseManager.addInfo(InfoType.SENSOR,
-                            message.replace((MessageType.UPDATE.toString() + Dispatcher.DELIMITER).toLowerCase(), ""));
+                            parts[0].replace((MessageType.UPDATE.toString() + Dispatcher.DELIMITER).toLowerCase(), ""),
+                            parts[1]);
         } catch (final ParseException e) {
             log.error("Update message was not handled properly", e);
 

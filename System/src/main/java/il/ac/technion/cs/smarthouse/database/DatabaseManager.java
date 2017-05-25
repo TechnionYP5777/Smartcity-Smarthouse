@@ -7,8 +7,8 @@ import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
 
+import il.ac.technion.cs.smarthouse.system.Dispatcher;
 import il.ac.technion.cs.smarthouse.system.DispatcherCore;
-import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.InfoType;
 
 /**
@@ -22,72 +22,41 @@ public class DatabaseManager {
     public static String pathCol = "path"; // TODO inbal replace to match this
     public static String valueCol = "value"; // TODO inbal replace to match this
 
-    public static ParseObject addInfo(final InfoType t, final String info) throws ParseException {
+    public static ParseObject addInfo(final InfoType t, final String path, final String value) throws ParseException {
         final Map<String, Object> m = new HashMap<>();
-        m.put("info", t.toString().toLowerCase() + "." + info);
+        m.put(pathCol, t.toString().toLowerCase() + Dispatcher.DELIMITER + path);
+        m.put(valueCol, value);
 
         return ServerManager.putValue(parseClass, m);
 
     }
 
-    public static ParseObject addContactInfo(final String id, final String name, final String phone, final String email)
-                    throws ParseException {
-        //TODO: inbal!
-        final Map<String, Object> m = new HashMap<>();
-        m.put("info", InfoType.CONTACT.toString().toLowerCase() + "@" + id + "@" + name + "@" + phone + "@"
-                        + email);
+    // TODO: inbal, should have delete method too...
 
-        return ServerManager.putValue(parseClass, m);
-
-    }
-
-    public static ParseObject addContactInfo(final String id, final String name, final String phone, final String email,
-                    final EmergencyLevel elevel) throws ParseException {
-        //TODO: inbal!
-        final Map<String, Object> m = new HashMap<>();
-        m.put("info", InfoType.CONTACT.toString().toLowerCase() + "@" + id + "@" + name + "@" + phone + "@" + email
-                        + "@" + elevel.toString());
-
-        return ServerManager.putValue(parseClass, m);
-
-    }
-
-    public static void deleteContactInfo(final String id) {
-        //TODO: inbal!
-        final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
-        findQuery.whereContains("info", InfoType.CONTACT.toString().toLowerCase());
-        findQuery.whereContains("info", id);
-        try {
-            ServerManager.deleteById(parseClass, findQuery.find().get(0).getObjectId());
-        } catch (final ParseException e) {
-            // TODO inbal - log or throw
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void deleteInfo(final InfoType t) {
-        final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
-        findQuery.whereContains("info", t.toString().toLowerCase());
-
-        try {
-            ServerManager.deleteById(parseClass, findQuery.find().get(0).getObjectId());
-        } catch (final ParseException e) {
-            // TODO inbal - log or throw
-            e.printStackTrace();
-        }
-
-    }
-
+    /*
+     * public static void deleteInfo(final InfoType t) { final
+     * ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
+     * findQuery.whereContains("info", t.toString().toLowerCase());
+     * 
+     * try { ServerManager.deleteById(parseClass,
+     * findQuery.find().get(0).getObjectId()); } catch (final ParseException e)
+     * { // TODO inbal - log or throw e.printStackTrace(); }
+     * 
+     * }
+     */
+    
+    
     public static String getLastEntry(String... path) {
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 
-        findQuery.whereContains("info", DispatcherCore.getPathAsString(path).toLowerCase());
+        findQuery.whereContains(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
 
         try {
             if (!findQuery.find().isEmpty()) {
                 findQuery.orderByDescending("createdAt");
-                return findQuery.find().get(0).getString("info");
+                
+                //TODO: inbal - should return only value?
+                return findQuery.find().get(0).getString(pathCol) + Dispatcher.SEPARATOR + findQuery.find().get(0).getString(valueCol);
             }
         } catch (ParseException e) {
             // TODO throw? return ""?
