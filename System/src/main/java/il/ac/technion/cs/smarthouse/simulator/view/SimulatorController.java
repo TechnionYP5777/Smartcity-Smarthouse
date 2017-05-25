@@ -58,6 +58,18 @@ public class SimulatorController implements Initializable {
         sensors.add(¢);
         tableController.setData(sensors);
     }
+    
+    public void loadSensorList(){
+        final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("sensors_list_ui.fxml"));
+        try {
+            JavaFxHelper.placeNodeInPane(fxmlLoader.load(), sidePane);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        tableController = fxmlLoader.getController();
+        tableController.setMainController(this).setData(sensors);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle __) {
@@ -109,14 +121,6 @@ public class SimulatorController implements Initializable {
         livingroom = loader.getController();
         livingroom.setImageUrl("house.jpg").setLocation(Location.LIVINGROOM).setMainController(this);
 
-        final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("sensors_list_ui.fxml"));
-        try {
-            JavaFxHelper.placeNodeInPane(fxmlLoader.load(), sidePane);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        tableController = fxmlLoader.getController();
-        tableController.setMainController(this);
+        loadSensorList();
     }
 }

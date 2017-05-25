@@ -1,13 +1,13 @@
 package il.ac.technion.cs.smarthouse.simulator.model;
 
-import java.util.HashMap;
-import java.util.Map;
 import il.ac.technion.cs.smarthouse.simulator.view.SensorLabel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class SensorData {
     static int id_counter;
     private String name;
-    private Map<String, Types> fields;
+    private ObservableList<SensorField> fields = FXCollections.observableArrayList();
     private SensorLabel label;
     private Location location;
     private int myId;
@@ -15,7 +15,6 @@ public class SensorData {
     public SensorData(String name, SensorLabel label, Location location) {
         this.myId = id_counter++;
         this.name = name;
-        this.fields = new HashMap<>();
         this.label = label;
         this.location = location;
     }
@@ -28,12 +27,12 @@ public class SensorData {
         this.name = name;
     }
 
-    public Map<String, Types> getFields() {
+    public ObservableList<SensorField> getFields() {
         return fields;
     }
 
-    public void addField(String fieldName, Types t) {
-        this.fields.put(fieldName, t);
+    public void addField(SensorField ¢) {
+        this.fields.add(¢);
     }
 
     public Location getLocation() {

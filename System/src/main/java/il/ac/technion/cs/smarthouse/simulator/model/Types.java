@@ -1,8 +1,17 @@
 package il.ac.technion.cs.smarthouse.simulator.model;
 
 public enum Types {
-    Boolean,
-    Integer,
-    Double,
-    String
+    BOOLEAN("Boolean"),
+    INTEGER("Integer"),
+    DOUBLE("Double"),
+    STRING("String");
+    private final String fieldDescription;
+
+    private Types(String value) {
+        fieldDescription = value;
+    }
+
+    public String getFieldDescription() {
+        return fieldDescription;
+    }
 }
