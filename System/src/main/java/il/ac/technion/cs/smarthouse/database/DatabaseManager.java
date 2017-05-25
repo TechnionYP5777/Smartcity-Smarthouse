@@ -44,8 +44,7 @@ public class DatabaseManager {
      * 
      * }
      */
-    
-    
+
     public static String getLastEntry(String... path) {
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 
@@ -54,9 +53,10 @@ public class DatabaseManager {
         try {
             if (!findQuery.find().isEmpty()) {
                 findQuery.orderByDescending("createdAt");
-                
-                //TODO: inbal - should return only value?
-                return findQuery.find().get(0).getString(pathCol) + Dispatcher.SEPARATOR + findQuery.find().get(0).getString(valueCol);
+
+                // TODO: inbal - should return only value?
+                return findQuery.find().get(0).getString(pathCol) + Dispatcher.SEPARATOR
+                                + findQuery.find().get(0).getString(valueCol);
             }
         } catch (ParseException e) {
             // TODO throw? return ""?

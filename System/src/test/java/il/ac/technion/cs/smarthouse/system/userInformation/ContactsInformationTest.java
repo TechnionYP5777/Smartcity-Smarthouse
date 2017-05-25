@@ -82,8 +82,6 @@ public class ContactsInformationTest {
         Assert.assertEquals(2, temp.size());
         assert temp.contains(contactA);
 
-      
-
     }
 
     @Test
@@ -97,8 +95,6 @@ public class ContactsInformationTest {
         Assert.assertEquals(
                         "Elvl is: CALL_EMERGENCY_CONTACT\n\tContact:  id= 123; name= Alon; phone= 0508080123; email= alon@gmail.com;\n\n",
                         contactsInfo + "");
-
-      
 
     }
 }

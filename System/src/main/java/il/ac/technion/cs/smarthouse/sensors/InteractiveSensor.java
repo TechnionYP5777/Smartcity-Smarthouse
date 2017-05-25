@@ -65,8 +65,8 @@ public abstract class InteractiveSensor extends Sensor {
         } catch (final IOException e) {
             log.error("I/O error occurred when the sensor's instructions socket was created", e);
         }
-        final String $ = Message.send(Message.createMessage(MessageType.REGISTRATION, sType.toString(), "", id), instOut,
-                        instIn);
+        final String $ = Message.send(Message.createMessage(MessageType.REGISTRATION, sType.toString(), "", id),
+                        instOut, instIn);
         return $ != null && $.contains("success");
     }
 

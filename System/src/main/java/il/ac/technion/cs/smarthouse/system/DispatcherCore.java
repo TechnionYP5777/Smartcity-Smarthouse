@@ -44,7 +44,7 @@ public class DispatcherCore implements Dispatcher {
 
     @Override
     public void sendMessage(InfoType infoType, String value, String... path) {
-        //TODO: inbal - should get a message or path + value? maybe overload?
+        // TODO: inbal - should get a message or path + value? maybe overload?
         String message = infoType.toString() + DELIMITER + getPathAsString(path) + DELIMITER + value;
         for (String prefix : subscribers.keySet())
             if (message.startsWith(prefix))

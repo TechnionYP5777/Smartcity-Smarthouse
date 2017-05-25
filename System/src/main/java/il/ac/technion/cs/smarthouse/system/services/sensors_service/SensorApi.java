@@ -153,7 +153,7 @@ public final class SensorApi<T extends SensorData> {
 
     @SuppressWarnings("unused")
     private class QueryTimerTask extends TimerTask {
-       
+
         Boolean repeat;
         String sensorId1;
         LocalTime t;

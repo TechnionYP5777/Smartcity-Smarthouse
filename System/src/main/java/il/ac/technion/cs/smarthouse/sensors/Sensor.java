@@ -95,7 +95,7 @@ public abstract class Sensor {
      * @param data
      *            observations to send to the system
      */
-    public void updateSystem( final Object value, final String... path) {
+    public void updateSystem(final Object value, final String... path) {
         final long currMillis = System.currentTimeMillis();
         for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
             if (currMillis - lastMessagesMillis.get(¢) > 1000)
@@ -106,7 +106,8 @@ public abstract class Sensor {
 
         lastMessagesMillis.add(currMillis);
 
-        Message.send(Message.createMessage(MessageType.UPDATE, DispatcherCore.getPathAsString(path), value.toString(), id), out, null);
+        Message.send(Message.createMessage(MessageType.UPDATE, DispatcherCore.getPathAsString(path), value.toString(),
+                        id), out, null);
     }
 
     /** @return id of the sensor */

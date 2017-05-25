@@ -16,7 +16,7 @@ public class SosSensor extends Sensor {
     }
 
     public void updateSystem() {
-        super.updateSystem(true, "sos" + Dispatcher.DELIMITER + "pressed" );
+        super.updateSystem(true, "sos" + Dispatcher.DELIMITER + "pressed");
     }
 
 }

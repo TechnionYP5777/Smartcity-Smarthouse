@@ -23,7 +23,8 @@ public abstract class Message {
     public static final String SENSOR_ID = "sensorid-";
     private static Logger log = LoggerFactory.getLogger(Message.class);
 
-    public static String createMessage(final MessageType t, final String path, final String value, final String sensorId) {
+    public static String createMessage(final MessageType t, final String path, final String value,
+                    final String sensorId) {
         String message = t.toString() + Dispatcher.DELIMITER;
         if (path == "")
             return (message + SENSOR_ID + sensorId).toLowerCase();
