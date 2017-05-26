@@ -35,26 +35,27 @@ public class DatabaseManager {
 
     }
 
-    public static void deleteInfo(InfoType infoType) {
+    public static void deleteInfo(final InfoType infoType) {
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
         findQuery.whereStartsWith(pathCol, infoType.toString().toLowerCase());
 
         try {
-            ServerManager.deleteById(parseClass, findQuery.find().get(0).getObjectId());
+            for (final ParseObject iterator : findQuery.find())
+                ServerManager.deleteById(parseClass, iterator.getObjectId());
+
         } catch (final ParseException e) {
             log.error("No matching object was found on the server", e);
         }
 
     }
 
-    public static void deleteInfo(String... path) {
+    public static void deleteInfo(final String... path) {
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
         findQuery.whereMatches(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
 
         try {
-            for (ParseObject iterator : findQuery.find()) {
+            for (final ParseObject iterator : findQuery.find())
                 ServerManager.deleteById(parseClass, iterator.getObjectId());
-            }
 
         } catch (final ParseException e) {
             log.error("No matching object was found on the server", e);
@@ -62,20 +63,20 @@ public class DatabaseManager {
 
     }
 
-    public static String getLastEntry(String... path) {
+    public static String getLastEntry(final String... path) {
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 
         findQuery.whereContains(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
 
         try {
-            if (!findQuery.find().isEmpty()) {
+            if (findQuery.find() != null) {
                 findQuery.orderByDescending("createdAt");
 
                 // TODO: inbal - should return only value?
                 return findQuery.find().get(0).getString(pathCol) + Dispatcher.SEPARATOR
                                 + findQuery.find().get(0).getString(valueCol);
             }
-        } catch (ParseException e) {
+        } catch (final ParseException e) {
             log.error("A Parse exception has occured", e);
         }
 

@@ -3,6 +3,9 @@ package il.ac.technion.cs.smarthouse.networking.messages;
 import org.junit.Assert;
 import org.junit.Test;
 
+import il.ac.technion.cs.smarthouse.system.Dispatcher;
+
+
 /**
  * @author Sharon
  * @author Inbal Zukerman
@@ -10,6 +13,18 @@ import org.junit.Test;
  */
 
 public class MessageTest {
+
+    @Test
+    public void messagesTest() {
+        final String m1 = Message.createMessage(MessageType.UPDATE, "Stove" + Dispatcher.DELIMITER + "temp", 100, "11:12");
+        Assert.assertEquals("update.stove.temp.sensorid-11:12=100", m1);
+        
+        assert !Message.isFailureMessage(m1);
+        assert !Message.isSuccessMessage(m1);
+        assert Message.isInMessage(m1, "sensorid-11:12");
+        
+        
+    }
 
     @Test
     public void testMessage() {

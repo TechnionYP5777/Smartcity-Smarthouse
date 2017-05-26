@@ -87,7 +87,7 @@ public class DatabaseHandler {
 
     public void handleUpdateMessage(final String message) {
         try {
-            String[] parts = message.split(Dispatcher.SEPARATOR);
+            final String[] parts = message.split(Dispatcher.SEPARATOR);
             DatabaseManager.addInfo(InfoType.SENSOR,
                             parts[0].replace((MessageType.UPDATE.toString() + Dispatcher.DELIMITER).toLowerCase(), ""),
                             parts[1]);

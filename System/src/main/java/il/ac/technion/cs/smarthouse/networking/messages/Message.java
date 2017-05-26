@@ -23,13 +23,12 @@ public abstract class Message {
     public static final String SENSOR_ID = "sensorid-";
     private static Logger log = LoggerFactory.getLogger(Message.class);
 
-    public static String createMessage(final MessageType t, final String path, final String value,
-                    final String sensorId) {
+    public static String createMessage(final MessageType t, final String path, final Object value, final String sensorId) {
         String message = t.toString() + Dispatcher.DELIMITER;
         if (path == "")
             return (message + SENSOR_ID + sensorId).toLowerCase();
         message += path + Dispatcher.DELIMITER;
-        return (message + SENSOR_ID + sensorId + Dispatcher.SEPARATOR + value).toLowerCase();
+        return (message + SENSOR_ID + sensorId + Dispatcher.SEPARATOR + value.toString()).toLowerCase();
     }
 
     public static String createMessage(final MessageType t, final MessageType status) {

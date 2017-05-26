@@ -10,21 +10,22 @@ public enum InfoType {
     SENSOR("sensor"),
     USER("user"),
     NAME("name"),
-    PHONE_NUMBER("phone_numeber"),
+    PHONE_NUMBER("phone_number"),
     HOME_ADDRESS("home_address"),
     ID("id"),
     CONTACT("contact"),
     SYSTEM("system"),
-    SAVEALL("saveall");
+    SAVEALL("saveall"),
+    TEST("test");
 
     private final String strInfoType;
 
-    private InfoType(String strIT) {
+    private InfoType(final String strIT) {
         strInfoType = strIT;
     }
 
     @Override
     public String toString() {
-        return this.strInfoType;
+        return strInfoType;
     }
 }

@@ -62,11 +62,8 @@ public class ContactsInformation {
 
     public void removeContact(final String id) {
         for (final EmergencyLevel $ : EmergencyLevel.values())
-            if (data.get($).containsKey(id)) {
-
+            if (data.get($).containsKey(id))
                 data.get($).remove(id);
-
-            }
 
     }
 
