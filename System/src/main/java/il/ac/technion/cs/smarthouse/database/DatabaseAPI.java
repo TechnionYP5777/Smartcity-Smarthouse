@@ -31,13 +31,11 @@ public interface DatabaseAPI {
     public void deleteInfo(InfoType infoType);
 
     /**
-     * This method deletes from the DB the object containing specific
-     * information
+     * This method deletes all record from the DB with a certain path.
      * 
-     * @param info
-     *            The information to delete from the DB
+     * @param path
      */
-    public void deleteInfo(String info);
+    public void deleteInfo(String... path);
 
     /**
      * This method allows to query the last record saved in the DB on a specific

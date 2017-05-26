@@ -6,6 +6,8 @@ import java.util.Map;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.system.Dispatcher;
 import il.ac.technion.cs.smarthouse.system.DispatcherCore;
@@ -19,8 +21,10 @@ import il.ac.technion.cs.smarthouse.system.InfoType;
 public class DatabaseManager {
 
     public static String parseClass = "mainDB";
-    public static String pathCol = "path"; // TODO inbal replace to match this
-    public static String valueCol = "value"; // TODO inbal replace to match this
+    public static String pathCol = "path";
+    public static String valueCol = "value";
+
+    private static Logger log = LoggerFactory.getLogger(DatabaseManager.class);
 
     public static ParseObject addInfo(final InfoType t, final String path, final String value) throws ParseException {
         final Map<String, Object> m = new HashMap<>();
@@ -31,19 +35,32 @@ public class DatabaseManager {
 
     }
 
-    // TODO: inbal, should have delete method too...
+    public static void deleteInfo(InfoType infoType) {
+        final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
+        findQuery.whereStartsWith(pathCol, infoType.toString().toLowerCase());
 
-    /*
-     * public static void deleteInfo(final InfoType t) { final
-     * ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
-     * findQuery.whereContains("info", t.toString().toLowerCase());
-     * 
-     * try { ServerManager.deleteById(parseClass,
-     * findQuery.find().get(0).getObjectId()); } catch (final ParseException e)
-     * { // TODO inbal - log or throw e.printStackTrace(); }
-     * 
-     * }
-     */
+        try {
+            ServerManager.deleteById(parseClass, findQuery.find().get(0).getObjectId());
+        } catch (final ParseException e) {
+            log.error("No matching object was found on the server", e);
+        }
+
+    }
+
+    public static void deleteInfo(String... path) {
+        final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
+        findQuery.whereMatches(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
+
+        try {
+            for (ParseObject iterator : findQuery.find()) {
+                ServerManager.deleteById(parseClass, iterator.getObjectId());
+            }
+
+        } catch (final ParseException e) {
+            log.error("No matching object was found on the server", e);
+        }
+
+    }
 
     public static String getLastEntry(String... path) {
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
@@ -59,11 +76,10 @@ public class DatabaseManager {
                                 + findQuery.find().get(0).getString(valueCol);
             }
         } catch (ParseException e) {
-            // TODO throw? return ""?
-            e.printStackTrace();
+            log.error("A Parse exception has occured", e);
         }
 
-        return ""; // TODO: inbal.... same question applies..
+        return ""; // TODO: inbal - should throw?
 
     }
 
