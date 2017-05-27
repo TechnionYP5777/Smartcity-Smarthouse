@@ -20,16 +20,6 @@ public class DatabaseHandlerTest {
         handler = new DatabaseHandler();
     }
 
-    @Test(expected = SensorNotFoundException.class)
-    public void getLocationOfNotAddedSensorThrows() throws SensorNotFoundException {
-        handler.getSensorLocation("00");
-    }
-
-    @Test(expected = SensorNotFoundException.class)
-    public void setLocationOfNotAddedSensorThrows() throws SensorNotFoundException {
-        handler.setSensorLocation("00", SensorLocation.BASEMENT);
-    }
-
     @Test
     public void newSensorLocationIsUndefined() throws SensorNotFoundException {
         handler.addSensor("00");
@@ -42,6 +32,7 @@ public class DatabaseHandlerTest {
         handler.addSensor("00");
         handler.setSensorLocation("00", SensorLocation.BATHROOM);
         Assert.assertEquals(SensorLocation.BATHROOM, handler.getSensorLocation("00"));
+
     }
 
 }

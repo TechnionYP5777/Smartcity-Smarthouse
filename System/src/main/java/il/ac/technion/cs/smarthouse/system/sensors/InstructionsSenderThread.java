@@ -40,7 +40,7 @@ public class InstructionsSenderThread extends Thread {
             out = new PrintWriter(client.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             for (String input = in.readLine(); input != null;) {
-                // final Message message = MessageFactory.create(input);
+
                 if (input == "") {
                     final String answerMessage = Message.createMessage(MessageType.ANSWER, MessageType.FAILURE);
                     Message.send(answerMessage, out, null);

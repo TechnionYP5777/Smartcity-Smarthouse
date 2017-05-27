@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**
- * 
  * @author Inbal Zukerman
  * @date May 23, 2017
  */
@@ -38,13 +37,12 @@ public class DispatcherCore implements Dispatcher {
     public void unsubscribe(final String subscriberId, final String... path) {
         if (!subscribers.containsKey(getPathAsString(path)))
             log.error("Key Word was not found");
-        // TODO: inbal - shoud throw too?
+
         subscribers.get(getPathAsString(path)).remove(subscriberId);
     }
 
     @Override
     public void sendMessage(final InfoType infoType, final String value, final String... path) {
-        // TODO: inbal - should get a message or path + value? maybe overload?
         final String message = infoType.toString() + DELIMITER + getPathAsString(path) + DELIMITER + value;
         for (final String prefix : subscribers.keySet())
             if (message.startsWith(prefix))

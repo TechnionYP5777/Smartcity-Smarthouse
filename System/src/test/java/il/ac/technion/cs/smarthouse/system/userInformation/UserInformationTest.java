@@ -1,10 +1,8 @@
 package il.ac.technion.cs.smarthouse.system.userInformation;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.database.ServerManager;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
 /**
@@ -19,10 +17,6 @@ public class UserInformationTest {
     // private final Contact contactB = new Contact("456", "Miri", "0547887261",
     // "miri100@hotmail.com");
 
-    @BeforeClass
-    public static void init() {
-        ServerManager.initialize();
-    }
 
     @Test
     public void initTest() {

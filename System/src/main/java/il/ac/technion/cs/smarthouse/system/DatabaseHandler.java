@@ -28,6 +28,11 @@ public class DatabaseHandler {
 
     private final List<String> sensors = new ArrayList<>();
     private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
+    private final DatabaseManager dbManager = new DatabaseManager(); // TODO:
+                                                                     // inbal ,
+                                                                     // should
+                                                                     // not be
+                                                                     // heree
 
     /**
      * Adds a new sensor to the system, initializing its information List.
@@ -82,13 +87,12 @@ public class DatabaseHandler {
 
         sensorsLocations.put(sensorId, l);
 
-        System.out.println(sensorsLocations.get(sensorId));
     }
 
     public void handleUpdateMessage(final String message) {
         try {
             final String[] parts = message.split(Dispatcher.SEPARATOR);
-            DatabaseManager.addInfo(InfoType.SENSOR,
+            dbManager.addInfo(InfoType.SENSOR,
                             parts[0].replace((MessageType.UPDATE.toString() + Dispatcher.DELIMITER).toLowerCase(), ""),
                             parts[1]);
         } catch (final ParseException e) {

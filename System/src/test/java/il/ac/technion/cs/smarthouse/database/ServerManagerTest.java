@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
@@ -19,16 +18,11 @@ public class ServerManagerTest {
 
     public static String testParse = "DatabaseManagerTest";
 
+    private static final ServerManager serverManager = new ServerManager();
+
     private static ParseObject temp;
     private static ParseObject temp1;
     private static ParseObject mObj;
-
-    @BeforeClass
-    public static void init() {
-
-        ServerManager.initialize();
-
-    }
 
     @Test
     @SuppressWarnings("static-method")
@@ -38,22 +32,22 @@ public class ServerManagerTest {
             m.put("col1", "test1");
             m.put("col1", "test1a");
             m.put("col2", 123);
-            temp = ServerManager.putValue(testParse, m);
+            temp = serverManager.putValue(testParse, m);
 
-            assert ServerManager.isInDB(testParse, temp.getObjectId());
+            assert serverManager.isInDB(testParse, temp.getObjectId());
 
             final Map<String, Object> m1 = new HashMap<>();
             m1.put("col1", "res1");
             m1.put("col2", 1234);
-            temp1 = ServerManager.putValue(testParse, m1);
+            temp1 = serverManager.putValue(testParse, m1);
 
-            Assert.assertEquals(123, ServerManager.getValue(testParse, temp.getObjectId()).getInt("col2"));
+            Assert.assertEquals(123, serverManager.getValue(testParse, temp.getObjectId()).getInt("col2"));
             Assert.assertEquals(
-                            "test1a".compareTo(ServerManager.getValue(testParse, temp.getObjectId()).getString("col1")),
+                            "test1a".compareTo(serverManager.getValue(testParse, temp.getObjectId()).getString("col1")),
                             0);
 
-            ServerManager.deleteById(testParse, temp.getObjectId());
-            assert !ServerManager.isInDB(testParse, temp.getObjectId());
+            serverManager.deleteById(testParse, temp.getObjectId());
+            assert !serverManager.isInDB(testParse, temp.getObjectId());
 
             ParseQuery<ParseObject> countQuery = ParseQuery.getQuery(testParse);
             countQuery.whereEqualTo("col2", 123);
@@ -65,7 +59,7 @@ public class ServerManagerTest {
 
             Assert.assertEquals(1, countQuery.count());
 
-            ServerManager.deleteById(testParse, temp1.getObjectId());
+            serverManager.deleteById(testParse, temp1.getObjectId());
             countQuery.whereEqualTo("col2", 1234);
 
             Assert.assertEquals(0, countQuery.count());
@@ -84,26 +78,25 @@ public class ServerManagerTest {
             m.put("col1", "one");
             m.put("col2", 1);
 
-            mObj = ServerManager.putValue(testParse, m);
+            mObj = serverManager.putValue(testParse, m);
 
             Assert.assertEquals(
-                            "one".compareTo(ServerManager.getValue(testParse, mObj.getObjectId()).getString("col1")),
+                            "one".compareTo(serverManager.getValue(testParse, mObj.getObjectId()).getString("col1")),
                             0);
-            Assert.assertEquals(1, ServerManager.getValue(testParse, mObj.getObjectId()).getInt("col2"));
+            Assert.assertEquals(1, serverManager.getValue(testParse, mObj.getObjectId()).getInt("col2"));
 
             final Map<String, Object> newVals = new HashMap<>();
             newVals.put("col2", 2);
-            ServerManager.update(testParse, mObj.getObjectId(), newVals);
+            serverManager.update(testParse, mObj.getObjectId(), newVals);
 
-            Thread.sleep(1000); // Server operations take a while....
             Assert.assertEquals(
-                            "one".compareTo(ServerManager.getValue(testParse, mObj.getObjectId()).getString("col1")),
+                            "one".compareTo(serverManager.getValue(testParse, mObj.getObjectId()).getString("col1")),
                             0);
-            Assert.assertEquals(2, ServerManager.getValue(testParse, mObj.getObjectId()).getInt("col2"));
+            Assert.assertEquals(2, serverManager.getValue(testParse, mObj.getObjectId()).getInt("col2"));
 
-            ServerManager.deleteById(testParse, mObj.getObjectId());
+            serverManager.deleteById(testParse, mObj.getObjectId());
 
-        } catch (InterruptedException | ParseException e) {
+        } catch (ParseException e) {
             assert null != null;
         }
 
@@ -111,9 +104,9 @@ public class ServerManagerTest {
 
     @AfterClass
     public static void cleanup() {
-        ServerManager.deleteById(testParse, temp.getObjectId());
-        ServerManager.deleteById(testParse, temp1.getObjectId());
-        ServerManager.deleteById(testParse, mObj.getObjectId());
+        serverManager.deleteById(testParse, temp.getObjectId());
+        serverManager.deleteById(testParse, temp1.getObjectId());
+        serverManager.deleteById(testParse, mObj.getObjectId());
 
     }
 

@@ -9,7 +9,6 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.database.ServerManager;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
@@ -30,14 +29,13 @@ public class SensorsHandlerThread extends Thread {
 
     private final Socket client;
     private final DatabaseHandler databaseHandler;
-    // private TypeHandler typeHandler;
+    
 
     public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler,
                     final TypeHandler typeHandler) {
         this.client = client;
         this.databaseHandler = databaseHandler;
-        // this.typeHandler = typeHandler;
-        ServerManager.initialize();
+      
     }
 
     @Override

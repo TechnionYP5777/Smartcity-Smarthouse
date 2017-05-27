@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * @date Mar 31, 2017
  */
 
-public abstract class ServerManager {
+public class ServerManager {
 
     private static Logger log = LoggerFactory.getLogger(ServerManager.class);
 
@@ -26,8 +26,12 @@ public abstract class ServerManager {
     public static final String restAPIKey = "ag9h-84j3-ked2-94j5";
 
     private static boolean init;
+    
+    public ServerManager(){
+        initialize();
+    }
 
-    public static void initialize() {
+    public void initialize() {
 
         log.info("Initializing Database");
         if (init)
@@ -44,10 +48,10 @@ public abstract class ServerManager {
      * @param id
      * @return true if is in the DB, false otherwise
      */
-    public static boolean isInDB(final String objectClass, final String id) {
+    public boolean isInDB(final String objectClass, final String id) {
         final Map<String, Object> vals = new HashMap<>();
         vals.put("objectId", id);
-        return ServerManager.getObjectByFields(objectClass, vals) != null;
+        return getObjectByFields(objectClass, vals) != null;
     }
 
     /**
@@ -58,8 +62,7 @@ public abstract class ServerManager {
      * @return The ParseObject which was created
      * @throws ParseException
      */
-    public static ParseObject putValue(final String objectClass, final Map<String, Object> fields)
-                    throws ParseException {
+    public ParseObject putValue(final String objectClass, final Map<String, Object> fields) throws ParseException {
         final ParseObject $ = new ParseObject(objectClass);
         for (final String key : fields.keySet())
             $.put(key, fields.get(key));
@@ -74,7 +77,7 @@ public abstract class ServerManager {
     }
 
     /** This method deletes an object from class @objectClass with @id */
-    public static void deleteById(final String objectClass, final String id) {
+    public void deleteById(final String objectClass, final String id) {
         if (!isInDB(objectClass, id))
             return;
         final ParseObject obj = new ParseObject(objectClass);
@@ -95,7 +98,7 @@ public abstract class ServerManager {
      * @return ParseObject Result of query if it was successful, null o.w.
      * @throws ParseException
      */
-    public static ParseObject getValue(final String objectClass, final String id) {
+    public ParseObject getValue(final String objectClass, final String id) {
         try {
             return ParseQuery.getQuery(objectClass).get(id);
         } catch (final ParseException ¢) {
@@ -115,7 +118,7 @@ public abstract class ServerManager {
      *            The new Values to be saved in the object's fields. Fields
      *            which are not included in this mapping will remain untouched.
      */
-    public static void update(final String objectClass, final String id, final Map<String, Object> values) {
+    public void update(final String objectClass, final String id, final Map<String, Object> values) {
 
         try {
             final ParseObject res = ParseQuery.getQuery(objectClass).get(id);
@@ -139,7 +142,7 @@ public abstract class ServerManager {
      * @param values
      *            Map any field name to a value
      */
-    public static ParseObject getObjectByFields(final String objectClass, final Map<String, Object> values) {
+    public ParseObject getObjectByFields(final String objectClass, final Map<String, Object> values) {
         final ParseQuery<ParseObject> query = ParseQuery.getQuery(objectClass);
         for (final String key : values.keySet())
             query.whereEqualTo(key, values.get(key));

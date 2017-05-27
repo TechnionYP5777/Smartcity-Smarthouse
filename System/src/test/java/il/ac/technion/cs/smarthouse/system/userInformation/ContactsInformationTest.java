@@ -3,10 +3,8 @@ package il.ac.technion.cs.smarthouse.system.userInformation;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.database.ServerManager;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.ContactsInformation;
@@ -22,10 +20,7 @@ public class ContactsInformationTest {
     private final Contact contactA = new Contact("123", "Alon", "0508080123", "alon@gmail.com");
     private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
 
-    @BeforeClass
-    public static void init() {
-        ServerManager.initialize();
-    }
+ 
 
     @Test
     public void singleContactTest() {

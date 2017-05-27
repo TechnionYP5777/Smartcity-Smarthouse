@@ -1,7 +1,6 @@
 package il.ac.technion.cs.smarthouse.database;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.parse4j.ParseException;
 
@@ -16,11 +15,9 @@ import il.ac.technion.cs.smarthouse.system.InfoType;
 
 public class DatabaseManagerTest {
 
-    @BeforeClass
-    public static void init() {
-        ServerManager.initialize();
-    }
+    private final DatabaseManager dbManager = new DatabaseManager();
 
+ 
     @Test
     public void additionAndDeletionTest() {
         final String[] path = new String[2];
@@ -29,18 +26,18 @@ public class DatabaseManagerTest {
         path[1] = "temp";
 
         try {
-            DatabaseManager.addInfo(InfoType.TEST, DispatcherCore.getPathAsString(path), "32");
-            Assert.assertNotEquals("", DatabaseManager.getLastEntry(path));
-            Assert.assertEquals("test.sensor.temp=32", DatabaseManager.getLastEntry(path));
+            dbManager.addInfo(InfoType.TEST, DispatcherCore.getPathAsString(path), "32");
+            Assert.assertNotEquals("", dbManager.getLastEntry(path));
+            Assert.assertEquals("test.sensor.temp=32", dbManager.getLastEntry(path));
 
-            DatabaseManager.deleteInfo(InfoType.TEST);
-            Assert.assertEquals("", DatabaseManager.getLastEntry(path));
+            dbManager.deleteInfo(InfoType.TEST);
+            Assert.assertEquals("", dbManager.getLastEntry(path));
 
-            DatabaseManager.addInfo(InfoType.TEST, DispatcherCore.getPathAsString(path), "55");
-            Assert.assertEquals("test.sensor.temp=55", DatabaseManager.getLastEntry(path));
+            dbManager.addInfo(InfoType.TEST, DispatcherCore.getPathAsString(path), "55");
+            Assert.assertEquals("test.sensor.temp=55", dbManager.getLastEntry(path));
 
-            DatabaseManager.deleteInfo(path);
-            Assert.assertEquals("", DatabaseManager.getLastEntry(path));
+            dbManager.deleteInfo(path);
+            Assert.assertEquals("", dbManager.getLastEntry(path));
 
         } catch (final ParseException e) {
             assert null != null;
