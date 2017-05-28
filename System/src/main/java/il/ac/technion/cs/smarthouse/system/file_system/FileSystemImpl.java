@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import il.ac.technion.cs.smarthouse.system.dispatcher.PathBuilder;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**

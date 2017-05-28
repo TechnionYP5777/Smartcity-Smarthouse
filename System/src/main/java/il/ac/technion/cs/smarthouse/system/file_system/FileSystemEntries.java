@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.dispatcher;
+package il.ac.technion.cs.smarthouse.system.file_system;
 
 /**
  * An enum for all predefined entries in the file system / dispatcher
