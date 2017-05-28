@@ -61,6 +61,7 @@ public class FileSystemImplTest {
         assert fs.getChildren("a.b.c").contains("d");
         assert !fs.getChildren("a.b.c").contains("e");
         assert fs.getChildren("a.b.c.d").isEmpty();
+        assert fs.getChildren("s") == null;
     }
 
 }
