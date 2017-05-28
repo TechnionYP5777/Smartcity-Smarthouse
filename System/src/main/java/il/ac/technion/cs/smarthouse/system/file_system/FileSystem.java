@@ -1,7 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.file_system;
 
 import java.util.Collection;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * An event handler file system interface
@@ -20,9 +20,10 @@ public interface FileSystem {
      * @param path
      *            The path on which the eventHandler would like to listen
      * @param eventHandler
+     *            an event handler function: (String path, Object data)->{...}
      * @return The eventHandler's ID in our system (for future use)
      */
-    String subscribe(Consumer<String> eventHandler, String... path);
+    String subscribe(BiConsumer<String, Object> eventHandler, String... path);
 
     /**
      * This method will allow a subscriber to unsubscribe to a certain path
@@ -45,8 +46,8 @@ public interface FileSystem {
     void sendMessage(Object data, String... path);
 
     /**
-     * This method allows to query the last record saved in the file system on a specific
-     * path
+     * This method allows to query the last record saved in the file system on a
+     * specific path
      * 
      * @param path
      *            The path to find the last entry of

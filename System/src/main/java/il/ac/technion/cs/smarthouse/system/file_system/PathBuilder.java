@@ -14,6 +14,7 @@ public class PathBuilder {
      * different parts of a path
      */
     public static final String DELIMITER = ".";
+    public static final String SPLIT_REGEX= "\\" + DELIMITER;
     
     public static String buildPath(Object... nodes) {
         return buildPath(Arrays.stream(nodes).map(Object::toString).toArray(String[]::new));
@@ -24,7 +25,7 @@ public class PathBuilder {
     }
     
     public static List<String> decomposePath(String... path) {
-        return Arrays.asList(buildPath(path).split(DELIMITER));
+        return Arrays.asList(buildPath(path).split(SPLIT_REGEX));
     }
     
     public static String buildPathForSensorsData(String basePath, String sensorId) {
