@@ -38,10 +38,10 @@ public class RoomViewController implements Initializable {
 
     private void addSensor(double x, double y) {
         TextInputDialog dialog = new TextInputDialog("sensor name");
+        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("Homeicon.png"))));
         dialog.setTitle("Create Sensor");
         dialog.setHeaderText("Config your simulator");
         dialog.setContentText("Please enter sensor name:");
-
         Optional<String> result = dialog.showAndWait();
         if (!result.isPresent())
             return;
@@ -71,8 +71,7 @@ public class RoomViewController implements Initializable {
             public void handle(ActionEvent __1) {
                 String buttonText = RoomViewController.this.inEditMode ? "Edit" : "Save";
                 editButton.setText(buttonText);
-                for (SensorLabel ¢ : RoomViewController.this.labels)
-                    ¢.switchMovableState();
+                RoomViewController.this.labels.forEach(c -> c.switchMovableState());
                 RoomViewController.this.inEditMode = !RoomViewController.this.inEditMode;
             }
         });

@@ -39,7 +39,7 @@
 							<columns>
 								<TableColumn fx:id="nameColumn" text="Name" />
 								<TableColumn fx:id="typeColumn" text="Type" />
-								<TableColumn fx:id="deleteColumn"/>
+								<TableColumn fx:id="deleteColumn" />
 							</columns>
 							<columnResizePolicy>
 								<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -52,16 +52,22 @@
 								<Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
 							</children>
 						</HBox>
-						<HBox>
-							<children>
-								<Button fx:id="deleteButton" mnemonicParsing="false" text="Delete Sensor" />
-							</children>
-						</HBox>
 					</children>
 					<padding>
-						<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+						<Insets bottom="20.0" left="20.0" right="20.0" />
 					</padding>
 				</VBox>
+				<HBox>
+					<children>
+						<Button fx:id="deleteButton" mnemonicParsing="false"
+							text="Delete Sensor" />
+						<Button fx:id="messageButton" mnemonicParsing="false"
+							text="Send Message" />
+					</children>
+					<padding>
+						<Insets left="20.0" right="20.0" />
+					</padding>
+				</HBox>
 			</children>
 		</VBox>
 	</children>

@@ -16,4 +16,14 @@ public class SensorField {
     public Types getType() {
         return type;
     }
+    
+    @Override
+    public boolean equals(Object ¢) {
+        return ¢ instanceof SensorField && this.name.equals(((SensorField) ¢).getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

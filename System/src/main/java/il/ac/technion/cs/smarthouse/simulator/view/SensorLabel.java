@@ -7,6 +7,8 @@ import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 @SuppressWarnings("restriction")
 public class SensorLabel extends StackPane {
@@ -17,6 +19,8 @@ public class SensorLabel extends StackPane {
     SensorLabel(double x, double y, String text) {
         this.movable = true;
         this.text.setText(text);
+        this.text.setStyle("-fx-background-color: white;");
+        this.text.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         relocate(x - PADDING, y - PADDING);
         getChildren().add(this.text);
         getStyleClass().add("editable-draggable-text");
@@ -80,7 +84,6 @@ public class SensorLabel extends StackPane {
             setPrefWidth(RIGHT_MARGIN);
             textProperty().addListener((observable, oldTextString,
                             newTextString) -> setPrefWidth(metrics.computeStringWidth(newTextString) + RIGHT_MARGIN));
-
             Platform.runLater(this::requestFocus);
         }
     }

@@ -10,8 +10,11 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -22,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -34,6 +38,7 @@ public class SensorConfigurationController implements Initializable {
     @FXML private TableColumn<SensorField, Boolean> deleteColumn;
     @FXML private Label sensorNameLabel;
     @FXML private Button backButton;
+    @FXML private Button messageButton;
     @FXML private HBox buttonBox;
     @FXML private TextField addNameField;
     @FXML private ComboBox<Types> addTypeField;
@@ -91,13 +96,29 @@ public class SensorConfigurationController implements Initializable {
                 addField();
             }
         });
-        
+
         deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-            
+
             @Override
-            public void handle(ActionEvent __2) {
+            public void handle(ActionEvent __1) {
                 mainController.removeSensor(currentSensor);
                 mainController.loadSensorList();
+            }
+        });
+
+        messageButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent __1) {
+                try {
+                    final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("message_ui.fxml"));
+                    final Parent root1 = (Parent) fxmlLoader.load();
+                    ((MessageViewController)fxmlLoader.getController()).setCurrentSensor(currentSensor);
+                    final Stage stage = new Stage();
+                    stage.setScene(new Scene(root1));
+                    stage.show();
+                } catch (final Exception $) {
+                    System.out.println($);
+                }
             }
         });
     }

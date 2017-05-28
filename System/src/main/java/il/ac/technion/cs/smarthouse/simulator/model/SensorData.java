@@ -32,7 +32,8 @@ public class SensorData {
     }
 
     public void addField(SensorField ¢) {
-        this.fields.add(¢);
+        if (!fields.contains(¢))
+            this.fields.add(¢);
     }
 
     public Location getLocation() {
