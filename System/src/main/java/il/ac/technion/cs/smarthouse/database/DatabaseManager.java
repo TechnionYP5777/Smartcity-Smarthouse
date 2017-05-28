@@ -1,5 +1,8 @@
 package il.ac.technion.cs.smarthouse.database;
 
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,17 +79,15 @@ public class DatabaseManager implements DatabaseAPI {
 
     @Override
     public String getLastEntry(final String... path) {
-        serverManager.initialize();
 
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 
-        findQuery.whereContains(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
+        findQuery.whereStartsWith(pathCol, DispatcherCore.getPathAsString(path).toLowerCase()); //TODO inbal, not prefix
 
         try {
             if (findQuery.find() != null) {
                 findQuery.orderByDescending("createdAt");
 
-                // TODO: inbal - should return only value?
                 return findQuery.find().get(0).getString(pathCol) + Dispatcher.SEPARATOR
                                 + findQuery.find().get(0).getString(valueCol);
             }
@@ -96,6 +97,27 @@ public class DatabaseManager implements DatabaseAPI {
 
         return ""; // TODO: inbal - should throw?
 
+    }
+    
+    @Override
+    public Collection<String> getPathChildren(String... path){
+        final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
+
+        findQuery.whereStartsWith(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
+        
+
+        Collection<String> res = new ArrayList<>(); //TODO: inbal
+        try {
+            for (final ParseObject iterator : findQuery.find()){
+                res.add(iterator.getString(pathCol).replaceAll(DispatcherCore.getPathAsString(path), ""));  // TODO inbal
+            }
+               
+
+        } catch (final ParseException e) {
+            //TODO: inbal
+        }
+        
+        return res;
     }
 
 }

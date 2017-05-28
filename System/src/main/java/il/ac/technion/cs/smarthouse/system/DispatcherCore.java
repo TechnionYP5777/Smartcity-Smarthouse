@@ -19,7 +19,8 @@ public class DispatcherCore implements Dispatcher {
     private static Logger log = LoggerFactory.getLogger(DispatcherCore.class);
 
     public static String getPathAsString(final String... pathNodes) {
-        return String.join(Dispatcher.DELIMITER, pathNodes);
+        System.out.println(String.join(Dispatcher.DELIMITER, pathNodes).toLowerCase()+ "\n\n");
+        return String.join(Dispatcher.DELIMITER, pathNodes).toLowerCase();
     }
 
     @Override

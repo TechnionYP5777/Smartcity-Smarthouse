@@ -22,18 +22,14 @@ import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
  * @author Inbal Zukerman
  * @since Dec 13, 2016
  */
-public class DatabaseHandler {
+public class DatabaseHandler {  
 
     private static Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
 
     private final List<String> sensors = new ArrayList<>();
     private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
-    private final DatabaseManager dbManager = new DatabaseManager(); // TODO:
-                                                                     // inbal ,
-                                                                     // should
-                                                                     // not be
-                                                                     // heree
-
+    private final DatabaseManager dbManager = new DatabaseManager(); // TODO: inbal, should be here?
+    
     /**
      * Adds a new sensor to the system, initializing its information List.
      * 
