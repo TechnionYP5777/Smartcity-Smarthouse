@@ -33,4 +33,13 @@
 			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>com.tilesfx</groupId>
+			<artifactId>tilesfx-core</artifactId>
+			<version>1.3.8</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/tilesfx-core-1.3.8.jar</systemPath>
+		</dependency>
+	</dependencies>
 </project>

@@ -1,5 +1,6 @@
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -18,6 +19,7 @@ import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 
 /**
@@ -25,7 +27,6 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
  * sensor.
  * 
  * @author RON
- * @author Inbal Zukerman
  * @since 07-04-2017
  * @param <T>
  *            the sensor's messages will be deserialize into this class. T must
@@ -42,7 +43,7 @@ public final class SensorApi<T extends SensorData> {
     private final Class<T> sensorDataClass;
 
     /**
-     * This c'tor should be used only by the {@link SensorsManager}
+     * This c'tor should be used only by the {@link SensorsService}
      * 
      * @param systemCore
      *            a reference to the system's core
@@ -57,6 +58,26 @@ public final class SensorApi<T extends SensorData> {
         this.systemCore = systemCore;
         this.sensorId = sensorId;
         this.sensorDataClass = sensorDataClass;
+    }
+    
+    private void initSensorDataObject() {
+        T sensorDataInstance;
+        
+        try {
+            sensorDataInstance = sensorDataClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("Can't create new instant of class " + sensorDataClass.getName(), e);
+        }
+        
+        for (Field f : sensorDataClass.getDeclaredFields()) {
+            String path = f.getAnnotation(PathVal.class).value();
+            PathBuilder.buildPathForSensorsData(path, sensorId);
+        }
+        
+    }
+    
+    private void updateSensorDataObject() {
+        
     }
 
     /**
@@ -108,7 +129,7 @@ public final class SensorApi<T extends SensorData> {
      * @throws SensorLostRuntimeException
      */
     public void subscribe(final Consumer<T> functionToRun) throws SensorLostRuntimeException {
-        // TODO: inbal ...
+        // TODO: RON
         // DispatcherCore.subscribe(sensorId,
         // generateSensorListener(functionToRun, true));
     }

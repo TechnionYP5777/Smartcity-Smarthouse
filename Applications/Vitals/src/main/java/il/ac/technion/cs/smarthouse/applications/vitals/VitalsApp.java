@@ -9,7 +9,7 @@ import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplicatio
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
 
 /** This class contains the logic of the vitals signs application.
  * @author Yarden
@@ -30,7 +30,7 @@ public class VitalsApp extends SmartHouseApplication {
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
 
-        SensorsManager sensorsManager = (SensorsManager) super.getService(ServiceType.SENSORS_SERVICE);
+        SensorsService sensorsManager = (SensorsService) super.getService(ServiceType.SENSORS_SERVICE);
         AlertsManager alertsManager = (AlertsManager) super.getService(ServiceType.ALERTS_SERVICE);
         
         sensorsManager.getDefaultSensor(VitalsSensor.class, "iVitals").subscribe(vitals -> {

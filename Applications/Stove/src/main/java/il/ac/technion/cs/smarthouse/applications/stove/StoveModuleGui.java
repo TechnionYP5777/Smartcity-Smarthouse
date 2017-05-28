@@ -7,7 +7,7 @@ import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
 
 public class StoveModuleGui extends SmartHouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
@@ -21,7 +21,7 @@ public class StoveModuleGui extends SmartHouseApplication {
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
 
-        ((SensorsManager) super.getService(ServiceType.SENSORS_SERVICE)).getDefaultSensor(StoveSensor.class, "iStoves").subscribe(stove -> {
+        ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getDefaultSensor(StoveSensor.class, "iStoves").subscribe(stove -> {
             final String t = "Stove is " + (stove.isOn() ? "" : "Not ") + "On at " + stove.getTemperture() + " degrees";
             if (stove.isOn())
                 controller.turnOn();

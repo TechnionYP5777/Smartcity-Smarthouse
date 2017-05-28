@@ -3,6 +3,8 @@ package il.ac.technion.cs.smarthouse.system;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorsHandler;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
@@ -17,6 +19,7 @@ public class SystemCore implements Savable {
     public final DatabaseHandler databaseHandler = new DatabaseHandler();
     public final SensorsHandler sensorsHandler = new SensorsHandler(databaseHandler);
     @Expose public final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
+    private final FileSystem fileSystem = new FileSystemImpl();
     protected UserInformation user;
     private boolean userInitialized;
 
@@ -42,4 +45,19 @@ public class SystemCore implements Savable {
         sensorsHandler.closeSockets();
     }
 
+    public Dispatcher getSystemDispatcher() {
+        return null;// TODO: stub for now
+    }
+
+    public DatabaseHandler getSystemDatabaseHandler() {
+        return databaseHandler;
+    }
+
+    public ServiceManager getSystemServiceManager() {
+        return serviceManager;
+    }
+    
+    public FileSystem getFileSystem() {
+        return fileSystem;
+    }
 }

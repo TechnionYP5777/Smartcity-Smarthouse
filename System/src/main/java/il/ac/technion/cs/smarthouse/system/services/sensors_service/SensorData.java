@@ -1,3 +1,4 @@
+
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
@@ -7,14 +8,22 @@ import il.ac.technion.cs.smarthouse.system.SensorLocation;
  * SmartHouseApplication
  * 
  * @author RON
- * @author Inbal Zukerman
  * @since 28-12-2016
  */
 public class SensorData {
-
+    protected String commercialName;
+    protected String sensorId;
     protected SensorLocation sensorLocation;
 
     public SensorData() {}
+
+    public String getCommercialName() {
+        return commercialName;
+    }
+    
+    public String getSensorId() {
+        return sensorId;
+    }
 
     public SensorLocation getSensorLocation() {
         return sensorLocation;
