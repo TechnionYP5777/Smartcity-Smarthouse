@@ -16,11 +16,15 @@ public class PathBuilder {
     public static final String DELIMITER = ".";
     
     public static String buildPath(Object... nodes) {
-        return String.join(DELIMITER, Arrays.stream(nodes).map(Object::toString).toArray(String[]::new));
+        return buildPath(Arrays.stream(nodes).map(Object::toString).toArray(String[]::new));
     }
     
-    public static List<String> decomposePath(String path) {
-        return Arrays.asList(path.split(DELIMITER));
+    public static String buildPath(String... nodes) {
+        return String.join(DELIMITER, nodes);
+    }
+    
+    public static List<String> decomposePath(String... path) {
+        return Arrays.asList(buildPath(path).split(DELIMITER));
     }
     
     public static String buildPathForSensorsData(String basePath, String sensorId) {
