@@ -9,7 +9,7 @@ import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplicatio
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 
@@ -27,7 +27,7 @@ public class SosAppGui extends SmartHouseApplication {
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
 
-        ((SensorsManager) super.getService(ServiceType.SENSORS_SERVICE)).getDefaultSensor(SosSensor.class, "iSOS").subscribe(sos -> {
+        ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getDefaultSensor(SosSensor.class, "iSOS").subscribe(sos -> {
             final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
             System.out.println("msg from app: onLoad " + Platform.isFxApplicationThread());
             if (sosController != null && shouldAlert) {

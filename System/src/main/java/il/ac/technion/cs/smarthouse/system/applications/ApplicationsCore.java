@@ -8,9 +8,9 @@ import java.util.Optional;
 
 import com.google.gson.annotations.Expose;
 
-import il.ac.technion.cs.smarthouse.system.ChildCore;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
+import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.smarthouse.system.exceptions.ApplicationInitializationException;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;

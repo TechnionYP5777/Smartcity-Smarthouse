@@ -10,7 +10,7 @@ import il.ac.technion.cs.smarthouse.system.sensors.SensorsHandler;
 import il.ac.technion.cs.smarthouse.system.services.Core;
 import il.ac.technion.cs.smarthouse.system.services.Handler;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsManager;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
 
 /**
  * @author Sharon
@@ -28,7 +28,7 @@ public abstract class SensorTest {
     protected String id;
 
     protected static Core core;
-    protected SensorsManager sensorsManager;
+    protected SensorsService sensorsManager;
 
     /**
      * Here you should initialize the fields: sensor, id, observations. It is
@@ -45,7 +45,7 @@ public abstract class SensorTest {
 
     @Before
     public void initSensor() throws Exception {
-        sensorsManager = (SensorsManager) core.serviceManager.getService(ServiceType.SENSORS_SERVICE);
+        sensorsManager = (SensorsService) core.serviceManager.getService(ServiceType.SENSORS_SERVICE);
         customInitSensor();
         for (int i = 0;; ++i) {
             try {
