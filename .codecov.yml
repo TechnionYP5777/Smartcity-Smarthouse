@@ -6,3 +6,6 @@ coverage:
     - "*/src/main/java/il/ac/technion/cs/smarthouse/applications/*"
     - "System/src/main/java/il/ac/technion/cs/smarthouse/sensors/*/gui/*"
     - "System/src/main/java/il/ac/technion/cs/smarthouse/system/gui/*"
+	- "System/src/main/java/eu/**"
+	- "System/src/main/java/il/ac/technion/cs/smarthouse/mvp/*"
+	- "System/src/main/java/il/ac/technion/cs/smarthouse/simulator/*"

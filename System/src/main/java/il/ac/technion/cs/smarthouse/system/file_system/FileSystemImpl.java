@@ -9,8 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
-
+import java.util.function.BiConsumer;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**
@@ -26,7 +25,7 @@ public class FileSystemImpl implements FileSystem {
 
     static class FileNode {
         private Object data;
-        private Map<String, Consumer<String>> eventHandlers = new HashMap<>();
+        private Map<String, BiConsumer<String, Object>> eventHandlers = new HashMap<>();
         private Map<String, FileNode> children = new HashMap<>();
 
         @SuppressWarnings("unchecked")
@@ -43,11 +42,12 @@ public class FileSystemImpl implements FileSystem {
         }
 
         public FileNode getChild(String name, boolean create) {
-            return children.containsKey(name) ? children.get(name)
-                            : !create ? null : children.put(name, new FileNode());
+            if (!children.containsKey(name) &&create)
+                children.put(name, new FileNode());
+            return children.get(name);
         }
 
-        String addEventHandler(Consumer<String> eventHandler) {
+        String addEventHandler(BiConsumer<String, Object> eventHandler) {
             final String id = UuidGenerator.GenerateUniqueIDstring();
             eventHandlers.put(id, eventHandler);
             return id;
@@ -57,16 +57,16 @@ public class FileSystemImpl implements FileSystem {
             eventHandlers.remove(eventHandlerId);
         }
 
-        public Collection<Consumer<String>> getEventHandlers() {
+        public Collection<BiConsumer<String, Object>> getEventHandlers() {
             return eventHandlers.values();
         }
     }
 
     private class FileSystemWalkResults {
         FileNode fileNode;
-        List<Consumer<String>> eventHandlersOnBranch;
+        List<BiConsumer<String, Object>> eventHandlersOnBranch;
 
-        public FileSystemWalkResults(FileNode fileNode, List<Consumer<String>> eventHandlersOnBranch) {
+        FileSystemWalkResults(FileNode fileNode, List<BiConsumer<String, Object>> eventHandlersOnBranch) {
             this.fileNode = fileNode;
             this.eventHandlersOnBranch = eventHandlersOnBranch;
         }
@@ -75,7 +75,7 @@ public class FileSystemImpl implements FileSystem {
     private FileNode root = new FileNode();
 
     private FileSystemWalkResults fileSystemWalk(boolean create, String... path) {
-        List<Consumer<String>> eventHandlersOnBranch = new ArrayList<>();
+        List<BiConsumer<String, Object>> eventHandlersOnBranch = new ArrayList<>();
 
         FileNode node = root;
         eventHandlersOnBranch.addAll(node.getEventHandlers());
@@ -91,7 +91,7 @@ public class FileSystemImpl implements FileSystem {
     }
 
     @Override
-    public String subscribe(Consumer<String> eventHandler, String... path) {
+    public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {
         return fileSystemWalk(true, path).fileNode.addEventHandler(eventHandler);
     }
 
@@ -106,9 +106,8 @@ public class FileSystemImpl implements FileSystem {
 
         r.fileNode.setData(data);
 
-        for (Consumer<String> eventHandler : r.eventHandlersOnBranch)
-            eventHandler.accept(data + "");// TODO: should be path+data; TODO:
-                                           // should be on a new thread later
+        for (BiConsumer<String, Object> eventHandler : r.eventHandlersOnBranch)
+            eventHandler.accept(PathBuilder.buildPath(path), data); // TODO: should be on a new thread later
     }
 
     @Override
