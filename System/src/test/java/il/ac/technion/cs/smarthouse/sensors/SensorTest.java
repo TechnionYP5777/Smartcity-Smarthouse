@@ -6,7 +6,7 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.sensors.SensorsHandler;
+import il.ac.technion.cs.smarthouse.system.sensors.SensorsLocalServer;
 import il.ac.technion.cs.smarthouse.system.services.Core;
 import il.ac.technion.cs.smarthouse.system.services.Handler;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -67,7 +67,7 @@ public abstract class SensorTest {
         final Thread t = core.getSensorHandlerThread();
         if (t.isAlive())
             t.interrupt();
-        ((SensorsHandler) core.getHandler(Handler.SENSORS)).closeSockets();
+        ((SensorsLocalServer) core.getHandler(Handler.SENSORS)).closeSockets();
     }
 
 }

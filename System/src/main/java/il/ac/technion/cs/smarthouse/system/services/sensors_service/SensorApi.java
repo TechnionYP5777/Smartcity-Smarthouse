@@ -164,7 +164,6 @@ public final class SensorApi<T extends SensorData> {
             log.error(LOG_MSG_RUNTIME_THROW + " This is because " + sensorId + " Doesn't exist");
             throw new SensorLostRuntimeException(null);
         }
-        systemCore.sensorsHandler.sendInstruction(Message.createMessage(MessageType.UPDATE, instruction, "", sensorId));
     }
 
     // [start] timer functions
