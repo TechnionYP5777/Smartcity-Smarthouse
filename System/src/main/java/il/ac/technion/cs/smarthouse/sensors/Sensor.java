@@ -5,7 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +42,7 @@ public abstract class Sensor {
 
     protected String id;
 
-    protected String systemIP;
+    protected InetAddress systemIP;
     protected int systemPort;
 
     protected Socket socket;
@@ -62,11 +68,34 @@ public abstract class Sensor {
     public Sensor(final String id, final String systemIP, final int systemPort) {
         this.id = id;
 
-        this.systemIP = systemIP;
+        try {
+            this.systemIP = getSystemIp();
+        } catch (IOException | InterruptedException e) {
+        }
         this.systemPort = systemPort;
         sType = SensorType.NON_INTERACTIVE;
     }
-
+    
+    private InetAddress getSystemIp() throws IOException, SocketException, InterruptedException {
+        DatagramChannel channel = DatagramChannel.open();
+        channel.configureBlocking(false);
+        channel.socket().bind(new InetSocketAddress(0)); //zero means the port number is chosen dynamically
+        channel.socket().setBroadcast(true);
+        
+        ByteBuffer buf = ByteBuffer.allocate(8);
+        buf.clear();
+        SocketAddress serverAddress;
+        do{
+            channel.send(buf, new InetSocketAddress("255.255.255.255", systemPort));
+            Thread.sleep(1000);
+            //see if got answer
+            serverAddress = channel.receive(buf);
+        }while( serverAddress == null );
+        
+        channel.close();
+        return ((InetSocketAddress)serverAddress).getAddress();
+    }
+    
     /**
      * Registers the sensor its TCP connection with the system. This method must
      * be called before any calls to the updateSystem method.
@@ -76,7 +105,7 @@ public abstract class Sensor {
      */
     public boolean register() {
         try {
-            socket = new Socket(InetAddress.getByName(systemIP), systemPort);
+            socket = new Socket(systemIP, systemPort);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (final IOException e) {
