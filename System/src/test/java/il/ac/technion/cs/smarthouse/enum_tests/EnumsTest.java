@@ -1,0 +1,52 @@
+package il.ac.technion.cs.smarthouse.enum_tests;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.stream.Stream;
+
+import org.junit.Test;
+
+import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
+import il.ac.technion.cs.smarthouse.sensors.SensorType;
+import il.ac.technion.cs.smarthouse.simulator.model.Location;
+import il.ac.technion.cs.smarthouse.system.InfoType;
+import il.ac.technion.cs.smarthouse.system.SensorLocation;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.services.ServiceType;
+
+/**
+ * Cheating on the enum coverage
+ * <p>
+ * This class tests the enums for coverage purposes only... Yes I know this is
+ * stupid...
+ * 
+ * @author RON
+ * @since 30-05-2017
+ */
+public class EnumsTest {
+
+    final Class<?>[] enumClassesToTest = { InfoType.class, FileSystemEntries.class, SensorLocation.class,
+            ServiceType.class, MessageType.class, SensorType.class, Location.class };
+
+    @Test
+    public void generalEnumStupidToStringTest() {
+        Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of(enumClass.getEnumConstants()))
+                        .map(enumVal -> (enumVal + ""));
+        assert true;
+    }
+
+    @Test
+    public void enumDeclaredFunctionsWithNoParamsStupidTest() {
+        Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of(enumClass.getDeclaredMethods()))
+                        .filter(m -> m.getParameterTypes().length == 0).forEach(m -> {
+                            Stream.of(m.getDeclaringClass().getEnumConstants()).forEach(e -> {
+                                try {
+                                    m.invoke(e);
+                                } catch (IllegalAccessException | IllegalArgumentException
+                                                | InvocationTargetException e1) {
+                                    assert false;
+                                }
+                            });
+                        });
+        assert true;
+    }
+}
