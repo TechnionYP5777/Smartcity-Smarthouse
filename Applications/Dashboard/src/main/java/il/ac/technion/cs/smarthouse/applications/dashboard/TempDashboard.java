@@ -1,4 +1,4 @@
-package eu.hansolo.tilesfxdemo;
+package il.ac.technion.cs.smarthouse.applications.dashboard;
 
 import java.util.Locale;
 import eu.hansolo.medusa.Gauge;
@@ -59,7 +59,7 @@ public class TempDashboard extends Application {
             stage.show();
             ConfigurationController controller = fxmlLoader.getController();
             controller.setComboBox();
-            controller.setParentController(this);
+//            controller.setParentController(this);
 //            ((ConfigController) fxmlLoader.getController()).subscribe(StoveAppController.this);
                 } catch (final Exception $) {
                     // TODO: handle error

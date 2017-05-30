@@ -1,4 +1,4 @@
-package eu.hansolo.tilesfxdemo;
+package il.ac.technion.cs.smarthouse.applications.dashboard;
 
 import java.net.URL;
 import java.util.Locale;
@@ -16,6 +16,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -32,14 +33,20 @@ public class ConfigurationController implements Initializable {
     
     private FlowPane innerPane;
     
-    private TempDashboard dc;
+    private TileType chosenType;
+    private Runnable callback;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        button.setOnMouseClicked(e-> { dc.updateTile(types.getValue());
-        ((Stage) button.getScene().getWindow()).close();
-            
+        button.setOnMouseClicked(e-> { 
+        	chosenType = TileType.fromstring(types.getValue());
+        	if(callback != null) callback.run();
+        	((Stage) button.getScene().getWindow()).close();
         });
+        
+        scrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+        scrollPane.setFitToHeight(true);
         
         types.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) -> {
         switch(newValue) {
@@ -75,7 +82,16 @@ public class ConfigurationController implements Initializable {
         types.setItems(options);
     }
     
-    public void setParentController(TempDashboard dc) {
-        this.dc = dc;
+    public TileType getChosenType(){
+    	return chosenType;
     }
+    
+    public String getChosenPath(){
+    	return path.getText();
+    }
+    
+    public void SetCallback(Runnable r){
+    	callback = r;
+    }
+
 }
