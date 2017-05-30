@@ -11,6 +11,9 @@ import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPat
 import il.ac.technion.cs.smarthouse.system.applications.smarthouseApplicationExamples.MyApp1;
 import il.ac.technion.cs.smarthouse.utils.BoolLatch;
 
+/**
+ * [[SuppressWarningsSpartan]]
+ */
 public class ApplicationsCoreTest {
     private static Class<? extends SmartHouseApplication> APP1_CLASS = MyApp1.class; 
     private static String APP1_CLASSPATH = ApplicationsCoreTest.class.getPackage().getName() + ".smarthouseApplicationExamples.MyApp1";
@@ -44,6 +47,34 @@ public class ApplicationsCoreTest {
         
         assert !m.initialize(null);
         assert m2.initialize(null);
+        
+        m.reopen(null);
+        m2.reopen(null);
+    }
+    
+    @Test
+    public void stupidApplicationManagerTest() {
+        ApplicationManager m1 = new ApplicationManager(null, new ApplicationPath(PathType.CLASS_NAME, APP1_CLASSPATH));
+        ApplicationManager m2 = new ApplicationManager(null, new ApplicationPath(PathType.CLASS_NAME, APP1_CLASSPATH));
+        ApplicationManager m3 = new ApplicationManager("XXX", new ApplicationPath(PathType.CLASS_NAME, APP1_CLASSPATH));
+        
+        assert m1.equals(m2);
+        assert m2.equals(m1);
+        
+        assert !m1.equals(m3);
+        assert !m3.equals(m1);
+        
+        assert !m2.equals(m3);
+        assert !m3.equals(m2);
+        
+        assert !m1.equals(null);
+        assert !m1.equals("Bla");
+        
+        Assert.assertEquals(m1.hashCode(), m2.hashCode());
+        Assert.assertNotEquals(m1.hashCode(), m3.hashCode());
+        Assert.assertNotEquals(m2.hashCode(), m3.hashCode());
+        
+        Assert.assertNull(m1.getApplicationName());
     }
     
     @Test(timeout = 1000)
