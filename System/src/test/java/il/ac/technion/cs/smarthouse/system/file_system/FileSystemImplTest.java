@@ -51,6 +51,7 @@ public class FileSystemImplTest {
         assert resultNum == NEW_VAL;
         Assert.assertEquals(resultString, "a.b.c.d");
         
+        assert fs.getData("a") == null;
         assert fs.getData("a.b") == null;
         assert fs.getData("a.b.d") == null;
         assert fs.<Integer>getData("a.b.c.d") == NEW_VAL;
@@ -61,7 +62,11 @@ public class FileSystemImplTest {
         assert fs.getChildren("a.b.c").contains("d");
         assert !fs.getChildren("a.b.c").contains("e");
         assert fs.getChildren("a.b.c.d").isEmpty();
-        assert fs.getChildren("s") == null;
+        assert fs.getChildren("s").isEmpty();
+        assert !fs.wasPathInitiated("s");
+        assert fs.wasPathInitiated("a");
+        
+        assert fs.<Integer>getMostRecentDataOnBranch("a") == NEW_VAL;
     }
 
 }
