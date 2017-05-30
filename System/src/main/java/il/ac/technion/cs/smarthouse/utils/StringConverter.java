@@ -9,15 +9,16 @@ import java.beans.PropertyEditorManager;
  * @since 30-05-2017
  */
 public class StringConverter {
-    /**
+    /** 
      * Convert a string into any class
      * @param targetType
      * @param text
-     * @return
+     * @return the new converted Object
+     * [[SuppressWarningsSpartan]]
      */
     public static Object convert(Class<?> targetType, String text) {
         if (text == null && targetType.isPrimitive())
-            return 0;//TODO: what about other types? RON?
+            return targetType.equals(Boolean.TYPE) ? false : 0;
         PropertyEditor editor = PropertyEditorManager.findEditor(targetType);
         editor.setAsText(text);
         return editor.getValue();
