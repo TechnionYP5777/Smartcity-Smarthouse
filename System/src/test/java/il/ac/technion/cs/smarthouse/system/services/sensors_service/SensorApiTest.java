@@ -1,7 +1,6 @@
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalTime;
@@ -146,12 +145,12 @@ public class SensorApiTest {
         sensorConnect();
         Assert.assertEquals(s.isConnected(), true);
         
-        s.subscribeOnTime(LocalTime.now().plusSeconds(2), sensorData->{
+        s.subscribeOnTime(sensorData->{
             Assert.assertEquals(sensorData.getParam1(), 0);
             Assert.assertEquals(sensorData.getCommercialName(), SENSOR_COMM_NAME);
             Assert.assertEquals(sensorData.getSensorLocation(), SensorLocation.UNDEFINED);
             wasCalled.setTrueAndRelease();
-        }, false);
+        }, LocalTime.now().plusSeconds(2));
         
         wasCalled.blockUntilTrue();
     }
@@ -167,20 +166,19 @@ public class SensorApiTest {
         sensorConnect();
         sensorSendMsg(param1Data + "");
         
-        s.subscribeOnTime(LocalTime.now().plusSeconds(2), sensorData->{
+        s.subscribeOnTime(sensorData->{
             Assert.assertEquals(sensorData.getParam1(), param1Data);
             Assert.assertEquals(sensorData.getCommercialName(), SENSOR_COMM_NAME);
             Assert.assertEquals(sensorData.getSensorLocation(), SensorLocation.UNDEFINED);
             wasCalled.setTrueAndRelease();
-        }, false);
+        }, LocalTime.now().plusSeconds(2));
         
         wasCalled.blockUntilTrue();
     }
     
     private int counter;
     @Test
-    @Ignore
-    public void subscribeOnTimeWithRepeatTest() throws InterruptedException {
+    public void subscribeOnTimeWithRepeatAndUnsubscribeTest() throws InterruptedException {
         printTestName();
         final int param1Data = 1234;
         
@@ -189,22 +187,56 @@ public class SensorApiTest {
         sensorConnect();
         sensorSendMsg(param1Data + "");
         
-        String id = s.subscribeOnTime(LocalTime.now().plusSeconds(4), sensorData->{
+        String id = s.subscribeOnTime(sensorData->{
             Assert.assertEquals(sensorData.getParam1(), param1Data);
             Assert.assertEquals(sensorData.getCommercialName(), SENSOR_COMM_NAME);
             Assert.assertEquals(sensorData.getSensorLocation(), SensorLocation.UNDEFINED);
             ++counter;
-        }, true);
-        Thread.sleep(4500);
+        }, LocalTime.now().plusSeconds(4), 4000);
+        Thread.sleep(1000);//1000
+        System.out.println(counter);
+        assert counter == 0;
+        Thread.sleep(4000);//5000
         System.out.println(counter);
         assert counter == 1;
-        Thread.sleep(3000);
+        Thread.sleep(5000);//9000
         System.out.println(counter);
         assert counter == 2;
         s.unsubscribe(id);
-        Thread.sleep(4000);
+        Thread.sleep(4000);//13000
         System.out.println(counter);
         assert counter == 2;
+    }
+    
+    @Test
+    public void subscribeOnTimeWithRepeatAndUnsubscribeTest2() throws InterruptedException {
+        printTestName();
+        final int param1Data = 1234;
+        
+        SensorApi<MySensor> s = getSensor(SENSOR_COMM_NAME, MySensor.class, null);
+        
+        sensorConnect();
+        sensorSendMsg(param1Data + "");
+        
+        String id = s.subscribeOnTime(sensorData->{
+            Assert.assertEquals(sensorData.getParam1(), param1Data);
+            Assert.assertEquals(sensorData.getCommercialName(), SENSOR_COMM_NAME);
+            Assert.assertEquals(sensorData.getSensorLocation(), SensorLocation.UNDEFINED);
+            ++counter;
+        }, 4000);
+        Thread.sleep(1000);//1000
+        System.out.println(counter);
+        assert counter == 1;
+        Thread.sleep(4000);//5000
+        System.out.println(counter);
+        assert counter == 2;
+        Thread.sleep(5000);//9000
+        System.out.println(counter);
+        assert counter == 3;
+        s.unsubscribe(id);
+        Thread.sleep(4000);//13000
+        System.out.println(counter);
+        assert counter == 3;
     }
     
     public static class MySensor extends SensorData {

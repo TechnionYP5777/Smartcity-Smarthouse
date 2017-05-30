@@ -251,10 +251,8 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
      *            given time only once, <code>true</code> otherwise (query at
      *            this time FOREVER)
      */
-    @Override
-    public String subscribeOnTime(final LocalTime t, final Consumer<T> functionToRun, final Boolean repeat) {
-        final TimedListener tl = new TimedListener(generateListener_WithSensorDataCreation(functionToRun, true), t,
-                        repeat);
+    private String subscribeOnTimeAux(final Consumer<T> functionToRun, final LocalTime timeToStartOn, final Long repeatInMilisec) {
+        final TimedListener tl = new TimedListener(generateListener_WithSensorDataCreation(functionToRun, true), timeToStartOn, repeatInMilisec);
         final String id = UuidGenerator.GenerateUniqueIDstring();
         functionsToRunOnTime.put(id, tl);
         if (sensorId != null)
@@ -280,35 +278,39 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     // [start] timer functions
     private static class TimedListener {
         private static Date localTimeToDate(final LocalTime $) {
-            System.out.println($);
-            System.out.println(Date.from($.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant()));
             return Date.from($.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
         }
 
         final Runnable notifee;
-        final LocalTime t;
-        final boolean repeat;
+        final LocalTime timeToStartOn;
+        final Long repeatInMilisec;
         Timer currentTimer;
 
-        public TimedListener(final Runnable notifee, final LocalTime t, final boolean repeat) {
+        public TimedListener(final Runnable notifee, final LocalTime timeToStartOn, final Long repeatInMilisec) {
             this.notifee = notifee;
-            this.t = t;
-            this.repeat = repeat;
+            this.timeToStartOn = timeToStartOn;
+            this.repeatInMilisec = repeatInMilisec;
         }
 
-        public synchronized void start() {
+        public void start() {
             if (currentTimer != null)
                 return;
-            currentTimer = new Timer();
-            currentTimer.schedule(new TimerTask() {
+            
+            TimerTask t = new TimerTask() {
                 @Override
                 public void run() {
                     notifee.run();
-                    kill();
-                    if (repeat)
-                        start();
                 }
-            }, localTimeToDate(t));
+            };
+            
+            currentTimer = new Timer();
+            
+            if (repeatInMilisec == null && timeToStartOn != null)
+                currentTimer.schedule(t, localTimeToDate(timeToStartOn));
+            else if (repeatInMilisec != null && timeToStartOn != null)
+                currentTimer.schedule(t, localTimeToDate(timeToStartOn), repeatInMilisec);
+            else if (repeatInMilisec != null && timeToStartOn == null)
+                currentTimer.schedule(t, localTimeToDate(LocalTime.now()), repeatInMilisec);
         }
 
         public void kill() {
@@ -323,6 +325,21 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     public boolean isConnected() {
         return sensorId != null;// TODO: should also check via the systemCore
                                 // (or FS) that the sensor is still connected...
+    }
+
+    @Override
+    public String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn) {
+        return subscribeOnTimeAux(functionToRun, timeToStartOn, null);
+    }
+
+    @Override
+    public String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn, long miliseconds) {
+        return subscribeOnTimeAux(functionToRun, timeToStartOn, miliseconds);
+    }
+
+    @Override
+    public String subscribeOnTime(Consumer<T> functionToRun, long miliseconds) {
+        return subscribeOnTimeAux(functionToRun, null, miliseconds);
     }
     
 //    public void close() throws Exception {

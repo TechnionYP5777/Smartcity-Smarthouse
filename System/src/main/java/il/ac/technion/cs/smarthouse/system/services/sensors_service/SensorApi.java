@@ -26,7 +26,7 @@ public interface SensorApi<T extends SensorData> {
      *            with the newest data from the sensor
      * @throws SensorLostRuntimeException
      */
-    String subscribe(final Consumer<T> functionToRun);
+    String subscribe(Consumer<T> functionToRun);
 
     /**
      * Allows registration to a sensor. on time, the sensor will be polled and
@@ -42,7 +42,11 @@ public interface SensorApi<T extends SensorData> {
      *            this time FOREVER)
      * @return 
      */
-    String subscribeOnTime(final LocalTime t, final Consumer<T> functionToRun, final Boolean repeat);
+    String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn);
+    
+    String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn, long miliseconds);
+    
+    String subscribeOnTime(Consumer<T> functionToRun, long miliseconds);
     
     void unsubscribe(String listenerId);
 
@@ -52,5 +56,5 @@ public interface SensorApi<T extends SensorData> {
      * @param instruction
      *            the message that the sensor will receive
      */
-    void instruct(final String instruction, final String... path);
+    void instruct(String instruction, String... path);
 }
