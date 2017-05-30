@@ -15,7 +15,6 @@ import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApiImpl;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**
