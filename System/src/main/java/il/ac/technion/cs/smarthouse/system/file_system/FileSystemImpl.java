@@ -1,6 +1,3 @@
-/**
- * 
- */
 package il.ac.technion.cs.smarthouse.system.file_system;
 
 import java.util.ArrayList;

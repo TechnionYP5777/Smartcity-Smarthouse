@@ -1,23 +1,42 @@
 package il.ac.technion.cs.smarthouse.system.file_system;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+//@formatter:off
 /**
- * An enum for all predefined entries in the file system / dispatcher
+ * An enum for all predefined entries in the file system
  * 
  * @author RON
  * @author Inbal Zukerman
  * @since 28-05-2017
  */
 public enum FileSystemEntries {
-    SENSORS("sensors"),
-    SENSORS_DATA("sensors_data"),
-    SYSTEM("system"),
-    SYSTEM_INTERNALS(PathBuilder.buildPath(SYSTEM, "internals")),
-    SYSTEM_INTERNALS_SAVEME(PathBuilder.buildPath(SYSTEM_INTERNALS, "saveme")),
-    SYSTEM_DATA_IMAGE(PathBuilder.buildPath(SYSTEM, "data_image")),
-    LOCATION("location"),
-    DONE_SENDING_MSG("done"),
-    APPLICATIONS_DATA("applications_data");
-    
+    ROOT("", null, false),
+        APPLICATIONS_DATA("applications_data", ROOT, false),
+        
+        SENSORS("sensors", ROOT, false),
+            COMMERCIAL_NAME(null, SENSORS, true),
+                SENSOR_ID(null, COMMERCIAL_NAME, true),
+                    LOCATION("location", SENSOR_ID, true),
+                    DONE_SENDING_MSG("done", SENSOR_ID, true),
+                    
+        /**
+         * Don't forget to add the id at the end of the path when needed! 
+         */
+        SENSORS_DATA("sensors_data", ROOT, false),
+        
+        SYSTEM("system", ROOT, false),
+            SYSTEM_INTERNALS("internals", SYSTEM, false),
+                SAVEME("saveme", SYSTEM_INTERNALS, true),
+            SYSTEM_DATA_IMAGE("data_image", SYSTEM, true),
+    ;
+        
     /*
      * File System Layout:
      * 
@@ -41,18 +60,61 @@ public enum FileSystemEntries {
      *  │           └───SENSOR_ID_1
      *  └───system
      *      ├───data_image
-     *      ├───internals
-     *      └───saveme
+     *      └───internals
+     *          └───saveme
      */
-    
-    private String path;
+  //@formatter:on
 
-    private FileSystemEntries(String path) {
-        this.path = path;
+    private static Logger log = LoggerFactory.getLogger(FileSystemEntries.class);
+
+    private String name;
+    private FileSystemEntries parent;
+    private boolean isSuffix;
+
+    private FileSystemEntries(String name, FileSystemEntries parent, boolean isSuffix) {
+        this.name = name;
+        this.parent = parent;
+        this.isSuffix = false;// isSuffix; // TODO: suffix support is disabled
+    }
+    
+    private String buildPathAux(List<String> base) {
+        String out = name;
+
+        if (name == null) {
+            if (base.isEmpty()) {
+                RuntimeException r = new RuntimeException("the given path is not big enough");
+                log.error("Error while building the path", r);
+                throw r;
+            }
+            out = base.get(0);
+            base.remove(0);
+        }
+        
+        return out;
+    }
+
+    private String buildPathRecurcive(List<String> base) {
+        return parent == null ? buildPathAux(base) : PathBuilder.buildPath(parent.buildPathRecurcive(base), buildPathAux(base));
+    }
+
+    /**
+     * builds the path with the correct formatting.
+     * <p>
+     * look in {@link FileSystemEntryTest} for examples
+     * @param base
+     * @return
+     */
+    public String buildPath(String... base) {
+        ArrayList<String> l = PathBuilder.decomposePath(base).stream().collect(Collectors.toCollection(ArrayList::new));
+        if (!isSuffix)
+            return PathBuilder.buildPath(buildPathRecurcive(l), PathBuilder.buildPath(l.toArray(new String[0])));
+        if (!l.isEmpty())
+            log.warn("Path (" + Arrays.toString(base) + ") was longer than expected");
+        return PathBuilder.buildPath(buildPathRecurcive(l));
     }
 
     @Override
     public String toString() {
-        return path;
+        return name == null ? "<EMPTY>" : name;
     }
 }

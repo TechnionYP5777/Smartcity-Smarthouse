@@ -18,7 +18,7 @@ public class FileSystemService extends Service {
     }
 
     private String encapsulatePath(String... path) {
-        return PathBuilder.buildPath(FileSystemEntries.SENSORS_DATA + "", path);
+        return FileSystemEntries.SENSORS_DATA.buildPath(path);
     }
 
     public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {

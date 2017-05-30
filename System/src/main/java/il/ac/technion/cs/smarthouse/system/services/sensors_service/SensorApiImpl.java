@@ -69,20 +69,17 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
     private String getPath_commercialNamePath() {
         assert commercialName != null;
-        return PathBuilder.buildPath(FileSystemEntries.SENSORS, commercialName);
-    }
-
-    private String getPath_sensorId(String sensorId1) {
-        assert sensorId1 != null;
-        return PathBuilder.buildPath(getPath_commercialNamePath(), sensorId1);
+        return FileSystemEntries.COMMERCIAL_NAME.buildPath(commercialName);
     }
 
     private String getPath_doneMsg(String sensorId1) {
-        return PathBuilder.buildPath(getPath_sensorId(sensorId1), FileSystemEntries.DONE_SENDING_MSG);
+        assert commercialName != null && sensorId1 != null;
+        return FileSystemEntries.DONE_SENDING_MSG.buildPath(commercialName, sensorId1);
     }
 
     private String getPath_location(String sensorId1) {
-        return PathBuilder.buildPath(getPath_sensorId(sensorId1), FileSystemEntries.LOCATION);
+        assert commercialName != null && sensorId1 != null;
+        return FileSystemEntries.LOCATION.buildPath(commercialName, sensorId1);
     }
 
     private String sensorIdListenerId;
@@ -99,8 +96,8 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
                 if (field.isAnnotationPresent(PathVal.class)) {
                     field.setAccessible(true);
                     
-                    field.set(sensorData, StringConverter.convert(field.getType(), fileSystem.<String>getData(PathBuilder
-                                    .buildPathForSensorsData(field.getAnnotation(PathVal.class).value(), sensorId))));
+                    field.set(sensorData, StringConverter.convert(field.getType(), fileSystem.<String>getData(FileSystemEntries.SENSORS_DATA
+                                    .buildPath(field.getAnnotation(PathVal.class).value(), sensorId))));
                 }
         } catch (InstantiationException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
             log.error("SensorApi's OnSensorMsgRecived subscriber has failed! - commercialName = " + getCommercialName()
@@ -169,7 +166,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
                 // send instructions
                 instructionsQueue.forEach((basePath, instruction) -> fileSystem.sendMessage(instruction,
-                                PathBuilder.buildPathForSensorsData(basePath, sensorId)));
+                                FileSystemEntries.SENSORS_DATA.buildPath(basePath, sensorId)));
 
                 return true;
             }
@@ -272,7 +269,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         if (sensorId == null)
             instructionsQueue.put(basePath, instruction);
         else
-            fileSystem.sendMessage(instruction, PathBuilder.buildPathForSensorsData(basePath, sensorId));
+            fileSystem.sendMessage(instruction, FileSystemEntries.SENSORS_DATA.buildPath(basePath, sensorId));
     }
 
     // [start] timer functions

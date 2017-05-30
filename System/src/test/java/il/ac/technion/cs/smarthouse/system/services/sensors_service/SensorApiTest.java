@@ -11,7 +11,6 @@ import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
-import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import il.ac.technion.cs.smarthouse.utils.BoolLatch;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
@@ -41,12 +40,12 @@ public class SensorApiTest {
     }
     
     public void sensorSetLocation(SensorLocation l) {
-        fileSystem.sendMessage(l, FileSystemEntries.SENSORS + "", SENSOR_COMM_NAME, SENSOR_SID, FileSystemEntries.LOCATION + "");
+        fileSystem.sendMessage(l, FileSystemEntries.LOCATION.buildPath(SENSOR_COMM_NAME, SENSOR_SID));
     }
     
     public void sensorSendMsg(String param1AsStr) {
-        fileSystem.sendMessage(param1AsStr, PathBuilder.buildPathForSensorsData(PARAM1_BASE_PATH, SENSOR_SID));
-        fileSystem.sendMessage(null, FileSystemEntries.SENSORS + "", SENSOR_COMM_NAME, SENSOR_SID, FileSystemEntries.DONE_SENDING_MSG + "");
+        fileSystem.sendMessage(param1AsStr, FileSystemEntries.SENSORS_DATA.buildPath(PARAM1_BASE_PATH, SENSOR_SID));
+        fileSystem.sendMessage(null, FileSystemEntries.DONE_SENDING_MSG.buildPath(SENSOR_COMM_NAME, SENSOR_SID));
     }
     
     @Test

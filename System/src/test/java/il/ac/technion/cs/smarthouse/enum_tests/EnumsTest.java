@@ -38,19 +38,17 @@ public class EnumsTest {
     @Test
     public void enumDeclaredFunctionsWithNoParamsStupidTest() {
         Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of(enumClass.getDeclaredMethods()))
-                        .filter(m -> m.getParameterTypes().length == 0).forEach(m -> {
-                            Stream.of(m.getDeclaringClass().getEnumConstants()).forEach(e -> {
-                                try {
-                                    m.setAccessible(true);
-                                    m.invoke(e);
-                                    m.setAccessible(false);
-                                } catch (IllegalAccessException | IllegalArgumentException
-                                                | InvocationTargetException e1) {
-                                    e1.printStackTrace();
-                                    assert false;
-                                }
-                            });
-                        });
+                        .filter(m -> m.getParameterTypes().length == 0)
+                        .forEach(m -> Stream.of(m.getDeclaringClass().getEnumConstants()).forEach(e -> {
+                            try {
+                                m.setAccessible(true);
+                                m.invoke(e);
+                                m.setAccessible(false);
+                            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+                                e1.printStackTrace();
+                                assert false;
+                            }
+                        }));
         assert true;
     }
 }
