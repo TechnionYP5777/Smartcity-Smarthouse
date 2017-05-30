@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="401.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eu.hansolo.tilesfxdemo.ConfigurationController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="401.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.applications.dashboard.ConfigurationController">
    <children>
       <GridPane>
         <columnConstraints>
@@ -30,7 +30,7 @@
             <Insets top="10.0" />
          </padding>
       </Label>
-      <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0" />
+      <ScrollPane fx:id="scrollPane" prefHeight="155.0" prefWidth="200.0" />
       <GridPane>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
