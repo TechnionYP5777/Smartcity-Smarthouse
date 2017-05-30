@@ -9,8 +9,8 @@ public class SmsService extends CommunicationService {
     }
 
     @SuppressWarnings("static-method")
-    public void sendMsg(final String destPhoneNumber, final String msg) {
-        Communicate.throughSms(destPhoneNumber, msg);
+    public String sendMsg(final String destPhoneNumber, final String msg) {
+        return Communicate.throughSms(destPhoneNumber, msg);
     }
 
 }
