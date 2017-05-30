@@ -21,7 +21,7 @@ public class StoveModuleGui extends SmartHouseApplication {
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
 
-        ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getDefaultSensor(StoveSensor.class, "iStoves").subscribe(stove -> {
+        ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getSensor("iStoves", StoveSensor.class).subscribe(stove -> {
             final String t = "Stove is " + (stove.isOn() ? "" : "Not ") + "On at " + stove.getTemperture() + " degrees";
             if (stove.isOn())
                 controller.turnOn();
