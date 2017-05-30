@@ -93,11 +93,11 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
             sensorData = sensorDataClass.newInstance();
 
             for (Field field : sensorDataClass.getDeclaredFields())
-                if (field.isAnnotationPresent(PathVal.class)) {
+                if (field.isAnnotationPresent(SystemPath.class)) {
                     field.setAccessible(true);
                     
                     field.set(sensorData, StringConverter.convert(field.getType(), fileSystem.<String>getData(FileSystemEntries.SENSORS_DATA
-                                    .buildPath(field.getAnnotation(PathVal.class).value(), sensorId))));
+                                    .buildPath(field.getAnnotation(SystemPath.class).value(), sensorId))));
                 }
         } catch (InstantiationException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
             log.error("SensorApi's OnSensorMsgRecived subscriber has failed! - commercialName = " + getCommercialName()
@@ -149,7 +149,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
                 log.info("SID found: " + sensorId);
 
                 // unsubscribe from the sensorIdListener
-                Optional.ofNullable(sensorIdListenerId).ifPresent(id -> fileSystem.unsubscribe(id, commNamePath));
+                Optional.ofNullable(sensorIdListenerId).ifPresent(id -> fileSystem.unsubscribe(id));
 
                 // subscribe on the "done" entry
                 onSensorMesgRecivedListenerId = fileSystem.subscribe((path, data) -> {

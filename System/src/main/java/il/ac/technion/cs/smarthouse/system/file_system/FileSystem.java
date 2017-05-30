@@ -33,7 +33,7 @@ public interface FileSystem {
      * @param path
      *            The path on which the eventHandler would like to stop listen
      */
-    void unsubscribe(String eventHandlerId, String... path);
+    void unsubscribe(String eventHandlerId);
 
     /**
      * This method allows to send a message

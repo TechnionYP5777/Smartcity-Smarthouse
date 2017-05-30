@@ -87,6 +87,7 @@ public class FileSystemImpl implements FileSystem {
     }
 
     private FileNode root = new FileNode();
+    private Map<String, FileNode> listenersBuffer = new HashMap<>();
 
     private FileSystemWalkResults fileSystemWalk(boolean create, Object newDataToAdd, String... path) {
         List<BiConsumer<String, Object>> eventHandlersOnBranch = new ArrayList<>();
@@ -118,12 +119,15 @@ public class FileSystemImpl implements FileSystem {
     @Override
     public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {
         log.info("subscribed on " + PathBuilder.buildPath(path));
-        return fileSystemWalk(true, null, path).fileNode.addEventHandler(eventHandler);
+        FileNode n = fileSystemWalk(true, null, path).fileNode;
+        String id = n.addEventHandler(eventHandler);
+        listenersBuffer.put(id, n);
+        return id;
     }
 
     @Override
-    public void unsubscribe(String eventHandlerId, String... path) {
-        Optional.of(fileSystemWalk(false, null, path).fileNode).ifPresent(n -> n.removeEventHandler(eventHandlerId));
+    public void unsubscribe(String eventHandlerId) {
+        Optional.of(listenersBuffer.get(eventHandlerId)).ifPresent(n -> n.removeEventHandler(eventHandlerId));
     }
 
     @Override
