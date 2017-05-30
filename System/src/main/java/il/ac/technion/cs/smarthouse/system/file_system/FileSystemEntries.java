@@ -14,6 +14,8 @@ public enum FileSystemEntries {
     SYSTEM_INTERNALS(PathBuilder.buildPath(SYSTEM, "internals")),
     SYSTEM_INTERNALS_SAVEME(PathBuilder.buildPath(SYSTEM_INTERNALS, "saveme")),
     SYSTEM_DATA_IMAGE(PathBuilder.buildPath(SYSTEM, "data_image")),
+    LOCATION("location"),
+    DONE_SENDING_MSG("done"),
     APPLICATIONS_DATA("applications_data");
     
     /*

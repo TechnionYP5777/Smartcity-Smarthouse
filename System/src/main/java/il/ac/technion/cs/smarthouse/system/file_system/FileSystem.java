@@ -54,6 +54,10 @@ public interface FileSystem {
      * @return The last entry's data
      */
     <T> T getData(String... path);
+    
+    <T> T getMostRecentDataOnBranch(String... path);
 
     Collection<String> getChildren(String... path);
+    
+    boolean wasPathInitiated(String... path);
 }
