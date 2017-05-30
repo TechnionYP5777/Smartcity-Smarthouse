@@ -8,6 +8,7 @@ import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplicatio
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 
 public class StoveModuleGui extends SmartHouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
@@ -41,7 +42,10 @@ public class StoveModuleGui extends SmartHouseApplication {
 }
 
 class StoveSensor extends SensorData {
+    @SystemPath("stove.is_on")
     private boolean on;
+    
+    @SystemPath("stove.temp")
     private int temperature;
 
     boolean isOn() {

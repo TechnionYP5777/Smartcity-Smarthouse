@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorsLocalServer;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
@@ -25,6 +26,7 @@ public class SystemCore implements Savable {
 
     public void initializeSystemComponents() {
         System.out.println("Initializing system components...");
+        initFileSystemListeners();
         new Thread(sensorsHandler).start();
     }
 
@@ -56,14 +58,16 @@ public class SystemCore implements Savable {
     public ServiceManager getSystemServiceManager() {
         return serviceManager;
     }
-    
+
     public FileSystem getFileSystem() {
         return fileSystem;
     }
-    
-    
-    public void initFileSystemListeners(){
+
+    public void initFileSystemListeners() {
+        fileSystem.subscribe((path, data) -> System.out.println(this.toJsonString()),
+                        FileSystemEntries.SAVEME.buildPath());
+
         // TODO: inbal
     }
-    
+
 }

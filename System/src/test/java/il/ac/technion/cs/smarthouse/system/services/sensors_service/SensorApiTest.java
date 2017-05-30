@@ -239,7 +239,7 @@ public class SensorApiTest {
     }
     
     public static class MySensor extends SensorData {
-        @PathVal(PARAM1_BASE_PATH)
+        @SystemPath(PARAM1_BASE_PATH)
         private int param1;
         
         public int getParam1() {
