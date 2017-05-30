@@ -4,6 +4,7 @@ import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager
 import il.ac.technion.cs.smarthouse.system.services.communication_services.EmailService;
 import il.ac.technion.cs.smarthouse.system.services.communication_services.PhoneService;
 import il.ac.technion.cs.smarthouse.system.services.communication_services.SmsService;
+import il.ac.technion.cs.smarthouse.system.services.file_system_service.FileSystemService;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
 import il.ac.technion.cs.smarthouse.system.services.user_info_service.UserInfoManager;
 
@@ -16,6 +17,7 @@ import il.ac.technion.cs.smarthouse.system.services.user_info_service.UserInfoMa
  */
 public enum ServiceType {
     SENSORS_SERVICE(SensorsService.class),
+    FILE_SYSTEM_SERVICE(FileSystemService.class),
     USER_INFORMATION_SERVICE(UserInfoManager.class),
     ALERTS_SERVICE(AlertsManager.class),
     EMAIL_SERVICE(EmailService.class),

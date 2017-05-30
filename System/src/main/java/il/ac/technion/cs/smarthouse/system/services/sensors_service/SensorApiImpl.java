@@ -32,7 +32,7 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  *            the sensor's messages will be deserialize into this class. T must
  *            extend SensorData
  */
-public final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
+final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     private static Logger log = LoggerFactory.getLogger(SensorApiImpl.class);
 
     private final FileSystem fileSystem;
