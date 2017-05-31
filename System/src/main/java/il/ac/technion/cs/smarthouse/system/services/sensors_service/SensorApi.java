@@ -48,6 +48,13 @@ public interface SensorApi<T extends SensorData> {
     
     String subscribeOnTime(Consumer<T> functionToRun, long miliseconds);
     
+    /**
+     * Runs the given function when the sensor is found. If the sensor was already found, the function runs immediately
+     * @param functionToRun
+     * @return
+     */
+    String runWhenSensorIsFound(Consumer<T> functionToRun);
+    
     void unsubscribe(String listenerId);
 
     /**

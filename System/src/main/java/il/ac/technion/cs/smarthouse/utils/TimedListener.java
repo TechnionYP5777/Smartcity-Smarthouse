@@ -48,7 +48,9 @@ public class TimedListener {
         
         currentTimer = new Timer();
         
-        if (repeatInMilisec == null && timeToStartOn != null)
+        if (repeatInMilisec == null && timeToStartOn == null)
+            currentTimer.schedule(t, localTimeToDate(LocalTime.MIN));
+        else if (repeatInMilisec == null && timeToStartOn != null)
             currentTimer.schedule(t, localTimeToDate(timeToStartOn));
         else if (repeatInMilisec != null && timeToStartOn != null)
             currentTimer.schedule(t, localTimeToDate(timeToStartOn), repeatInMilisec);

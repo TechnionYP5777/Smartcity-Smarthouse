@@ -325,6 +325,11 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         return subscribeOnTimeAux(functionToRun, null, miliseconds);
     }
 
+    @Override
+    public String runWhenSensorIsFound(Consumer<T> functionToRun) {
+        return subscribeOnTimeAux(functionToRun, null, null);
+    }
+
     // =================================================================
     // ======================== other functions ========================
     // =================================================================
