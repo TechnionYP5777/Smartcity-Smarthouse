@@ -56,16 +56,10 @@ public class Controller implements Initializable{
 	
 	private void updateTile(TileType type, String path, Integer position) {
 		//todo: initalize according to type and path
+	    Tile tile = TileType.fromType(type, TILE_SIZE);
+	    setTlieEventHandlers(tile, position);
 		pane.getChildren().set(position, 
-				TileBuilder.create()
-		            .prefSize(TILE_SIZE, TILE_SIZE)
-		            .skinType(SkinType.CLOCK)
-		            .title("Clock Tile")
-		            .text("Whatever text")
-		            .dateVisible(true)
-		            .locale(Locale.US)
-		            .running(true)
-		            .build()
+				tile
             );
 	}
 	
