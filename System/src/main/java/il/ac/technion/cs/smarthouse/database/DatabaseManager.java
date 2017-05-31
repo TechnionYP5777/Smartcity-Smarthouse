@@ -1,6 +1,5 @@
 package il.ac.technion.cs.smarthouse.database;
 
-import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,12 +31,12 @@ public class DatabaseManager implements DatabaseAPI {
     private static Logger log = LoggerFactory.getLogger(DatabaseManager.class);
 
     @Override
-    public ParseObject addInfo(final InfoType t, final String path, final String value) throws ParseException {
+    public ParseObject addInfo(final String path, final Object value) throws ParseException {
         serverManager.initialize();
 
         final Map<String, Object> m = new HashMap<>();
-        m.put(pathCol, t.toString().toLowerCase() + Dispatcher.DELIMITER + path);
-        m.put(valueCol, value);
+        m.put(pathCol, path);
+        m.put(valueCol, value.toString());
 
         return serverManager.putValue(parseClass, m);
 
@@ -82,7 +81,10 @@ public class DatabaseManager implements DatabaseAPI {
 
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 
-        findQuery.whereStartsWith(pathCol, DispatcherCore.getPathAsString(path).toLowerCase()); //TODO inbal, not prefix
+        findQuery.whereStartsWith(pathCol, DispatcherCore.getPathAsString(path).toLowerCase()); // TODO
+                                                                                                // inbal,
+                                                                                                // not
+                                                                                                // prefix
 
         try {
             if (findQuery.find() != null) {
@@ -98,25 +100,27 @@ public class DatabaseManager implements DatabaseAPI {
         return ""; // TODO: inbal - should throw?
 
     }
-    
+
     @Override
-    public Collection<String> getPathChildren(String... path){
-        final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
-
-        findQuery.whereStartsWith(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
-        
-
-        Collection<String> res = new ArrayList<>(); //TODO: inbal
+    public Collection<String> getPathChildren(String... path) {
+        Collection<String> res = new ArrayList<>(); // TODO: inbal
         try {
-            for (final ParseObject iterator : findQuery.find()){
-                res.add(iterator.getString(pathCol).replaceAll(DispatcherCore.getPathAsString(path), ""));  // TODO inbal
+            final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
+
+            findQuery.whereStartsWith(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
+
+            if (findQuery.find() != null) {
+                System.out.println("find size is: " + findQuery.find().size());
+                for (final ParseObject iterator : findQuery.find())
+                    res.add(iterator.getString(pathCol).replaceAll(DispatcherCore.getPathAsString(path), "")); // TODO
+                                                                                                               // inbal
+
             }
-               
 
         } catch (final ParseException e) {
-            //TODO: inbal
+            // TODO: inbal
         }
-        
+
         return res;
     }
 
