@@ -65,7 +65,8 @@ public class ServerManagerTest {
             Assert.assertEquals(0, countQuery.count());
 
         } catch (final ParseException e) {
-            assert null != null;
+            e.printStackTrace();
+            assert false;
         }
     }
 
@@ -97,7 +98,8 @@ public class ServerManagerTest {
             serverManager.deleteById(testParse, mObj.getObjectId());
 
         } catch (ParseException e) {
-            assert null != null;
+            e.printStackTrace();
+            assert false;
         }
 
     }
