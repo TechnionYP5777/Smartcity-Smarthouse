@@ -17,7 +17,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
+import il.ac.technion.cs.smarthouse.system.SensorsManager;
 
 /**
  * A sensors handler is a class dedicated to listening for incoming messages
@@ -32,7 +32,7 @@ import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 public class SensorsLocalServer implements Runnable {
     private static Logger log = LoggerFactory.getLogger(SensorsLocalServer.class);
 
-    private final DatabaseHandler databaseHandler;
+    private final SensorsManager databaseHandler;
     private final Map<String, PrintWriter> routingMap = new HashMap<>();
 
     private List<Closeable> serverSockets = new ArrayList<>();
@@ -42,7 +42,7 @@ public class SensorsLocalServer implements Runnable {
      * @param databaseHandler
      *            database handler of the system
      */
-    public SensorsLocalServer(final DatabaseHandler databaseHandler) {
+    public SensorsLocalServer(final SensorsManager databaseHandler) {
         this.databaseHandler = databaseHandler;
     }
 

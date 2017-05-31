@@ -93,7 +93,7 @@ public class DatabaseManager implements DatabaseAPI {
             log.error("A Parse exception has occured", e);
         }
 
-        return ""; // TODO: inbal - should throw?
+        return "";
 
     }
 
@@ -109,7 +109,7 @@ public class DatabaseManager implements DatabaseAPI {
                 System.out.println("find size is: " + findQuery.find().size());
                 for (final ParseObject iterator : findQuery.find())
                     res.add(iterator.getString(pathCol).replaceAll(PathBuilder.buildPath(path), "")); // TODO
-                                                                                                               // inbal
+                                                                                                      // inbal
 
             }
 

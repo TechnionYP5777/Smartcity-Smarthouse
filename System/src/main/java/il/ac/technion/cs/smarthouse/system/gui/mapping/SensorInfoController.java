@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
+import il.ac.technion.cs.smarthouse.system.SensorsManager;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 
 public class SensorInfoController extends SystemPresenter {
-    private DatabaseHandler dbHandler;
+    private SensorsManager dbHandler;
 
     private String name;
     private String id;
@@ -25,7 +25,7 @@ public class SensorInfoController extends SystemPresenter {
 
     @Override
     public void init(final SystemCore model, final URL location, final ResourceBundle __) {
-        dbHandler = model.databaseHandler;
+        dbHandler = model.sManager;
 
         for (final SensorLocation ¢ : SensorLocation.values())
             room.getItems().add(¢ + "");
