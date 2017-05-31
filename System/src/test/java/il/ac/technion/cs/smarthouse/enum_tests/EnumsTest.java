@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.enum_tests;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -37,8 +38,8 @@ public class EnumsTest {
     @Test
     public void enumDeclaredFunctionsWithNoParamsStupidTest() {
         Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of(enumClass.getDeclaredMethods()))
-                        .filter(m -> m.getParameterTypes().length == 0)
-                        .forEach(m -> Stream.of(m.getDeclaringClass().getEnumConstants()).forEach(e -> {
+                        .filter(m -> ((Method)m).getParameterTypes().length == 0)
+                        .forEach(m -> Stream.of(((Method)m).getDeclaringClass().getEnumConstants()).forEach(e -> {
                             try {
                                 m.setAccessible(true);
                                 m.invoke(e);
