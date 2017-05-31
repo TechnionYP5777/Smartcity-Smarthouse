@@ -18,10 +18,12 @@ public class ApplicationsCoreTest {
     private static Class<? extends SmartHouseApplication> APP1_CLASS = MyApp1.class; 
     private static String APP1_CLASSPATH = ApplicationsCoreTest.class.getPackage().getName() + ".smarthouseApplicationExamples.MyApp1";
     private ApplicationsCore appCore;
+    private SystemCore systemCore;
     
     @Before
     public void init() {
-        appCore = new SystemCore().applicationsHandler;
+        systemCore = new SystemCore();
+        appCore = systemCore.getSystemApplicationsHandler();
     }
     
     @Test
@@ -45,8 +47,11 @@ public class ApplicationsCoreTest {
         Assert.assertEquals(m + "", m2 + "");
         Assert.assertEquals(m.hashCode(), m2.hashCode());
         
+        assert !m.initialize(systemCore);
+        assert m2.initialize(systemCore);
+        
         assert !m.initialize(null);
-        assert m2.initialize(null);
+        assert !m2.initialize(null);
         
         m.reopen(null);
         m2.reopen(null);
@@ -90,7 +95,7 @@ public class ApplicationsCoreTest {
     public void savebleTest() throws Exception {
         Assert.assertNotNull(appCore.addApplication(new ApplicationPath(PathType.CLASS_NAME, APP1_CLASSPATH)));
         
-        ApplicationsCore appCoreNew = new SystemCore().applicationsHandler;
+        ApplicationsCore appCoreNew = new SystemCore().getSystemApplicationsHandler();
         appCoreNew.populate(appCore.toJsonString());
         assert !appCoreNew.getApplicationManagers().isEmpty();
         Assert.assertEquals(appCoreNew.getInstalledApplicationNames().stream().filter(n->n.equals(APP1_CLASS.getName())).count(), 1);

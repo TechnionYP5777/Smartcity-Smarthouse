@@ -39,7 +39,7 @@ public class InfastructureMainSystemGuiTest extends GuiTest {
     }
 
     protected void installAppOnSystem(final Class<? extends SmartHouseApplication> appClass) throws Exception {
-        gui.getPresenter().getModel().applicationsHandler
+        gui.getPresenter().getModel().getSystemApplicationsHandler()
                         .addApplication(new ApplicationPath(PathType.CLASS_NAME, appClass.getName()));
         Thread.sleep(500);
     }

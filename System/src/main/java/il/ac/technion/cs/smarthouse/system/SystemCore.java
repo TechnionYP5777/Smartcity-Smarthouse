@@ -19,7 +19,7 @@ public class SystemCore implements Savable {
     public final ServiceManager serviceManager = new ServiceManager(this);
     public final DatabaseHandler databaseHandler = new DatabaseHandler();
     public final SensorsLocalServer sensorsHandler = new SensorsLocalServer(databaseHandler);
-    @Expose public final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
+    @Expose private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     private final FileSystem fileSystem = new FileSystemImpl();
     protected UserInformation user;
     private boolean userInitialized;
@@ -45,6 +45,10 @@ public class SystemCore implements Savable {
 
     public void shutdown() {
         sensorsHandler.closeSockets();
+    }
+    
+    public ApplicationsCore getSystemApplicationsHandler() {
+        return applicationsHandler;
     }
 
     public Dispatcher getSystemDispatcher() {

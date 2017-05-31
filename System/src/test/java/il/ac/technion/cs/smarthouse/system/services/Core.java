@@ -16,7 +16,7 @@ public class Core extends SystemCore {
     public Object getHandler(final Handler h) {
         switch (h) {
             case APPS:
-                return applicationsHandler;
+                return getSystemApplicationsHandler();
             case SENSORS:
                 return sensorsHandler;
             case SERVICES:

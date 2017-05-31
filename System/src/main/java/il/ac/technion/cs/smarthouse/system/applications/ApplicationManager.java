@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import com.google.gson.annotations.Expose;
 
+import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
-import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -56,13 +56,13 @@ public class ApplicationManager {
      * @throws Exception
      *             - An exception in the onLoad method
      */
-    public boolean initialize(final ServiceManager $) throws Exception {
-        if (application != null)
+    public boolean initialize(final SystemCore $) throws Exception {
+        if (application != null || $ == null)
             return false;
 
         application = appPath.installMe();
 
-        application.setServiceManager($);
+        application.setDataFromApplicationManager($, id);
         application.onLoad();
         rootNode = application.getRootNode();
 

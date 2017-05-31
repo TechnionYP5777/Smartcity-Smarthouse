@@ -32,9 +32,9 @@ public class ApplicationViewController extends SystemPresenter {
 
     @Override
     public void init(final SystemCore model, final URL location, final ResourceBundle __) {
-        appsHandler = model.applicationsHandler;
+        appsHandler = model.getSystemApplicationsHandler();
 
-        model.applicationsHandler.setOnAppsListChange(this::updateListView);
+        model.getSystemApplicationsHandler().setOnAppsListChange(this::updateListView);
 
         initVBox();
         initListView();
