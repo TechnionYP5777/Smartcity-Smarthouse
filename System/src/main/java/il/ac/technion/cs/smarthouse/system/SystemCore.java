@@ -1,5 +1,6 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import org.parse4j.ParseException;
@@ -94,20 +95,16 @@ public class SystemCore implements Savable {
 
         fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.APPLICATIONS_DATA.buildPath());
 
-        fileSystem.subscribe((path, data) -> {
-            try {
-                System.out.println("\n\nAbout to save data image");
-              //  databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
-                databaseManager.addInfo(path, data);
-            } catch (ParseException e) {
-                log.error("Message from (" + path + ") could not be saved on the server", e);
-            }
-        }, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+        fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
 
         fileSystem.subscribe((path, data) -> {
             try {
-                System.out.println("\n\nAbout to populate");
-                System.out.println(databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()));
+                System.out.println("About to populate");
+                String s = databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()).split("=")[1]; 
+                System.out.println(s);
+                System.out.println(">>>> IN LOAD_DATA_IMAGE before populate: " + Optional.ofNullable(user).orElse(new UserInformation("<NO_USER>", "", "", "")).getName());
+                this.populate(s);
+                System.out.println(">>>> IN LOAD_DATA_IMAGE after populate: " + Optional.ofNullable(user).orElse(new UserInformation("<NO_USER>", "", "", "")).getName());
             } catch (Exception e) {
                 // TODO inbal
                 e.printStackTrace();
