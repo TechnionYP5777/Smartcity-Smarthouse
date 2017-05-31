@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import eu.hansolo.medusa.Gauge;
+import eu.hansolo.medusa.GaugeBuilder;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.Tile.SkinType;
@@ -22,6 +24,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 
 public class ConfigurationController implements Initializable {
@@ -49,24 +52,13 @@ public class ConfigurationController implements Initializable {
         scrollPane.setFitToHeight(true);
         
         types.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) -> {
-        switch(newValue) {
-            case "Clock":
-                Tile clockTile = TileBuilder.create()
-                .prefSize(150, 150)
-                .skinType(SkinType.CLOCK)
-                .title("Clock Tile")
-                .text("Whatever text")
-                .dateVisible(true)
-                .locale(Locale.US)
-                .running(true)
-                .build();
-                innerPane = new FlowPane(Orientation.HORIZONTAL, 1, 1, clockTile);
-                innerPane.setPadding(new Insets(5));
-                innerPane.setPrefSize(150, 150);
-                innerPane.setBackground(
-                                new Background(new BackgroundFill(Tile.BACKGROUND.darker(), CornerRadii.EMPTY, Insets.EMPTY)));
-                scrollPane.setContent(innerPane);
-        }
+        Tile newTile = TileType.fromType(TileType.fromstring(newValue), 150);
+                        innerPane = new FlowPane(Orientation.HORIZONTAL, 1, 1, newTile);
+                        innerPane.setPadding(new Insets(5));
+                        innerPane.setPrefSize(150, 150);
+                        innerPane.setBackground(
+                                        new Background(new BackgroundFill(Tile.BACKGROUND.darker(), CornerRadii.EMPTY, Insets.EMPTY)));
+                        scrollPane.setContent(innerPane);
 
         });
         
@@ -76,8 +68,12 @@ public class ConfigurationController implements Initializable {
         ObservableList<String> options = 
                         FXCollections.observableArrayList(
                             "Clock",
-                            "Numeric",
-                            "Pie Chart"
+                            "Number",
+//                            "Pie Chart",
+                            "Line Chart",
+                            "Text",
+//                            "Leaderboard",
+                            "Numeric Range"
                         );
         types.setItems(options);
     }
@@ -93,5 +89,4 @@ public class ConfigurationController implements Initializable {
     public void SetCallback(Runnable r){
     	callback = r;
     }
-
 }
