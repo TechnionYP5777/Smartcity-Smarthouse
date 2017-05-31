@@ -35,8 +35,9 @@ public class SystemCore implements Savable {
     private boolean userInitialized;
 
     public void initializeSystemComponents() {
-        System.out.println("Initializing system components...");
+        log.info("Initializing system components...");
         initFileSystemListeners();
+        loadDataFromDatabase();
         new Thread(sensorsHandler).start();
     }
 
@@ -109,6 +110,10 @@ public class SystemCore implements Savable {
             }
             // TODO: Inbal: load to system from SYSTEM_DATA_IMAGE with populate
         }, FileSystemEntries.LOAD_DATA_IMAGE.buildPath());
+    }
+    
+    private void loadDataFromDatabase() {
+        fileSystem.sendMessage(null, FileSystemEntries.LOAD_DATA_IMAGE.buildPath());
     }
 
 }
