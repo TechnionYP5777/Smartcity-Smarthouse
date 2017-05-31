@@ -92,6 +92,10 @@ public class SystemCore implements Savable {
         fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.APPLICATIONS_DATA.buildPath());
 
         fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+        
+        fileSystem.subscribe((path, data) -> {
+            //TODO: Inbal: load to system from SYSTEM_DATA_IMAGE with populate
+        }, FileSystemEntries.LOAD_DATA_IMAGE.buildPath());
     }
 
 }
