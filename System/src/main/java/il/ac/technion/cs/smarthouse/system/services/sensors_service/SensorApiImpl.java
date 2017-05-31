@@ -1,15 +1,10 @@
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
 import java.lang.reflect.Field;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +15,9 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import il.ac.technion.cs.smarthouse.utils.StringConverter;
+import il.ac.technion.cs.smarthouse.utils.TimedListener;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
+import javafx.application.Platform;
 
 /**
  * An API class for the developers, that allows interactions with a specific
@@ -35,16 +32,42 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     private static Logger log = LoggerFactory.getLogger(SensorApiImpl.class);
 
+    // a reference to the system's fileSystem
     private final FileSystem fileSystem;
 
+    // the commercial name of the relevant sensor. musn't be null, given in the
+    // c'tor
     private final String commercialName;
+
+    // the sensor's ID. starts as null, until it is found by searchForSensorId()
+    // or the fileSystem
     private String sensorId;
+
+    // the sensor's preferred location. the selected sensor will be located at
+    // this location. if null or UNDEFINED, the location is ignored, and only
+    // the commercial name will affect the sensor selection process
     private final SensorLocation defaultLocation;
+
+    // the class that extends SensorData. the developer will receive information
+    // from the sensor via this class
     private final Class<T> sensorDataClass;
 
+    // a buffer for subscribed functions
     private final Map<String, Consumer<T>> functionsToRunOnMessageRecived = new HashMap<>();
+
+    // a buffer for timed listeners
     private final Map<String, TimedListener> functionsToRunOnTime = new HashMap<>();
+
+    // an instructions buffer
     private final Map<String, String> instructionsQueue = new HashMap<>();
+
+    // the ID of the fileSystem's listener on: sensors.commercialName
+    // it is removed from the fileSystem after a sensor is found
+    private String sensorIdListenerId;
+
+    // the ID of the fileSystem's listener on:
+    // sensors.commercialName.sensorId.msg_recevied
+    @SuppressWarnings("unused") private String onSensorMesgRecivedListenerId;
 
     /**
      * This c'tor should be used only by the {@link SensorsService}
@@ -60,12 +83,19 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
      */
     SensorApiImpl(final FileSystem fileSystem, final String commercialName, final SensorLocation defaultLocation,
                     final Class<T> sensorDataClass) {
+        assert fileSystem != null && commercialName != null && sensorDataClass != null;
+
         this.fileSystem = fileSystem;
         this.commercialName = commercialName;
         this.defaultLocation = defaultLocation != null ? defaultLocation : SensorLocation.UNDEFINED;
         this.sensorDataClass = sensorDataClass;
+
         searchForSensorId();
     }
+
+    // ===================================================================
+    // ======================== getPath functions ========================
+    // ===================================================================
 
     private String getPath_commercialNamePath() {
         assert commercialName != null;
@@ -82,8 +112,9 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         return FileSystemEntries.LOCATION.buildPath(commercialName, sensorId1);
     }
 
-    private String sensorIdListenerId;
-    private String onSensorMesgRecivedListenerId;
+    // =====================================================================
+    // ======================== Important functions ========================
+    // =====================================================================
 
     private T createSensorDataObj() {
         assert sensorId != null;
@@ -95,9 +126,13 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
             for (Field field : sensorDataClass.getDeclaredFields())
                 if (field.isAnnotationPresent(SystemPath.class)) {
                     field.setAccessible(true);
-                    
-                    field.set(sensorData, StringConverter.convert(field.getType(), fileSystem.<String>getData(FileSystemEntries.SENSORS_DATA
-                                    .buildPath(field.getAnnotation(SystemPath.class).value(), sensorId))));
+
+                    field.set(sensorData,
+                                    StringConverter.convert(field.getType(),
+                                                    fileSystem.<String>getData(FileSystemEntries.SENSORS_DATA.buildPath(
+                                                                    field.getAnnotation(SystemPath.class)
+                                                                                    .value(),
+                                                                    sensorId))));
                 }
         } catch (InstantiationException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
             log.error("SensorApi's OnSensorMsgRecived subscriber has failed! - commercialName = " + getCommercialName()
@@ -177,6 +212,50 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         return false;
     }
 
+    // ==============================================================================
+    // ======================== Generate Listeners functions
+    // ========================
+    // ==============================================================================
+
+    /**
+     * Wraps the <code>functionToRun</code> Consumer with a javaFx wrapper.
+     * <p>
+     * Surrounds the given function with a {@link Platform#runLater(Runnable)},
+     * if <code>runOnFx == true</code>
+     * 
+     * @param functionToRun
+     *            a Consumer that receives <code>SensorData sensorData</code>
+     *            and operates on it.
+     * @param runOnFx
+     * @return the modified consumer
+     */
+    private Consumer<T> generateListener_WithoutSensorDataCreation(final Consumer<T> functionToRun,
+                    final boolean runOnFx) {
+        return !runOnFx ? functionToRun : JavaFxHelper.surroundConsumerWithFx(functionToRun);
+    }
+
+    /**
+     * Wraps the <code>functionToRun</code> Consumer with a javaFx wrapper, and
+     * then with a sensorData generator.
+     * <p>
+     * The top wrapper sets the SensorData object, and the second is
+     * {@link SensorApiImpl#generateListener_WithoutSensorDataCreation(Consumer, boolean)}
+     * 
+     * @param functionToRun
+     *            a Consumer that receives <code>SensorData sensorData</code>
+     *            and operates on it.
+     * @param runOnFx
+     * @return the modified consumer
+     */
+    private Runnable generateListener_WithSensorDataCreation(final Consumer<T> functionToRun, final boolean runOnFx) {
+        return () -> generateListener_WithoutSensorDataCreation(functionToRun, runOnFx).accept(createSensorDataObj());
+    }
+
+    // ================================================================================
+    // ======================== Overridden SensorApi functions
+    // ========================
+    // ================================================================================
+
     @Override
     public SensorLocation getSensorLocation() {
         return sensorId == null ? SensorLocation.UNDEFINED : fileSystem.getData(getPath_location(sensorId));
@@ -187,39 +266,6 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         return commercialName;
     }
 
-    /**
-     * Wraps the <code>functionToRun</code> Consumer with helpful wrappers.
-     * <p>
-     * 1. A wrapper that sets the <code>sensorData</code>'s
-     * <code>sensorLocation</code>
-     * <p>
-     * 2. Surrounds the given function with a Platform.runLater, if
-     * <code>runOnFx == true</code>
-     * 
-     * @param functionToRun
-     *            a Consumer that receives <code>SensorData sensorData</code>
-     *            and operates on it.
-     * @param runOnFx
-     * @return the modified consumer [[SuppressWarningsSpartan]]
-     */
-    private Consumer<T> generateListener_WithoutSensorDataCreation(final Consumer<T> functionToRun,
-                    final boolean runOnFx) {
-        return !runOnFx ? functionToRun : JavaFxHelper.surroundConsumerWithFx(functionToRun);
-    }
-
-    private Runnable generateListener_WithSensorDataCreation(final Consumer<T> functionToRun, final boolean runOnFx) {
-        return () -> generateListener_WithoutSensorDataCreation(functionToRun, runOnFx).accept(createSensorDataObj());
-    }
-
-    /**
-     * Allows registration to a sensor. on update, the data will be given to the
-     * consumer for farther processing
-     * 
-     * @param functionToRun
-     *            A consumer that will receive a seneorClass object initialized
-     *            with the newest data from the sensor
-     * @throws SensorLostRuntimeException
-     */
     @Override
     public String subscribe(final Consumer<T> functionToRun) {
         final String id = UuidGenerator.GenerateUniqueIDstring();
@@ -232,37 +278,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         functionsToRunOnMessageRecived.remove(listenerId);
         Optional.of(functionsToRunOnTime.remove(listenerId)).ifPresent(tl -> tl.kill());
     }
-    
-    
 
-    /**
-     * Allows registration to a sensor. on time, the sensor will be polled and
-     * 
-     * @param t
-     *            the time when a polling is requested
-     * @param functionToRun
-     *            A consumer that will receive a seneorClass object initialized
-     *            with the newest data from the sensor
-     * @param repeat
-     *            <code>false</code> if you want to query the sensor on the
-     *            given time only once, <code>true</code> otherwise (query at
-     *            this time FOREVER)
-     */
-    private String subscribeOnTimeAux(final Consumer<T> functionToRun, final LocalTime timeToStartOn, final Long repeatInMilisec) {
-        final TimedListener tl = new TimedListener(generateListener_WithSensorDataCreation(functionToRun, true), timeToStartOn, repeatInMilisec);
-        final String id = UuidGenerator.GenerateUniqueIDstring();
-        functionsToRunOnTime.put(id, tl);
-        if (sensorId != null)
-            tl.start();
-        return id;
-    }
-
-    /**
-     * Send a message to a sensor.
-     * 
-     * @param instruction
-     *            the message that the sensor will receive
-     */
     @Override
     public void instruct(final String instruction, final String... path) {
         final String basePath = PathBuilder.buildPath(path);
@@ -272,56 +288,26 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
             fileSystem.sendMessage(instruction, FileSystemEntries.SENSORS_DATA.buildPath(basePath, sensorId));
     }
 
-    // [start] timer functions
-    private static class TimedListener {
-        private static Date localTimeToDate(final LocalTime $) {
-            return Date.from($.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
-        }
-
-        final Runnable notifee;
-        final LocalTime timeToStartOn;
-        final Long repeatInMilisec;
-        Timer currentTimer;
-
-        public TimedListener(final Runnable notifee, final LocalTime timeToStartOn, final Long repeatInMilisec) {
-            this.notifee = notifee;
-            this.timeToStartOn = timeToStartOn;
-            this.repeatInMilisec = repeatInMilisec;
-        }
-
-        public void start() {
-            if (currentTimer != null)
-                return;
-            
-            TimerTask t = new TimerTask() {
-                @Override
-                public void run() {
-                    notifee.run();
-                }
-            };
-            
-            currentTimer = new Timer();
-            
-            if (repeatInMilisec == null && timeToStartOn != null)
-                currentTimer.schedule(t, localTimeToDate(timeToStartOn));
-            else if (repeatInMilisec != null && timeToStartOn != null)
-                currentTimer.schedule(t, localTimeToDate(timeToStartOn), repeatInMilisec);
-            else if (repeatInMilisec != null && timeToStartOn == null)
-                currentTimer.schedule(t, localTimeToDate(LocalTime.now()), repeatInMilisec);
-        }
-
-        public void kill() {
-            if (currentTimer != null)
-                currentTimer.cancel();
-            currentTimer = null;
-        }
-    }
-    // [end]
-
     @Override
     public boolean isConnected() {
         return sensorId != null;// TODO: should also check via the systemCore
                                 // (or FS) that the sensor is still connected...
+    }
+
+    // ===========================================================================
+    // ======================== subscribeOnTime functions
+    // ========================
+    // ===========================================================================
+
+    private String subscribeOnTimeAux(final Consumer<T> functionToRun, final LocalTime timeToStartOn,
+                    final Long repeatInMilisec) {
+        final TimedListener tl = new TimedListener(generateListener_WithSensorDataCreation(functionToRun, true),
+                        timeToStartOn, repeatInMilisec);
+        final String id = UuidGenerator.GenerateUniqueIDstring();
+        functionsToRunOnTime.put(id, tl);
+        if (sensorId != null)
+            tl.start();
+        return id;
     }
 
     @Override
@@ -338,11 +324,16 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     public String subscribeOnTime(Consumer<T> functionToRun, long miliseconds) {
         return subscribeOnTimeAux(functionToRun, null, miliseconds);
     }
-    
-//    public void close() throws Exception {
-//        if (sensorIdListenerId != null)
-//            fileSystem.unsubscribe(sensorIdListenerId, getPath_commercialNamePath());
-//        if (onSensorMesgRecivedListenerId != null)
-//            fileSystem.unsubscribe(onSensorMesgRecivedListenerId, getPath_doneMsg(sensorId));
-//    }
+
+    // =================================================================
+    // ======================== other functions ========================
+    // =================================================================
+
+    // public void close() throws Exception {
+    // if (sensorIdListenerId != null)
+    // fileSystem.unsubscribe(sensorIdListenerId, getPath_commercialNamePath());
+    // if (onSensorMesgRecivedListenerId != null)
+    // fileSystem.unsubscribe(onSensorMesgRecivedListenerId,
+    // getPath_doneMsg(sensorId));
+    // }
 }
