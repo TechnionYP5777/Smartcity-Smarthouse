@@ -91,9 +91,22 @@ public class SystemCore implements Savable {
 
         fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.APPLICATIONS_DATA.buildPath());
 
-        fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+        fileSystem.subscribe((path, data) -> {
+            try {
+                databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+                databaseManager.addInfo(path, data);
+            } catch (ParseException e) {
+                log.error("Message from (" + path + ") could not be saved on the server", e);
+            }
+        }, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
 
         fileSystem.subscribe((path, data) -> {
+            try {
+                this.populate(fileSystem.getData(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()));
+            } catch (Exception e) {
+                // TODO inbal
+                e.printStackTrace();
+            }
             // TODO: Inbal: load to system from SYSTEM_DATA_IMAGE with populate
         }, FileSystemEntries.LOAD_DATA_IMAGE.buildPath());
     }
