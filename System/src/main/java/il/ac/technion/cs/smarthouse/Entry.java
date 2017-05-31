@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse;
 
 import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGui;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 
@@ -13,7 +14,7 @@ public class Entry {
 //        Thread.sleep(500);
 //        JavaFxHelper.startGui(new SosSensorSimulator(), args);
         m.getPresenter().getModel().getFileSystem().sendMessage(null, FileSystemEntries.SAVEME.buildPath());
-        System.out.println(m.getPresenter().getModel().getFileSystem().toString());
+        System.out.println(((FileSystemImpl)m.getPresenter().getModel().getFileSystem()).toString("system","internals"));
     }
 
 }
