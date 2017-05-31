@@ -40,7 +40,7 @@ public class FileSystemImpl implements FileSystem, Savable {
         @Expose private Object data;
         @Expose private Object mostRecentDataOnBranch;
         private Map<String, BiConsumer<String, Object>> eventHandlers = new HashMap<>();
-        @Expose private Map<String, FileNode> children = new HashMap<>();
+        @Expose Map<String, FileNode> children = new HashMap<>();
 
         public FileNode(String name) {
             myName = name;
@@ -229,5 +229,9 @@ public class FileSystemImpl implements FileSystem, Savable {
 
     public String toString(String... pathToFirstNode) {
         return Optional.ofNullable(fileSystemWalk(false, null, pathToFirstNode).fileNode).orElse(root).toString();
+    }
+    
+    public void deleteFromPath(String... path) {
+        Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).ifPresent(n->n.children.clear());
     }
 }
