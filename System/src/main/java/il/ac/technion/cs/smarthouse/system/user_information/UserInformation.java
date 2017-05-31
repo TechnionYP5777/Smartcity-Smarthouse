@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
-import il.ac.technion.cs.smarthouse.system.Savable;
 
 /**
  * This class represents all the data which is relevant to the system about the

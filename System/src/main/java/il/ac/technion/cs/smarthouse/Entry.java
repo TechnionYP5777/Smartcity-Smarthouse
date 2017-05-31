@@ -10,6 +10,7 @@ import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
 public class Entry {
 
+    @SuppressWarnings("static-access")
     public static void main(final String[] args) throws InterruptedException {
         Logger.shutdown();
         MainSystemGui m = new MainSystemGui();
@@ -19,7 +20,7 @@ public class Entry {
        // m.getPresenter().getModel().getFileSystem().sendMessage(59, FileSystemEntries.TESTS.buildPath("my.first.try"));
         
         System.out.println("1: " + Optional.ofNullable(m.getPresenter().getModel().getUser()).orElse(new UserInformation("<NO_USER>", "", "", "")).getName());
-        m.getPresenter().getModel().initializeUser("Wonder Woman", "123", "026790844", "HERE");
+        m.getPresenter().getModel().initializeUser("Wonder-Woman", "123", "026790844", "HERE");
         System.out.println("2: " + Optional.ofNullable(m.getPresenter().getModel().getUser()).orElse(new UserInformation("<NO_USER>", "", "", "")).getName());
         m.getPresenter().getModel().getFileSystem().sendMessage(null, FileSystemEntries.SAVEME.buildPath());
         System.out.println("3: " + Optional.ofNullable(m.getPresenter().getModel().getUser()).orElse(new UserInformation("<NO_USER>", "", "", "")).getName());

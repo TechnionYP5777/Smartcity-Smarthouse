@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 
+import il.ac.technion.cs.smarthouse.database.DatabaseManager.DataEntry;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
 /**
@@ -47,7 +48,7 @@ public interface DatabaseAPI {
      *            The path to find the last entry of
      * @return The last entry (full path+value)
      */
-    public String getLastEntry(String... path);
+    public DataEntry getLastEntry(String... path);
 
     /**
      * This methods returns a collection which contains all children saved for a

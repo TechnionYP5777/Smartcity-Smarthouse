@@ -1,6 +1,5 @@
 package il.ac.technion.cs.smarthouse.system;
 
-import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import org.parse4j.ParseException;
@@ -10,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
-import il.ac.technion.cs.smarthouse.database.ServerManager;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
@@ -38,7 +36,6 @@ public class SystemCore implements Savable {
 
     public void initializeSystemComponents() {
         log.info("Initializing system components...");
-        ServerManager.initialize();
         initFileSystemListeners();
         loadDataFromDatabase();
         new Thread(sensorsHandler).start();
@@ -95,24 +92,28 @@ public class SystemCore implements Savable {
 
         fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.APPLICATIONS_DATA.buildPath());
 
-        fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+        fileSystem.subscribe((path, data) -> {
+            try {
+
+                databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+                databaseManager.addInfo(path, data);
+            } catch (ParseException e) {
+                log.error("Message from (" + path + ") could not be saved on the server", e);
+            }
+        }, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
 
         fileSystem.subscribe((path, data) -> {
             try {
-                System.out.println("About to populate");
-                String s = databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()).split("=")[1]; 
-                System.out.println(s);
-                System.out.println(">>>> IN LOAD_DATA_IMAGE before populate: " + Optional.ofNullable(user).orElse(new UserInformation("<NO_USER>", "", "", "")).getName());
-                this.populate(s);
-                System.out.println(">>>> IN LOAD_DATA_IMAGE after populate: " + Optional.ofNullable(user).orElse(new UserInformation("<NO_USER>", "", "", "")).getName());
+
+                this.populate(databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()).data);
+
             } catch (Exception e) {
-                // TODO inbal
-                e.printStackTrace();
+                log.error("Could not load data from the server", e);
             }
-            // TODO: Inbal: load to system from SYSTEM_DATA_IMAGE with populate
+
         }, FileSystemEntries.LOAD_DATA_IMAGE.buildPath());
     }
-    
+
     private void loadDataFromDatabase() {
         fileSystem.sendMessage(null, FileSystemEntries.LOAD_DATA_IMAGE.buildPath());
     }
