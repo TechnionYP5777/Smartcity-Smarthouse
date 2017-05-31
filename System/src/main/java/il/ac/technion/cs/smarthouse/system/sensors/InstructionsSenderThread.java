@@ -11,7 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
+import il.ac.technion.cs.smarthouse.system.SensorsManager;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
 /**
@@ -29,8 +30,8 @@ public class InstructionsSenderThread extends SensorManagingThread {
         mapper = m;
     }
 
-    public InstructionsSenderThread(Socket client, DatabaseHandler databaseHandler) {
-        super(client, databaseHandler);
+    public InstructionsSenderThread(Socket client, SensorsManager sManager, FileSystemImpl fsImpl) {
+        super(client, sManager, fsImpl);
     }
 
     private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);

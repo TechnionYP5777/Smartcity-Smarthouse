@@ -5,15 +5,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
+import il.ac.technion.cs.smarthouse.system.SensorsManager;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
-
 
 /**
  * A sensors handler thread is a class that handles a specific connection with a
@@ -27,8 +30,8 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 public class SensorsHandlerThread extends SensorManagingThread {
     private static Logger log = LoggerFactory.getLogger(SensorsHandlerThread.class);
 
-    public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler) {
-        super(client, databaseHandler);
+    public SensorsHandlerThread(final Socket client, final SensorsManager sManager, final FileSystemImpl fsImpl) {
+        super(client, sManager, fsImpl);
     }
 
     @Override
@@ -73,19 +76,23 @@ public class SensorsHandlerThread extends SensorManagingThread {
     }
 
     private void handleRegisterMessage(final PrintWriter out, final String ¢) {
-        // TODO inbal
+
         final String[] parsedMessage = ¢.split(PathBuilder.SPLIT_REGEX);
 
-        databaseHandler.addSensor(parsedMessage[1].replaceAll(Message.SENSOR_ID, ""));
+        sManager.addSensor(parsedMessage[1].replaceAll(Message.SENSOR_ID, ""));
         log.info("\n\n" + parsedMessage[1] + "\n\n");
         Message.send(Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS), out, null);
 
     }
 
     private void handleUpdateMessage(final String m) {
-        databaseHandler.handleUpdateMessage(m);
+        final String[] parsedMessage = m.split(PathBuilder.SPLIT_REGEX);
+        List<String> path = new ArrayList<>();
+        path.add(FileSystemEntries.SENSORS_DATA.toString());
+        path.add(parsedMessage[0].replace((MessageType.UPDATE.toString() + PathBuilder.DELIMITER).toLowerCase(), ""));
+
+        fsImpl.sendMessage(parsedMessage[1], PathBuilder.buildPath(path));
 
     }
 
 }
-

@@ -25,10 +25,10 @@ public class SystemCore implements Savable {
     private static Logger log = LoggerFactory.getLogger(SystemCore.class);
 
     public final ServiceManager serviceManager = new ServiceManager(this);
-    public final DatabaseHandler databaseHandler = new DatabaseHandler(); // TODO
-                                                                          // inbal
+    public final SensorsManager sManager = new SensorsManager();
+
     public final DatabaseManager databaseManager = new DatabaseManager();
-    public final SensorsLocalServer sensorsHandler = new SensorsLocalServer(databaseHandler);
+    public final SensorsLocalServer sensorsHandler = new SensorsLocalServer(sManager);
     @Expose private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     private final FileSystem fileSystem = new FileSystemImpl();
     @Expose protected UserInformation user;
@@ -61,8 +61,8 @@ public class SystemCore implements Savable {
         return applicationsHandler;
     }
 
-    public DatabaseHandler getSystemDatabaseHandler() {
-        return databaseHandler;
+    public SensorsManager getSystemDatabaseHandler() {
+        return sManager;
     }
 
     public ServiceManager getSystemServiceManager() {
@@ -92,9 +92,9 @@ public class SystemCore implements Savable {
         fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.APPLICATIONS_DATA.buildPath());
 
         fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
-        
+
         fileSystem.subscribe((path, data) -> {
-            //TODO: Inbal: load to system from SYSTEM_DATA_IMAGE with populate
+            // TODO: Inbal: load to system from SYSTEM_DATA_IMAGE with populate
         }, FileSystemEntries.LOAD_DATA_IMAGE.buildPath());
     }
 
