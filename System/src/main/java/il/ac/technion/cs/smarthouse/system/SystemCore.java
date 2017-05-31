@@ -30,14 +30,14 @@ public class SystemCore implements Savable {
     public final DatabaseManager databaseManager = new DatabaseManager();
     public final SensorsLocalServer sensorsHandler = new SensorsLocalServer(sManager);
     @Expose private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
-    private final FileSystem fileSystem = new FileSystemImpl();
+    @Expose private final FileSystemImpl fileSystem = new FileSystemImpl();
     @Expose protected UserInformation user;
     private boolean userInitialized;
 
     public void initializeSystemComponents() {
         log.info("Initializing system components...");
+        loadSystemFromCloud();
         initFileSystemListeners();
-        loadDataFromDatabase();
         new Thread(sensorsHandler).start();
     }
 
@@ -75,47 +75,45 @@ public class SystemCore implements Savable {
     }
 
     public void initFileSystemListeners() {
-        fileSystem.subscribe((path, data) -> {
-            fileSystem.sendMessage(this.toJsonString(), FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
-            log.info("System interrupt: SAVE_ME: " + this.toJsonString());
-        }, FileSystemEntries.SAVEME.buildPath());
-
-        BiConsumer<String, Object> databaseManagerEventHandler = (path, data) -> {
+        BiConsumer<String, Object> databaseManagerEventHandler_saveSystem = (path, data) -> {
             try {
-                databaseManager.addInfo(path, data);
+                final double startTime = System.nanoTime();
+                databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+                databaseManager.addInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath(), this.toJsonString());
+                log.info("Saved to database... Total time: " + (System.nanoTime() - startTime) / 1000000 + " [ms]");
             } catch (ParseException e) {
-                log.error("Message from (" + path + ") could not be saved on the server", e);
+                log.error("System image could not be saved on the server", e);
             }
         };
 
-        fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.SENSORS_DATA.buildPath());
-
-        fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.APPLICATIONS_DATA.buildPath());
-
-        fileSystem.subscribe((path, data) -> {
+        BiConsumer<String, Object> databaseManagerEventHandler_addDataFromPath = (path, data) -> {
             try {
-
-                databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+                final double startTime = System.nanoTime();
                 databaseManager.addInfo(path, data);
+                log.info("Saved to database (" + path + ")... Total time: " + (System.nanoTime() - startTime) / 1000000
+                                + " [ms]");
             } catch (ParseException e) {
-                log.error("Message from (" + path + ") could not be saved on the server", e);
+                log.error("Data from (" + path + ") could not be saved on the server", e);
             }
-        }, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+        };
 
-        fileSystem.subscribe((path, data) -> {
-            try {
-
-                this.populate(databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()).data);
-
-            } catch (Exception e) {
-                log.error("Could not load data from the server", e);
-            }
-
-        }, FileSystemEntries.LOAD_DATA_IMAGE.buildPath());
+        fileSystem.subscribe(databaseManagerEventHandler_saveSystem, FileSystemEntries.SAVEME.buildPath());
+        fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath, FileSystemEntries.SENSORS_DATA.buildPath());
+        fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath,
+                        FileSystemEntries.APPLICATIONS_DATA.buildPath());
     }
 
-    private void loadDataFromDatabase() {
-        fileSystem.sendMessage(null, FileSystemEntries.LOAD_DATA_IMAGE.buildPath());
+    private void loadSystemFromCloud() {
+        try {
+            final double startTime = System.nanoTime();
+            this.populate(databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()).data);
+            fileSystem.deleteFromPath(FileSystemEntries.SENSORS.buildPath());
+            fileSystem.deleteFromPath(FileSystemEntries.SYSTEM.buildPath());
+            log.info("Loaded system from the database cloud... Total time: " + (System.nanoTime() - startTime) / 1000000
+                            + " [ms]");
+        } catch (Exception e) {
+            log.error("Could not load data from the server", e);
+        }
     }
 
 }
