@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse.system.file_system;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,11 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.annotations.Expose;
+
+import il.ac.technion.cs.smarthouse.system.Savable;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**
@@ -25,16 +32,15 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  * @author Inbal Zukerman
  * @since 28-05-2017
  */
-public class FileSystemImpl implements FileSystem {
-
+public class FileSystemImpl implements FileSystem, Savable {
     private static final Logger log = LoggerFactory.getLogger(FileSystemImpl.class);
 
-    static class FileNode {
-        private String myName;
-        private Object data;
-        private Object mostRecentDataOnBranch;
+    static class FileNode implements Savable {
+        @Expose private String myName;
+        @Expose private Object data;
+        @Expose private Object mostRecentDataOnBranch;
         private Map<String, BiConsumer<String, Object>> eventHandlers = new HashMap<>();
-        private Map<String, FileNode> children = new HashMap<>();
+        @Expose private Map<String, FileNode> children = new HashMap<>();
 
         public FileNode(String name) {
             myName = name;
@@ -85,7 +91,7 @@ public class FileSystemImpl implements FileSystem {
         private void print(int depth, PrintWriter w) {
             for (int i = 0; i < depth; ++i)
                 w.print("\t");
-            w.println("[" + myName + ", " + data + "]");
+            w.println("[" + myName + ", " + data + ", " + eventHandlers.size() + "]");
             for (FileNode child : children.values())
                 child.print(depth + 1, w);
         }
@@ -95,6 +101,20 @@ public class FileSystemImpl implements FileSystem {
             StringWriter writer = new StringWriter();
             print(0, new PrintWriter(writer));
             return writer.toString();
+        }
+
+        @Override
+        public void populate(String jsonString) throws Exception {
+            for (final Entry<String, JsonElement> e : new JsonParser().parse(jsonString).getAsJsonObject().entrySet()) {
+                final Field f = getClass().getDeclaredField(e.getKey());
+                f.setAccessible(true);
+
+                if (!"children".equals(f.getName()))
+                    f.set(this, gsonBuilder.create().fromJson(e.getValue(), f.getGenericType()));
+                else
+                    for (final Entry<String, JsonElement> e2 : e.getValue().getAsJsonObject().entrySet())
+                        getChild(e2.getKey(), true).populate(e2.getValue().toString());
+            }
         }
     }
 
@@ -108,7 +128,7 @@ public class FileSystemImpl implements FileSystem {
         }
     }
 
-    private FileNode root = new FileNode("<ROOT>");
+    @Expose private FileNode root = new FileNode("<ROOT>");
     private Map<String, FileNode> listenersBuffer = new HashMap<>();
 
     /**
@@ -125,8 +145,9 @@ public class FileSystemImpl implements FileSystem {
      *            If null, nothing will happen to the nodes' data
      * @param path
      *            The path to walk on
-     * @return The results of the walk:<br>The FileNode at the end of the walk, and
-     *         all of the eventHandlers on path (including the last node)
+     * @return The results of the walk:<br>
+     *         The FileNode at the end of the walk, and all of the eventHandlers
+     *         on path (including the last node)
      */
     private FileSystemWalkResults fileSystemWalk(boolean create, Object newDataToAdd, String... path) {
         List<BiConsumer<String, Object>> eventHandlersOnBranch = new ArrayList<>();
@@ -203,7 +224,7 @@ public class FileSystemImpl implements FileSystem {
 
     @Override
     public String toString() {
-        return root.toString();
+        return "Total number of listeners: " + listenersBuffer.size() + "\n" + root.toString();
     }
 
     public String toString(String... pathToFirstNode) {
