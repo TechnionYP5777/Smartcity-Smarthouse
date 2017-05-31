@@ -10,9 +10,10 @@ public class Entry {
     public static void main(final String[] args) throws InterruptedException {
         MainSystemGui m = new MainSystemGui();
         JavaFxHelper.startGui(m, args);
-        Thread.sleep(500);
-        JavaFxHelper.startGui(new SosSensorSimulator(), args);
+//        Thread.sleep(500);
+//        JavaFxHelper.startGui(new SosSensorSimulator(), args);
         m.getPresenter().getModel().getFileSystem().sendMessage(null, FileSystemEntries.SAVEME.buildPath());
+        System.out.println(m.getPresenter().getModel().getFileSystem().toString());
     }
 
 }

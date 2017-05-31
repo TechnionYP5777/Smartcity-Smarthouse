@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.file_system;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,10 +30,15 @@ public class FileSystemImpl implements FileSystem {
     private static final Logger log = LoggerFactory.getLogger(FileSystemImpl.class);
 
     static class FileNode {
+        private String myName;
         private Object data;
         private Object mostRecentDataOnBranch;
         private Map<String, BiConsumer<String, Object>> eventHandlers = new HashMap<>();
         private Map<String, FileNode> children = new HashMap<>();
+        
+        public FileNode(String name) {
+            myName = name;
+        }
 
         @SuppressWarnings("unchecked")
         <T> T getData() {
@@ -56,8 +63,8 @@ public class FileSystemImpl implements FileSystem {
         }
 
         public FileNode getChild(String name, boolean create) {
-            if (!children.containsKey(name) &&create)
-                children.put(name, new FileNode());
+            if (!children.containsKey(name) && create)
+                children.put(name, new FileNode(name));
             return children.get(name);
         }
 
@@ -74,6 +81,21 @@ public class FileSystemImpl implements FileSystem {
         public Collection<BiConsumer<String, Object>> getEventHandlers() {
             return eventHandlers.values();
         }
+        
+        private void print(int depth, PrintWriter w) {
+            for (int i = 0; i < depth; ++i)
+                w.print("\t");
+            w.println("[" + myName + ", " + data + "]");
+            for (FileNode child : children.values())
+                child.print(depth + 1, w);
+        }
+
+        @Override
+        public String toString() {
+            StringWriter writer = new StringWriter();
+            print(0, new PrintWriter(writer));
+            return writer.toString();
+        }
     }
 
     private class FileSystemWalkResults {
@@ -86,7 +108,7 @@ public class FileSystemImpl implements FileSystem {
         }
     }
 
-    private FileNode root = new FileNode();
+    private FileNode root = new FileNode("<ROOT>");
     private Map<String, FileNode> listenersBuffer = new HashMap<>();
 
     private FileSystemWalkResults fileSystemWalk(boolean create, Object newDataToAdd, String... path) {
@@ -161,5 +183,10 @@ public class FileSystemImpl implements FileSystem {
     @Override
     public boolean wasPathInitiated(String... path) {
         return fileSystemWalk(false, null, path).fileNode != null;
+    }
+    
+    @Override
+    public String toString() {
+        return root.toString();
     }
 }
