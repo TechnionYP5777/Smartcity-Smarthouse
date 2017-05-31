@@ -16,7 +16,7 @@ public class TestSensor extends InteractiveSensor {
      *            the params that will be sent to the system
      */
     public TestSensor(final String id) {
-        super(id != null ? id : Random.sensorId(), "127.0.0.1", 40001, 40002);
+        super(id != null ? id : Random.sensorId(), 40001, 40002);
 
     }
 

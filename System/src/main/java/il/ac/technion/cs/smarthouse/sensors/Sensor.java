@@ -40,7 +40,7 @@ public abstract class Sensor {
     public static final int MAX_MESSAGES_PER_SECOND = 10;
     private final List<Long> lastMessagesMillis = new ArrayList<>();
 
-    protected String id;
+    protected String id, stringSystemIp;
 
     protected InetAddress systemIP;
     protected int systemPort;
@@ -54,26 +54,20 @@ public abstract class Sensor {
     /**
      * Initializes a new sensor given its name and id.
      * 
-     * @param id
-     *            id of the sensor
-     * @param commName
-     *            sensor's commercial name
-     * @param types
-     *            types this sensor qualifies for
-     * @param systemIP
-     *            IP address of the system
-     * @param systemPort
-     *            port on which the system listens to incoming messages
+     * @param id the id of the sensor
+     * @param systemPort the port on which the system listens to incoming messages
      */
-    public Sensor(final String id, final String systemIP, final int systemPort) {
+    public Sensor(final String id, final int systemPort) {
         this.id = id;
+        this.systemPort = systemPort;
+        sType = SensorType.NON_INTERACTIVE;
 
         try {
             this.systemIP = getSystemIp();
         } catch (IOException | InterruptedException e) {
+            log.warn(getClass()+ " sensor failed to get system IP, using localhost");
+            stringSystemIp = "127.0.0.1";
         }
-        this.systemPort = systemPort;
-        sType = SensorType.NON_INTERACTIVE;
     }
     
     private InetAddress getSystemIp() throws IOException, SocketException, InterruptedException {
@@ -105,6 +99,7 @@ public abstract class Sensor {
      */
     public boolean register() {
         try {
+            this.systemIP = systemIP != null ? systemIP : InetAddress.getByName(stringSystemIp);
             socket = new Socket(systemIP, systemPort);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

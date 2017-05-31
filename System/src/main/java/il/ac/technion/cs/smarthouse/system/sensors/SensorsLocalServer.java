@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +22,8 @@ import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 
 /**
- * A sensors handler is a class dedicated to listening for incoming messages
- * from sensors and sending instructions to them. The class creates two new
- * threads for each sensor (in order to create a bidirectional connection) so
- * the sensors handler can keep accepting new connections.
  * 
  * @author Elia Traore
- * @author Yarden
  * @since 17.12.16
  */
 public class SensorsLocalServer implements Runnable {
@@ -49,10 +45,10 @@ public class SensorsLocalServer implements Runnable {
 
     @Override
     public void run() {
-        InstructionsSenderThread.setMapper((id,out)->routingMap.put(id,out));
+        InstructionsSenderThread.setMapper((id,out)->routingMap.put(id.toLowerCase(),out));
+        new Thread(()-> runAddressRequestServer(40001)).start();
         new Thread(()-> runBasicSensorServer(40001)).start();
         new Thread(()-> runInstructionSensorServer(40002)).start();
-        new Thread(()-> runAddressRequestServer(40001)).start();
     }
     
     private void runBasicTcpServer(Integer port, Class<? extends SensorManagingThread> managerThreadClass){
@@ -64,8 +60,8 @@ public class SensorsLocalServer implements Runnable {
                     Class<?>[] params = SensorManagingThread.class.getDeclaredConstructors()[0].getParameterTypes();
                     managerThreadClass.getConstructor(params).newInstance(client, databaseHandler).start();                    
                 } catch (final SocketException e) {
-                    log.info("socket closed, Sensors' server at port "+port+" is shutting down");
-                    return; // if we closed the sockets we want to shut off the server
+                    log.info("Server socket closed, Sensors' server at port "+port+" (TCP) is shutting down");
+                    return;
                 } catch (final IOException e) {
 //                    log.warn("I/O error occurred while waiting for a connection", e);  no need to log this - it spams the log
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
@@ -76,7 +72,6 @@ public class SensorsLocalServer implements Runnable {
             log.warn("I/O error occurred when the socket was opened", e);
         }
     }
-    
     
     private void runBasicSensorServer(Integer port){
         runBasicTcpServer(port, SensorsHandlerThread.class);
@@ -91,30 +86,29 @@ public class SensorsLocalServer implements Runnable {
             serverSockets.add(server);
             
             byte[] buf = new byte[8];
-            DatagramPacket packet = new DatagramPacket(buf, buf.length);
-            while (true) {
+            for (DatagramPacket packet = new DatagramPacket(buf, buf.length); true;) {
                 try {
                     server.receive(packet);
                     server.send(new DatagramPacket(buf, buf.length, packet.getAddress(), packet.getPort()));
-                } catch (IOException e) {
-                }
-                
+                } catch (final SocketException e) {
+                    log.info("Server socket closed, Sensors' server at port "+port+" (UDP) is shutting down");
+                    return; // if we closed the sockets we want to shut off the server
+                } catch (IOException e) {}
             }
         } catch (SocketException e1) {
             log.warn("I/O error occurred when the socket was opened", e1);
         }
     }
     
-
     public void sendInstruction(final String id, final String instruction) {
-        routingMap.get(id).println(instruction);
+        routingMap.get(id.toLowerCase()).println(instruction);
     }
 
     public void closeSockets() { 
         serverSockets.stream().forEach(socket -> {
                                                     try {
                                                         socket.close();
-                                                    } catch (IOException e) {
+                                                    } catch (IOException | NullPointerException e) {
                                                         log.warn("I/O exception occurred while closing socket", e);
                                                     }
                                                 }

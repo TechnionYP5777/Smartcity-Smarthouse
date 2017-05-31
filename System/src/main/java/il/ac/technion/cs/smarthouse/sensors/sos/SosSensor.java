@@ -12,7 +12,7 @@ import il.ac.technion.cs.smarthouse.system.Dispatcher;
  */
 public class SosSensor extends Sensor {
     public SosSensor(final String id, final String systemIP, final int systemPort) {
-        super(id, systemIP, systemPort);
+        super(id, systemPort);
     }
 
     public void updateSystem() {

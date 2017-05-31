@@ -25,16 +25,6 @@ import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 public abstract class InteractiveSensor extends Sensor {
     private static Logger log = LoggerFactory.getLogger(InteractiveSensor.class);
 
-    private class InstructionChecker extends TimerTask {
-        InstructionChecker() {}
-
-        @Override
-        public void run() {
-            operate();
-            new Timer().schedule(this, 0, period);
-        }
-    }
-
     protected int instPort;
     protected Socket instSocket;
     protected PrintWriter instOut;
@@ -42,11 +32,9 @@ public abstract class InteractiveSensor extends Sensor {
     protected InstructionHandler handler;
     protected long period;
 
-    public InteractiveSensor(final String id, final String systemIP, final int systemPort, final int instPort) {
-        super(id, systemIP, systemPort);
+    public InteractiveSensor(final String id, final int systemPort, final int instPort) {
+        super(id, systemPort);
         this.instPort = instPort;
-        handler = null;
-
         sType = SensorType.INTERACTIVE;
     }
 
@@ -104,6 +92,14 @@ public abstract class InteractiveSensor extends Sensor {
      */
     public void pollInstructions(final long p) {
         period = p;
-        new Timer().schedule(new InstructionChecker(), 0, period);
+        new Timer().schedule(new TimerTask() {
+                                    
+                                    @Override
+                                    public void run() {
+                                       operate();
+                                        
+                                    }
+                                }
+                                            , 0, period);
     }
 }

@@ -18,6 +18,7 @@ import il.ac.technion.cs.smarthouse.system.Dispatcher;
  * An instructions sender thread is a class that allows sending instructions
  * from the system to a specific sensor.
  * 
+ * @author Elia Traore
  * @author Yarden
  * @author Inbal Zukerman
  * @since 30.3.17
@@ -33,45 +34,22 @@ public class InstructionsSenderThread extends SensorManagingThread {
 
     private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);
 
-
     @Override
-    public void run() {
-        PrintWriter out = null;
-        BufferedReader in = null;
-        try {
-            out = new PrintWriter(client.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            for (String input = in.readLine(); input != null;) {
-
-                if (input == "") {
-                    final String answerMessage = Message.createMessage(MessageType.ANSWER, MessageType.FAILURE);
-                    Message.send(answerMessage, out, null);
-                    continue;
-                }
-                log.info("Received message: " + input + "\n");
-                if (input.contains("registration"))
-                    handleRegisterMessage(out, input);
-                input = in.readLine();
-            }
-        } catch (final IOException ¢) {
-            log.error("I/O error occurred", ¢);
-        } finally {
-            try {
-                if (out != null)
-                    out.close();
-
-                if (in != null)
-                    in.close();
-            } catch (final IOException ¢) {
-                log.error("I/O error occurred while closing", ¢);
-            }
+    protected void processInputLine(String input) {
+        if (input == "") {
+            final String answerMessage = Message.createMessage(MessageType.ANSWER, MessageType.FAILURE);
+            Message.send(answerMessage, out, null);
+            return;
         }
+        log.info("Received message: " + input + "\n");
+        if (input.contains("registration"))
+            handleRegisterMessage(input);
+        
     }
 
-    private void handleRegisterMessage(final PrintWriter out, final String ¢) {
-        // TODO inbal
-        final String[] parts = ¢.split("\\" + Dispatcher.DELIMITER);
-        mapper.store(parts[1].replaceAll(Message.SENSOR_ID, ""), out);
+    private void handleRegisterMessage(final String ¢) {
+        String sensorId = ¢.split("\\" + Dispatcher.DELIMITER)[2].replaceAll("sensorid\\-|=", "");//todo: change to constants somehow like Message.SENSOR_ID
+        mapper.store(sensorId, out);
         Message.send(Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS), out, null);
     }
 }

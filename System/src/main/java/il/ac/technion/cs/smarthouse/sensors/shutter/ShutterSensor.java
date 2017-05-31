@@ -13,7 +13,7 @@ import il.ac.technion.cs.smarthouse.system.Dispatcher;
 public class ShutterSensor extends Sensor {
 
     public ShutterSensor(final String id, final String systemIP, final int systemPort) {
-        super(id, systemIP, systemPort);
+        super(id, systemPort);
     }
 
     public void updateSystem(final boolean open, final int fromTime, final int toTime) {

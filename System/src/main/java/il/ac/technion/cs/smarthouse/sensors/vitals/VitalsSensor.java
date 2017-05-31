@@ -12,7 +12,7 @@ import il.ac.technion.cs.smarthouse.system.Dispatcher;
  */
 public class VitalsSensor extends Sensor {
     public VitalsSensor(final String id, final String systemIP, final int systemPort) {
-        super(id, systemIP, systemPort);
+        super(id, systemPort);
     }
 
     public void updateSystem(final int pulse, final int systolicBP, final int diastolicBP) {
