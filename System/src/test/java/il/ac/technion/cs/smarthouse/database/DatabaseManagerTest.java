@@ -1,5 +1,9 @@
 package il.ac.technion.cs.smarthouse.database;
 
+import org.junit.Test;
+
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+
 /**
  * 
  * @author Inbal Zukerman
@@ -9,6 +13,10 @@ package il.ac.technion.cs.smarthouse.database;
 public class DatabaseManagerTest {
 
     private final DatabaseManager dbManager = new DatabaseManager();
+    
+    @Test public void test(){
+        System.out.println(dbManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()));
+    }
 /*
     @Test
     public void additionAndDeletionTest() {

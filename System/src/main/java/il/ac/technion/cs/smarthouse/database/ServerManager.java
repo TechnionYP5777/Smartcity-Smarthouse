@@ -31,7 +31,7 @@ public class ServerManager {
         initialize();
     }
 
-    public void initialize() {
+    public static void initialize() {
 
         log.info("Initializing Database");
         if (init)

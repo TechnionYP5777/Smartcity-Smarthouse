@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.annotations.Expose;
+
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
 /**
@@ -17,7 +19,7 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
 public class ContactsInformation {
 
-    private final Map<EmergencyLevel, Map<String, Contact>> data = new HashMap<>();
+    @Expose private final Map<EmergencyLevel, Map<String, Contact>> data = new HashMap<>();
 
     public ContactsInformation() {
         for (final EmergencyLevel elevel : EmergencyLevel.values())
