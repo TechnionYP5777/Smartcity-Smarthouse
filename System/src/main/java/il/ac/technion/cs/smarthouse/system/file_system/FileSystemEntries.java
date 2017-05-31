@@ -34,7 +34,11 @@ public enum FileSystemEntries {
         SYSTEM("system", ROOT, false),
             SYSTEM_INTERNALS("internals", SYSTEM, false),
                 SAVEME("saveme", SYSTEM_INTERNALS, true),
+                LOAD_DATA_IMAGE("load", SYSTEM_INTERNALS, true),
             SYSTEM_DATA_IMAGE("data_image", SYSTEM, true),
+            
+        TESTS("tests", ROOT, false),
+            TESTS_SENSORS_DATA("sensors_data_tests", TESTS, false)
     ;
         
     /*
