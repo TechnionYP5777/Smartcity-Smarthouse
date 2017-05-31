@@ -16,28 +16,35 @@ import java.util.function.BiConsumer;
 public interface FileSystem {
 
     /**
-     * This methods allows to subscribe to new messages on a certain path.
+     * This methods allows to subscribe a new event handler on a certain path.
+     * <br>
+     * When the path (or any path under it) is updated, the eventHandler will be
+     * executed.
      * 
      * @param path
-     *            The path on which the eventHandler would like to listen
+     *            The path which the eventHandler would like to listen on
      * @param eventHandler
-     *            an event handler function: (String path, Object data)->{...}
-     * @return The eventHandler's ID in our system (for future use)
+     *            An event handler function: (String full_path, Object
+     *            data)->{...}
+     * @return The eventHandler's ID of the subscribed function in our system.
+     *         Use this ID to unsubscribe the listener with
+     *         {@link FileSystem#unsubscribe(String)}
      */
     String subscribe(BiConsumer<String, Object> eventHandler, String... path);
 
     /**
-     * This method will allow a subscriber to unsubscribe to a certain path
+     * This method will allow to unsubscribe a subscribed eventHandler.
      * 
      * @param eventHandlerId
-     *            The ID of the eventHandler in our system
-     * @param path
-     *            The path on which the eventHandler would like to stop listen
+     *            The ID of the subscribed eventHandler in our system
      */
     void unsubscribe(String eventHandlerId);
 
     /**
-     * This method allows to send a message
+     * This method allows to send a message to the file system.
+     * <p>
+     * The message's data will be saved on the file system.<br>
+     * The relevant eventHandlers will be executed.
      * 
      * @param data
      *            The data to send and store in the file system
@@ -47,18 +54,41 @@ public interface FileSystem {
     void sendMessage(Object data, String... path);
 
     /**
-     * This method allows to query the last record saved in the file system on a
-     * specific path
+     * Get the data from a path.
+     * <p>
+     * If the path doesn't exists, null will be returned.
      * 
      * @param path
-     *            The path to find the last entry of
-     * @return The last entry's data
+     *            The path
+     * @return The data
      */
     <T> T getData(String... path);
 
+    /**
+     * Get the most recent data that was saved on the subtree under the given
+     * path
+     * 
+     * @param path
+     *            The path to the relevant subtree
+     * @return The most recent data that was modified in the subtree
+     */
     <T> T getMostRecentDataOnBranch(String... path);
 
+    /**
+     * Get the names of all of the existing path-nodes under the given path
+     * 
+     * @param path
+     *            The parent path
+     * @return the names of the path's children
+     */
     Collection<String> getChildren(String... path);
 
+    /**
+     * Check if a path exists
+     * 
+     * @param path
+     *            The path
+     * @return true if the path exists, or false otherwise
+     */
     boolean wasPathInitiated(String... path);
 }
