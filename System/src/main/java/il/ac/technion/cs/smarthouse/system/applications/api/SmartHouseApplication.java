@@ -39,14 +39,12 @@ public abstract class SmartHouseApplication {
     public static void launch(final Class<? extends Application>... sensors) throws Exception {
         final MainSystemGui m = new MainSystemGui();
         m.addOnKillListener(() -> System.exit(0));
-        JavaFxHelper.startGui(m);
+        m.launchGui();
 
         m.getPresenter().waitUntilLoaded();
 
         for (final Class<? extends Application> s : sensors)
             JavaFxHelper.startGui(s.newInstance());
-
-        Thread.sleep(1500);
 
         m.getPresenter().getModel().applicationsHandler.addApplication(
                         new ApplicationPath(PathType.CLASS_NAME, new Throwable().getStackTrace()[1].getClassName()));
