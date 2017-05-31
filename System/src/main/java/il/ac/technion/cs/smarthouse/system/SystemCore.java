@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import java.util.function.BiConsumer;
+
 import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,35 +79,19 @@ public class SystemCore implements Savable {
             log.info("System interrupt: SAVE_ME: " + this.toJsonString());
         }, FileSystemEntries.SAVEME.buildPath());
 
-        fileSystem.subscribe((path, data) -> {
-
+        BiConsumer<String, Object> databaseManagerEventHandler = (path, data) -> {
             try {
                 databaseManager.addInfo(path, data);
             } catch (ParseException e) {
-                log.error("Message from sensor could not be saved on the server", e);
+                log.error("Message from (" + path + ") could not be saved on the server", e);
             }
+        };
 
-        }, FileSystemEntries.SENSORS_DATA.buildPath());
+        fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.SENSORS_DATA.buildPath());
 
-        fileSystem.subscribe((path, data) -> {
+        fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.APPLICATIONS_DATA.buildPath());
 
-            try {
-                databaseManager.addInfo(path, data);
-            } catch (ParseException e) {
-                log.error("Application data could not be saved on the server", e);
-            }
-
-        }, FileSystemEntries.APPLICATIONS_DATA.buildPath());
-
-        fileSystem.subscribe((path, data) -> {
-
-            try {
-                databaseManager.addInfo(path, data);
-            } catch (ParseException e) {
-                log.error("Application data could not be saved on the server", e);
-            }
-
-        }, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+        fileSystem.subscribe(databaseManagerEventHandler, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
     }
 
 }
