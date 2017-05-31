@@ -1,5 +1,8 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
@@ -15,6 +18,7 @@ import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
  * store and read information about the changes in the environment
  */
 public class SystemCore implements Savable {
+    private static Logger log = LoggerFactory.getLogger(SystemCore.class);
 
     public final ServiceManager serviceManager = new ServiceManager(this);
     public final DatabaseHandler databaseHandler = new DatabaseHandler();
@@ -46,7 +50,7 @@ public class SystemCore implements Savable {
     public void shutdown() {
         sensorsHandler.closeSockets();
     }
-    
+
     public ApplicationsCore getSystemApplicationsHandler() {
         return applicationsHandler;
     }
@@ -68,8 +72,10 @@ public class SystemCore implements Savable {
     }
 
     public void initFileSystemListeners() {
-        fileSystem.subscribe((path, data) -> System.out.println(this.toJsonString()),
-                        FileSystemEntries.SAVEME.buildPath());
+        fileSystem.subscribe((path, data) -> {
+            fileSystem.sendMessage(this.toJsonString(), FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+            log.info("System interrupt: SAME_ME: " + this.toJsonString());
+        }, FileSystemEntries.SAVEME.buildPath());
 
         // TODO: inbal
     }
