@@ -33,7 +33,7 @@ public class VitalsApp extends SmartHouseApplication {
         SensorsService sensorsManager = (SensorsService) super.getService(ServiceType.SENSORS_SERVICE);
         AlertsManager alertsManager = (AlertsManager) super.getService(ServiceType.ALERTS_SERVICE);
         
-        sensorsManager.getDefaultSensor(VitalsSensor.class, "iVitals").subscribe(vitals -> {
+        sensorsManager.getSensor("iVitals", VitalsSensor.class).subscribe(vitals -> {
             final int pulse = vitals.getPulse(), systolicBP = vitals.getSystolicBP(), diastolicBP = vitals.getDiastolicBP();
             final String t = "Client has pulse of " + pulse + " and blood pressure of " + systolicBP + "/" + diastolicBP + " mmHg";
             controller.updateChart(vitals.getPulse(), vitals.getSystolicBP(), vitals.getDiastolicBP());

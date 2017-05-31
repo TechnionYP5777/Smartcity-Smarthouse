@@ -1,15 +1,19 @@
-/**
- * 
- */
 package il.ac.technion.cs.smarthouse.system.file_system;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**
@@ -23,14 +27,31 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  */
 public class FileSystemImpl implements FileSystem {
 
+    private static final Logger log = LoggerFactory.getLogger(FileSystemImpl.class);
+
     static class FileNode {
+        private String myName;
         private Object data;
+        private Object mostRecentDataOnBranch;
         private Map<String, BiConsumer<String, Object>> eventHandlers = new HashMap<>();
         private Map<String, FileNode> children = new HashMap<>();
+
+        public FileNode(String name) {
+            myName = name;
+        }
 
         @SuppressWarnings("unchecked")
         <T> T getData() {
             return (T) data;
+        }
+
+        @SuppressWarnings("unchecked")
+        public <T> T getMostRecentDataOnBranch() {
+            return (T) mostRecentDataOnBranch;
+        }
+
+        public void setMostRecentDataOnBranch(Object mostRecentDataOnBranch) {
+            this.mostRecentDataOnBranch = mostRecentDataOnBranch;
         }
 
         public void setData(Object data) {
@@ -42,8 +63,8 @@ public class FileSystemImpl implements FileSystem {
         }
 
         public FileNode getChild(String name, boolean create) {
-            if (!children.containsKey(name) &&create)
-                children.put(name, new FileNode());
+            if (!children.containsKey(name) && create)
+                children.put(name, new FileNode(name));
             return children.get(name);
         }
 
@@ -60,6 +81,21 @@ public class FileSystemImpl implements FileSystem {
         public Collection<BiConsumer<String, Object>> getEventHandlers() {
             return eventHandlers.values();
         }
+
+        private void print(int depth, PrintWriter w) {
+            for (int i = 0; i < depth; ++i)
+                w.print("\t");
+            w.println("[" + myName + ", " + data + "]");
+            for (FileNode child : children.values())
+                child.print(depth + 1, w);
+        }
+
+        @Override
+        public String toString() {
+            StringWriter writer = new StringWriter();
+            print(0, new PrintWriter(writer));
+            return writer.toString();
+        }
     }
 
     private class FileSystemWalkResults {
@@ -72,52 +108,105 @@ public class FileSystemImpl implements FileSystem {
         }
     }
 
-    private FileNode root = new FileNode();
+    private FileNode root = new FileNode("<ROOT>");
+    private Map<String, FileNode> listenersBuffer = new HashMap<>();
 
-    private FileSystemWalkResults fileSystemWalk(boolean create, String... path) {
+    /**
+     * Performs a walk on the file system tree
+     * 
+     * @param create
+     *            If true, missing nodes from the path, will be created.<br>
+     *            If false, and a node on the path is missing, then null will be
+     *            returned as the result for the FileNode
+     * @param newDataToAdd
+     *            If not null, the new data will be added to the last node on
+     *            the path. <br>
+     *            Also, the mostRecentDataOnBranch will be updated. <br>
+     *            If null, nothing will happen to the nodes' data
+     * @param path
+     *            The path to walk on
+     * @return The results of the walk:<br>The FileNode at the end of the walk, and
+     *         all of the eventHandlers on path (including the last node)
+     */
+    private FileSystemWalkResults fileSystemWalk(boolean create, Object newDataToAdd, String... path) {
         List<BiConsumer<String, Object>> eventHandlersOnBranch = new ArrayList<>();
 
         FileNode node = root;
+
         eventHandlersOnBranch.addAll(node.getEventHandlers());
+
+        if (newDataToAdd != null)
+            node.setMostRecentDataOnBranch(newDataToAdd);
 
         for (String pathNode : PathBuilder.decomposePath(path)) {
             node = node.getChild(pathNode, create);
+
             if (node == null)
                 return new FileSystemWalkResults(null, eventHandlersOnBranch);
+
+            if (newDataToAdd != null)
+                node.setMostRecentDataOnBranch(newDataToAdd);
+
             eventHandlersOnBranch.addAll(node.getEventHandlers());
         }
+
+        if (newDataToAdd != null)
+            node.setData(newDataToAdd);
 
         return new FileSystemWalkResults(node, eventHandlersOnBranch);
     }
 
     @Override
     public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {
-        return fileSystemWalk(true, path).fileNode.addEventHandler(eventHandler);
+        log.info("subscribed on " + PathBuilder.buildPath(path));
+        FileNode n = fileSystemWalk(true, null, path).fileNode;
+        String id = n.addEventHandler(eventHandler);
+        listenersBuffer.put(id, n);
+        return id;
     }
 
     @Override
-    public void unsubscribe(String eventHandlerId, String... path) {
-        Optional.of(fileSystemWalk(false, path).fileNode).ifPresent(n -> n.removeEventHandler(eventHandlerId));
+    public void unsubscribe(String eventHandlerId) {
+        Optional.of(listenersBuffer.get(eventHandlerId)).ifPresent(n -> n.removeEventHandler(eventHandlerId));
     }
 
     @Override
     public void sendMessage(Object data, String... path) {
-        FileSystemWalkResults r = fileSystemWalk(true, path);
-
-        r.fileNode.setData(data);
-
-        for (BiConsumer<String, Object> eventHandler : r.eventHandlersOnBranch)
-            eventHandler.accept(PathBuilder.buildPath(path), data); // TODO: should be on a new thread later
+        for (BiConsumer<String, Object> eventHandler : fileSystemWalk(true, data, path).eventHandlersOnBranch) {
+            log.info("firing on " + PathBuilder.buildPath(path));
+            eventHandler.accept(PathBuilder.buildPath(path), data);
+        }
     }
 
     @Override
     public <T> T getData(String... path) {
-        return fileSystemWalk(false, path).fileNode == null ? null : fileSystemWalk(false, path).fileNode.getData();
+        return fileSystemWalk(false, null, path).fileNode == null ? null
+                        : fileSystemWalk(false, null, path).fileNode.getData();
+    }
+
+    @Override
+    public <T> T getMostRecentDataOnBranch(String... path) {
+        return fileSystemWalk(false, null, path).fileNode == null ? null
+                        : fileSystemWalk(false, null, path).fileNode.getMostRecentDataOnBranch();
     }
 
     @Override
     public Collection<String> getChildren(String... path) {
-        return fileSystemWalk(false, path).fileNode == null ? null
-                        : fileSystemWalk(false, path).fileNode.getChildrenNames();
+        return fileSystemWalk(false, null, path).fileNode == null ? Collections.emptyList()
+                        : fileSystemWalk(false, null, path).fileNode.getChildrenNames();
+    }
+
+    @Override
+    public boolean wasPathInitiated(String... path) {
+        return fileSystemWalk(false, null, path).fileNode != null;
+    }
+
+    @Override
+    public String toString() {
+        return root.toString();
+    }
+
+    public String toString(String... pathToFirstNode) {
+        return Optional.ofNullable(fileSystemWalk(false, null, pathToFirstNode).fileNode).orElse(root).toString();
     }
 }

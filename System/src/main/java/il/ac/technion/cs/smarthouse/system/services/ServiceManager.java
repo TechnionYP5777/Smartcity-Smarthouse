@@ -34,7 +34,8 @@ public final class ServiceManager {
             }
     }
 
-    public Service getService(final ServiceType t) {
-        return services.get(t);
+    @SuppressWarnings("unchecked")
+    public <T extends Service> T getService(final ServiceType t) {
+        return (T) services.get(t);
     }
 }

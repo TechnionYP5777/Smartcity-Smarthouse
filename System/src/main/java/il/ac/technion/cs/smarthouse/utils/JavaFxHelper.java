@@ -12,6 +12,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * A helper class for javaFx
+ * 
+ * @author RON
+ * @since 11-05-2017
+ */
 public enum JavaFxHelper {
     ;
 
@@ -86,6 +92,15 @@ public enum JavaFxHelper {
         return a;
     }
 
+    /**
+     * An important part of the implementation of
+     * {@link JavaFxHelper#startGui(Application, String...)}
+     * <p>
+     * Please don't touch this
+     * 
+     * @author RON
+     * @since 11-05-2017
+     */
     public static class DummyApplication extends Application {
         static Application app2launch;
 

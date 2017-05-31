@@ -6,8 +6,12 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGui;
 import il.ac.technion.cs.smarthouse.system.services.Service;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
@@ -30,7 +34,10 @@ import javafx.scene.Node;
 public abstract class SmartHouseApplication {
     private static Logger log = LoggerFactory.getLogger(SmartHouseApplication.class);
 
+    private SystemCore systemCore;
     private ServiceManager serviceManager;
+    private FileSystem fileSystem;
+    private String applicationId;
     private Node rootNode;
 
     public SmartHouseApplication() {}
@@ -39,24 +46,31 @@ public abstract class SmartHouseApplication {
     public static void launch(final Class<? extends Application>... sensors) throws Exception {
         final MainSystemGui m = new MainSystemGui();
         m.addOnKillListener(() -> System.exit(0));
-        JavaFxHelper.startGui(m);
+        m.launchGui();
 
         m.getPresenter().waitUntilLoaded();
 
         for (final Class<? extends Application> s : sensors)
             JavaFxHelper.startGui(s.newInstance());
 
-        Thread.sleep(1500);
-
-        m.getPresenter().getModel().applicationsHandler.addApplication(
+        m.getPresenter().getModel().getSystemApplicationsHandler().addApplication(
                         new ApplicationPath(PathType.CLASS_NAME, new Throwable().getStackTrace()[1].getClassName()));
 
         m.getPresenter().gotoAppsTab();
+        m.getPresenter().getModel().getFileSystem().sendMessage(null, FileSystemEntries.SAVEME.buildPath());
     }
 
     // [start] Public - Services to the SystemCore
-    public final SmartHouseApplication setServiceManager(final ServiceManager $) {
-        serviceManager = $;
+    public final SmartHouseApplication setDataFromApplicationManager(final SystemCore $, final String applicationId) {
+        if (systemCore != null)
+            return this;
+        
+        systemCore = $;
+        serviceManager = systemCore.getSystemServiceManager();
+        fileSystem = systemCore.getFileSystem();
+        
+        this.applicationId = applicationId;
+        
         return this;
     }
 
@@ -105,7 +119,7 @@ public abstract class SmartHouseApplication {
      * @param $
      * @return
      */
-    public Service getService(final ServiceType $) {
+    public <T extends Service> T getService(final ServiceType $) {
         return serviceManager.getService($);
     }
 
@@ -115,9 +129,9 @@ public abstract class SmartHouseApplication {
      * @param data
      * @return true if the data was saved to the system, or false otherwise
      */
-    public final boolean saveToDatabase(final String data) {
-        log.warn("This function is not implemented yet");
-        return data != null;
+    public final void saveApplicationData(final Object data, final String... path) {
+        assert applicationId != null;
+        fileSystem.sendMessage(data, FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));
     }
 
     /**
@@ -125,9 +139,9 @@ public abstract class SmartHouseApplication {
      * 
      * @return a string with the data
      */
-    public final String loadFromDatabase() {
-        log.warn("This function is not implemented yet");
-        return null;
+    public final <T> T readApplicationData(final String... path) {
+        assert applicationId != null;
+        return fileSystem.getData(FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));
     }
     // [end]
 

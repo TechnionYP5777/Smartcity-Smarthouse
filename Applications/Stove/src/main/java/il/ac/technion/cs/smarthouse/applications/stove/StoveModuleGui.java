@@ -8,6 +8,7 @@ import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplicatio
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 
 public class StoveModuleGui extends SmartHouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
@@ -21,7 +22,7 @@ public class StoveModuleGui extends SmartHouseApplication {
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
 
-        ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getDefaultSensor(StoveSensor.class, "iStoves").subscribe(stove -> {
+        super.<SensorsService>getService(ServiceType.SENSORS_SERVICE).getSensor("iStoves", StoveSensor.class).subscribe(stove -> {
             final String t = "Stove is " + (stove.isOn() ? "" : "Not ") + "On at " + stove.getTemperture() + " degrees";
             if (stove.isOn())
                 controller.turnOn();
@@ -33,6 +34,8 @@ public class StoveModuleGui extends SmartHouseApplication {
 
         controller = super.setContentView("stove_app_ui.fxml");
         controller.setInstance(this);
+        
+        saveApplicationData(5, "myNum");
     }
 
     @Override public String getApplicationName() {
@@ -41,7 +44,10 @@ public class StoveModuleGui extends SmartHouseApplication {
 }
 
 class StoveSensor extends SensorData {
+    @SystemPath("stove.is_on")
     private boolean on;
+    
+    @SystemPath("stove.temp")
     private int temperature;
 
     boolean isOn() {

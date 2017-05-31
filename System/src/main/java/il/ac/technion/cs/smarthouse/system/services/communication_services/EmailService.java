@@ -9,8 +9,8 @@ public class EmailService extends CommunicationService {
     }
 
     @SuppressWarnings("static-method")
-    public void sendMsg(final String destEmail, final String msg) {
-        Communicate.throughEmailFromHere(destEmail, msg);
+    public String sendMsg(final String destEmail, final String msg) {
+        return Communicate.throughEmailFromHere(destEmail, msg);
     }
 
 }

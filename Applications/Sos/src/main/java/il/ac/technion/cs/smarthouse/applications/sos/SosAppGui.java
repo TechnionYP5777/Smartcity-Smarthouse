@@ -27,7 +27,7 @@ public class SosAppGui extends SmartHouseApplication {
     @Override public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
 
-        ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getDefaultSensor(SosSensor.class, "iSOS").subscribe(sos -> {
+        ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getSensor("iSOS", SosSensor.class).subscribe(sos -> {
             final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
             System.out.println("msg from app: onLoad " + Platform.isFxApplicationThread());
             if (sosController != null && shouldAlert) {

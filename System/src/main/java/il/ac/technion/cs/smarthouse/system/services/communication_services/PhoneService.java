@@ -9,7 +9,7 @@ public class PhoneService extends CommunicationService {
     }
 
     @SuppressWarnings("static-method")
-    public void makeCall(final String phoneNumber) {
-        Communicate.throughPhone(phoneNumber);
+    public String makeCall(final String phoneNumber) {
+        return Communicate.throughPhone(phoneNumber);
     }
 }

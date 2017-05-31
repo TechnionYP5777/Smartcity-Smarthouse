@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
+import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 import il.ac.technion.cs.smarthouse.system.Dispatcher;
 
 /**
@@ -21,16 +22,17 @@ import il.ac.technion.cs.smarthouse.system.Dispatcher;
  * @author Inbal Zukerman
  * @since 30.3.17
  */
-public class InstructionsSenderThread extends Thread {
+public class InstructionsSenderThread extends SensorManagingThread {
+    static OutputMapper mapper;
+    
+    public static void setMapper(OutputMapper m){mapper = m;}
+    
+    public InstructionsSenderThread(Socket client, DatabaseHandler databaseHandler) {
+        super(client, databaseHandler);
+    }
+
     private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);
 
-    private final Socket client;
-    private final OutputMapper mapper;
-
-    public InstructionsSenderThread(final Socket client, final OutputMapper mapper) {
-        this.client = client;
-        this.mapper = mapper;
-    }
 
     @Override
     public void run() {

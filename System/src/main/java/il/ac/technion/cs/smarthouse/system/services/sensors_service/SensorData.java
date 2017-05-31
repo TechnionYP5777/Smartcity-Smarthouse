@@ -12,17 +12,12 @@ import il.ac.technion.cs.smarthouse.system.SensorLocation;
  */
 public class SensorData {
     protected String commercialName;
-    protected String sensorId;
     protected SensorLocation sensorLocation;
 
     public SensorData() {}
 
     public String getCommercialName() {
         return commercialName;
-    }
-    
-    public String getSensorId() {
-        return sensorId;
     }
 
     public SensorLocation getSensorLocation() {

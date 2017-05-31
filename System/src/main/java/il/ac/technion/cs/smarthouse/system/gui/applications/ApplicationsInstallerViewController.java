@@ -56,7 +56,7 @@ public class ApplicationsInstallerViewController extends SystemPresenter {
     // [start] install app and alert if needed
     private void installApp(final ApplicationPath p) {
         try {
-            getModel().applicationsHandler.addApplication(p);
+            getModel().getSystemApplicationsHandler().addApplication(p);
         } catch (final AppInstallerException $) {
             log.debug("An exception while installing: " + p, $);
             alert("Installer Error: " + $.getMessage());

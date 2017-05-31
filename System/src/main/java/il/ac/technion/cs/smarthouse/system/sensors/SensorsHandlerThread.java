@@ -24,18 +24,11 @@ import il.ac.technion.cs.smarthouse.system.Dispatcher;
  * @author Inbal Zukerman
  * @since 24.12.16
  */
-public class SensorsHandlerThread extends Thread {
+public class SensorsHandlerThread extends SensorManagingThread {
     private static Logger log = LoggerFactory.getLogger(SensorsHandlerThread.class);
 
-    private final Socket client;
-    private final DatabaseHandler databaseHandler;
-    
-
-    public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler,
-                    final TypeHandler typeHandler) {
-        this.client = client;
-        this.databaseHandler = databaseHandler;
-      
+    public SensorsHandlerThread(final Socket client, final DatabaseHandler databaseHandler) {
+        super(client, databaseHandler);
     }
 
     @Override
@@ -60,7 +53,7 @@ public class SensorsHandlerThread extends Thread {
                 else if (Message.isInMessage(input, MessageType.UPDATE.toString()))
                     handleUpdateMessage(input);
                 else
-                    log.error("message could not be parsed");
+                    log.warn("message could not be parsed");
 
                 input = in.readLine();
             }
@@ -84,19 +77,15 @@ public class SensorsHandlerThread extends Thread {
         final String[] parsedMessage = ¢.split("\\" + Dispatcher.DELIMITER);
 
         databaseHandler.addSensor(parsedMessage[1].replaceAll(Message.SENSOR_ID, ""));
-        System.out.println("\n\n" + parsedMessage[1] + "\n\n");
+        log.info("\n\n" + parsedMessage[1] + "\n\n");
         Message.send(Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS), out, null);
 
     }
 
     private void handleUpdateMessage(final String m) {
-
         databaseHandler.handleUpdateMessage(m);
 
     }
 
 }
 
-interface TypeHandler {
-    void accept(SensorType t);
-}

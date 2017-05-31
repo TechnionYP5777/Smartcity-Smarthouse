@@ -59,7 +59,7 @@ public abstract class InteractiveSensor extends Sensor {
      */
     public boolean registerInstructions() {
         try {
-            instSocket = new Socket(InetAddress.getByName(systemIP), instPort);
+            instSocket = new Socket(systemIP, instPort);
             instOut = new PrintWriter(instSocket.getOutputStream(), true);
             instIn = new BufferedReader(new InputStreamReader(instSocket.getInputStream()));
         } catch (final IOException e) {

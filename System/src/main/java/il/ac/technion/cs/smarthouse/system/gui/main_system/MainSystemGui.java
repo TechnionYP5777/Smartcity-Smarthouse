@@ -5,6 +5,7 @@ import java.util.List;
 
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter.PresenterInfo;
+import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,6 +34,10 @@ public class MainSystemGui extends Application {
 
         s.setOnCloseRequest(e -> kill());
     }
+    
+    public void launchGui(final String... args) {
+        JavaFxHelper.startGui(this, args);
+    }
 
     public void kill() {
         System.out.println("System closing...");
@@ -56,7 +61,7 @@ public class MainSystemGui extends Application {
             wait();
         return presenterInfo.getPresenter();
     }
-
+    
     public void addOnKillListener(final Runnable listner) {
         onKillListeners.add(listner);
     }

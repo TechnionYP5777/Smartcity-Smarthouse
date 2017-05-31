@@ -70,7 +70,7 @@ public class ApplicationsCore extends ChildCore {
 
     // [start] Private functions
     private void initializeApplicationManager(final ApplicationManager $) throws Exception {
-        $.initialize(systemCore.serviceManager);
+        $.initialize(systemCore);
     }
     // [end]
 

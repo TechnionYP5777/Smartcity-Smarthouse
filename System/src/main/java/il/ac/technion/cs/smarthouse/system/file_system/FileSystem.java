@@ -33,7 +33,7 @@ public interface FileSystem {
      * @param path
      *            The path on which the eventHandler would like to stop listen
      */
-    void unsubscribe(String eventHandlerId, String... path);
+    void unsubscribe(String eventHandlerId);
 
     /**
      * This method allows to send a message
@@ -54,6 +54,10 @@ public interface FileSystem {
      * @return The last entry's data
      */
     <T> T getData(String... path);
+    
+    <T> T getMostRecentDataOnBranch(String... path);
 
     Collection<String> getChildren(String... path);
+    
+    boolean wasPathInitiated(String... path);
 }
