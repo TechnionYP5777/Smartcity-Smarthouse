@@ -19,10 +19,10 @@ public class DispatcherCore implements Dispatcher {
     private static Logger log = LoggerFactory.getLogger(DispatcherCore.class);
 
     public static String getPathAsString(final String... pathNodes) {
-        System.out.println(String.join(Dispatcher.DELIMITER, pathNodes).toLowerCase()+ "\n\n");
         return String.join(Dispatcher.DELIMITER, pathNodes).toLowerCase();
     }
 
+    
     @Override
     public String subscribe(final Consumer<String> subscriber, final String... path) {
         if (!subscribers.containsKey(getPathAsString(path)))

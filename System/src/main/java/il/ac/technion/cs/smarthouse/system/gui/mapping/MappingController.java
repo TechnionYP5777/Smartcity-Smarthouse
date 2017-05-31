@@ -39,11 +39,7 @@ public class MappingController extends SystemPresenter {
         canvas.setWidth(2000);
         canvas.setHeight(2000);
 
-        try {
-            drawMapping();
-        } catch (final SensorNotFoundException ¢) {
-            ¢.printStackTrace();
-        }
+        drawMapping();
 
         /*
          * TODO: is needed? dbHandler.addNewSensorsListener(id ->
@@ -72,14 +68,11 @@ public class MappingController extends SystemPresenter {
 
         locationsContents.get(l).add(id);
 
-        try {
-            drawMapping();
-        } catch (final SensorNotFoundException ¢) {
-            ¢.printStackTrace();
-        }
+        drawMapping();
+
     }
 
-    private void drawMapping() throws SensorNotFoundException {
+    private void drawMapping() {
         final GraphicsContext g = canvas.getGraphicsContext2D();
 
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());

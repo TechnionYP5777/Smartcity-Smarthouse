@@ -21,7 +21,7 @@ public interface DatabaseAPI {
      * @return The newly created parseObject which is saved on the server
      * @throws ParseException
      */
-    public ParseObject addInfo(InfoType t, String path, String value) throws ParseException;
+    public ParseObject addInfo( String path, Object value) throws ParseException;
 
     /**
      * This method deletes all occurrences of information of a certain InfoType

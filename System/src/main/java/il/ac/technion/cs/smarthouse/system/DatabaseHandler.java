@@ -86,7 +86,7 @@ public class DatabaseHandler {
     }
 
     public void handleUpdateMessage(final String message) {
-        try {
+        /*try {
             final String[] parts = message.split(Dispatcher.SEPARATOR);
             dbManager.addInfo(InfoType.SENSOR,
                             parts[0].replace((MessageType.UPDATE.toString() + Dispatcher.DELIMITER).toLowerCase(), ""),
@@ -94,7 +94,7 @@ public class DatabaseHandler {
         } catch (final ParseException e) {
             log.error("Update message was not handled properly", e);
 
-        }
+        }*/
         // TODO: inbal
 
     }
