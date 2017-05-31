@@ -28,14 +28,6 @@ public class UserInformation {
         this.homeAddress = homeAddress;
         emergencyContacts = new ContactsInformation();
 
-        // TODO: inbal!
-        /*
-         * DatabaseManager.addInfo(InfoType.NAME, name);
-         * DatabaseManager.addInfo(InfoType.ID, id);
-         * DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
-         * DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
-         */
-
     }
 
     public String getPhoneNumber() {
@@ -45,12 +37,6 @@ public class UserInformation {
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
 
-        // TODO: inbal!
-        /*
-         * DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
-         * DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
-         */
-
     }
 
     public String getHomeAddress() {
@@ -59,12 +45,6 @@ public class UserInformation {
 
     public void setHomeAddress(final String homeAddress) {
         this.homeAddress = homeAddress;
-
-        // TODO: inbal!
-        /*
-         * DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
-         * DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
-         */
 
     }
 

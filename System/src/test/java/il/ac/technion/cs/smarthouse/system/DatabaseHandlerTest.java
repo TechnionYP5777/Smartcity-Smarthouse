@@ -1,17 +1,11 @@
 package il.ac.technion.cs.smarthouse.system;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
-
 /**
  * @author Sharon
  * @author Inbal Zukerman
  */
 
-// TODO: inbal
+/* TODO: inbal
 public class DatabaseHandlerTest {
     private DatabaseHandler handler;
 
@@ -36,3 +30,4 @@ public class DatabaseHandlerTest {
     }
 
 }
+*/

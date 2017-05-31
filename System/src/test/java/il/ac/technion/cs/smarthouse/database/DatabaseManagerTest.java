@@ -1,15 +1,5 @@
 package il.ac.technion.cs.smarthouse.database;
 
-import java.util.Collection;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.parse4j.ParseException;
-
-import il.ac.technion.cs.smarthouse.system.Dispatcher;
-import il.ac.technion.cs.smarthouse.system.DispatcherCore;
-import il.ac.technion.cs.smarthouse.system.InfoType;
-
 /**
  * 
  * @author Inbal Zukerman
@@ -19,7 +9,7 @@ import il.ac.technion.cs.smarthouse.system.InfoType;
 public class DatabaseManagerTest {
 
     private final DatabaseManager dbManager = new DatabaseManager();
-
+/*
     @Test
     public void additionAndDeletionTest() {
         final String[] path = new String[3];
@@ -84,5 +74,5 @@ public class DatabaseManagerTest {
             assert null != null;
         }
     }
-
+*/
 }

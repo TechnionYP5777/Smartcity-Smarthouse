@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
-import il.ac.technion.cs.smarthouse.system.Dispatcher;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
 /**
  * An instructions sender thread is a class that allows sending instructions
@@ -24,15 +24,16 @@ import il.ac.technion.cs.smarthouse.system.Dispatcher;
  */
 public class InstructionsSenderThread extends SensorManagingThread {
     static OutputMapper mapper;
-    
-    public static void setMapper(OutputMapper m){mapper = m;}
-    
+
+    public static void setMapper(OutputMapper m) {
+        mapper = m;
+    }
+
     public InstructionsSenderThread(Socket client, DatabaseHandler databaseHandler) {
         super(client, databaseHandler);
     }
 
     private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);
-
 
     @Override
     public void run() {
@@ -69,8 +70,7 @@ public class InstructionsSenderThread extends SensorManagingThread {
     }
 
     private void handleRegisterMessage(final PrintWriter out, final String ¢) {
-        // TODO inbal
-        final String[] parts = ¢.split("\\" + Dispatcher.DELIMITER);
+        final String[] parts = ¢.split(PathBuilder.SPLIT_REGEX);
         mapper.store(parts[1].replaceAll(Message.SENSOR_ID, ""), out);
         Message.send(Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS), out, null);
     }

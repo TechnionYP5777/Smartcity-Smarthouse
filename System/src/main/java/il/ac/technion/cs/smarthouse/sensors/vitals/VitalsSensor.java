@@ -1,7 +1,9 @@
 package il.ac.technion.cs.smarthouse.sensors.vitals;
 
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
-import il.ac.technion.cs.smarthouse.system.Dispatcher;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
+
+
 
 /**
  * This class represents a vitals signs sensor and contains its logic.
@@ -17,11 +19,11 @@ public class VitalsSensor extends Sensor {
 
     public void updateSystem(final int pulse, final int systolicBP, final int diastolicBP) {
 
-        super.updateSystem(pulse, "vitals" + Dispatcher.DELIMITER + "pulse");
+        super.updateSystem(pulse, "vitals" + PathBuilder.DELIMITER + "pulse");
 
-        super.updateSystem(systolicBP, "vitals" + Dispatcher.DELIMITER + "systolicBP");
+        super.updateSystem(systolicBP, "vitals" + PathBuilder.DELIMITER + "systolicBP");
 
-        super.updateSystem(diastolicBP, "vitals" + Dispatcher.DELIMITER + "diastolicBP");
+        super.updateSystem(diastolicBP, "vitals" + PathBuilder.DELIMITER + "diastolicBP");
 
     }
 

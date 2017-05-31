@@ -5,12 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 
 /**
@@ -22,7 +20,7 @@ import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
  * @author Inbal Zukerman
  * @since Dec 13, 2016
  */
-public class DatabaseHandler {  
+@Deprecated public class DatabaseHandler {  
 
     private static Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
 

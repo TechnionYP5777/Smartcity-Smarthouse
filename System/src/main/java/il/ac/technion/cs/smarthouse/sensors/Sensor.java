@@ -9,7 +9,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.system.DispatcherCore;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
 /**
  * Represents a physical component that can send information.
@@ -135,7 +134,7 @@ public abstract class Sensor {
 
         lastMessagesMillis.add(currMillis);
 
-        Message.send(Message.createMessage(MessageType.UPDATE, DispatcherCore.getPathAsString(path), value.toString(),
+        Message.send(Message.createMessage(MessageType.UPDATE, PathBuilder.buildPath(path), value.toString(),
                         id), out, null);
     }
 

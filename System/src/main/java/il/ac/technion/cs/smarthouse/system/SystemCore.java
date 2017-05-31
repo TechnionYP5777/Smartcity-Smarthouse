@@ -1,10 +1,12 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.annotations.Expose;
 
+import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
@@ -21,11 +23,13 @@ public class SystemCore implements Savable {
     private static Logger log = LoggerFactory.getLogger(SystemCore.class);
 
     public final ServiceManager serviceManager = new ServiceManager(this);
-    public final DatabaseHandler databaseHandler = new DatabaseHandler();
+    public final DatabaseHandler databaseHandler = new DatabaseHandler(); // TODO
+                                                                          // inbal
+    public final DatabaseManager databaseManager = new DatabaseManager();
     public final SensorsLocalServer sensorsHandler = new SensorsLocalServer(databaseHandler);
     @Expose private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     private final FileSystem fileSystem = new FileSystemImpl();
-    protected UserInformation user;
+    @Expose protected UserInformation user;
     private boolean userInitialized;
 
     public void initializeSystemComponents() {
@@ -55,10 +59,6 @@ public class SystemCore implements Savable {
         return applicationsHandler;
     }
 
-    public Dispatcher getSystemDispatcher() {
-        return null;// TODO: stub for now
-    }
-
     public DatabaseHandler getSystemDatabaseHandler() {
         return databaseHandler;
     }
@@ -74,10 +74,38 @@ public class SystemCore implements Savable {
     public void initFileSystemListeners() {
         fileSystem.subscribe((path, data) -> {
             fileSystem.sendMessage(this.toJsonString(), FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
-            log.info("System interrupt: SAME_ME: " + this.toJsonString());
+            log.info("System interrupt: SAVE_ME: " + this.toJsonString());
         }, FileSystemEntries.SAVEME.buildPath());
 
-        // TODO: inbal
+        fileSystem.subscribe((path, data) -> {
+
+            try {
+                databaseManager.addInfo(path, data);
+            } catch (ParseException e) {
+                log.error("Message from sensor could not be saved on the server", e);
+            }
+
+        }, FileSystemEntries.SENSORS_DATA.buildPath());
+
+        fileSystem.subscribe((path, data) -> {
+
+            try {
+                databaseManager.addInfo(path, data);
+            } catch (ParseException e) {
+                log.error("Application data could not be saved on the server", e);
+            }
+
+        }, FileSystemEntries.APPLICATIONS_DATA.buildPath());
+
+        fileSystem.subscribe((path, data) -> {
+
+            try {
+                databaseManager.addInfo(path, data);
+            } catch (ParseException e) {
+                log.error("Application data could not be saved on the server", e);
+            }
+
+        }, FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
     }
 
 }

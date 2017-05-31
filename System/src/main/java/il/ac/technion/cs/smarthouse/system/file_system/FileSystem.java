@@ -14,6 +14,7 @@ import java.util.function.BiConsumer;
  * @since 28-05-2017
  */
 public interface FileSystem {
+
     /**
      * This methods allows to subscribe to new messages on a certain path.
      * 
@@ -54,10 +55,10 @@ public interface FileSystem {
      * @return The last entry's data
      */
     <T> T getData(String... path);
-    
+
     <T> T getMostRecentDataOnBranch(String... path);
 
     Collection<String> getChildren(String... path);
-    
+
     boolean wasPathInitiated(String... path);
 }

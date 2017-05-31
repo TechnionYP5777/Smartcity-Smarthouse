@@ -1,6 +1,5 @@
 package il.ac.technion.cs.smarthouse;
 
-import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGui;

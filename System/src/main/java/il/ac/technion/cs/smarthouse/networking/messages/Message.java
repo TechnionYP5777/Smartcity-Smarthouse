@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.Dispatcher;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
 /**
  * This class represents a general message that can be sent from a sensor to the
@@ -24,20 +24,18 @@ public abstract class Message {
     private static Logger log = LoggerFactory.getLogger(Message.class);
 
     public static String createMessage(final MessageType t, final String path, final Object value, final String sensorId) {
-        String message = t.toString() + Dispatcher.DELIMITER;
+        String message = t.toString() + PathBuilder.DELIMITER;
         if (path == "")
             return (message + SENSOR_ID + sensorId).toLowerCase();
-        message += path + Dispatcher.DELIMITER;
-        return (message + SENSOR_ID + sensorId + Dispatcher.SEPARATOR + value.toString()).toLowerCase();
+        message += path + PathBuilder.DELIMITER;
+        return (message + SENSOR_ID + sensorId + PathBuilder.SEPARATOR + value.toString()).toLowerCase();
     }
 
     public static String createMessage(final MessageType t, final MessageType status) {
-        return (t.toString() + Dispatcher.DELIMITER + status.toString()).toLowerCase();
+        return (t.toString() + PathBuilder.DELIMITER + status.toString()).toLowerCase();
     }
 
-    /**
-     * TODO: inbal, update documentation
-     */
+
     public static String send(final String message, final PrintWriter out, final BufferedReader $) {
         if (out == null)
             return null;

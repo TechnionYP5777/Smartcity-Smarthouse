@@ -9,7 +9,6 @@ import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.simulator.model.Location;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
-import il.ac.technion.cs.smarthouse.system.InfoType;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -25,7 +24,7 @@ import il.ac.technion.cs.smarthouse.system.services.ServiceType;
  */
 public class EnumsTest {
 
-    final Class<?>[] enumClassesToTest = { InfoType.class, FileSystemEntries.class, SensorLocation.class,
+    final Class<?>[] enumClassesToTest = { FileSystemEntries.class, SensorLocation.class,
             ServiceType.class, MessageType.class, SensorType.class, Location.class, EmergencyLevel.class };
 
     @Test

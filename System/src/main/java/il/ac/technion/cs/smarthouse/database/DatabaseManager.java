@@ -11,9 +11,8 @@ import org.parse4j.ParseQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.Dispatcher;
-import il.ac.technion.cs.smarthouse.system.DispatcherCore;
-import il.ac.technion.cs.smarthouse.system.InfoType;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
 /**
  * 
@@ -43,11 +42,11 @@ public class DatabaseManager implements DatabaseAPI {
     }
 
     @Override
-    public void deleteInfo(final InfoType infoType) {
+    public void deleteInfo(final FileSystemEntries fsEntry) {
         serverManager.initialize();
 
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
-        findQuery.whereStartsWith(pathCol, infoType.toString().toLowerCase());
+        findQuery.whereStartsWith(pathCol, fsEntry.toString().toLowerCase());
 
         try {
             for (final ParseObject iterator : findQuery.find())
@@ -64,7 +63,7 @@ public class DatabaseManager implements DatabaseAPI {
         serverManager.initialize();
 
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
-        findQuery.whereMatches(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
+        findQuery.whereMatches(pathCol, PathBuilder.buildPath(path).toLowerCase());
 
         try {
             for (final ParseObject iterator : findQuery.find())
@@ -81,16 +80,13 @@ public class DatabaseManager implements DatabaseAPI {
 
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 
-        findQuery.whereStartsWith(pathCol, DispatcherCore.getPathAsString(path).toLowerCase()); // TODO
-                                                                                                // inbal,
-                                                                                                // not
-                                                                                                // prefix
+        findQuery.whereStartsWith(pathCol, PathBuilder.buildPath(path).toLowerCase());
 
         try {
             if (findQuery.find() != null) {
                 findQuery.orderByDescending("createdAt");
 
-                return findQuery.find().get(0).getString(pathCol) + Dispatcher.SEPARATOR
+                return findQuery.find().get(0).getString(pathCol) + PathBuilder.SEPARATOR
                                 + findQuery.find().get(0).getString(valueCol);
             }
         } catch (final ParseException e) {
@@ -107,12 +103,12 @@ public class DatabaseManager implements DatabaseAPI {
         try {
             final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 
-            findQuery.whereStartsWith(pathCol, DispatcherCore.getPathAsString(path).toLowerCase());
+            findQuery.whereStartsWith(pathCol, PathBuilder.buildPath(path).toLowerCase());
 
             if (findQuery.find() != null) {
                 System.out.println("find size is: " + findQuery.find().size());
                 for (final ParseObject iterator : findQuery.find())
-                    res.add(iterator.getString(pathCol).replaceAll(DispatcherCore.getPathAsString(path), "")); // TODO
+                    res.add(iterator.getString(pathCol).replaceAll(PathBuilder.buildPath(path), "")); // TODO
                                                                                                                // inbal
 
             }

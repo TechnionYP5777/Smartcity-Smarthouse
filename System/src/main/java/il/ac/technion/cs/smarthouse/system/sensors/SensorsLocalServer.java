@@ -17,7 +17,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 
 /**
@@ -91,15 +90,11 @@ public class SensorsLocalServer implements Runnable {
             serverSockets.add(server);
             
             byte[] buf = new byte[8];
-            DatagramPacket packet = new DatagramPacket(buf, buf.length);
-            while (true) {
+            for (DatagramPacket packet = new DatagramPacket(buf, buf.length);;)
                 try {
                     server.receive(packet);
                     server.send(new DatagramPacket(buf, buf.length, packet.getAddress(), packet.getPort()));
-                } catch (IOException e) {
-                }
-                
-            }
+                } catch (IOException e) {}
         } catch (SocketException e1) {
             log.warn("I/O error occurred when the socket was opened", e1);
         }

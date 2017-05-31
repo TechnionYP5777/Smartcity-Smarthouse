@@ -15,9 +15,6 @@ public class Contact {
     private String phoneNumber;
     private String emailAddress;
 
-    // TODO: inbal, check if needed
-    // private static Logger log = LoggerFactory.getLogger(Contact.class);
-
     public Contact(final String id, final String name, final String phoneNumber, final String emailAddress) {
         this.id = id;
         this.name = name;
@@ -41,12 +38,6 @@ public class Contact {
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
 
-        /*
-         * try { DatabaseManager.deleteContactInfo(id);
-         * DatabaseManager.addContactInfo(id, name, phoneNumber, emailAddress);
-         * } catch (ParseException e) {
-         * log.error("Contact could not be updated", e); }
-         */
     }
 
     public String getEmailAddress() {
@@ -56,12 +47,6 @@ public class Contact {
     public void setEmailAddress(final String emailAddress) {
         this.emailAddress = emailAddress;
 
-        /*
-         * try { DatabaseManager.deleteContactInfo(id);
-         * DatabaseManager.addContactInfo(id, name, phoneNumber, emailAddress);
-         * } catch (ParseException e) {
-         * log.error("Contact could not be updated", e); }
-         */
     }
 
     // For debug mainly, leaving it implemented for future use

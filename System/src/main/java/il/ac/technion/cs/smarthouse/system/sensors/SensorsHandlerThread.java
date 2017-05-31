@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
-import il.ac.technion.cs.smarthouse.system.Dispatcher;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
+
 
 /**
  * A sensors handler thread is a class that handles a specific connection with a
@@ -74,7 +74,7 @@ public class SensorsHandlerThread extends SensorManagingThread {
 
     private void handleRegisterMessage(final PrintWriter out, final String ¢) {
         // TODO inbal
-        final String[] parsedMessage = ¢.split("\\" + Dispatcher.DELIMITER);
+        final String[] parsedMessage = ¢.split(PathBuilder.SPLIT_REGEX);
 
         databaseHandler.addSensor(parsedMessage[1].replaceAll(Message.SENSOR_ID, ""));
         log.info("\n\n" + parsedMessage[1] + "\n\n");

@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 
-import il.ac.technion.cs.smarthouse.system.InfoType;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
 /**
  * @author Inbal Zukerman
@@ -30,7 +30,7 @@ public interface DatabaseAPI {
      * @param infoType
      *            The infoType to delete all information of
      */
-    public void deleteInfo(InfoType infoType);
+    public void deleteInfo(FileSystemEntries fsEntry);
 
     /**
      * This method deletes all record from the DB with a certain path.
