@@ -12,13 +12,22 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.print.DocFlavor.STRING;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
+import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
 /**
@@ -27,7 +36,6 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
  * @author Elia Traore
  * @author Sharon
  * @author Yarden
- * @author Inbal Zukerman
  * @since 7.12.16
  */
 public abstract class Sensor {
@@ -40,8 +48,10 @@ public abstract class Sensor {
     public static final int MAX_MESSAGES_PER_SECOND = 10;
     private final List<Long> lastMessagesMillis = new ArrayList<>();
 
-    protected String id, stringSystemIp;
-
+    protected String commname, id;
+    protected List<String> observationSendingPaths, instructionRecievingPaths;
+    
+    protected String stringSystemIp;
     protected InetAddress systemIP;
     protected int systemPort;
 
@@ -49,18 +59,30 @@ public abstract class Sensor {
     protected PrintWriter out;
     protected BufferedReader in;
 
-    protected SensorType sType;
-
+    
+    /** see {@link #Sensor(String, String, List, List, int)}
+     * */
+    public Sensor(final String commname, final String id, final List<String> observationSendingPaths, final int systemPort) {
+        this(commname, id, observationSendingPaths, null, systemPort);
+    }
+    
     /**
-     * Initializes a new sensor given its name and id.
-     * 
-     * @param id the id of the sensor
+     * Initializes a new sensor
+     * @param id the mac id of the sensor
+     * @param observationSendingPaths the paths on which the sensor will send information
+     * @param instructionRecievingPaths the paths on which the sensor is willing to receive information
      * @param systemPort the port on which the system listens to incoming messages
      */
-    public Sensor(final String id, final int systemPort) {
+    protected Sensor(final String commname, final String id, 
+                    final List<String> observationSendingPaths, final List<String> instructionRecievingPaths,
+                    final int systemPort) {
+
+        this.commname = commname;
         this.id = id;
+        this.observationSendingPaths = observationSendingPaths;
+        this.instructionRecievingPaths = instructionRecievingPaths;
+        
         this.systemPort = systemPort;
-        sType = SensorType.NON_INTERACTIVE;
 
         try {
             this.systemIP = getSystemIp();
@@ -69,6 +91,23 @@ public abstract class Sensor {
             stringSystemIp = "127.0.0.1";
         }
     }
+    
+    public String getCommname() {
+        return commname;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public List<String> getObservationSendingPaths() {
+        return observationSendingPaths;
+    }
+
+    public List<String> getInstructionRecievingPaths() {
+        return instructionRecievingPaths;
+    }
+
     
     private InetAddress getSystemIp() throws IOException, SocketException, InterruptedException {
         DatagramChannel channel = DatagramChannel.open();
@@ -106,20 +145,20 @@ public abstract class Sensor {
         } catch (final IOException e) {
             log.error("I/O error occurred when the sensor's socket was created", e);
         }
-
-        final String $ = Message.send(Message.createMessage(MessageType.REGISTRATION, "", "", id), out, in);
-        return $ != null && Message.isSuccessMessage($);
+        
+        final String $ = new RegisterMessage(this).send(out, in);
+        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
     }
 
     /**
      * Sends an update message to the system with the given observations. The
-     * observations are represented as a map from the names of the observations,
+     * observations are represented as a map from the names of the paths,
      * to their values.
      * 
      * @param data
-     *            observations to send to the system
+     *            observations to send to the system Map<path,value.toString>
      */
-    public void updateSystem(final Object value, final String... path) {
+    public void updateSystem(final Map<String,String> data) {
         final long currMillis = System.currentTimeMillis();
         for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
             if (currMillis - lastMessagesMillis.get(¢) > 1000)
@@ -130,17 +169,12 @@ public abstract class Sensor {
 
         lastMessagesMillis.add(currMillis);
 
-        Message.send(Message.createMessage(MessageType.UPDATE, PathBuilder.buildPath(path), value.toString(),
-                        id), out, null);
+        new UpdateMessage(id,data).send(out, null);
     }
-
-    /** @return id of the sensor */
-    public String getId() {
-        return id;
-    }
-
-    /** @return sensor's type */
-    public SensorType getType() {
-        return sType;
+    
+    public void updateSystem(final String path, final Object data) {
+        Map<String, String> d = new HashMap<>();
+        d.put(path, data+"");
+        updateSystem(d);
     }
 }

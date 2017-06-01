@@ -12,5 +12,5 @@ public interface InstructionHandler {
      * @return <code>true</code> if the action was successful,
      *         <code>false</code> otherwise
      */
-    boolean applyInstruction(String instructionData);
+    boolean applyInstruction(String path, String instruction);
 }

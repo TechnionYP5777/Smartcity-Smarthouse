@@ -5,14 +5,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
+import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
 
 /**
  * This class represents a sensor that can get instructions and operate
@@ -31,10 +37,11 @@ public abstract class InteractiveSensor extends Sensor {
     protected InstructionHandler handler;
     protected long period;
 
-    public InteractiveSensor(final String id, final int systemPort, final int instPort) {
-        super(id, systemPort);
+    public InteractiveSensor(final String commname, final String id, 
+                                final List<String> observationSendingPaths, final List<String> instructionRecievingPaths,
+                                final int systemPort, final int instPort) {
+        super(commname, id, observationSendingPaths, instructionRecievingPaths, systemPort);
         this.instPort = instPort;
-        sType = SensorType.INTERACTIVE;
     }
 
     /**
@@ -52,9 +59,9 @@ public abstract class InteractiveSensor extends Sensor {
         } catch (final IOException e) {
             log.error("I/O error occurred when the sensor's instructions socket was created", e);
         }
-        final String $ = Message.send(Message.createMessage(MessageType.REGISTRATION, sType.toString(), "", id),
-                        instOut, instIn);
-        return $ != null && $.contains("success");
+        
+        final String $ = new RegisterMessage(this).send(instOut, instIn);
+        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
     }
 
     /**
@@ -75,7 +82,12 @@ public abstract class InteractiveSensor extends Sensor {
     public boolean operate() {
 
         try {
-            return instIn.ready() && handler.applyInstruction(instIn.readLine());
+            if(instIn.ready()){
+               String[] inst = instIn.readLine().split("");
+               //todo: elia document external the instruction format
+               return handler.applyInstruction(inst[0], Arrays.asList(inst).stream().skip(1).reduce("", (a,b)-> a+ " "+b)); 
+            }
+            return false;
         } catch (final IOException e) {
             log.error("I/O error occurred", e);
             return false;

@@ -28,7 +28,6 @@ public class SensorsLocalServer implements Runnable {
     private static Logger log = LoggerFactory.getLogger(SensorsLocalServer.class);
 
     private final FileSystem fileSystem;
-    private final Map<String, PrintWriter> routingMap = new HashMap<>();
 
     private List<Closeable> serverSockets = new ArrayList<>();
 
@@ -38,7 +37,6 @@ public class SensorsLocalServer implements Runnable {
 
     @Override
     public void run() {
-        InstructionsSenderThread.setMapper((id,out)->routingMap.put(id.toLowerCase(),out));
         new Thread(()-> runAddressRequestServer(40001)).start();
         new Thread(()-> runBasicSensorServer(40001)).start();
         new Thread(()-> runInstructionSensorServer(40002)).start();
@@ -67,7 +65,7 @@ public class SensorsLocalServer implements Runnable {
     }
     
     private void runBasicSensorServer(Integer port){
-        runBasicTcpServer(port, SensorsHandlerThread.class);
+        runBasicTcpServer(port, SensorHandlerThread.class);
     }
     
     private void runInstructionSensorServer(Integer port){
@@ -92,10 +90,6 @@ public class SensorsLocalServer implements Runnable {
             log.warn("I/O error occurred when the socket was opened", e1);
         }
     }
-    
-    public void sendInstruction(final String id, final String instruction) {
-        routingMap.get(id.toLowerCase()).println(instruction);
-    }
 
     public void closeSockets() { 
         serverSockets.stream().forEach(
@@ -103,7 +97,7 @@ public class SensorsLocalServer implements Runnable {
                                     try {
                                         socket.close();
                                     } catch (IOException | NullPointerException e) {
-                                        log.warn("I/O exception occurred while closing socket", e);
+                                        log.debug("I/O exception occurred while closing socket", e);//spam
                                     }
                                 }
         );

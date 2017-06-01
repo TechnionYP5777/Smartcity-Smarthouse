@@ -9,9 +9,15 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
+import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
 /**
@@ -20,38 +26,25 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
  * 
  * @author Elia Traore
  * @author Yarden
- * @author Inbal Zukerman
  * @since 30.3.17
  */
 public class InstructionsSenderThread extends SensorManagingThread {
     private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);
-    private static OutputMapper mapper;
-
-    public static void setMapper(OutputMapper m) {
-        mapper = m;
-    }
 
     public InstructionsSenderThread(Socket client, FileSystem fs) {
         super(client, fs);
     }
 
-    @Override
-    protected void processInputLine(String input) {
-        if (input == "") {
-            final String answerMessage = Message.createMessage(MessageType.ANSWER, MessageType.FAILURE);
-            Message.send(answerMessage, out, null);
-            return;
+    @Override protected void handleRegisterMessage(final RegisterMessage msg) {
+        for(String path : msg.instructionRecievingPaths){
+            filesystem.subscribe((p, data)->out.println(p+" "+data), 
+                                FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),msg.getSensorId()));
+            //todo: is right path?
         }
-        log.info("Received message: " + input + "\n");
-        if (input.contains("registration"))
-            handleRegisterMessage(input);
-        
+        new AnswerMessage(Answer.SUCCESS).send(out, null);
     }
-
-    private void handleRegisterMessage(final String ¢) {
-        log.info(Thread.currentThread().getStackTrace()[1]+" "+¢);
-        String sensorId = ¢.split("\\.")[2].replaceAll("sensorid\\-|=", "");//todo: change to constants somehow like Message.SENSOR_ID
-        mapper.store(sensorId, out);
-        Message.send(Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS), out, null);
+    
+    @Override protected void handleUpdateMessage(final UpdateMessage msg) {
+        log.error(getClass()+" object shouldn't receive an update msg.");
     }
 }

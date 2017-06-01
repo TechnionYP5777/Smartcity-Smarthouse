@@ -25,6 +25,7 @@ public enum FileSystemEntries {
                 SENSOR_ID(null, COMMERCIAL_NAME, true),
                     LOCATION("location", SENSOR_ID, true),
                     DONE_SENDING_MSG("done", SENSOR_ID, true),
+                    LISTENERS_OF_SENSOR("listeners_of_sensor", SENSOR_ID,true),
                     
         /**
          * Don't forget to add the id at the end of the path when needed! 
@@ -51,14 +52,17 @@ public enum FileSystemEntries {
      *  │   ├───COMMERCIAL_NAME_1
      *  │   │   ├───SENSOR_ID_1
      *  │   │   │   ├───done
-     *  │   │   │   └───location
+     *  │   │   │   ├───location
+     *  │   │   │   └───listeners_of_sensor
      *  │   │   └───SENSOR_ID_2
      *  │   │       ├───done
-     *  │   │       └───location
+     *  │   │       ├───location
+     *  │   │       └───listeners_of_sensor
      *  │   └───COMMERCIAL_NAME_2
      *  │       └───SENSOR_ID_3
      *  │           ├───done
-     *  │           └───location
+     *  │           ├───location
+     *  │           └───listeners_of_sensor
      *  ├───sensors_data
      *  │   └───DATA_FIELD_1
      *  │       └───DATA_FIELD_2
