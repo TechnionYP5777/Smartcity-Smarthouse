@@ -18,6 +18,7 @@ public class FileSystemEntryTest {
         Assert.assertEquals(FileSystemEntries.SENSOR_ID.buildPath("a.b"), "sensors.a.b");
         Assert.assertEquals(FileSystemEntries.LOCATION.buildPath("a","b","c.d"), "sensors.a.b.location.c.d");
         Assert.assertEquals(FileSystemEntries.DONE_SENDING_MSG.buildPath("a","b","c.d"), "sensors.a.b.done.c.d");
+        Assert.assertEquals(FileSystemEntries.LISTENERS_OF_SENSOR.buildPath("a","b","c.d"), "sensors.a.b.listeners_of_sensor.c.d");
         Assert.assertEquals(FileSystemEntries.APPLICATIONS_DATA.buildPath("a","b","c.d"), "applications_data.a.b.c.d");
     }
     

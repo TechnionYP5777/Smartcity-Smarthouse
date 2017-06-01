@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.sensors.shutter;
 
+import java.util.Arrays;
+
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
@@ -13,15 +15,16 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
  * @since 8.5.17
  */
 public class ShutterSensor extends Sensor {
-
+    final static String openPath = "shutter" + PathBuilder.DELIMITER + "open"; 
+    final static String timePath = "shutter" + PathBuilder.DELIMITER + "time";
     public ShutterSensor(final String id, final String systemIP, final int systemPort) {
-        super(id, systemPort);
+        super("ShutterSensor", id, Arrays.asList(openPath, timePath), systemPort);
     }
 
     public void updateSystem(final boolean open, final int fromTime, final int toTime) {
 
-        super.updateSystem(open, "shutter" + PathBuilder.DELIMITER + "open");
-        super.updateSystem(fromTime, "shutter" + PathBuilder.DELIMITER + "time");
+        super.updateSystem("shutter" + PathBuilder.DELIMITER + "open", open);
+        super.updateSystem("shutter" + PathBuilder.DELIMITER + "time", fromTime);
 
     }
 

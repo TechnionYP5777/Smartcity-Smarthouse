@@ -47,7 +47,7 @@ class StoveSensor extends SensorData {
     @SystemPath("stove.is_on")
     private boolean on;
     
-    @SystemPath("stove.temp")
+    @SystemPath("stove.temperature")
     private int temperature;
 
     boolean isOn() {

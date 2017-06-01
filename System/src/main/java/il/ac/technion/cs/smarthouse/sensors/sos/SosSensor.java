@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.sensors.sos;
 
+import java.util.Arrays;
+
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
@@ -13,12 +15,13 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
  * @since 28.12.16
  */
 public class SosSensor extends Sensor {
+    static final String obserPath = "sos" + PathBuilder.DELIMITER + "pressed";
     public SosSensor(final String id, final String systemIP, final int systemPort) {
-        super(id, systemPort);
+        super("SosSensor", id ,Arrays.asList(obserPath),  systemPort);
     }
 
     public void updateSystem() {
-        super.updateSystem(true, "sos" + PathBuilder.DELIMITER + "pressed");
+        super.updateSystem("sos" + PathBuilder.DELIMITER + "pressed", true);
     }
 
 }

@@ -1,45 +1,39 @@
 package il.ac.technion.cs.smarthouse.networking.messages;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 
-import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
+/** @author Sharon
+ * @since 30.12.16 */
+public abstract class MessageTest {
+    protected abstract Message defaultMessage();
 
-
-
-/**
- * @author Inbal Zukerman
- * @since 30.12.16
- */
-
-public class MessageTest {
-
-    @Test
-    public void messagesTest() {
-        final String m1 = Message.createMessage(MessageType.UPDATE, "Stove" + PathBuilder.DELIMITER + "temp", 100, "11:12");
-        Assert.assertEquals("update.stove.temp.sensorid-11:12=100", m1);
-        
-        assert !Message.isFailureMessage(m1);
-        assert !Message.isSuccessMessage(m1);
-        assert Message.isInMessage(m1, "sensorid-11:12");
-        
-        
+    @Test public void testMessageDeliveryWithoutInput() {
+        Assert.assertNull(defaultMessage().send(null, null));
     }
 
-    @Test
-    public void testMessage() {
-        String m1 = Message.createMessage(MessageType.REGISTRATION, "", "", "11");
-        Assert.assertEquals("registration.sensorid-11", m1);
+    @Test public void testMessageDeliveryWithoutResponse() {
+        final Message message = defaultMessage();
+        final PrintWriter pw = Mockito.mock(PrintWriter.class);
 
-        m1 = Message.createMessage(MessageType.ANSWER, MessageType.SUCCESS);
-        Assert.assertEquals("answer.success", m1);
-
-        Assert.assertNull(Message.send(m1, null, null));
-
-        // TODO: inbal test more sending options
-
-        assert Message.isInMessage(m1, MessageType.ANSWER.toString());
-        assert !Message.isFailureMessage(m1);
+        Assert.assertNull(message.send(pw, null));
+        Mockito.verify(pw, Mockito.times(1)).println(Matchers.anyString());
     }
 
+    @Test public void testMessageDeliveryWithResponse() throws IOException {
+        final Message message = defaultMessage();
+        final PrintWriter pw = Mockito.mock(PrintWriter.class);
+        final BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("A response");
+
+        Assert.assertEquals("A response", message.send(pw, br));
+        Mockito.verify(pw, Mockito.times(1)).println(Matchers.anyString());
+        Mockito.verify(br, Mockito.times(1)).readLine();
+    }
 }

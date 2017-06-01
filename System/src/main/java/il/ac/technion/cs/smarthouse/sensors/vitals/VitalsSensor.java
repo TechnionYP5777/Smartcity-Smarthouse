@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.sensors.vitals;
 
+import java.util.Arrays;
+
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
@@ -13,17 +15,20 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
  * @since 16.1.17
  */
 public class VitalsSensor extends Sensor {
+    static final String pulsePath = "vitals" + PathBuilder.DELIMITER + "pulse";
+    static final String sysBPPath = "vitals" + PathBuilder.DELIMITER + "systolicBP";
+    static final String diBPPath = "vitals" + PathBuilder.DELIMITER + "diastolicBP";
     public VitalsSensor(final String id, final String systemIP, final int systemPort) {
-        super(id, systemPort);
+        super("iVitals", id, Arrays.asList(pulsePath, sysBPPath, diBPPath), systemPort);
     }
 
     public void updateSystem(final int pulse, final int systolicBP, final int diastolicBP) {
 
-        super.updateSystem(pulse, "vitals" + PathBuilder.DELIMITER + "pulse");
+        super.updateSystem(pulsePath, pulse);
 
-        super.updateSystem(systolicBP, "vitals" + PathBuilder.DELIMITER + "systolicBP");
+        super.updateSystem(sysBPPath, systolicBP);
 
-        super.updateSystem(diastolicBP, "vitals" + PathBuilder.DELIMITER + "diastolicBP");
+        super.updateSystem(diBPPath, diastolicBP);
 
     }
 
