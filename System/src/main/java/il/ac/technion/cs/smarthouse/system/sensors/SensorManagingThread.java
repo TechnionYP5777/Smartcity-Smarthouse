@@ -9,8 +9,7 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
-
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 
 /**
  * @author Elia Traore
@@ -18,15 +17,15 @@ import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
  */
 public abstract class SensorManagingThread extends Thread {
     private static Logger log = LoggerFactory.getLogger(SensorManagingThread.class);
-    
-    protected final DatabaseHandler databaseHandler;
+
     protected Socket client;
     protected PrintWriter out;
     protected BufferedReader in;
+    protected final FileSystem filesystem;
 
-    public SensorManagingThread(final Socket client, final DatabaseHandler databaseHandler) {
+    public SensorManagingThread(final Socket client, final FileSystem fs) {
         this.client = client;
-        this.databaseHandler = databaseHandler;
+        this.filesystem = fs;
         try {
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);

@@ -1,14 +1,8 @@
 package il.ac.technion.cs.smarthouse.database;
 
-import java.util.Collection;
-
-import org.junit.Assert;
 import org.junit.Test;
-import org.parse4j.ParseException;
 
-import il.ac.technion.cs.smarthouse.system.Dispatcher;
-import il.ac.technion.cs.smarthouse.system.DispatcherCore;
-import il.ac.technion.cs.smarthouse.system.InfoType;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
 /**
  * 
@@ -19,7 +13,11 @@ import il.ac.technion.cs.smarthouse.system.InfoType;
 public class DatabaseManagerTest {
 
     private final DatabaseManager dbManager = new DatabaseManager();
-
+    
+    @Test public void test(){
+        System.out.println(dbManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()));
+    }
+/*
     @Test
     public void additionAndDeletionTest() {
         final String[] path = new String[3];
@@ -84,5 +82,5 @@ public class DatabaseManagerTest {
             assert null != null;
         }
     }
-
+*/
 }

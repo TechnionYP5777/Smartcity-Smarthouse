@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 
 import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorsLocalServer;
 import il.ac.technion.cs.smarthouse.utils.Random;
 
@@ -28,27 +28,27 @@ public class SensorLocalServerTest {
     }
     
     String sensorId;
-    DatabaseHandler dbh;
+    FileSystem fileSystem;
     SensorsLocalServer server;
     
     
     @Before public void initServer(){
         sensorId = Random.sensorId();
-        dbh = Mockito.mock(DatabaseHandler.class);
-        server = new SensorsLocalServer(dbh);
+        fileSystem = Mockito.mock(FileSystem.class);
+        server = new SensorsLocalServer(fileSystem);
         new Thread(server).start();
     }
     
-    @After public  void closeServerSocket(){
+    @After public void closeServerSocket(){
         server.closeSockets();
     }
     
     @Test public void basicSensorCanConnectTest(){
-        for (Sensor s = new TestBasicSensor(sensorId); !s.register(););
+        for (Sensor s = new TestBasicSensor(sensorId) ;!s.register(););
         
         ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(dbh, Mockito.times(1)).addSensor(idCaptor.capture());
-        
+//        Mockito.verify(dbh, Mockito.times(1)).addSensor(idCaptor.capture());
+        assert false;
         Assert.assertEquals(sensorId.toLowerCase(), idCaptor.getAllValues().get(0).toLowerCase());
     }
     

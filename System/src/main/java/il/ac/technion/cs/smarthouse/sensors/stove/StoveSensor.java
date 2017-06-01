@@ -1,7 +1,9 @@
 package il.ac.technion.cs.smarthouse.sensors.stove;
 
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
-import il.ac.technion.cs.smarthouse.system.Dispatcher;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
+
+
 
 /**
  * This class represents a temperature sensor for a stove and contains its
@@ -18,9 +20,9 @@ public class StoveSensor extends Sensor {
     }
 
     public void updateSystem(final boolean on, final int temperature) {
-        super.updateSystem(on, "stove" + Dispatcher.DELIMITER + "on");
+        super.updateSystem(on, "stove" + PathBuilder.DELIMITER + "on");
 
-        super.updateSystem(temperature, "stove" + Dispatcher.DELIMITER + "temperature");
+        super.updateSystem(temperature, "stove" + PathBuilder.DELIMITER + "temperature");
 
     }
 

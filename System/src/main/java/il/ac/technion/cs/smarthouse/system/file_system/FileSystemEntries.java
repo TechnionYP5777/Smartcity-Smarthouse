@@ -30,11 +30,16 @@ public enum FileSystemEntries {
          * Don't forget to add the id at the end of the path when needed! 
          */
         SENSORS_DATA("sensors_data", ROOT, false),
+            SENSORS_DATA_FULL__WITH_SENSOR_ID(null, SENSORS_DATA, false),
         
         SYSTEM("system", ROOT, false),
             SYSTEM_INTERNALS("internals", SYSTEM, false),
                 SAVEME("saveme", SYSTEM_INTERNALS, true),
+                LOAD_DATA_IMAGE("load", SYSTEM_INTERNALS, true),
             SYSTEM_DATA_IMAGE("data_image", SYSTEM, true),
+            
+        TESTS("tests", ROOT, false),
+            TESTS_SENSORS_DATA("sensors_data_tests", TESTS, false)
     ;
         
     /*
@@ -61,6 +66,7 @@ public enum FileSystemEntries {
      *  └───system
      *      ├───data_image
      *      └───internals
+     *          ├───load
      *          └───saveme
      */
   //@formatter:on
@@ -71,12 +77,26 @@ public enum FileSystemEntries {
     private FileSystemEntries parent;
     private boolean isSuffix;
 
+    /**
+     * A new file system entry
+     * 
+     * @param name
+     *            The name of the entry.<br>
+     *            If null, it will be back-filled
+     * @param parent
+     *            The parent FileSystemEntries in the hierarchy
+     * @param isSuffix
+     *            if false, the given path in the
+     *            {@link FileSystemEntries#buildPath(String...)} will be
+     *            appended to the entry.<br>
+     *            If true, it won't (only back-filling will be allowed)
+     */
     private FileSystemEntries(String name, FileSystemEntries parent, boolean isSuffix) {
         this.name = name;
         this.parent = parent;
         this.isSuffix = false;// isSuffix; // TODO: suffix support is disabled
     }
-    
+
     private String buildPathAux(List<String> base) {
         String out = name;
 
@@ -89,18 +109,20 @@ public enum FileSystemEntries {
             out = base.get(0);
             base.remove(0);
         }
-        
+
         return out;
     }
 
     private String buildPathRecurcive(List<String> base) {
-        return parent == null ? buildPathAux(base) : PathBuilder.buildPath(parent.buildPathRecurcive(base), buildPathAux(base));
+        return parent == null ? buildPathAux(base)
+                        : PathBuilder.buildPath(parent.buildPathRecurcive(base), buildPathAux(base));
     }
 
     /**
      * builds the path with the correct formatting.
      * <p>
      * look in {@link FileSystemEntryTest} for examples
+     * 
      * @param base
      * @return
      */

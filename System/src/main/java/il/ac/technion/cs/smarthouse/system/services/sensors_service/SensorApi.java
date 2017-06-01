@@ -5,63 +5,142 @@ import java.util.function.Consumer;
 
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 
+/**
+ * An API class for the developers, that allows interactions with a specific
+ * sensor.
+ * 
+ * @author RON
+ * @since 29-05-2017
+ * @param <T>
+ *            the sensor's messages will be deserialize into this class. T must
+ *            extend SensorData
+ */
 public interface SensorApi<T extends SensorData> {
+    /**
+     * Get the sensor's commercial name
+     * 
+     * @return the sensor's commercial name
+     */
     String getCommercialName();
-    
+
+    /**
+     * Check if the sensor was already found by the SensorApi
+     * 
+     * @return true if the sensor was found, false if not found yet
+     */
     boolean isConnected();
-    
+
     /**
      * Queries the system for the sensor's current location
      * 
-     * @return the sensors location
+     * @return the sensors location.<br>
+     *         if the sensor was not found yet, {@link SensorLocation#UNDEFINED}
+     *         will be returned
      */
     SensorLocation getSensorLocation();
-    
+
     /**
-     * Allows registration to a sensor. on update, the data will be given to the
-     * consumer for farther processing
+     * Allows registration to a sensor. On an update from the sensor, the data
+     * will be given to the consumer for farther processing
      * 
      * @param functionToRun
-     *            A consumer that will receive a seneorClass object initialized
+     *            A consumer that will receive a {@link T} object initialized
      *            with the newest data from the sensor
-     * @throws SensorLostRuntimeException
+     * @return the ID of the subscribed function. Use this ID to unsubscribe the
+     *         listener with {@link SensorApi#unsubscribe(String)}
      */
     String subscribe(Consumer<T> functionToRun);
 
     /**
-     * Allows registration to a sensor. on time, the sensor will be polled and
+     * Subscribe to a sensor on time.<br>
+     * On time, the sensor will be polled and functionToRun will be executed
+     * with the current sensors data
+     * <p>
+     * <code>functionToRun</code> will be executed once at
+     * <code>timeToStartOn</code>
      * 
-     * @param t
-     *            the time when a polling is requested
      * @param functionToRun
-     *            A consumer that will receive a seneorClass object initialized
+     *            A consumer that will receive a {@link T} object initialized
      *            with the newest data from the sensor
-     * @param repeat
-     *            <code>false</code> if you want to query the sensor on the
-     *            given time only once, <code>true</code> otherwise (query at
-     *            this time FOREVER)
-     * @return 
+     * @param timeToStartOn
+     *            The time at which task is to be executed. If the time is in
+     *            the past, the task is scheduled for immediate execution
+     * @return the ID of the subscribed function. Use this ID to unsubscribe the
+     *         listener with {@link SensorApi#unsubscribe(String)}
      */
     String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn);
-    
-    String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn, long miliseconds);
-    
-    String subscribeOnTime(Consumer<T> functionToRun, long miliseconds);
-    
+
     /**
-     * Runs the given function when the sensor is found. If the sensor was already found, the function runs immediately
+     * Subscribe to a sensor on time.<br>
+     * On time, the sensor will be polled and functionToRun will be executed
+     * with the current sensors data
+     * <p>
+     * <code>functionToRun</code> will be executed at
+     * <code>timeToStartOn</code>, and repeat executing every
+     * <code>milliseconds</code> milliseconds
+     * 
      * @param functionToRun
-     * @return
+     *            A consumer that will receive a {@link T} object initialized
+     *            with the newest data from the sensor
+     * @param timeToStartOn
+     *            The time at which task is to be executed. If the time is in
+     *            the past, the task is scheduled for immediate execution
+     * @param milliseconds
+     *            The time in milliseconds between successive executions of
+     *            functionToRun
+     * @return the ID of the subscribed function. Use this ID to unsubscribe the
+     *         listener with {@link SensorApi#unsubscribe(String)}
+     */
+    String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn, long milliseconds);
+
+    /**
+     * Subscribe to a sensor on time.<br>
+     * On time, the sensor will be polled and functionToRun will be executed
+     * with the current sensors data
+     * <p>
+     * <code>functionToRun</code> will be executed every
+     * <code>milliseconds</code> milliseconds
+     * 
+     * @param functionToRun
+     *            A consumer that will receive a {@link T} object initialized
+     *            with the newest data from the sensor
+     * @param milliseconds
+     *            The time in milliseconds between successive executions of
+     *            functionToRun
+     * @return The ID of the subscribed function. Use this ID to unsubscribe the
+     *         listener with {@link SensorApi#unsubscribe(String)}
+     */
+    String subscribeOnTime(Consumer<T> functionToRun, long milliseconds);
+
+    /**
+     * Runs the given function when the sensor is found. If the sensor was
+     * already found, the function runs immediately.
+     * 
+     * @param functionToRun
+     *            A consumer that will receive a {@link T} object initialized
+     *            with the newest data from the sensor
+     * @return The ID of the subscribed function. Use this ID to unsubscribe the
+     *         listener with {@link SensorApi#unsubscribe(String)}
      */
     String runWhenSensorIsFound(Consumer<T> functionToRun);
-    
+
+    /**
+     * Unsubscribe a subscribed listener. If the ID isn't valid, nothing will
+     * happen.
+     * 
+     * @param listenerId
+     *            The ID of the subscribed function
+     */
     void unsubscribe(String listenerId);
 
     /**
-     * Send a message to a sensor.
+     * Send a message to a sensor.<br>
+     * If the sensors is not yet found, the instructions will be buffered and
+     * they will be passed to the sensor when it is found.
      * 
      * @param instruction
-     *            the message that the sensor will receive
+     *            The message that the sensor will receive
+     * @param path The path to send the instruction on
      */
     void instruct(String instruction, String... path);
 }

@@ -55,7 +55,7 @@ public abstract class SystemPresenter implements Initializable {
     }
 
     private void notifyOnLoaded() {
-        log.info("Loaded Presenter: " + getClass().getName());
+        log.trace("Loaded Presenter: " + getClass().getName());
         startedLatch.setTrueAndRelease();
     }
 

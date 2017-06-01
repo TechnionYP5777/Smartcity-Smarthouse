@@ -5,31 +5,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.database.DatabaseManager;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 
 /**
- * The API required by ApplicationHandler in order to allow it desired
- * functionalities.
- * 
- * @author Sharon
  * @author Elia Traore
  * @author Inbal Zukerman
  * @since Dec 13, 2016
  */
-public class DatabaseHandler {  
+public class SensorsManager {
 
-    private static Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
+    private static Logger log = LoggerFactory.getLogger(SensorsManager.class);
 
     private final List<String> sensors = new ArrayList<>();
     private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
-    private final DatabaseManager dbManager = new DatabaseManager(); // TODO: inbal, should be here?
-    
+
     /**
      * Adds a new sensor to the system, initializing its information List.
      * 
@@ -82,20 +74,6 @@ public class DatabaseHandler {
         }
 
         sensorsLocations.put(sensorId, l);
-
-    }
-
-    public void handleUpdateMessage(final String message) {
-        /*try {
-            final String[] parts = message.split(Dispatcher.SEPARATOR);
-            dbManager.addInfo(InfoType.SENSOR,
-                            parts[0].replace((MessageType.UPDATE.toString() + Dispatcher.DELIMITER).toLowerCase(), ""),
-                            parts[1]);
-        } catch (final ParseException e) {
-            log.error("Update message was not handled properly", e);
-
-        }*/
-        // TODO: inbal
 
     }
 

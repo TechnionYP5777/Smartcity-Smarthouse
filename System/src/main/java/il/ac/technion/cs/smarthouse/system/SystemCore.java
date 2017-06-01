@@ -1,10 +1,14 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import java.util.function.BiConsumer;
+
+import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.annotations.Expose;
 
+import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
@@ -21,17 +25,19 @@ public class SystemCore implements Savable {
     private static Logger log = LoggerFactory.getLogger(SystemCore.class);
 
     public final ServiceManager serviceManager = new ServiceManager(this);
-    public final DatabaseHandler databaseHandler = new DatabaseHandler();
-    public final SensorsLocalServer sensorsHandler = new SensorsLocalServer(databaseHandler);
+
+    public final DatabaseManager databaseManager = new DatabaseManager();
     @Expose private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
-    private final FileSystem fileSystem = new FileSystemImpl();
-    protected UserInformation user;
+    @Expose private final FileSystemImpl fileSystem = new FileSystemImpl();
+    public final SensorsLocalServer sensorsLocalServer = new SensorsLocalServer(fileSystem);
+    @Expose protected UserInformation user;
     private boolean userInitialized;
 
     public void initializeSystemComponents() {
-        System.out.println("Initializing system components...");
+        log.info("Initializing system components...");
+        loadSystemFromCloud();
         initFileSystemListeners();
-        new Thread(sensorsHandler).start();
+        new Thread(sensorsLocalServer).start();
     }
 
     public UserInformation getUser() {
@@ -48,19 +54,11 @@ public class SystemCore implements Savable {
     }
 
     public void shutdown() {
-        sensorsHandler.closeSockets();
+        sensorsLocalServer.closeSockets();
     }
 
     public ApplicationsCore getSystemApplicationsHandler() {
         return applicationsHandler;
-    }
-
-    public Dispatcher getSystemDispatcher() {
-        return null;// TODO: stub for now
-    }
-
-    public DatabaseHandler getSystemDatabaseHandler() {
-        return databaseHandler;
     }
 
     public ServiceManager getSystemServiceManager() {
@@ -72,12 +70,45 @@ public class SystemCore implements Savable {
     }
 
     public void initFileSystemListeners() {
-        fileSystem.subscribe((path, data) -> {
-            fileSystem.sendMessage(this.toJsonString(), FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
-            log.info("System interrupt: SAME_ME: " + this.toJsonString());
-        }, FileSystemEntries.SAVEME.buildPath());
+        BiConsumer<String, Object> databaseManagerEventHandler_saveSystem = (path, data) -> {
+            try {
+                final double startTime = System.nanoTime();
+                databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+                databaseManager.addInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath(), this.toJsonString());
+                log.info("Saved to database... Total time: " + (System.nanoTime() - startTime) / 1000000 + " [ms]");
+            } catch (ParseException e) {
+                log.error("System image could not be saved on the cloud server", e);
+            }
+        };
 
-        // TODO: inbal
+        BiConsumer<String, Object> databaseManagerEventHandler_addDataFromPath = (path, data) -> {
+            try {
+                final double startTime = System.nanoTime();
+                databaseManager.addInfo(path, data);
+                log.info("Saved to database (" + path + ")... Total time: " + (System.nanoTime() - startTime) / 1000000
+                                + " [ms]");
+            } catch (ParseException e) {
+                log.error("Data from (" + path + ") could not be saved on the cloud server", e);
+            }
+        };
+
+        fileSystem.subscribe(databaseManagerEventHandler_saveSystem, FileSystemEntries.SAVEME.buildPath());
+        fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath, FileSystemEntries.SENSORS_DATA.buildPath());
+        fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath,
+                        FileSystemEntries.APPLICATIONS_DATA.buildPath());
+    }
+
+    private void loadSystemFromCloud() {
+        try {
+            final double startTime = System.nanoTime();
+            this.populate(databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()).data);
+            fileSystem.deleteFromPath(FileSystemEntries.SENSORS.buildPath());
+            fileSystem.deleteFromPath(FileSystemEntries.SYSTEM.buildPath());
+            log.info("Loaded system from the database cloud... Total time: " + (System.nanoTime() - startTime) / 1000000
+                            + " [ms]");
+        } catch (Exception e) {
+            log.error("Could not load data from the cloud server", e);
+        }
     }
 
 }

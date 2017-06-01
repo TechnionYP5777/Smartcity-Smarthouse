@@ -7,7 +7,7 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
  * @since Apr 1, 2017
  */
 public class Core extends SystemCore {
-    Thread sensorsThread = new Thread(sensorsHandler);
+    Thread sensorsThread = new Thread(sensorsLocalServer);
 
     public Core() {
         sensorsThread.start();
@@ -18,7 +18,7 @@ public class Core extends SystemCore {
             case APPS:
                 return getSystemApplicationsHandler();
             case SENSORS:
-                return sensorsHandler;
+                return sensorsLocalServer;
             case SERVICES:
                 return serviceManager;
             // case DB:

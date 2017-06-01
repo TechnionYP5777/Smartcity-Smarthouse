@@ -3,11 +3,11 @@ package il.ac.technion.cs.smarthouse.networking.messages;
 import org.junit.Assert;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.system.Dispatcher;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
+
 
 
 /**
- * @author Sharon
  * @author Inbal Zukerman
  * @since 30.12.16
  */
@@ -16,7 +16,7 @@ public class MessageTest {
 
     @Test
     public void messagesTest() {
-        final String m1 = Message.createMessage(MessageType.UPDATE, "Stove" + Dispatcher.DELIMITER + "temp", 100, "11:12");
+        final String m1 = Message.createMessage(MessageType.UPDATE, "Stove" + PathBuilder.DELIMITER + "temp", 100, "11:12");
         Assert.assertEquals("update.stove.temp.sensorid-11:12=100", m1);
         
         assert !Message.isFailureMessage(m1);

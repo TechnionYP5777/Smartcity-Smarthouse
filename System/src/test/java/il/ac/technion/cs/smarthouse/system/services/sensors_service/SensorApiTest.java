@@ -44,7 +44,7 @@ public class SensorApiTest {
     }
     
     public void sensorSendMsg(String param1AsStr) {
-        fileSystem.sendMessage(param1AsStr, FileSystemEntries.SENSORS_DATA.buildPath(PARAM1_BASE_PATH, SENSOR_SID));
+        fileSystem.sendMessage(param1AsStr, FileSystemEntries.SENSORS_DATA_FULL__WITH_SENSOR_ID.buildPath(PARAM1_BASE_PATH, SENSOR_SID));
         fileSystem.sendMessage(null, FileSystemEntries.DONE_SENDING_MSG.buildPath(SENSOR_COMM_NAME, SENSOR_SID));
     }
     

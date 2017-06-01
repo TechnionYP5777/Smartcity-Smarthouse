@@ -2,6 +2,8 @@ package il.ac.technion.cs.smarthouse.system.user_information;
 
 import java.util.List;
 
+import com.google.gson.annotations.Expose;
+
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
 /**
@@ -14,11 +16,11 @@ import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 
 public class UserInformation {
 
-    private final String name;
-    private final String id;
-    private String phoneNumber;
-    private String homeAddress;
-    private final ContactsInformation emergencyContacts;
+    @Expose private final String name;
+    @Expose private final String id;
+    @Expose private String phoneNumber;
+    @Expose private String homeAddress;
+    @Expose private final ContactsInformation emergencyContacts;
 
     public UserInformation(final String name, final String id, final String phoneNumber, final String homeAddress) {
 
@@ -27,14 +29,6 @@ public class UserInformation {
         this.phoneNumber = phoneNumber;
         this.homeAddress = homeAddress;
         emergencyContacts = new ContactsInformation();
-
-        // TODO: inbal!
-        /*
-         * DatabaseManager.addInfo(InfoType.NAME, name);
-         * DatabaseManager.addInfo(InfoType.ID, id);
-         * DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
-         * DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
-         */
 
     }
 
@@ -45,12 +39,6 @@ public class UserInformation {
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
 
-        // TODO: inbal!
-        /*
-         * DatabaseManager.deleteInfo(InfoType.PHONE_NUMBER);
-         * DatabaseManager.addInfo(InfoType.PHONE_NUMBER, phoneNumber);
-         */
-
     }
 
     public String getHomeAddress() {
@@ -59,12 +47,6 @@ public class UserInformation {
 
     public void setHomeAddress(final String homeAddress) {
         this.homeAddress = homeAddress;
-
-        // TODO: inbal!
-        /*
-         * DatabaseManager.deleteInfo(InfoType.HOME_ADDRESS);
-         * DatabaseManager.addInfo(InfoType.HOME_ADDRESS, homeAddress);
-         */
 
     }
 

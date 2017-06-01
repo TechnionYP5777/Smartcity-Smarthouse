@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.enum_tests;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -9,7 +10,6 @@ import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.simulator.model.Location;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
-import il.ac.technion.cs.smarthouse.system.InfoType;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -25,7 +25,7 @@ import il.ac.technion.cs.smarthouse.system.services.ServiceType;
  */
 public class EnumsTest {
 
-    final Class<?>[] enumClassesToTest = { InfoType.class, FileSystemEntries.class, SensorLocation.class,
+    final Class<?>[] enumClassesToTest = { FileSystemEntries.class, SensorLocation.class,
             ServiceType.class, MessageType.class, SensorType.class, Location.class, EmergencyLevel.class };
 
     @Test
@@ -36,14 +36,15 @@ public class EnumsTest {
     }
 
     @Test
+    @SuppressWarnings("cast")
     public void enumDeclaredFunctionsWithNoParamsStupidTest() {
         Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of(enumClass.getDeclaredMethods()))
-                        .filter(m -> m.getParameterTypes().length == 0)
-                        .forEach(m -> Stream.of(m.getDeclaringClass().getEnumConstants()).forEach(e -> {
+                        .filter(m -> ((Method) m).getParameterTypes().length == 0)
+                        .forEach(m -> Stream.of(((Method) m).getDeclaringClass().getEnumConstants()).forEach(e -> {
                             try {
-                                m.setAccessible(true);
-                                m.invoke(e);
-                                m.setAccessible(false);
+                                ((Method) m).setAccessible(true);
+                                ((Method) m).invoke(e);
+                                ((Method) m).setAccessible(false);
                             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
                                 e1.printStackTrace();
                                 assert false;

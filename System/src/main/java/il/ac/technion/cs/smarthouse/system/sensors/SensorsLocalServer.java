@@ -10,7 +10,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +17,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.sensors.SensorType;
-import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 
 /**
  * 
@@ -29,18 +27,13 @@ import il.ac.technion.cs.smarthouse.system.DatabaseHandler;
 public class SensorsLocalServer implements Runnable {
     private static Logger log = LoggerFactory.getLogger(SensorsLocalServer.class);
 
-    private final DatabaseHandler databaseHandler;
+    private final FileSystem fileSystem;
     private final Map<String, PrintWriter> routingMap = new HashMap<>();
 
     private List<Closeable> serverSockets = new ArrayList<>();
-    /**
-     * Initializes a new sensors handler object.
-     * 
-     * @param databaseHandler
-     *            database handler of the system
-     */
-    public SensorsLocalServer(final DatabaseHandler databaseHandler) {
-        this.databaseHandler = databaseHandler;
+
+    public SensorsLocalServer(final FileSystem fileSystem) {
+        this.fileSystem = fileSystem;
     }
 
     @Override
@@ -58,7 +51,7 @@ public class SensorsLocalServer implements Runnable {
                 try {
                     final Socket client = server.accept();
                     Class<?>[] params = SensorManagingThread.class.getDeclaredConstructors()[0].getParameterTypes();
-                    managerThreadClass.getConstructor(params).newInstance(client, databaseHandler).start();                    
+                    managerThreadClass.getConstructor(params).newInstance(client, fileSystem).start();                    
                 } catch (final SocketException e) {
                     log.info("Server socket closed, Sensors' server at port "+port+" (TCP) is shutting down");
                     return;
@@ -105,13 +98,14 @@ public class SensorsLocalServer implements Runnable {
     }
 
     public void closeSockets() { 
-        serverSockets.stream().forEach(socket -> {
-                                                    try {
-                                                        socket.close();
-                                                    } catch (IOException | NullPointerException e) {
-                                                        log.warn("I/O exception occurred while closing socket", e);
-                                                    }
-                                                }
+        serverSockets.stream().forEach(
+                        socket -> {
+                                    try {
+                                        socket.close();
+                                    } catch (IOException | NullPointerException e) {
+                                        log.warn("I/O exception occurred while closing socket", e);
+                                    }
+                                }
         );
     }
 }

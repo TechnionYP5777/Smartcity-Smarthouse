@@ -127,11 +127,9 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
                 if (field.isAnnotationPresent(SystemPath.class)) {
                     field.setAccessible(true);
 
-                    field.set(sensorData,
-                                    StringConverter.convert(field.getType(),
-                                                    fileSystem.<String>getData(FileSystemEntries.SENSORS_DATA.buildPath(
-                                                                    field.getAnnotation(SystemPath.class)
-                                                                                    .value(),
+                    field.set(sensorData, StringConverter.convert(field.getType(),
+                                    fileSystem.<String>getData(FileSystemEntries.SENSORS_DATA_FULL__WITH_SENSOR_ID
+                                                    .buildPath(field.getAnnotation(SystemPath.class).value(),
                                                                     sensorId))));
                 }
         } catch (InstantiationException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
@@ -201,7 +199,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
                 // send instructions
                 instructionsQueue.forEach((basePath, instruction) -> fileSystem.sendMessage(instruction,
-                                FileSystemEntries.SENSORS_DATA.buildPath(basePath, sensorId)));
+                                FileSystemEntries.SENSORS_DATA_FULL__WITH_SENSOR_ID.buildPath(basePath, sensorId)));
 
                 return true;
             }
@@ -285,7 +283,8 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         if (sensorId == null)
             instructionsQueue.put(basePath, instruction);
         else
-            fileSystem.sendMessage(instruction, FileSystemEntries.SENSORS_DATA.buildPath(basePath, sensorId));
+            fileSystem.sendMessage(instruction,
+                            FileSystemEntries.SENSORS_DATA_FULL__WITH_SENSOR_ID.buildPath(basePath, sensorId));
     }
 
     @Override
@@ -300,9 +299,9 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     // ===========================================================================
 
     private String subscribeOnTimeAux(final Consumer<T> functionToRun, final LocalTime timeToStartOn,
-                    final Long repeatInMilisec) {
+                    final Long repeatInMillisec) {
         final TimedListener tl = new TimedListener(generateListener_WithSensorDataCreation(functionToRun, true),
-                        timeToStartOn, repeatInMilisec);
+                        timeToStartOn, repeatInMillisec);
         final String id = UuidGenerator.GenerateUniqueIDstring();
         functionsToRunOnTime.put(id, tl);
         if (sensorId != null)
@@ -316,13 +315,13 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     }
 
     @Override
-    public String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn, long miliseconds) {
-        return subscribeOnTimeAux(functionToRun, timeToStartOn, miliseconds);
+    public String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn, long milliseconds) {
+        return subscribeOnTimeAux(functionToRun, timeToStartOn, milliseconds);
     }
 
     @Override
-    public String subscribeOnTime(Consumer<T> functionToRun, long miliseconds) {
-        return subscribeOnTimeAux(functionToRun, null, miliseconds);
+    public String subscribeOnTime(Consumer<T> functionToRun, long milliseconds) {
+        return subscribeOnTimeAux(functionToRun, null, milliseconds);
     }
 
     @Override
