@@ -19,7 +19,7 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsServi
  * @since 7.12.16
  */
 
-// TODO inbal
+
 public abstract class SensorTest {
     private static Logger log = LoggerFactory.getLogger(SensorTest.class);
 

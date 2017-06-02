@@ -33,10 +33,9 @@ public class ServerManager {
 
     public void initialize() {
 
-        log.info("Initializing Database");
         if (init)
             return;
-
+        log.info("Initializing Database");
         Parse.initialize(appId, restAPIKey, serverUrl);
         init = true;
     }

@@ -1,33 +1,45 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import org.junit.Assert;
+import org.junit.Test;
+
+import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
+
 /**
- * @author Sharon
+ * 
  * @author Inbal Zukerman
+ * @since 02-06-2017
  */
-
-/* TODO: inbal
-public class DatabaseHandlerTest {
-    private DatabaseHandler handler;
-
-    @Before
-    public void init() {
-        handler = new DatabaseHandler();
-    }
+public class SensorsManagerTest {
+    private final SensorsManager sManager = new SensorsManager();
+    private final String sensorId = "1122";
+    private final String sensorId2 = "11";
 
     @Test
-    public void newSensorLocationIsUndefined() throws SensorNotFoundException {
-        handler.addSensor("00");
+    public void testSensorManager() {
+        sManager.addSensor(sensorId);
+        assert sManager.sensorExists(sensorId);
 
-        Assert.assertEquals(SensorLocation.UNDEFINED, handler.getSensorLocation("00"));
+        try {
+            sManager.setSensorLocation(sensorId, SensorLocation.DINING_ROOM);
+            Assert.assertEquals(SensorLocation.DINING_ROOM, sManager.getSensorLocation(sensorId));
+        } catch (SensorNotFoundException e) {
+            assert null != null;
+        }
+
     }
 
-    @Test
-    public void correctlySetSensorLocation() throws SensorNotFoundException {
-        handler.addSensor("00");
-        handler.setSensorLocation("00", SensorLocation.BATHROOM);
-        Assert.assertEquals(SensorLocation.BATHROOM, handler.getSensorLocation("00"));
+    @Test(expected = SensorNotFoundException.class)
+    public void testSensorWasntFound() throws SensorNotFoundException {
+
+        sManager.setSensorLocation(sensorId2, SensorLocation.BASEMENT);
 
     }
 
+    @Test(expected = SensorNotFoundException.class)
+    public void testSensorWasntFound2() throws SensorNotFoundException {
+
+        sManager.getSensorLocation(sensorId2);
+
+    }
 }
-*/

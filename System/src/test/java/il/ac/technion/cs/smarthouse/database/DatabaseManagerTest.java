@@ -1,6 +1,8 @@
 package il.ac.technion.cs.smarthouse.database;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.parse4j.ParseException;
 
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
@@ -14,30 +16,27 @@ public class DatabaseManagerTest {
 
     private final DatabaseManager dbManager = new DatabaseManager();
     
-    @Test public void test(){
-        System.out.println(dbManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()));
-    }
-/*
+   
     @Test
     public void additionAndDeletionTest() {
-        final String[] path = new String[3];
-        path[0] = InfoType.TEST.toString();
-        path[1] = InfoType.SENSOR.toString();
-        path[2] = "temp";
+
 
         try {
-            dbManager.addInfo(DispatcherCore.getPathAsString(path), "32");
-            Assert.assertNotEquals("", dbManager.getLastEntry(path));
-            Assert.assertEquals("test.sensor.temp=32", dbManager.getLastEntry(path));
+            dbManager.addInfo(FileSystemEntries.TESTS_SENSORS_DATA.buildPath(), "32");
+            Assert.assertNotEquals("", dbManager.getLastEntry(FileSystemEntries.TESTS_SENSORS_DATA.buildPath()));
+            
+            
+            Assert.assertEquals("32", dbManager.getLastEntry(FileSystemEntries.TESTS_SENSORS_DATA.buildPath()).data);
 
-            dbManager.deleteInfo(InfoType.TEST);
-            Assert.assertEquals("", dbManager.getLastEntry(path));
+            dbManager.deleteInfo(FileSystemEntries.TESTS.buildPath());
+            Assert.assertNull(dbManager.getLastEntry(FileSystemEntries.TESTS.buildPath()).data);
+            
 
-            dbManager.addInfo(DispatcherCore.getPathAsString(path), "55");
-            Assert.assertEquals("test.sensor.temp=55", dbManager.getLastEntry(path));
+            dbManager.addInfo(FileSystemEntries.TESTS_SENSORS_DATA.buildPath(), "55");
+            Assert.assertEquals("55", dbManager.getLastEntry(FileSystemEntries.TESTS_SENSORS_DATA.buildPath()).data);
 
-            dbManager.deleteInfo(path);
-            Assert.assertEquals("", dbManager.getLastEntry(path));
+            dbManager.deleteInfo(FileSystemEntries.TESTS_SENSORS_DATA.buildPath());
+            Assert.assertNull(dbManager.getLastEntry(FileSystemEntries.TESTS_SENSORS_DATA.buildPath()).data);
 
         } catch (final ParseException e) {
             assert null != null;
@@ -45,42 +44,5 @@ public class DatabaseManagerTest {
 
     }
 
-    @Test
-    public void testLastEntry() {
-        final String[] path = new String[4];
-        path[0] = InfoType.TEST.toString();
-        path[1] = InfoType.SENSOR.toString();
-        path[2] = "temp";
-        path[3] = "house";
 
-        try {
-            dbManager.addInfo(DispatcherCore.getPathAsString(path), "10");
-
-            path[3] = "garden";
-            dbManager.addInfo(DispatcherCore.getPathAsString(path), "23");
-
-            String lastEntry = dbManager.getLastEntry(InfoType.TEST.toString() + Dispatcher.DELIMITER
-                            + InfoType.SENSOR.toString() + Dispatcher.DELIMITER + "temp");
-
-            Assert.assertEquals("test.sensor.temp.garden=23", lastEntry);
-
-            path[3] = "house";
-            lastEntry = dbManager.getLastEntry(path);
-            Assert.assertEquals("test.sensor.temp.house=10", lastEntry);
-
-            Collection<String> tmp = dbManager.getPathChildren(
-                            InfoType.TEST.toString() + Dispatcher.DELIMITER + InfoType.SENSOR.toString());
-
-            // TODO: inbal
-            System.out.println("results found: " + tmp.size());
-
-            for (String str : tmp)
-                System.out.println(str + "\n");
-
-            dbManager.deleteInfo(InfoType.TEST);
-        } catch (ParseException e) {
-            assert null != null;
-        }
-    }
-*/
 }

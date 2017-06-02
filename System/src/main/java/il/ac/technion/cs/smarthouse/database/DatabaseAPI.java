@@ -1,7 +1,5 @@
 package il.ac.technion.cs.smarthouse.database;
 
-import java.util.Collection;
-
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 
@@ -50,13 +48,4 @@ public interface DatabaseAPI {
      */
     public DataEntry getLastEntry(String... path);
 
-    /**
-     * This methods returns a collection which contains all children saved for a
-     * certain path
-     * 
-     * @param path
-     *            the path to find all children of
-     * @return Collection with the children
-     */
-    public Collection<String> getPathChildren(String... path);
 }

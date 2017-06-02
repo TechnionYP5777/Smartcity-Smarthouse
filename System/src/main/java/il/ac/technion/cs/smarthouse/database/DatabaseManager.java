@@ -1,7 +1,5 @@
 package il.ac.technion.cs.smarthouse.database;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,29 +104,6 @@ public class DatabaseManager implements DatabaseAPI {
         }
         return new DataEntry("", null);
 
-    }
-
-    @Override
-    public Collection<String> getPathChildren(final String... path) {
-        final Collection<String> res = new ArrayList<>(); // TODO: inbal
-        try {
-            final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
-
-            findQuery.whereStartsWith(pathCol, PathBuilder.buildPath(path).toLowerCase());
-
-            if (findQuery.find() != null) {
-                System.out.println("find size is: " + findQuery.find().size());
-                for (final ParseObject iterator : findQuery.find())
-                    res.add(iterator.getString(pathCol).replaceAll(PathBuilder.buildPath(path), "")); // TODO
-                                                                                                      // inbal
-
-            }
-
-        } catch (final ParseException e) {
-            // TODO: inbal
-        }
-
-        return res;
     }
 
 }
