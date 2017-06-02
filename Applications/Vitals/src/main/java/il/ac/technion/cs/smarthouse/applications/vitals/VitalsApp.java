@@ -10,6 +10,7 @@ import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 
 /** This class contains the logic of the vitals signs application.
  * @author Yarden
@@ -80,22 +81,29 @@ public class VitalsApp extends SmartHouseApplication {
     @Override public String getApplicationName() {
         return "Vitals Application";
     }
+    
+    public static class VitalsSensor extends SensorData {
+        @SystemPath("vitals.pulse")
+        public int pulse;
+        @SystemPath("vitals.systolicBP")
+        public int systolicBP;
+        @SystemPath("vitals.diastolicBP")
+        public int diastolicBP;
+        
+
+        int getPulse() {
+            return pulse;
+        }
+
+        int getSystolicBP() {
+            return systolicBP;
+        }
+
+        int getDiastolicBP() {
+            return diastolicBP;
+        }
+    
+    }
 }
 
-class VitalsSensor extends SensorData {
-    private int pulse;
-    private int systolicBP;
-    private int diastolicBP;
 
-    int getPulse() {
-        return pulse;
-    }
-
-    int getSystolicBP() {
-        return systolicBP;
-    }
-
-    int getDiastolicBP() {
-        return diastolicBP;
-    }
-}
