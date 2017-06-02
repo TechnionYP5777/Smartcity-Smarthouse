@@ -179,7 +179,7 @@ public class FileSystemImpl implements FileSystem, Savable {
 
     @Override
     public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {
-        log.info("subscribed on " + PathBuilder.buildPath(path));
+        log.info("FileSystem: subscribed on " + PathBuilder.buildPath(path) + " | Subscriber is " + new Throwable().getStackTrace()[1].getClassName());
         FileNode n = fileSystemWalk(true, null, path).fileNode;
         String id = n.addEventHandler(eventHandler);
         listenersBuffer.put(id, n);
@@ -194,7 +194,7 @@ public class FileSystemImpl implements FileSystem, Savable {
     @Override
     public void sendMessage(Object data, String... path) {
         for (BiConsumer<String, Object> eventHandler : fileSystemWalk(true, data, path).eventHandlersOnBranch) {
-            log.info("firing on " + PathBuilder.buildPath(path));
+            log.info("FileSystem: sending message on " + PathBuilder.buildPath(path) + " | Sender is " + new Throwable().getStackTrace()[1].getClassName());
             eventHandler.accept(PathBuilder.buildPath(path), data);
         }
     }

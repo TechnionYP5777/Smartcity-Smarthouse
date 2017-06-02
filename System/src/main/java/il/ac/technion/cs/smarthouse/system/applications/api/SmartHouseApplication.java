@@ -57,7 +57,6 @@ public abstract class SmartHouseApplication {
                         new ApplicationPath(PathType.CLASS_NAME, new Throwable().getStackTrace()[1].getClassName()));
 
         m.getPresenter().gotoAppsTab();
-        m.getPresenter().getModel().getFileSystem().sendMessage(null, FileSystemEntries.SAVEME.buildPath());
     }
 
     // [start] Public - Services to the SystemCore
@@ -109,7 +108,7 @@ public abstract class SmartHouseApplication {
         final URL url = getResource(fxmlFileName);
         final FXMLLoader fxmlLoader = new FXMLLoader(url);
         fxmlLoader.setClassLoader(getClass().getClassLoader());
-        log.info("Creating FXML for app: " + getApplicationName() + " (" + getClass().getName() + ") from: " + url);
+        log.info("Creating FXML for app \"" + getApplicationName() + "\" (" + getClass().getName() + ") from: " + url);
         return fxmlLoader;
     }
 
