@@ -194,10 +194,10 @@ public class FileSystemImpl implements FileSystem, Savable {
 
     @Override
     public void sendMessage(Object data, String... path) {
-        for (BiConsumer<String, Object> eventHandler : fileSystemWalk(true, data, path).eventHandlersOnBranch) {
-            log.info("FileSystem: sending message on " + PathBuilder.buildPath(path) + " | Sender is " + new Throwable().getStackTrace()[1].getClassName());
+        FileSystemWalkResults r = fileSystemWalk(true, data, path);
+        log.info("FileSystem: Sending message on " + PathBuilder.buildPath(path) + " | Sender is " + new Throwable().getStackTrace()[1].getClassName() + " | Firing " + r.eventHandlersOnBranch.size() + " listeners");
+        for (BiConsumer<String, Object> eventHandler : r.eventHandlersOnBranch)
             eventHandler.accept(PathBuilder.buildPath(path), data);
-        }
     }
 
     @Override

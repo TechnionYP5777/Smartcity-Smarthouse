@@ -27,7 +27,7 @@ public class SystemCore implements Savable {
     public final ServiceManager serviceManager = new ServiceManager(this);
 
     public final DatabaseManager databaseManager = new DatabaseManager();
-    @Expose private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
+    private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     @Expose private final FileSystemImpl fileSystem = new FileSystemImpl();
     public final SensorsLocalServer sensorsLocalServer = new SensorsLocalServer(fileSystem);
     @Expose protected UserInformation user;
@@ -35,8 +35,8 @@ public class SystemCore implements Savable {
 
     public void initializeSystemComponents() {
         log.info("Initializing system components...");
-        // loadSystemFromCloud();
-        // initFileSystemListeners();
+         //loadSystemFromCloud();
+         //initFileSystemListeners();
         new Thread(sensorsLocalServer).start();
     }
 
@@ -98,6 +98,7 @@ public class SystemCore implements Savable {
                         FileSystemEntries.APPLICATIONS_DATA.buildPath());
     }
 
+    @SuppressWarnings("unused")
     private void loadSystemFromCloud() {
         try {
             final double startTime = System.nanoTime();
