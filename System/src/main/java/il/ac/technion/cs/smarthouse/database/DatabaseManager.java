@@ -54,9 +54,12 @@ public class DatabaseManager implements DatabaseAPI {
         serverManager.initialize();
 
         final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
-        findQuery.whereStartsWith(pathCol, fsEntry.toString().toLowerCase());
+
+        findQuery.whereStartsWith(pathCol, fsEntry.buildPath().toLowerCase());
 
         try {
+            if (findQuery.find() == null)
+                return;
             for (final ParseObject iterator : findQuery.find())
                 serverManager.deleteById(parseClass, iterator.getObjectId());
 

@@ -35,7 +35,7 @@ public class DatabaseManagerTest {
             dbManager.addInfo(FileSystemEntries.TESTS_SENSORS_DATA.buildPath(), "55");
             Assert.assertEquals("55", dbManager.getLastEntry(FileSystemEntries.TESTS_SENSORS_DATA.buildPath()).data);
 
-            dbManager.deleteInfo(FileSystemEntries.TESTS_SENSORS_DATA.buildPath());
+            dbManager.deleteInfo(FileSystemEntries.TESTS_SENSORS_DATA);
             Assert.assertNull(dbManager.getLastEntry(FileSystemEntries.TESTS_SENSORS_DATA.buildPath()).data);
 
         } catch (final ParseException e) {
