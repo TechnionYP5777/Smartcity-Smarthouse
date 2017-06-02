@@ -13,12 +13,9 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
-import il.ac.technion.cs.smarthouse.networking.messages.Message;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
 
 /**
  * This class represents a sensor that can get instructions and operate
@@ -60,8 +57,11 @@ public abstract class InteractiveSensor extends Sensor {
             log.error("I/O error occurred when the sensor's instructions socket was created", e);
         }
         
-        final String $ = new RegisterMessage(this).send(instOut, instIn);
-        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
+        try{
+            final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(instOut, instIn);
+            return $ != null && new SensorMessage($).isSuccesful();
+        }catch(IllegalMessageBaseExecption e){}
+        return false;
     }
 
     /**

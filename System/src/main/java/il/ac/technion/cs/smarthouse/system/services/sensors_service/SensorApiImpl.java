@@ -132,11 +132,12 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
                                                     .buildPath(field.getAnnotation(SystemPath.class).value(),
                                                                     sensorId))));
                 }
+            log.info("created "+ sensorData +"succesfully. IM A BIG BOY!");
         } catch (InstantiationException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
             log.error("SensorApi's OnSensorMsgRecived subscriber has failed! - commercialName = " + getCommercialName()
                             + " sensorId = " + sensorId, e);
             return null;
-        }
+        } 
 
         sensorData.sensorLocation = getSensorLocation();
         sensorData.commercialName = getCommercialName();

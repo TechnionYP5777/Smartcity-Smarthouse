@@ -15,13 +15,15 @@ import com.google.gson.Gson;
  * @author Yarden
  * @since 11.12.16 */
 public abstract class Message {
-    private final MessageType type;
     private static Logger log = LoggerFactory.getLogger(Message.class);
+    protected MessageType type;
 
     /** Creates a new message object.
      * @param type type of this message */
     public Message(final MessageType type) {
         this.type = type;
+    }
+    protected Message(){
     }
 
     /** @return type of this message */

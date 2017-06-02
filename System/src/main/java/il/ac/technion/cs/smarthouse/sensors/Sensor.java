@@ -16,19 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.print.DocFlavor.STRING;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
-import il.ac.technion.cs.smarthouse.networking.messages.Message;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
-import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
 
 /**
  * Represents a physical component that can send information.
@@ -51,7 +45,6 @@ public abstract class Sensor {
     protected String commname, id;
     protected List<String> observationSendingPaths, instructionRecievingPaths;
     
-    protected String stringSystemIp;
     protected InetAddress systemIP;
     protected int systemPort;
 
@@ -60,7 +53,8 @@ public abstract class Sensor {
     protected BufferedReader in;
 
     
-    /** see {@link #Sensor(String, String, List, List, int)}
+    /**  
+     * see {@link #Sensor(String, String, List, List, int)}
      * */
     public Sensor(final String commname, final String id, final List<String> observationSendingPaths, final int systemPort) {
         this(commname, id, observationSendingPaths, null, systemPort);
@@ -83,13 +77,6 @@ public abstract class Sensor {
         this.instructionRecievingPaths = instructionRecievingPaths;
         
         this.systemPort = systemPort;
-
-        try {
-            this.systemIP = getSystemIp();
-        } catch (IOException | InterruptedException e) {
-            log.warn(getClass()+ " sensor failed to get system IP, using localhost");
-            stringSystemIp = "127.0.0.1";
-        }
     }
     
     public String getCommname() {
@@ -138,7 +125,13 @@ public abstract class Sensor {
      */
     public boolean register() {
         try {
-            this.systemIP = systemIP != null ? systemIP : InetAddress.getByName(stringSystemIp);
+            //use arp
+            try {
+                this.systemIP = getSystemIp();
+            } catch (IOException | InterruptedException e) {
+                log.warn(getClass()+ " sensor failed to get system IP, using localhost");
+                this.systemIP = InetAddress.getByName("127.0.0.1");
+            }
             socket = new Socket(systemIP, systemPort);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -146,8 +139,11 @@ public abstract class Sensor {
             log.error("I/O error occurred when the sensor's socket was created", e);
         }
         
-        final String $ = new RegisterMessage(this).send(out, in);
-        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
+        try{
+            final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(out, in);
+            return $ != null && new SensorMessage($).isSuccesful();
+        }catch(IllegalMessageBaseExecption e){}
+        return false;
     }
 
     /**
@@ -169,7 +165,9 @@ public abstract class Sensor {
 
         lastMessagesMillis.add(currMillis);
 
-        new UpdateMessage(id,data).send(out, null);
+        try {
+            new SensorMessage(MessageType.UPDATE, this).setData(data).send(out, null);
+        } catch (IllegalMessageBaseExecption e) {}
     }
     
     public void updateSystem(final String path, final Object data) {

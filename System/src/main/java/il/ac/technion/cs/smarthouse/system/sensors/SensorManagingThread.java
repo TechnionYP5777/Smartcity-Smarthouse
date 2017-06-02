@@ -12,12 +12,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.Message;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
-import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
+import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 
 /**
@@ -65,30 +62,24 @@ public abstract class SensorManagingThread extends Thread {
         
         try {
             for (String input = in.readLine(); input != null; input = in.readLine()) {
-                final Message message = MessageFactory.create(input);
-                if (message == null) {
-                    new AnswerMessage(Answer.FAILURE).send(out, null);
-                    return;
+                final SensorMessage message;
+                try{
+                    message = new SensorMessage(input);
+                }catch (IllegalMessageBaseExecption e) {
+                    log.debug(e+"");
+                    try {
+                        new SensorMessage(MessageType.FAILURE_ANSWER).send(out, null);
+                    } catch (IllegalMessageBaseExecption e1) {}
+                    continue;
                 }
 //                log.info("Received message: " + message + "\n");
-                switch (message.getType()) {
-                    case REGISTRATION:
-                        handleRegisterMessage((RegisterMessage) message);
-                        break;
-                    case UPDATE:
-                        handleUpdateMessage((UpdateMessage) message);
-                        break;
-                    default:
-                        log.warn("message could not be parsed");
-                }
+                handleSensorMessage(message);
             }
         } catch (final IOException e) {
         } finally {
            closeResources();
         }
     }
-
-    protected abstract void handleRegisterMessage(final RegisterMessage msg);
     
-    protected abstract void handleUpdateMessage(final UpdateMessage msg);
+    protected abstract void handleSensorMessage(final SensorMessage msg);
 }

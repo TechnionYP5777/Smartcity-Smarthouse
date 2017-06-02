@@ -21,11 +21,18 @@ public class MessageTypeTest {
         Assert.assertEquals(MessageType.UPDATE, MessageType.fromString("uPdAtE"));
     }
 
-    @Test public void createAnswerTypeFromString() {
-        Assert.assertEquals(MessageType.ANSWER, MessageType.fromString("answer"));
-        Assert.assertEquals(MessageType.ANSWER, MessageType.fromString("Answer"));
-        Assert.assertEquals(MessageType.ANSWER, MessageType.fromString("answer".toUpperCase()));
-        Assert.assertEquals(MessageType.ANSWER, MessageType.fromString("aNsWeR"));
+    @Test public void createSuccessAnswerTypeFromString() {
+        Assert.assertEquals(MessageType.SUCCESS_ANSWER, MessageType.fromString("SUCCESS_answer"));
+        Assert.assertEquals(MessageType.SUCCESS_ANSWER, MessageType.fromString("SUCCESS_Answer"));
+        Assert.assertEquals(MessageType.SUCCESS_ANSWER, MessageType.fromString("SUCCESS_answer".toUpperCase()));
+        Assert.assertEquals(MessageType.SUCCESS_ANSWER, MessageType.fromString("SUCCESS_aNsWeR"));
+    }
+    
+    @Test public void createFailureAnswerTypeFromString() {
+        Assert.assertEquals(MessageType.FAILURE_ANSWER, MessageType.fromString("FAILURE_answer"));
+        Assert.assertEquals(MessageType.FAILURE_ANSWER, MessageType.fromString("FAILURE_Answer"));
+        Assert.assertEquals(MessageType.FAILURE_ANSWER, MessageType.fromString("FAILURE_answer".toUpperCase()));
+        Assert.assertEquals(MessageType.FAILURE_ANSWER, MessageType.fromString("FAILURE_aNsWeR"));
     }
 
     @Test public void unknownStringOfMessageTypeReturnsNull() {

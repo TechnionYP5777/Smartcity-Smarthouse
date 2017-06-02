@@ -9,13 +9,10 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
 import il.ac.technion.cs.smarthouse.networking.messages.Message;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.UpdateMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
@@ -35,16 +32,18 @@ public class InstructionsSenderThread extends SensorManagingThread {
         super(client, fs);
     }
 
-    @Override protected void handleRegisterMessage(final RegisterMessage msg) {
-        for(String path : msg.instructionRecievingPaths){
-            filesystem.subscribe((p, data)->out.println(p+" "+data), 
-                                FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),msg.getSensorId()));
-            //todo: is right path?
+    @Override
+    protected void handleSensorMessage(SensorMessage msg) {
+        if (MessageType.REGISTRATION.equals(msg.getType())){
+            for(String path : msg.getInstructionRecievingPaths()){
+                filesystem.subscribe((p, data)->out.println(p+" "+data), 
+                                    FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),msg.getSensorId()));
+            }
+            try {
+                new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
+            } catch (IllegalMessageBaseExecption e) {}
+        }else{
+            log.error(getClass()+" object shouldn't receive an update msg.");
         }
-        new AnswerMessage(Answer.SUCCESS).send(out, null);
-    }
-    
-    @Override protected void handleUpdateMessage(final UpdateMessage msg) {
-        log.error(getClass()+" object shouldn't receive an update msg.");
     }
 }
