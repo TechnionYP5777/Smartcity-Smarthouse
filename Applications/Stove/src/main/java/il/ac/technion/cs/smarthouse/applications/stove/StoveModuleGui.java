@@ -41,20 +41,21 @@ public class StoveModuleGui extends SmartHouseApplication {
     @Override public String getApplicationName() {
         return "Stove Application";
     }
-}
-
-class StoveSensor extends SensorData {
-    @SystemPath("stove.is_on")
-    private boolean on;
     
-    @SystemPath("stove.temperature")
-    private int temperature;
+    public static class StoveSensor extends SensorData {
+        @SystemPath("stove.is_on")
+        private boolean on;
+        
+        @SystemPath("stove.temperature")
+        private int temperature;
 
-    boolean isOn() {
-        return on;
-    }
+        boolean isOn() {
+            return on;
+        }
 
-    int getTemperture() {
-        return temperature;
+        int getTemperture() {
+            return temperature;
+        }
     }
 }
+
