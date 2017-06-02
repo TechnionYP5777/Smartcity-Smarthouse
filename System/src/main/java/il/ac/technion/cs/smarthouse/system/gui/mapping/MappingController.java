@@ -2,15 +2,20 @@ package il.ac.technion.cs.smarthouse.system.gui.mapping;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -18,6 +23,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class MappingController extends SystemPresenter {
+    private static Logger log = LoggerFactory.getLogger(MappingController.class);
+
+    private static final List<SensorLocation> allLocations = Arrays.asList(SensorLocation.values());
     private final Map<String, SensorInfoController> sensors = new HashMap<>();
     private final Map<SensorLocation, List<String>> locationsContents = new HashMap<>();
     private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
@@ -25,9 +33,10 @@ public class MappingController extends SystemPresenter {
 
     @FXML private VBox sensorsPaneList;
     @FXML private Canvas canvas;
-
+    
     @Override
     public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+        log.debug("initialized the map gui");
         house.addRoom(new Room(320, 320, 150, 150, SensorLocation.LIVING_ROOM));
         house.addRoom(new Room(470, 320, 150, 150, SensorLocation.KITCHEN));
         house.addRoom(new Room(470, 470, 150, 150, SensorLocation.DINING_ROOM));
@@ -40,20 +49,38 @@ public class MappingController extends SystemPresenter {
         canvas.setHeight(2000);
 
         drawMapping();
+        
+        log.debug("subscribed to sensors root");
+        //this is somewhat whiteboxing. todo: reactor nicer.
+       model.getFileSystem().subscribe(
+                       (p,l)->{
+                           log.debug("map gui was notified on (path,val)=("+p+","+l+")");
+                           String commname = p.split("\\.")[1];
+                           String id = p.split("\\.")[2];
+                           if(l != null && allLocations.contains(l) && !sensors.containsKey(id))
+                               Platform.runLater(()->{
+                                   try {
+                                       addSensor(id,commname);
+                                   } catch (Exception e) {
+                                       log.warn("failed to add sensor: "+id+" (received path "+p+") to GuiMapping.\nGot execption"+e);
+                                   }
+                               });
+                            
+                       },
+                       FileSystemEntries.SENSORS.buildPath(""));
+       log.debug("finished initialized the map gui");
 
-        /*
-         * TODO: is needed? dbHandler.addNewSensorsListener(id ->
-         * Platform.runLater(() -> { try { addSensor(id); } catch (final
-         * Exception ¢) { ¢.printStackTrace(); } }));
-         */
     }
 
-    public void addSensor(final String id) throws Exception, SensorNotFoundException {
+    public void addSensor(final String id, final String commName) throws Exception {
+        if(sensors.containsKey(id))
+            return;
         final PresenterInfo child = createChildPresenter("sensor_info.fxml");
         sensorsPaneList.getChildren().add(child.getRootViewNode());
 
         final SensorInfoController controller = child.getPresenter();
         controller.setId(id);
+        controller.setName(commName);
         sensors.put(id, controller);
     }
 
