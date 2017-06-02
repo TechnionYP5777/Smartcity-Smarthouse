@@ -95,18 +95,18 @@ public enum FileSystemEntries {
      *            appended to the entry.<br>
      *            If true, it won't (only back-filling will be allowed)
      */
-    private FileSystemEntries(String name, FileSystemEntries parent, boolean isSuffix) {
+    private FileSystemEntries(final String name, final FileSystemEntries parent, final boolean isSuffix) {
         this.name = name;
         this.parent = parent;
         this.isSuffix = false;// isSuffix; // TODO: suffix support is disabled
     }
 
-    private String buildPathAux(List<String> base) {
+    private String buildPathAux(final List<String> base) {
         String out = name;
 
         if (name == null) {
             if (base.isEmpty()) {
-                RuntimeException r = new RuntimeException("the given path is not big enough");
+                final RuntimeException r = new RuntimeException("the given path is not big enough");
                 log.error("Error while building the path", r);
                 throw r;
             }
@@ -117,7 +117,7 @@ public enum FileSystemEntries {
         return out;
     }
 
-    private String buildPathRecurcive(List<String> base) {
+    private String buildPathRecurcive(final List<String> base) {
         return parent == null ? buildPathAux(base)
                         : PathBuilder.buildPath(parent.buildPathRecurcive(base), buildPathAux(base));
     }
@@ -130,8 +130,9 @@ public enum FileSystemEntries {
      * @param base
      * @return
      */
-    public String buildPath(String... base) {
-        ArrayList<String> l = PathBuilder.decomposePath(base).stream().collect(Collectors.toCollection(ArrayList::new));
+    public String buildPath(final String... base) {
+        final ArrayList<String> l = PathBuilder.decomposePath(base).stream()
+                        .collect(Collectors.toCollection(ArrayList::new));
         if (!isSuffix)
             return PathBuilder.buildPath(buildPathRecurcive(l), PathBuilder.buildPath(l.toArray(new String[0])));
         if (!l.isEmpty())

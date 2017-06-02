@@ -5,8 +5,6 @@ import java.util.Arrays;
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
-
-
 /**
  * This class represents shutters sensor and contains its logic.
  * 
@@ -15,8 +13,9 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
  * @since 8.5.17
  */
 public class ShutterSensor extends Sensor {
-    final static String openPath = "shutter" + PathBuilder.DELIMITER + "open"; 
+    final static String openPath = "shutter" + PathBuilder.DELIMITER + "open";
     final static String timePath = "shutter" + PathBuilder.DELIMITER + "time";
+
     public ShutterSensor(final String id, final String systemIP, final int systemPort) {
         super("ShutterSensor", id, Arrays.asList(openPath, timePath), systemPort);
     }

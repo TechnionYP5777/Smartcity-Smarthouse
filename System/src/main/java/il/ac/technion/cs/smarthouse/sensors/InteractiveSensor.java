@@ -13,12 +13,9 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage;
-import il.ac.technion.cs.smarthouse.networking.messages.AnswerMessage.Answer;
-import il.ac.technion.cs.smarthouse.networking.messages.Message;
-import il.ac.technion.cs.smarthouse.networking.messages.MessageFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.networking.messages.RegisterMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
+import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
 
 /**
  * This class represents a sensor that can get instructions and operate
@@ -37,9 +34,8 @@ public abstract class InteractiveSensor extends Sensor {
     protected InstructionHandler handler;
     protected long period;
 
-    public InteractiveSensor(final String commname, final String id, 
-                                final List<String> observationSendingPaths, final List<String> instructionRecievingPaths,
-                                final int systemPort, final int instPort) {
+    public InteractiveSensor(final String commname, final String id, final List<String> observationSendingPaths,
+                    final List<String> instructionRecievingPaths, final int systemPort, final int instPort) {
         super(commname, id, observationSendingPaths, instructionRecievingPaths, systemPort);
         this.instPort = instPort;
     }
@@ -59,9 +55,12 @@ public abstract class InteractiveSensor extends Sensor {
         } catch (final IOException e) {
             log.error("I/O error occurred when the sensor's instructions socket was created", e);
         }
-        
-        final String $ = new RegisterMessage(this).send(instOut, instIn);
-        return $ != null && ((AnswerMessage) MessageFactory.create($)).getAnswer() == Answer.SUCCESS;
+
+        try {
+            final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(instOut, instIn);
+            return $ != null && new SensorMessage($).isSuccesful();
+        } catch (final IllegalMessageBaseExecption e) {}
+        return false;
     }
 
     /**
@@ -82,10 +81,11 @@ public abstract class InteractiveSensor extends Sensor {
     public boolean operate() {
 
         try {
-            if(instIn.ready()){
-               String[] inst = instIn.readLine().split("");
-               //todo: elia document external the instruction format
-               return handler.applyInstruction(inst[0], Arrays.asList(inst).stream().skip(1).reduce("", (a,b)-> a+ " "+b)); 
+            if (instIn.ready()) {
+                final String[] inst = instIn.readLine().split("");
+                // todo: elia document external the instruction format
+                return handler.applyInstruction(inst[0],
+                                Arrays.asList(inst).stream().skip(1).reduce("", (a, b) -> a + " " + b));
             }
             return false;
         } catch (final IOException e) {
@@ -104,13 +104,12 @@ public abstract class InteractiveSensor extends Sensor {
     public void pollInstructions(final long p) {
         period = p;
         new Timer().schedule(new TimerTask() {
-                                    
-                                    @Override
-                                    public void run() {
-                                       operate();
-                                        
-                                    }
-                                }
-                                            , 0, period);
+
+            @Override
+            public void run() {
+                operate();
+
+            }
+        }, 0, period);
     }
 }

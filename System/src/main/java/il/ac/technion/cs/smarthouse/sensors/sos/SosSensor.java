@@ -5,8 +5,6 @@ import java.util.Arrays;
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
-
-
 /**
  * This class represents an SOS button and contains its logic.
  * 
@@ -16,8 +14,9 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
  */
 public class SosSensor extends Sensor {
     static final String obserPath = "sos" + PathBuilder.DELIMITER + "pressed";
-    public SosSensor(final String id, final String systemIP, final int systemPort) {
-        super("SosSensor", id ,Arrays.asList(obserPath),  systemPort);
+
+    public SosSensor(final String id, final int systemPort) {
+        super("iSOS", id, Arrays.asList(obserPath), systemPort);
     }
 
     public void updateSystem() {

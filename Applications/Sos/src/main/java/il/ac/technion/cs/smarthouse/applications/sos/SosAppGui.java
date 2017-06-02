@@ -10,6 +10,7 @@ import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 
@@ -55,12 +56,15 @@ public class SosAppGui extends SmartHouseApplication {
     @Override public String getApplicationName() {
         return "SOS Application";
     }
-}
+    
+    public static class SosSensor extends SensorData {
+        @SystemPath("sos.pressed")
+        private boolean pressed;
 
-class SosSensor extends SensorData {
-    private boolean pressed;
-
-    boolean isPressed() {
-        return pressed;
+        boolean isPressed() {
+            return pressed;
+        }
     }
+
 }
+

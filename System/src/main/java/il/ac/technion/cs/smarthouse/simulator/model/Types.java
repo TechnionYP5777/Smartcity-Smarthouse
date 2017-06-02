@@ -7,7 +7,7 @@ public enum Types {
     STRING("String");
     private final String fieldDescription;
 
-    private Types(String value) {
+    private Types(final String value) {
         fieldDescription = value;
     }
 

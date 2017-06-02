@@ -140,7 +140,8 @@ public interface SensorApi<T extends SensorData> {
      * 
      * @param instruction
      *            The message that the sensor will receive
-     * @param path The path to send the instruction on
+     * @param path
+     *            The path to send the instruction on
      */
     void instruct(String instruction, String... path);
 }

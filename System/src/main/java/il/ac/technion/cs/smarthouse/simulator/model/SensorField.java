@@ -1,10 +1,10 @@
 package il.ac.technion.cs.smarthouse.simulator.model;
 
 public class SensorField {
-    private String name;
-    private Types type;
+    private final String name;
+    private final Types type;
 
-    public SensorField(String name, Types type) {
+    public SensorField(final String name, final Types type) {
         this.name = name;
         this.type = type;
     }
@@ -16,10 +16,10 @@ public class SensorField {
     public Types getType() {
         return type;
     }
-    
+
     @Override
-    public boolean equals(Object ¢) {
-        return ¢ instanceof SensorField && this.name.equals(((SensorField) ¢).getName());
+    public boolean equals(final Object ¢) {
+        return ¢ instanceof SensorField && name.equals(((SensorField) ¢).getName());
     }
 
     @Override

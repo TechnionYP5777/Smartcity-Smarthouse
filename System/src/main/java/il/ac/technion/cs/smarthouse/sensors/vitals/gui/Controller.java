@@ -40,7 +40,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(final URL location, final ResourceBundle __) {
-        sensor = new VitalsSensor(Random.sensorId(), "127.0.0.1", 40001);
+        sensor = new VitalsSensor(Random.sensorId(), 40001);
         for (boolean res = false; !res;)
             res = sensor.register();
         pulseLabelSensor.setDisable(false);

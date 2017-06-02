@@ -19,7 +19,10 @@ public class PathBuilder {
      */
     public static final String DELIMITER = ".";
 
-    public static final String SPLIT_REGEX = "\\" + DELIMITER; //todo: rename as DELIMITER_REGEX ?
+    public static final String SPLIT_REGEX = "\\" + DELIMITER; // todo: rename
+                                                               // as
+                                                               // DELIMITER_REGEX
+                                                               // ?
 
     /**
      * SEPARATOR is the const string we will use to part the path of the message
@@ -27,15 +30,15 @@ public class PathBuilder {
      */
     public static final String SEPARATOR = "=";
 
-    public static String buildPath(String... nodes) {
+    public static String buildPath(final String... nodes) {
         return String.join(DELIMITER, Stream.of(nodes).filter(s -> !s.isEmpty()).collect(Collectors.toList()));
     }
 
-    public static String buildPath(List<String> nodes) {
+    public static String buildPath(final List<String> nodes) {
         return buildPath(nodes.toArray(new String[0]));
     }
 
-    public static List<String> decomposePath(String... path) {
+    public static List<String> decomposePath(final String... path) {
         return path.length == 0 ? Collections.emptyList() : Arrays.asList(buildPath(path).split(SPLIT_REGEX));
     }
 

@@ -9,6 +9,7 @@ import java.util.TimerTask;
 
 /**
  * Mostly a wrapper for {@link Timer}
+ * 
  * @author RON
  * @author Elia Traore
  * @since 31-05-2017
@@ -25,9 +26,16 @@ public class TimedListener {
 
     /**
      * TimedListener c'tor
-     * @param task the task to run
-     * @param timeToStartOn The time at which task is to be executed. If the time is in the past or null, the task is scheduled for immediate execution.
-     * @param repeatInMilisec The time in milliseconds between successive task executions. If null, the task will only run once.
+     * 
+     * @param task
+     *            the task to run
+     * @param timeToStartOn
+     *            The time at which task is to be executed. If the time is in
+     *            the past or null, the task is scheduled for immediate
+     *            execution.
+     * @param repeatInMilisec
+     *            The time in milliseconds between successive task executions.
+     *            If null, the task will only run once.
      */
     public TimedListener(final Runnable task, final LocalTime timeToStartOn, final Long repeatInMilisec) {
         this.task = task;
@@ -38,16 +46,16 @@ public class TimedListener {
     public void start() {
         if (currentTimer != null)
             return;
-        
-        TimerTask t = new TimerTask() {
+
+        final TimerTask t = new TimerTask() {
             @Override
             public void run() {
                 task.run();
             }
         };
-        
+
         currentTimer = new Timer();
-        
+
         if (repeatInMilisec == null && timeToStartOn == null)
             currentTimer.schedule(t, localTimeToDate(LocalTime.MIN));
         else if (repeatInMilisec == null && timeToStartOn != null)

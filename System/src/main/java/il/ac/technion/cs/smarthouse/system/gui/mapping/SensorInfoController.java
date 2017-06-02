@@ -29,20 +29,21 @@ public class SensorInfoController extends SystemPresenter {
     public void init(final SystemCore model, final URL location, final ResourceBundle __) {
         fileSystem = model.getFileSystem();
 
-        room.getItems().addAll(Arrays.asList(SensorLocation.values()).stream().map(loc->loc+"").collect(Collectors.toList()));
+        room.getItems().addAll(Arrays.asList(SensorLocation.values()).stream().map(loc -> loc + "")
+                        .collect(Collectors.toList()));
 
         room.getSelectionModel().select(0);
         room.valueProperty().addListener((ov, prevVal, newVal) -> {
-            SensorLocation newLoc = SensorLocation.fromString(newVal);
-            //update view
+            final SensorLocation newLoc = SensorLocation.fromString(newVal);
+            // update view
             this.<MappingController>getParentPresenter().updateSensorLocation(id, newLoc);
-            //update model
-            fileSystem.sendMessage(newLoc, FileSystemEntries.LOCATION.buildPath(commName,id));
+            // update model
+            fileSystem.sendMessage(newLoc, FileSystemEntries.LOCATION.buildPath(commName, id));
         });
     }
 
     public SensorInfoController setName(final String name) {
-        this.commName = name;
+        commName = name;
         nameLabel.setText("Name: " + name);
         updateUI();
 

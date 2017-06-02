@@ -8,8 +8,8 @@ import il.ac.technion.cs.smarthouse.system.services.Service;
 /**
  * A service API for the sensors.
  * <p>
- * This service allows the developer to get {@link SensorApiImpl}'s for sensors by
- * their commercial names
+ * This service allows the developer to get {@link SensorApiImpl}'s for sensors
+ * by their commercial names
  * 
  * @author RON
  * @since 02-04-2017
@@ -30,12 +30,13 @@ public final class SensorsService extends Service {
      *            able to interact with the same
      * @param commercialNames
      *            a list of possible commercial names
-     * @return a list of {@link SensorApiImpl} that are registered with one of the
-     *         given commercial names
+     * @return a list of {@link SensorApiImpl} that are registered with one of
+     *         the given commercial names
      * @throws SensorNotFoundException
      *             if no sensor was found with the given commercial names
      */
-    public <T extends SensorData> SensorApi<T> getSensor(final String commercialName, final Class<T> sensorDataClass, final SensorLocation defaultLocation) {
+    public <T extends SensorData> SensorApi<T> getSensor(final String commercialName, final Class<T> sensorDataClass,
+                    final SensorLocation defaultLocation) {
         return new SensorApiImpl<>(systemCore.getFileSystem(), commercialName, defaultLocation, sensorDataClass);
     }
 
