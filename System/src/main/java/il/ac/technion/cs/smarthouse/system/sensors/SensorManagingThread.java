@@ -39,47 +39,43 @@ public abstract class SensorManagingThread extends Thread {
         } catch (IOException | NullPointerException e) {
             log.error("I/O error occurred during managing thread initializing", e);
         }
-        this.resources = Arrays.asList(in,out,client);
+        resources = Arrays.asList(in, out, client);
     }
-    
-    private void closeResources(){
-        resources.stream()
-                    .forEach(c -> {
-                                    try {
-                                        c.close();
-                                    } catch (IOException | NullPointerException e) {
-                                }
-                            }
-                    );
+
+    private void closeResources() {
+        resources.stream().forEach(c -> {
+            try {
+                c.close();
+            } catch (IOException | NullPointerException e) {}
+        });
     }
-    
+
     @Override
     public void run() {
-        if(resources.contains(null)){
+        if (resources.contains(null)) {
             closeResources();
             return;
         }
-        
+
         try {
             for (String input = in.readLine(); input != null; input = in.readLine()) {
                 final SensorMessage message;
-                try{
+                try {
                     message = new SensorMessage(input);
-                }catch (IllegalMessageBaseExecption e) {
-                    log.debug(e+"");
+                } catch (final IllegalMessageBaseExecption e) {
+                    log.debug(e + "");
                     try {
                         new SensorMessage(MessageType.FAILURE_ANSWER).send(out, null);
-                    } catch (IllegalMessageBaseExecption e1) {}
+                    } catch (final IllegalMessageBaseExecption e1) {}
                     continue;
                 }
-//                log.info("Received message: " + message + "\n");
+                // log.info("Received message: " + message + "\n");
                 handleSensorMessage(message);
             }
-        } catch (final IOException e) {
-        } finally {
-           closeResources();
+        } catch (final IOException e) {} finally {
+            closeResources();
         }
     }
-    
+
     protected abstract void handleSensorMessage(final SensorMessage msg);
 }

@@ -13,11 +13,11 @@ import javafx.scene.text.FontWeight;
 @SuppressWarnings("restriction")
 public class SensorLabel extends StackPane {
     private final double PADDING = 5;
-    private CustomLabel text = new CustomLabel(PADDING, PADDING);
+    private final CustomLabel text = new CustomLabel(PADDING, PADDING);
     private boolean movable;
 
-    SensorLabel(double x, double y, String text) {
-        this.movable = true;
+    SensorLabel(final double x, final double y, final String text) {
+        movable = true;
         this.text.setText(text);
         this.text.setStyle("-fx-background-color: white;");
         this.text.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -28,7 +28,7 @@ public class SensorLabel extends StackPane {
     }
 
     public void switchMovableState() {
-        this.movable = !this.movable;
+        movable = !movable;
     }
 
     // make a node movable by dragging it around with the mouse.
@@ -36,7 +36,7 @@ public class SensorLabel extends StackPane {
         final Delta dragDelta = new Delta();
         setOnMousePressed(mouseEvent -> {
             if (SensorLabel.this.movable) {
-                this.toFront();
+                toFront();
                 // record a delta distance for the drag and drop operation.
                 dragDelta.x = mouseEvent.getX();
                 dragDelta.y = mouseEvent.getY();
@@ -49,10 +49,10 @@ public class SensorLabel extends StackPane {
         });
         setOnMouseDragged(mouseEvent -> {
             if (SensorLabel.this.movable) {
-                double newX = getLayoutX() + mouseEvent.getX() - dragDelta.x;
+                final double newX = getLayoutX() + mouseEvent.getX() - dragDelta.x;
                 if (newX > 0 && newX < getScene().getWidth())
                     setLayoutX(newX);
-                double newY = getLayoutY() + mouseEvent.getY() - dragDelta.y;
+                final double newY = getLayoutY() + mouseEvent.getY() - dragDelta.y;
                 if (newY > 0 && newY < getScene().getHeight())
                     setLayoutY(newY);
             }
@@ -77,10 +77,10 @@ public class SensorLabel extends StackPane {
     private class CustomLabel extends Label {
         private final double RIGHT_MARGIN = 5;
 
-        CustomLabel(double x, double y) {
+        CustomLabel(final double x, final double y) {
             relocate(x, y);
             getStyleClass().add("editable-text");
-            FontMetrics metrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(getFont());
+            final FontMetrics metrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(getFont());
             setPrefWidth(RIGHT_MARGIN);
             textProperty().addListener((observable, oldTextString,
                             newTextString) -> setPrefWidth(metrics.computeStringWidth(newTextString) + RIGHT_MARGIN));

@@ -27,13 +27,13 @@ public class SimulatorController implements Initializable {
     private RoomViewController livingroom;
     private RoomViewController bathroom;
     private RoomViewController bedroom;
-    private ObservableList<SensorData> sensors = FXCollections.observableArrayList();
+    private final ObservableList<SensorData> sensors = FXCollections.observableArrayList();
 
     public ObservableList<SensorData> getSensors() {
         return sensors;
     }
 
-    public SimulatorController removeSensor(SensorData ¢) {
+    public SimulatorController removeSensor(final SensorData ¢) {
         sensors.remove(¢);
         switch (¢.getLocation()) {
             case KITCHEN:
@@ -54,16 +54,16 @@ public class SimulatorController implements Initializable {
         return this;
     }
 
-    public void addSensor(SensorData ¢) {
+    public void addSensor(final SensorData ¢) {
         sensors.add(¢);
         tableController.setData(sensors);
     }
-    
-    public void loadSensorList(){
+
+    public void loadSensorList() {
         final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("sensors_list_ui.fxml"));
         try {
             JavaFxHelper.placeNodeInPane(fxmlLoader.load(), sidePane);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -72,13 +72,13 @@ public class SimulatorController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle __) {
+    public void initialize(final URL location, final ResourceBundle __) {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("room_ui.fxml"));
 
         tab1.setText("Bedroom");
         try {
             tab1.setContent((Node) loader.load());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -90,7 +90,7 @@ public class SimulatorController implements Initializable {
         tab2.setText("Bathroom");
         try {
             tab2.setContent((Node) loader.load());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -102,7 +102,7 @@ public class SimulatorController implements Initializable {
         tab3.setText("Kitchen");
         try {
             tab3.setContent((Node) loader.load());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -114,7 +114,7 @@ public class SimulatorController implements Initializable {
         tab4.setText("Livingroom");
         try {
             tab4.setContent((Node) loader.load());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

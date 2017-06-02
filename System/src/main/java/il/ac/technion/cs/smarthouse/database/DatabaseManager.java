@@ -33,9 +33,9 @@ public class DatabaseManager implements DatabaseAPI {
         public String path;
         public String data;
 
-        public DataEntry(String p, String d) {
-            this.path = p;
-            this.data = d;
+        public DataEntry(final String p, final String d) {
+            path = p;
+            data = d;
         }
     }
 
@@ -109,8 +109,8 @@ public class DatabaseManager implements DatabaseAPI {
     }
 
     @Override
-    public Collection<String> getPathChildren(String... path) {
-        Collection<String> res = new ArrayList<>(); // TODO: inbal
+    public Collection<String> getPathChildren(final String... path) {
+        final Collection<String> res = new ArrayList<>(); // TODO: inbal
         try {
             final ParseQuery<ParseObject> findQuery = ParseQuery.getQuery(parseClass);
 

@@ -34,7 +34,7 @@ public class MainSystemGui extends Application {
 
         s.setOnCloseRequest(e -> kill());
     }
-    
+
     public void launchGui(final String... args) {
         JavaFxHelper.startGui(this, args);
     }
@@ -61,7 +61,7 @@ public class MainSystemGui extends Application {
             wait();
         return presenterInfo.getPresenter();
     }
-    
+
     public void addOnKillListener(final Runnable listner) {
         onKillListeners.add(listner);
     }

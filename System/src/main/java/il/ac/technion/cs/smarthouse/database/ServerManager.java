@@ -26,8 +26,8 @@ public class ServerManager {
     public static final String restAPIKey = "ag9h-84j3-ked2-94j5";
 
     private static boolean init;
-    
-    public ServerManager(){
+
+    public ServerManager() {
         initialize();
     }
 

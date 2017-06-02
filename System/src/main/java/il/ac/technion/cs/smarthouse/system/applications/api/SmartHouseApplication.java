@@ -64,13 +64,13 @@ public abstract class SmartHouseApplication {
     public final SmartHouseApplication setDataFromApplicationManager(final SystemCore $, final String applicationId) {
         if (systemCore != null)
             return this;
-        
+
         systemCore = $;
         serviceManager = systemCore.getSystemServiceManager();
         fileSystem = systemCore.getFileSystem();
-        
+
         this.applicationId = applicationId;
-        
+
         return this;
     }
 
@@ -131,7 +131,8 @@ public abstract class SmartHouseApplication {
      */
     public final void saveApplicationData(final Object data, final String... path) {
         assert applicationId != null;
-        fileSystem.sendMessage(data, FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));
+        fileSystem.sendMessage(data,
+                        FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));
     }
 
     /**
@@ -141,7 +142,8 @@ public abstract class SmartHouseApplication {
      */
     public final <T> T readApplicationData(final String... path) {
         assert applicationId != null;
-        return fileSystem.getData(FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));
+        return fileSystem.getData(
+                        FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));
     }
     // [end]
 

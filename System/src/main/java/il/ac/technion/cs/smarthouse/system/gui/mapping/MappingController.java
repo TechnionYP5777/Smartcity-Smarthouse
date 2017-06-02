@@ -33,7 +33,7 @@ public class MappingController extends SystemPresenter {
 
     @FXML private VBox sensorsPaneList;
     @FXML private Canvas canvas;
-    
+
     @Override
     public void init(final SystemCore model, final URL location, final ResourceBundle __) {
         log.debug("initialized the map gui");
@@ -49,31 +49,30 @@ public class MappingController extends SystemPresenter {
         canvas.setHeight(2000);
 
         drawMapping();
-        
+
         log.debug("subscribed to sensors root");
-        //this is somewhat whiteboxing. todo: reactor nicer.
-       model.getFileSystem().subscribe(
-                       (p,l)->{
-                           log.debug("map gui was notified on (path,val)=("+p+","+l+")");
-                           String commname = p.split("\\.")[1];
-                           String id = p.split("\\.")[2];
-                           if(l != null && allLocations.contains(l) && !sensors.containsKey(id))
-                               Platform.runLater(()->{
-                                   try {
-                                       addSensor(id,commname);
-                                   } catch (Exception e) {
-                                       log.warn("failed to add sensor: "+id+" (received path "+p+") to GuiMapping.\nGot execption"+e);
-                                   }
-                               });
-                            
-                       },
-                       FileSystemEntries.SENSORS.buildPath(""));
-       log.debug("finished initialized the map gui");
+        // this is somewhat whiteboxing. todo: reactor nicer.
+        model.getFileSystem().subscribe((p, l) -> {
+            log.debug("map gui was notified on (path,val)=(" + p + "," + l + ")");
+            final String commname = p.split("\\.")[1];
+            final String id = p.split("\\.")[2];
+            if (l != null && allLocations.contains(l) && !sensors.containsKey(id))
+                Platform.runLater(() -> {
+                    try {
+                        addSensor(id, commname);
+                    } catch (final Exception e) {
+                        log.warn("failed to add sensor: " + id + " (received path " + p
+                                        + ") to GuiMapping.\nGot execption" + e);
+                    }
+                });
+
+        }, FileSystemEntries.SENSORS.buildPath(""));
+        log.debug("finished initialized the map gui");
 
     }
 
     public void addSensor(final String id, final String commName) throws Exception {
-        if(sensors.containsKey(id))
+        if (sensors.containsKey(id))
             return;
         final PresenterInfo child = createChildPresenter("sensor_info.fxml");
         sensorsPaneList.getChildren().add(child.getRootViewNode());

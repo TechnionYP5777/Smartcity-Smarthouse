@@ -7,13 +7,13 @@ import javafx.collections.ObservableList;
 public class SensorData {
     static int id_counter;
     private String name;
-    private ObservableList<SensorField> fields = FXCollections.observableArrayList();
+    private final ObservableList<SensorField> fields = FXCollections.observableArrayList();
     private SensorLabel label;
     private Location location;
-    private int myId;
+    private final int myId;
 
-    public SensorData(String name, SensorLabel label, Location location) {
-        this.myId = id_counter++;
+    public SensorData(final String name, final SensorLabel label, final Location location) {
+        myId = id_counter++;
         this.name = name;
         this.label = label;
         this.location = location;
@@ -23,7 +23,7 @@ public class SensorData {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -31,9 +31,9 @@ public class SensorData {
         return fields;
     }
 
-    public void addField(SensorField ¢) {
+    public void addField(final SensorField ¢) {
         if (!fields.contains(¢))
-            this.fields.add(¢);
+            fields.add(¢);
     }
 
     public Location getLocation() {
@@ -44,12 +44,12 @@ public class SensorData {
         return label;
     }
 
-    public void setLabel(SensorLabel ¢) {
-        this.label = ¢;
+    public void setLabel(final SensorLabel ¢) {
+        label = ¢;
     }
 
-    public void setLocation(Location ¢) {
-        this.location = ¢;
+    public void setLocation(final Location ¢) {
+        location = ¢;
     }
 
     public int getMyId() {
@@ -58,14 +58,14 @@ public class SensorData {
 
     @Override
     public int hashCode() {
-        return 31 * (myId + 31 * (((location == null) ? 0 : location.hashCode())
-                        + 31 * (((label == null) ? 0 : label.hashCode())
-                                        + 31 * (((fields == null) ? 0 : fields.hashCode()) + 31))))
-                        + ((name == null) ? 0 : name.hashCode());
+        return 31 * (myId + 31
+                        * ((location == null ? 0 : location.hashCode()) + 31 * ((label == null ? 0 : label.hashCode())
+                                        + 31 * ((fields == null ? 0 : fields.hashCode()) + 31))))
+                        + (name == null ? 0 : name.hashCode());
     }
 
     @Override
-    public boolean equals(Object ¢) {
-        return ¢ instanceof SensorData && this.myId == ((SensorData) ¢).getMyId();
+    public boolean equals(final Object ¢) {
+        return ¢ instanceof SensorData && myId == ((SensorData) ¢).getMyId();
     }
 }

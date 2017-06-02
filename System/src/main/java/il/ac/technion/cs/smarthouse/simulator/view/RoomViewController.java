@@ -8,8 +8,6 @@ import java.util.ResourceBundle;
 
 import il.ac.technion.cs.smarthouse.simulator.model.Location;
 import il.ac.technion.cs.smarthouse.simulator.model.SensorData;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -31,23 +29,23 @@ public class RoomViewController implements Initializable {
     private Pane pane;
     private SimulatorController mainController;
 
-    public RoomViewController setMainController(SimulatorController mainController) {
+    public RoomViewController setMainController(final SimulatorController mainController) {
         this.mainController = mainController;
         return this;
     }
 
-    private void addSensor(double x, double y) {
-        TextInputDialog dialog = new TextInputDialog("sensor name");
+    private void addSensor(final double x, final double y) {
+        final TextInputDialog dialog = new TextInputDialog("sensor name");
         dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("Homeicon.png"))));
         dialog.setTitle("Create Sensor");
         dialog.setHeaderText("Config your simulator");
         dialog.setContentText("Please enter sensor name:");
-        Optional<String> result = dialog.showAndWait();
+        final Optional<String> result = dialog.showAndWait();
         if (!result.isPresent())
             return;
-        String name = result.get();
-        SensorLabel label = new SensorLabel(x, y, name);
-        SensorData sensor = new SensorData(name, label, this.location);
+        final String name = result.get();
+        final SensorLabel label = new SensorLabel(x, y, name);
+        final SensorData sensor = new SensorData(name, label, location);
         mainController.addSensor(sensor);
         RoomViewController.this.labels.add(label);
         pane.getChildren().add(label);
@@ -58,35 +56,31 @@ public class RoomViewController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location1, ResourceBundle __) {
+    public void initialize(final URL location1, final ResourceBundle __) {
         pane = new Pane();
         pane.setOnMouseClicked(event -> {
             if (event.getTarget() == pane && inEditMode)
                 addSensor(event.getX(), event.getY());
         });
 
-        editButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent __1) {
-                String buttonText = RoomViewController.this.inEditMode ? "Edit" : "Save";
-                editButton.setText(buttonText);
-                RoomViewController.this.labels.forEach(c -> c.switchMovableState());
-                RoomViewController.this.inEditMode = !RoomViewController.this.inEditMode;
-            }
+        editButton.setOnAction(__1 -> {
+            final String buttonText = inEditMode ? "Edit" : "Save";
+            editButton.setText(buttonText);
+            labels.forEach(c -> c.switchMovableState());
+            inEditMode = !inEditMode;
         });
 
     }
 
-    public RoomViewController setImageUrl(String location) {
-        this.image_url = location;
+    public RoomViewController setImageUrl(final String location) {
+        image_url = location;
         imagePane.getChildren().addAll(
-                        (new StackPane(new ImageView(new Image(getClass().getResourceAsStream(image_url))), pane)));
+                        new StackPane(new ImageView(new Image(getClass().getResourceAsStream(image_url))), pane));
         return this;
     }
 
-    public RoomViewController setLocation(Location ¢) {
-        this.location = ¢;
+    public RoomViewController setLocation(final Location ¢) {
+        location = ¢;
         return this;
     }
 

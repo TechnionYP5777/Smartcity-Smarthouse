@@ -1,10 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.sensors;
 
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -28,78 +25,89 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
  */
 public class SensorHandlerThread extends SensorManagingThread {
     private static Logger log = LoggerFactory.getLogger(SensorHandlerThread.class);
-    
-    private Map<String, String> legalSystemPaths = new HashMap<>();//short path & full path
-    private Map<String, String> dataBuffer = new HashMap<>(); // short path & counter
+
+    private final Map<String, String> legalSystemPaths = new HashMap<>();// short
+                                                                         // path
+                                                                         // &
+                                                                         // full
+                                                                         // path
+    private Map<String, String> dataBuffer = new HashMap<>(); // short path &
+                                                              // counter
     private String donePath;
-    
+
     public SensorHandlerThread(final Socket client, final FileSystem fs) {
         super(client, fs);
     }
-    
+
     @Override
-    protected void handleSensorMessage(SensorMessage msg) {
-        switch(msg.getType()){
+    protected void handleSensorMessage(final SensorMessage msg) {
+        switch (msg.getType()) {
             case REGISTRATION:
                 handleRegisterMessage(msg);
                 break;
             case UPDATE:
                 handleUpdateMessage(msg);
                 break;
-            default:;
+            default:
+                ;
         }
     }
-    
-    private void handleRegisterMessage(final SensorMessage msg) {
-        log.info(msg.toJson()+"\n"+msg.getObservationSendingPaths());
-        filesystem.sendMessage(SensorLocation.UNDEFINED, 
-                                FileSystemEntries.LOCATION.buildPath(msg.getSensorCommName(),msg.getSensorId()));
 
-        donePath = FileSystemEntries.DONE_SENDING_MSG.buildPath(msg.getSensorCommName(),msg.getSensorId());
-        msg.getObservationSendingPaths()
-            .stream()
-            .forEach(p -> legalSystemPaths.put(p, FileSystemEntries.SENSORS_DATA.buildPath(p ,msg.getSensorId())));
-        
-        msg.getObservationSendingPaths()
-        .stream()
-        .forEach(p->log.info("Resolved "+p+" to the full path:"+legalSystemPaths.get(p)));
+    private void handleRegisterMessage(final SensorMessage msg) {
+        log.info(msg.toJson() + "\n" + msg.getObservationSendingPaths());
+        filesystem.sendMessage(SensorLocation.UNDEFINED,
+                        FileSystemEntries.LOCATION.buildPath(msg.getSensorCommName(), msg.getSensorId()));
+
+        donePath = FileSystemEntries.DONE_SENDING_MSG.buildPath(msg.getSensorCommName(), msg.getSensorId());
+        msg.getObservationSendingPaths().stream().forEach(
+                        p -> legalSystemPaths.put(p, FileSystemEntries.SENSORS_DATA.buildPath(p, msg.getSensorId())));
+
+        msg.getObservationSendingPaths().stream()
+                        .forEach(p -> log.info("Resolved " + p + " to the full path:" + legalSystemPaths.get(p)));
         log.info("done showing resolved paths");
         try {
             new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
-        } catch (IllegalMessageBaseExecption e) {}
+        } catch (final IllegalMessageBaseExecption e) {}
     }
-    
+
     private void handleUpdateMessage(final SensorMessage msg) {
-        for(String path : msg.getData().keySet()){
+        for (final String path : msg.getData().keySet())
             bufferOrSend(path, msg.getData().get(path));
-        }
     }
-    
-    private void bufferOrSend(String path, String data){
-        String oldData = dataBuffer.put(path, data);
-        Boolean bufferIsReady = dataBuffer.size() == legalSystemPaths.size(); //we have data waiting to be sent on all paths
-        
-        if(oldData != null && bufferIsReady)
-            log.error("The dataBuffer invariant isn't preserved:"
-                            + "(path,olddata)=("+path+","+data+"), dataBuffer="+data
-                            +" .\nSome data update might be lost.");
-        
-        if(oldData == null && !bufferIsReady)
-            return; //nothing is ready to be sent
-        
-        final Map<String,String> toSend = bufferIsReady ? dataBuffer : new HashMap<>();
-        
-        if(bufferIsReady)
+
+    private void bufferOrSend(final String path, final String data) {
+        final String oldData = dataBuffer.put(path, data);
+        final Boolean bufferIsReady = dataBuffer.size() == legalSystemPaths.size(); // we
+                                                                                    // have
+                                                                                    // data
+                                                                                    // waiting
+                                                                                    // to
+                                                                                    // be
+                                                                                    // sent
+                                                                                    // on
+                                                                                    // all
+                                                                                    // paths
+
+        if (oldData != null && bufferIsReady)
+            log.error("The dataBuffer invariant isn't preserved:" + "(path,olddata)=(" + path + "," + data
+                            + "), dataBuffer=" + data + " .\nSome data update might be lost.");
+
+        if (oldData == null && !bufferIsReady)
+            return; // nothing is ready to be sent
+
+        final Map<String, String> toSend = bufferIsReady ? dataBuffer : new HashMap<>();
+
+        if (bufferIsReady)
             dataBuffer = new HashMap<>();
         else // oldData != null
             toSend.put(path, oldData);
-        
-        for(String p : toSend.keySet()){
+
+        for (final String p : toSend.keySet()) {
             filesystem.sendMessage(toSend.get(p), legalSystemPaths.get(p));
-            log.info("Sent: "+toSend.get(path)+" on path: "+legalSystemPaths.get(p));
+            log.info("Sent: " + toSend.get(path) + " on path: " + legalSystemPaths.get(p));
         }
-//        toSend.keySet().stream().forEach(p->{});
-        filesystem.sendMessage(null, donePath);       
+        // toSend.keySet().stream().forEach(p->{});
+        filesystem.sendMessage(null, donePath);
     }
 
 }

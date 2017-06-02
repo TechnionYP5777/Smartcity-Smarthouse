@@ -12,7 +12,7 @@ public class SimulatorGui extends Application {
     Circle circle_Red, circle_Green, circle_Blue;
 
     @Override
-    public void start(Stage s) throws Exception {
+    public void start(final Stage s) throws Exception {
         final Parent root = FXMLLoader.load(getClass().getResource("main_simulator_window.fxml"));
         final Scene scene = new Scene(root, 1250, 580);
         s.setTitle("Sensor Simulator");
@@ -21,7 +21,7 @@ public class SimulatorGui extends Application {
         s.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         launch(args);
     }
 }

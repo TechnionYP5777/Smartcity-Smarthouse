@@ -7,6 +7,7 @@ import il.ac.technion.cs.smarthouse.simulator.model.SensorData;
 import il.ac.technion.cs.smarthouse.simulator.model.SensorField;
 import il.ac.technion.cs.smarthouse.simulator.model.Types;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,15 +21,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.property.SimpleBooleanProperty;
 
 public class SensorConfigurationController implements Initializable {
 
@@ -48,35 +45,17 @@ public class SensorConfigurationController implements Initializable {
     SimulatorController mainController;
 
     @Override
-    public void initialize(URL location, ResourceBundle __) {
+    public void initialize(final URL location, final ResourceBundle __) {
         nameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
         typeColumn.setCellValueFactory(
                         cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType().getFieldDescription()));
-        deleteColumn.setCellValueFactory(
-                        new Callback<TableColumn.CellDataFeatures<SensorField, Boolean>, ObservableValue<Boolean>>() {
-
-                            @Override
-                            public ObservableValue<Boolean> call(CellDataFeatures<SensorField, Boolean> param) {
-                                return new SimpleBooleanProperty(param.getValue() != null);
-                            }
-                        });
-        deleteColumn.setCellFactory(new Callback<TableColumn<SensorField, Boolean>, TableCell<SensorField, Boolean>>() {
-
-            @Override
-            public TableCell<SensorField, Boolean> call(TableColumn<SensorField, Boolean> p) {
-                ButtonCell $ = new ButtonCell();
-                $.setAlignment(Pos.CENTER);
-                return $;
-            }
-
+        deleteColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        deleteColumn.setCellFactory(p -> {
+            final ButtonCell $ = new ButtonCell();
+            $.setAlignment(Pos.CENTER);
+            return $;
         });
-        backButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent __1) {
-                mainController.loadSensorList();
-            }
-        });
+        backButton.setOnAction(__1 -> mainController.loadSensorList());
         HBox.setHgrow(addNameField, Priority.ALWAYS);
         HBox.setHgrow(addTypeField, Priority.ALWAYS);
         HBox.setHgrow(saveButton, Priority.ALWAYS);
@@ -89,21 +68,11 @@ public class SensorConfigurationController implements Initializable {
         addTypeField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
         saveButton.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
 
-        saveButton.setOnAction(new EventHandler<ActionEvent>() {
+        saveButton.setOnAction(__1 -> addField());
 
-            @Override
-            public void handle(ActionEvent __1) {
-                addField();
-            }
-        });
-
-        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent __1) {
-                mainController.removeSensor(currentSensor);
-                mainController.loadSensorList();
-            }
+        deleteButton.setOnAction(__1 -> {
+            mainController.removeSensor(currentSensor);
+            mainController.loadSensorList();
         });
 
         messageButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -112,7 +81,7 @@ public class SensorConfigurationController implements Initializable {
                 try {
                     final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("message_ui.fxml"));
                     final Parent root1 = (Parent) fxmlLoader.load();
-                    ((MessageViewController)fxmlLoader.getController()).setCurrentSensor(currentSensor);
+                    ((MessageViewController) fxmlLoader.getController()).setCurrentSensor(currentSensor);
                     final Stage stage = new Stage();
                     stage.setScene(new Scene(root1));
                     stage.show();
@@ -123,18 +92,18 @@ public class SensorConfigurationController implements Initializable {
         });
     }
 
-    public SensorConfigurationController setSensor(SensorData ¢) {
-        this.currentSensor = ¢;
-        this.fieldsTable.setItems(this.currentSensor.getFields());
-        this.sensorNameLabel.setText(this.currentSensor.getName());
+    public SensorConfigurationController setSensor(final SensorData ¢) {
+        currentSensor = ¢;
+        fieldsTable.setItems(currentSensor.getFields());
+        sensorNameLabel.setText(currentSensor.getName());
         return this;
     }
 
     void addField() {
-        this.currentSensor.addField(new SensorField(addNameField.getText(), addTypeField.getValue()));
+        currentSensor.addField(new SensorField(addNameField.getText(), addTypeField.getValue()));
     }
 
-    public SensorConfigurationController setMainController(SimulatorController mainController) {
+    public SensorConfigurationController setMainController(final SimulatorController mainController) {
         this.mainController = mainController;
         return this;
     }
@@ -145,20 +114,16 @@ public class SensorConfigurationController implements Initializable {
         ButtonCell() {
 
             // Action when the button is pressed
-            cellButton.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent __) {
-                    SensorField currentField = ButtonCell.this.getTableView().getItems()
-                                    .get(ButtonCell.this.getIndex());
-                    SensorConfigurationController.this.currentSensor.getFields().remove(currentField);
-                }
+            cellButton.setOnAction(__ -> {
+                final SensorField currentField = ButtonCell.this.getTableView().getItems()
+                                .get(ButtonCell.this.getIndex());
+                currentSensor.getFields().remove(currentField);
             });
         }
 
         // Display button if the row is not empty
         @Override
-        protected void updateItem(Boolean t, boolean empty) {
+        protected void updateItem(final Boolean t, final boolean empty) {
             super.updateItem(t, empty);
             setGraphic(empty ? null : cellButton);
         }

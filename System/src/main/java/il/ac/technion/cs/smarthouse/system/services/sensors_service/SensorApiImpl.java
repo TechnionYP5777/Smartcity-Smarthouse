@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,12 +103,12 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         return FileSystemEntries.COMMERCIAL_NAME.buildPath(commercialName);
     }
 
-    private String getPath_doneMsg(String sensorId1) {
+    private String getPath_doneMsg(final String sensorId1) {
         assert commercialName != null && sensorId1 != null;
         return FileSystemEntries.DONE_SENDING_MSG.buildPath(commercialName, sensorId1);
     }
 
-    private String getPath_location(String sensorId1) {
+    private String getPath_location(final String sensorId1) {
         assert commercialName != null && sensorId1 != null;
         return FileSystemEntries.LOCATION.buildPath(commercialName, sensorId1);
     }
@@ -123,7 +124,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         try {
             sensorData = sensorDataClass.newInstance();
 
-            for (Field field : sensorDataClass.getDeclaredFields())
+            for (final Field field : sensorDataClass.getDeclaredFields())
                 if (field.isAnnotationPresent(SystemPath.class)) {
                     field.setAccessible(true);
 
@@ -132,12 +133,12 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
                                                     .buildPath(field.getAnnotation(SystemPath.class).value(),
                                                                     sensorId))));
                 }
-            log.info("created "+ sensorData +"succesfully. IM A BIG BOY!");
+            log.info("created " + sensorData + "succesfully. IM A BIG BOY!");
         } catch (InstantiationException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
             log.error("SensorApi's OnSensorMsgRecived subscriber has failed! - commercialName = " + getCommercialName()
                             + " sensorId = " + sensorId, e);
             return null;
-        } 
+        }
 
         sensorData.sensorLocation = getSensorLocation();
         sensorData.commercialName = getCommercialName();
@@ -172,11 +173,11 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
         final String commNamePath = getPath_commercialNamePath();
 
-        for (String sensorId1 : fileSystem.getChildren(commNamePath)) {
+        for (final String sensorId1 : fileSystem.getChildren(commNamePath)) {
             final String locationPath = getPath_location(sensorId1);
             if (defaultLocation == null || defaultLocation == SensorLocation.UNDEFINED
-                            || (fileSystem.wasPathInitiated(locationPath)
-                                            && fileSystem.<SensorLocation>getData(locationPath) == defaultLocation)) {
+                            || fileSystem.wasPathInitiated(locationPath)
+                                            && fileSystem.<SensorLocation>getData(locationPath) == defaultLocation) {
 
                 // set the sensor's ID
                 sensorId = sensorId1;
@@ -273,7 +274,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     }
 
     @Override
-    public void unsubscribe(String listenerId) {
+    public void unsubscribe(final String listenerId) {
         functionsToRunOnMessageRecived.remove(listenerId);
         Optional.of(functionsToRunOnTime.remove(listenerId)).ifPresent(tl -> tl.kill());
     }
@@ -311,22 +312,23 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     }
 
     @Override
-    public String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn) {
+    public String subscribeOnTime(final Consumer<T> functionToRun, final LocalTime timeToStartOn) {
         return subscribeOnTimeAux(functionToRun, timeToStartOn, null);
     }
 
     @Override
-    public String subscribeOnTime(Consumer<T> functionToRun, LocalTime timeToStartOn, long milliseconds) {
+    public String subscribeOnTime(final Consumer<T> functionToRun, final LocalTime timeToStartOn,
+                    final long milliseconds) {
         return subscribeOnTimeAux(functionToRun, timeToStartOn, milliseconds);
     }
 
     @Override
-    public String subscribeOnTime(Consumer<T> functionToRun, long milliseconds) {
+    public String subscribeOnTime(final Consumer<T> functionToRun, final long milliseconds) {
         return subscribeOnTimeAux(functionToRun, null, milliseconds);
     }
 
     @Override
-    public String runWhenSensorIsFound(Consumer<T> functionToRun) {
+    public String runWhenSensorIsFound(final Consumer<T> functionToRun) {
         return subscribeOnTimeAux(functionToRun, null, null);
     }
 

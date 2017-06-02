@@ -7,7 +7,7 @@ public enum Location {
     KITCHEN("Kitchen");
     private final String fieldDescription;
 
-    private Location(String value) {
+    private Location(final String value) {
         fieldDescription = value;
     }
 
