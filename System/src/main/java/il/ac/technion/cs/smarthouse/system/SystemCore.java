@@ -35,8 +35,8 @@ public class SystemCore implements Savable {
 
     public void initializeSystemComponents() {
         log.info("Initializing system components...");
-        loadSystemFromCloud();
-        initFileSystemListeners();
+//        loadSystemFromCloud();
+//        initFileSystemListeners();
         new Thread(sensorsLocalServer).start();
     }
 
