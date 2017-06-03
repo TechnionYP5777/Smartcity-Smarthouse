@@ -42,10 +42,6 @@ public class SensorMessage extends Message {
     }
 
     public class IllegalMessageBaseExecption extends Exception {
-
-        /**
-         * 
-         */
         private static final long serialVersionUID = 1L;
 
         public IllegalMessageBaseExecption(final MessageType type) {
