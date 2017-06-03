@@ -27,7 +27,7 @@ public class SystemCore implements Savable {
     public final ServiceManager serviceManager = new ServiceManager(this);
 
     public final DatabaseManager databaseManager = new DatabaseManager();
-    @Expose private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
+    private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     @Expose private final FileSystemImpl fileSystem = new FileSystemImpl();
     public final SensorsLocalServer sensorsLocalServer = new SensorsLocalServer(fileSystem);
     @Expose protected UserInformation user;
@@ -35,8 +35,8 @@ public class SystemCore implements Savable {
 
     public void initializeSystemComponents() {
         log.info("Initializing system components...");
-        // loadSystemFromCloud();
-        // initFileSystemListeners();
+         //loadSystemFromCloud();
+         //initFileSystemListeners();
         new Thread(sensorsLocalServer).start();
     }
 
@@ -74,9 +74,9 @@ public class SystemCore implements Savable {
             try {
                 final double startTime = System.nanoTime();
                 databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
-                databaseManager.addInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath(), toJsonString());
-                log.info("Saved to database... Total time: " + (System.nanoTime() - startTime) / 1000000 + " [ms]");
-            } catch (final ParseException e) {
+                databaseManager.addInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath(), this.toJsonString());
+                log.info("Saved system image to the cloud server... Total time: " + (System.nanoTime() - startTime) / 1000000 + " [ms]");
+            } catch (ParseException e) {
                 log.error("System image could not be saved on the cloud server", e);
             }
         };
@@ -85,7 +85,7 @@ public class SystemCore implements Savable {
             try {
                 final double startTime = System.nanoTime();
                 databaseManager.addInfo(path, data);
-                log.info("Saved to database (" + path + ")... Total time: " + (System.nanoTime() - startTime) / 1000000
+                log.info("Saved data (from path: " + path + ")  to the cloud server... Total time: " + (System.nanoTime() - startTime) / 1000000
                                 + " [ms]");
             } catch (final ParseException e) {
                 log.error("Data from (" + path + ") could not be saved on the cloud server", e);
@@ -96,6 +96,20 @@ public class SystemCore implements Savable {
         fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath, FileSystemEntries.SENSORS_DATA.buildPath());
         fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath,
                         FileSystemEntries.APPLICATIONS_DATA.buildPath());
+    }
+
+    @SuppressWarnings("unused")
+    private void loadSystemFromCloud() {
+        try {
+            final double startTime = System.nanoTime();
+            this.populate(databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()).data);
+            fileSystem.deleteFromPath(FileSystemEntries.SENSORS.buildPath());
+            fileSystem.deleteFromPath(FileSystemEntries.SYSTEM.buildPath());
+            log.info("Loaded system from the database cloud... Total time: " + (System.nanoTime() - startTime) / 1000000
+                            + " [ms]");
+        } catch (Exception e) {
+            log.error("Could not load data from the cloud server", e);
+        }
     }
 
 }

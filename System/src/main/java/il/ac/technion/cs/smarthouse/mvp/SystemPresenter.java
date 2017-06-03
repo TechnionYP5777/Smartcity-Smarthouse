@@ -51,7 +51,9 @@ public abstract class SystemPresenter implements Initializable {
     public abstract void init(SystemCore model, URL location, ResourceBundle b);
 
     public void waitUntilLoaded() {
+        final double startTime = System.nanoTime();
         startedLatch.blockUntilTrue();
+        log.info("SystemPresenter: Waited " + (System.nanoTime() - startTime) / 1000000 + " [ms] for system to load");
     }
 
     private void notifyOnLoaded() {

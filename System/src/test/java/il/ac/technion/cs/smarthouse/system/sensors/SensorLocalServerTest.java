@@ -4,16 +4,13 @@ package il.ac.technion.cs.smarthouse.system.sensors;
 import java.util.ArrayList;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
-import il.ac.technion.cs.smarthouse.system.sensors.SensorsLocalServer;
 import il.ac.technion.cs.smarthouse.utils.Random;
 
 public class SensorLocalServerTest {
@@ -45,7 +42,7 @@ public class SensorLocalServerTest {
         server.closeSockets();
     }
     
-    final long timeout = 2000;
+    final long timeout = 3000;
     @Test(timeout = timeout) public void basicSensorCanConnectTest(){
         for (Sensor s = new TestBasicSensor(sensorId) ;!s.register(););
         assert true; //if you got to this line the sensor have connected

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;

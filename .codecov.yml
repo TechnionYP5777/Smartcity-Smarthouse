@@ -9,3 +9,4 @@ coverage:
     - "System/src/main/java/il/ac/technion/cs/smarthouse/mvp/*"
     - "System/src/main/java/il/ac/technion/cs/smarthouse/simulator/*"
     - "System/src/main/java/il/ac/technion/cs/smarthouse/utils/JavaFxHelper.java"
+    - "System/src/main/java/il/ac/technion/cs/smarthouse/Entry.java"

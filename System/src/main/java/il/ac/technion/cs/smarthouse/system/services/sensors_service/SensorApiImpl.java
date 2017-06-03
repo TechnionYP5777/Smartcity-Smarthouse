@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,8 @@ import il.ac.technion.cs.smarthouse.utils.StringConverter;
 import il.ac.technion.cs.smarthouse.utils.TimedListener;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 import javafx.application.Platform;
+
+import sun.reflect.ReflectionFactory;
 
 /**
  * An API class for the developers, that allows interactions with a specific
@@ -122,7 +125,9 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
         T sensorData;
         try {
-            sensorData = sensorDataClass.newInstance();
+            sensorData = sensorDataClass.cast(ReflectionFactory.getReflectionFactory()
+                            .newConstructorForSerialization(sensorDataClass, SensorData.class.getDeclaredConstructor())
+                            .newInstance());
 
             for (final Field field : sensorDataClass.getDeclaredFields())
                 if (field.isAnnotationPresent(SystemPath.class)) {
@@ -133,10 +138,10 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
                                                     .buildPath(field.getAnnotation(SystemPath.class).value(),
                                                                     sensorId))));
                 }
-            log.info("created " + sensorData + "succesfully. IM A BIG BOY!");
-        } catch (InstantiationException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
-            log.error("SensorApi's OnSensorMsgRecived subscriber has failed! - commercialName = " + getCommercialName()
-                            + " sensorId = " + sensorId, e);
+        } catch (InstantiationException | IllegalArgumentException | IllegalAccessException | SecurityException
+                        | InvocationTargetException | NoSuchMethodException e) {
+            log.error("SensorApi's OnSensorMsgRecived subscriber has failed! - commercialName: \"" + getCommercialName()
+                            + "\" | sensorId: \"" + sensorId + "\"", e);
             return null;
         }
 
@@ -286,7 +291,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
             instructionsQueue.put(basePath, instruction);
         else
             fileSystem.sendMessage(instruction,
-                            FileSystemEntries.SENSORS_DATA_FULL__WITH_SENSOR_ID.buildPath(basePath, sensorId));
+                            FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(basePath));
     }
 
     @Override

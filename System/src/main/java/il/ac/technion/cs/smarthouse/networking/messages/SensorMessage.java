@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -20,7 +17,6 @@ import il.ac.technion.cs.smarthouse.sensors.Sensor;
  * @since 01.06.17
  */
 public class SensorMessage extends Message {
-    private static Logger log = LoggerFactory.getLogger(SensorMessage.class);
 
     public enum PathType {
         INFO_SENDING("INFO_SENDING"),

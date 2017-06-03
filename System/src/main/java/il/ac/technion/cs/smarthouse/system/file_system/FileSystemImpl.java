@@ -179,10 +179,10 @@ public class FileSystemImpl implements FileSystem, Savable {
     }
 
     @Override
-    public String subscribe(final BiConsumer<String, Object> eventHandler, final String... path) {
-        log.info("subscribed on " + PathBuilder.buildPath(path));
-        final FileNode n = fileSystemWalk(true, null, path).fileNode;
-        final String id = n.addEventHandler(eventHandler);
+    public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {
+        log.info("FileSystem: subscribed on " + PathBuilder.buildPath(path) + " | Subscriber is " + new Throwable().getStackTrace()[1].getClassName());
+        FileNode n = fileSystemWalk(true, null, path).fileNode;
+        String id = n.addEventHandler(eventHandler);
         listenersBuffer.put(id, n);
         return id;
     }
@@ -193,11 +193,11 @@ public class FileSystemImpl implements FileSystem, Savable {
     }
 
     @Override
-    public void sendMessage(final Object data, final String... path) {
-        for (final BiConsumer<String, Object> eventHandler : fileSystemWalk(true, data, path).eventHandlersOnBranch) {
-            log.info("firing on " + PathBuilder.buildPath(path));
+    public void sendMessage(Object data, String... path) {
+        FileSystemWalkResults r = fileSystemWalk(true, data, path);
+        log.info("FileSystem: Sending message on " + PathBuilder.buildPath(path) + " | Sender is " + new Throwable().getStackTrace()[1].getClassName() + " | Firing " + r.eventHandlersOnBranch.size() + " listeners");
+        for (BiConsumer<String, Object> eventHandler : r.eventHandlersOnBranch)
             eventHandler.accept(PathBuilder.buildPath(path), data);
-        }
     }
 
     @Override

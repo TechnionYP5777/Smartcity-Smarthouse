@@ -25,8 +25,8 @@ import il.ac.technion.cs.smarthouse.system.services.ServiceType;
  */
 public class EnumsTest {
 
-    final Class<?>[] enumClassesToTest = { FileSystemEntries.class, SensorLocation.class,
-            ServiceType.class, MessageType.class, SensorType.class, Location.class, EmergencyLevel.class };
+    final Class<?>[] enumClassesToTest = { FileSystemEntries.class, SensorLocation.class, ServiceType.class,
+            MessageType.class, SensorType.class, Location.class, EmergencyLevel.class };
 
     @Test
     public void generalEnumStupidToStringTest() {
@@ -36,7 +36,7 @@ public class EnumsTest {
     }
 
     @Test
-    @SuppressWarnings("cast")
+
     public void enumDeclaredFunctionsWithNoParamsStupidTest() {
         Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of(enumClass.getDeclaredMethods()))
                         .filter(m -> ((Method) m).getParameterTypes().length == 0)

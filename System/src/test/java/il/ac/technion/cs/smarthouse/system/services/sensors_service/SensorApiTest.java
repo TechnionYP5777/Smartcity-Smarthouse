@@ -238,7 +238,7 @@ public class SensorApiTest {
         assert counter == 3;
     }
     
-    public static class MySensor extends SensorData {
+    private class MySensor extends SensorData {
         @SystemPath(PARAM1_BASE_PATH)
         private int param1;
         

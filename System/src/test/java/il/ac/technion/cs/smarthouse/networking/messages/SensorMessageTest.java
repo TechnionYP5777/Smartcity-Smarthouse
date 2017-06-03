@@ -9,9 +9,6 @@ import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
 import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
-import il.ac.technion.cs.smarthouse.sensors.Sensor;
-import il.ac.technion.cs.smarthouse.sensors.vitals.VitalsSensor;
-import il.ac.technion.cs.smarthouse.system.SensorsManager;
 import il.ac.technion.cs.smarthouse.utils.Random;
 
 public class SensorMessageTest extends MessageTest {
