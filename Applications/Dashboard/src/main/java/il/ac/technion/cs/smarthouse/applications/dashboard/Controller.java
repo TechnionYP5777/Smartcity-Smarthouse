@@ -3,6 +3,7 @@
  */
 package il.ac.technion.cs.smarthouse.applications.dashboard;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -11,7 +12,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.hansolo.medusa.Clock;
 import eu.hansolo.medusa.ClockBuilder;
 import eu.hansolo.medusa.Gauge;
 import eu.hansolo.medusa.GaugeBuilder;
@@ -22,11 +28,14 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.TimeSection;
 import eu.hansolo.tilesfx.TimeSectionBuilder;
 import eu.hansolo.tilesfx.Tile.SkinType;
-
+import il.ac.technion.cs.smarthouse.applications.dashboard.model.WidgetType;
+import il.ac.technion.cs.smarthouse.applications.dashboard.model.widget.BasicWidget;
+import il.ac.technion.cs.smarthouse.system.services.file_system_service.FileSystemService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
@@ -43,24 +52,44 @@ import javafx.stage.Stage;
  * @since May 29, 2017
  */
 public class Controller implements Initializable{
-
+	private static Logger log = LoggerFactory.getLogger(Controller.class);
+	private FileSystemService fileSystem;
 	public static double TILE_SIZE = 220;
 	public static int TILES_IN_ROW = 3;
 	public static int ROWS_NUM = 3;
 	public static int index = 0;
 	@FXML public FlowPane pane;
 
-	private void setTlieEventHandlers(final Tile t, final Integer position){
+	private void setTileEventHandlers(final Tile t, final Integer position){
 		t.setOnMouseClicked(e -> openConfiguration(position));
 	}
 	
-	private void updateTile(TileType type, String path, Integer position) {
-		//todo: initalize according to type and path
-	    Tile tile = TileType.fromType(type, TILE_SIZE);
-	    setTlieEventHandlers(tile, position);
-		pane.getChildren().set(position, 
-				tile
-            );
+	private void updateTile(WidgetType type, final String path, Integer position) {
+		log.info("creating tile for: type=[" +type+  "], path=["+ path + "], pos=["+ position+"]");
+
+		final BasicWidget w;
+		try {
+			w = (BasicWidget)type.getImplementingClass()
+											.getConstructor(type.getClass())
+											.newInstance(type);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+			return;
+		}
+	    Tile tile = w.getTile();
+	    setTileEventHandlers(tile, position);
+	    pane.getChildren().set(position, tile);
+	    
+	    if(path == null || "".equals(path))
+	    	return;
+	    
+	    fileSystem.subscribe((rPath, data)->{
+	    	log.info("dashbord rquested to be notified on "+ path +" got notified on (p,d)=("+rPath+","+data+").");
+	    	if(rPath.equals(path))
+	    		w.updateExisting((Integer)data, path);
+	    },path);
+	    
 	}
 	
 	private void openConfiguration(Integer position) {
@@ -71,10 +100,7 @@ public class Controller implements Initializable{
             final Parent root1 = (Parent) fxmlLoader.load();
             final Stage stage = new Stage();
             ConfigurationController controller = fxmlLoader.getController();
-            controller.setComboBox();
             controller.SetCallback(()->updateTile(controller.getChosenType(), controller.getChosenPath(), position));
-//            stage.setOnHidden(e -> updateTile(controller.getChosenType(), controller.getChosenPath(), position));
-//            stage.setOnCloseRequest(e -> updateTile(controller.getChosenType(), position));
             stage.setScene(new Scene(root1));
             stage.show();
         } catch (final Exception $) {
@@ -84,69 +110,24 @@ public class Controller implements Initializable{
         }
         
     }
-
 	
-	private List<Tile> defaultList(){
-		List<Tile> tiles = new ArrayList<>();
+	@Override public void initialize(final URL location, final ResourceBundle __) {
+        pane.setPrefSize(1200,  800);
+        
+        List<Tile> tiles = new ArrayList<>();
 		for(int i=0;  i < ROWS_NUM*TILES_IN_ROW; ++i){
     		final Integer loc = i;
     		final Tile t = TileBuilder.create()
 					.prefSize(TILE_SIZE, TILE_SIZE)
 					.skinType(SkinType.TEXT)
-					.title("Text Tile")
-					.text("Whatever text")
-					.description("Im text tile #" + i)
+					.description("Choose a widget:\nClick me!\t\t")
+					.descriptionAlignment(Pos.CENTER)
 					.textVisible(true)
 					.build();
-    		setTlieEventHandlers(t, loc);
-    		
-    		/*
-    		t.setOnMouseClicked(e -> 
-    			pane.getChildren().set(loc, 
-					    				TileBuilder.create()
-					    		            .prefSize(TILE_SIZE, TILE_SIZE)
-					    		            .skinType(SkinType.CLOCK)
-					    		            .title("Clock Tile")
-					    		            .text("Whatever text")
-					    		            .dateVisible(true)
-					    		            .locale(Locale.US)
-					    		            .running(true)
-					    		            .build()
-			    		            )
-    		);
-    		t.setOnMouseEntered(e -> {t.setText("get off me");t.setForegroundBaseColor(Color.AQUAMARINE);});
-    		t.setOnMouseExited(e -> {t.setText("and stay there!"); t.setForegroundBaseColor(Color.WHITE);});
-    		*/
+    		setTileEventHandlers(t, loc);
     		tiles.add(t);
     	}
-		return tiles;
-	}
-		
-	private Gauge createGauge(final Gauge.SkinType TYPE) {
-        return GaugeBuilder.create()
-                           .skinType(TYPE)
-                           .prefSize(TILE_SIZE, TILE_SIZE)
-                           .animated(true)
-                           //.title("")
-                           .unit("\u00B0C")
-                           .valueColor(Tile.FOREGROUND)
-                           .titleColor(Tile.FOREGROUND)
-                           .unitColor(Tile.FOREGROUND)
-                           .barColor(Tile.BLUE)
-                           .needleColor(Tile.FOREGROUND)
-                           .barColor(Tile.BLUE)
-                           .barBackgroundColor(Tile.BACKGROUND.darker())
-                           .tickLabelColor(Tile.FOREGROUND)
-                           .majorTickMarkColor(Tile.FOREGROUND)
-                           .minorTickMarkColor(Tile.FOREGROUND)
-                           .mediumTickMarkColor(Tile.FOREGROUND)
-                           .build();
-    }
-	
-	
-	@Override public void initialize(final URL location, final ResourceBundle __) {
-        pane.setPrefSize(1200,  800);
-    	List<Tile> tiles = defaultList();
+    	
     	pane.getChildren().addAll(tiles);
         pane.setBackground(new Background(new BackgroundFill(Tile.BACKGROUND.darker(), null,null)));
 
@@ -155,5 +136,9 @@ public class Controller implements Initializable{
 //        pane.setPrefHeight((TILE_SIZE+8)*ROWS_NUM);
 //        pane.setPrefWidth((TILE_SIZE+8)*TILES_IN_ROW);
 
+	}
+	
+	public void setFileSystem(FileSystemService fs){
+		this.fileSystem = fs;
 	}
 }

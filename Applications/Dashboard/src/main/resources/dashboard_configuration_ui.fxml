@@ -7,8 +7,13 @@
 <?import javafx.scene.layout.*?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="401.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.applications.dashboard.ConfigurationController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+				prefHeight="325.0" prefWidth="401.0" 
+				xmlns="http://javafx.com/javafx/8" 
+				xmlns:fx="http://javafx.com/fxml/1" 
+				fx:controller="il.ac.technion.cs.smarthouse.applications.dashboard.ConfigurationController">
    <children>
+   
       <GridPane>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -19,18 +24,24 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Enter the path to be listened:" />
-            <Label text="Select the type of the data:" GridPane.rowIndex="1" />
+            <Label text="Path to be listened to:" />
+            <Label text="Type of the data:" GridPane.rowIndex="1" />
             <TextField fx:id="path" GridPane.columnIndex="1" />
             <ComboBox fx:id="types" prefHeight="21.0" prefWidth="194.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
+      
       <Label text="Preview:">
          <padding>
             <Insets top="10.0" />
          </padding>
       </Label>
-      <ScrollPane fx:id="scrollPane" prefHeight="155.0" prefWidth="200.0" />
+            <FlowPane fx:id="pane" prefHeight="170.0" prefWidth="150" orientation="horizontal" vgap="3" hgap="3" />
+      		<Label text="Click on a widget to choose it," />
+      		<Label text="The chosen widget will turn blue" />
+    
+     
+      
       <GridPane>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -46,6 +57,7 @@
             <Insets top="10.0" />
          </padding>
       </GridPane>
+      
    </children>
    <padding>
       <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />

@@ -58,7 +58,7 @@ public class TempDashboard extends Application {
             stage.setScene(new Scene(root1));
             stage.show();
             ConfigurationController controller = fxmlLoader.getController();
-            controller.setComboBox();
+//            controller.setComboBox();
 //            controller.setParentController(this);
 //            ((ConfigController) fxmlLoader.getController()).subscribe(StoveAppController.this);
                 } catch (final Exception $) {
