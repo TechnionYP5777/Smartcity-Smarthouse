@@ -68,7 +68,7 @@ public class Controller implements Initializable {
 			log.info("dashbord rquested to be notified on " + path + " got notified on (p,d)=(" + rPath + "," + data
 					+ ").");
 			if (rPath.equals(path))
-				w.updateExisting((Integer) data, path);
+				w.updateExisting(Double.valueOf((String) data), path);
 		}, path);
 
 	}

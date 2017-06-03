@@ -96,8 +96,8 @@ public class SensorHandlerThread extends SensorManagingThread {
             toSend.put(path, oldData);
 
         for (final String p : toSend.keySet()) {
+            log.info("Sending: " + toSend.get(p) + " on path: " + legalSystemPaths.get(p));
             filesystem.sendMessage(toSend.get(p), legalSystemPaths.get(p));
-            log.info("Sent: " + toSend.get(p) + " on path: " + legalSystemPaths.get(p));
         }
         // toSend.keySet().stream().forEach(p->{});
         filesystem.sendMessage(null, donePath);
