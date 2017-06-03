@@ -77,16 +77,9 @@ public class SensorHandlerThread extends SensorManagingThread {
 
     private void bufferOrSend(final String path, final String data) {
         final String oldData = dataBuffer.put(path, data);
-        final Boolean bufferIsReady = dataBuffer.size() == legalSystemPaths.size(); // we
-                                                                                    // have
-                                                                                    // data
-                                                                                    // waiting
-                                                                                    // to
-                                                                                    // be
-                                                                                    // sent
-                                                                                    // on
-                                                                                    // all
-                                                                                    // paths
+
+        // we  have  data waiting to be sent  on all paths
+        final Boolean bufferIsReady = dataBuffer.size() == legalSystemPaths.size(); 
 
         if (oldData != null && bufferIsReady)
             log.error("The dataBuffer invariant isn't preserved:" + "(path,olddata)=(" + path + "," + data
@@ -104,7 +97,7 @@ public class SensorHandlerThread extends SensorManagingThread {
 
         for (final String p : toSend.keySet()) {
             filesystem.sendMessage(toSend.get(p), legalSystemPaths.get(p));
-            log.info("Sent: " + toSend.get(path) + " on path: " + legalSystemPaths.get(p));
+            log.info("Sent: " + toSend.get(p) + " on path: " + legalSystemPaths.get(p));
         }
         // toSend.keySet().stream().forEach(p->{});
         filesystem.sendMessage(null, donePath);

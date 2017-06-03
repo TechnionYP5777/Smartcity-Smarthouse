@@ -20,7 +20,7 @@ public class MessageTypeTest {
         Assert.assertEquals(MessageType.UPDATE, MessageType.fromString("update".toUpperCase()));
         Assert.assertEquals(MessageType.UPDATE, MessageType.fromString("uPdAtE"));
     }
-
+    
     @Test public void createSuccessAnswerTypeFromString() {
         Assert.assertEquals(MessageType.SUCCESS_ANSWER, MessageType.fromString("SUCCESS_answer"));
         Assert.assertEquals(MessageType.SUCCESS_ANSWER, MessageType.fromString("SUCCESS_Answer"));

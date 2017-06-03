@@ -30,12 +30,12 @@ public class InstructionsSenderThread extends SensorManagingThread {
     protected void handleSensorMessage(final SensorMessage msg) {
         if (MessageType.REGISTRATION.equals(msg.getType())) {
             for (final String path : msg.getInstructionRecievingPaths())
-                filesystem.subscribe((p, data) -> out.println(p + " " + data), FileSystemEntries.LISTENERS_OF_SENSOR
-                                .buildPath(msg.getSensorCommName(), msg.getSensorId()));
+                filesystem.subscribe((p, data) -> out.println(p + " " + data), 
+                                FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(), msg.getSensorId()));
             try {
                 new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
             } catch (final IllegalMessageBaseExecption e) {}
         } else
-            log.error(getClass() + " object shouldn't receive an update msg.");
+            log.error(getClass() + " shouldn't receive an update msg.");
     }
 }
