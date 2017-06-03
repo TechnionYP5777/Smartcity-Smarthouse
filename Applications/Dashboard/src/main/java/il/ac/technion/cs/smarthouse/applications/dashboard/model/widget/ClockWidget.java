@@ -15,12 +15,11 @@ public class ClockWidget extends BasicWidget {
 
 	public ClockWidget(WidgetType t) {
 		super(t);
-		builder.locale(Locale.US)
-				.dateVisible(true)
-				.running(true);
+		builder.locale(Locale.US).dateVisible(true).running(true);
 	}
-	
-	public String getTitle(){
+
+	@Override
+	public String getTitle() {
 		return "Clock Widget";
 	}
 

@@ -18,24 +18,24 @@ public class DashboardWidget extends BasicWidget {
 	public DashboardWidget(WidgetType t, Integer threshold, String unit) {
 		super(t);
 
-		if(WidgetType.BASIC_DASHBOARD.equals(type)){
-				builder.unit(unit)
-        				.threshold(threshold);
+		if (WidgetType.BASIC_DASHBOARD.equals(type)) {
+			builder.unit(unit).threshold(threshold);
 		}
 	}
-	
-	public DashboardWidget(WidgetType t){
+
+	public DashboardWidget(WidgetType t) {
 		this(t, 75, "mb");
 	}
-	
-	public String getTitle(){
+
+	@Override
+	public String getTitle() {
 		return "Dashboard Widget";
 	}
 
-
-	public void updateExisting(Number value, String key){
-		if(WidgetType.NEEDLE_BDASHBORD.equals(type))
-			((Gauge)getTile().getGraphic()).setValue((double)value);
+	@Override
+	public void updateExisting(Number value, String key) {
+		if (WidgetType.NEEDLE_BDASHBORD.equals(type))
+			((Gauge) getTile().getGraphic()).setValue((double) value);
 		else
 			super.updateExisting(value, key);
 	}

@@ -12,20 +12,22 @@ import il.ac.technion.cs.smarthouse.system.services.file_system_service.FileSyst
  * @author Elia Traore
  * @since May 29, 2017
  */
-public class DashboardGui extends SmartHouseApplication{
+public class DashboardGui extends SmartHouseApplication {
 	private Controller controller;
-	
+
 	public static void main(String[] args) throws Exception {
-        launch(StoveSensorSimulator.class);
-    }
-	
-	@Override public String getApplicationName() {
-        return "Dashboard";
-    }
-	
-	@Override public void onLoad() throws Exception {
-		//no need to subscribe to sensors automatically
+		launch(StoveSensorSimulator.class);
+	}
+
+	@Override
+	public String getApplicationName() {
+		return "Dashboard";
+	}
+
+	@Override
+	public void onLoad() throws Exception {
+		// no need to subscribe to sensors automatically
 		controller = super.setContentView("dashboard_ui.fxml");
-		controller.setFileSystem((FileSystemService)super.getService(ServiceType.FILE_SYSTEM_SERVICE));
+		controller.setFileSystem((FileSystemService) super.getService(ServiceType.FILE_SYSTEM_SERVICE));
 	}
 }
