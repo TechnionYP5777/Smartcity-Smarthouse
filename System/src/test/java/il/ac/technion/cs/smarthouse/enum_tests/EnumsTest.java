@@ -43,7 +43,7 @@ public class EnumsTest {
                         .forEach(m -> Stream.of(((Method) m).getDeclaringClass().getEnumConstants()).forEach(e -> {
                             try {
                                 ((Method) m).setAccessible(true);
-                                ((Method) m).invoke((Class<?>) e);
+                                ((Method) m).invoke(e);
                                 ((Method) m).setAccessible(false);
                             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
                                 e1.printStackTrace();
