@@ -36,7 +36,7 @@ public class RoomViewController implements Initializable {
 
     private void addSensor(final double x, final double y) {
         final TextInputDialog dialog = new TextInputDialog("sensor name");
-        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("Homeicon.png"))));
+        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/Homeicon.png"))));
         dialog.setTitle("Create Sensor");
         dialog.setHeaderText("Config your simulator");
         dialog.setContentText("Please enter sensor name:");

@@ -79,7 +79,7 @@ public class SensorConfigurationController implements Initializable {
             @Override
             public void handle(final ActionEvent __1) {
                 try {
-                    final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("message_ui.fxml"));
+                    final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/message_ui.fxml"));
                     final Parent root1 = (Parent) fxmlLoader.load();
                     ((MessageViewController) fxmlLoader.getController()).setCurrentSensor(currentSensor);
                     final Stage stage = new Stage();

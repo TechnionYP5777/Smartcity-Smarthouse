@@ -3,6 +3,8 @@ package il.ac.technion.cs.smarthouse;
 import java.util.Optional;
 
 import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
+import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
+import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGui;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
@@ -16,8 +18,14 @@ public class Entry {
         m.launchGui(args);
         
         Thread.sleep(500);
+        JavaFxHelper.startGui(new SosSensorSimulator(), args);
         
-        //JavaFxHelper.startGui(new SosSensorSimulator(), args);
+        Thread.sleep(1000);
+        JavaFxHelper.startGui(new StoveSensorSimulator(), args);
+        
+        Thread.sleep(1000);
+        JavaFxHelper.startGui(new VitalsSensorSimulator(), args);
+        
         // m.getPresenter().getModel().getFileSystem().sendMessage(59,
         // FileSystemEntries.TESTS.buildPath("my.first.try"));
 

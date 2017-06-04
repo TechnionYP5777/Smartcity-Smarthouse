@@ -45,7 +45,7 @@ public class SensorListViewController implements Initializable {
     private void enterSensorConfig(final SensorData d) {
         if (d == null)
             return;
-        final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("sensor_configuration_ui.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/sensor_configuration_ui.fxml"));
         try {
             JavaFxHelper.placeNodeInPane(fxmlLoader.load(), mainController.sidePane);
         } catch (final IOException e) {

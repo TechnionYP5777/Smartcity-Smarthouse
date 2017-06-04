@@ -9,6 +9,7 @@
 	<modules>
 		<module>System</module>
 		<module>Applications</module>
+		<module>SensorsSimulator</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

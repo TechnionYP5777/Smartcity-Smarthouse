@@ -60,7 +60,7 @@ public class SimulatorController implements Initializable {
     }
 
     public void loadSensorList() {
-        final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("sensors_list_ui.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/sensors_list_ui.fxml"));
         try {
             JavaFxHelper.placeNodeInPane(fxmlLoader.load(), sidePane);
         } catch (final IOException e) {
@@ -73,7 +73,7 @@ public class SimulatorController implements Initializable {
 
     @Override
     public void initialize(final URL location, final ResourceBundle __) {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("room_ui.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/room_ui.fxml"));
 
         tab1.setText("Bedroom");
         try {
@@ -83,10 +83,10 @@ public class SimulatorController implements Initializable {
             e.printStackTrace();
         }
         bedroom = loader.getController();
-        bedroom.setImageUrl("house.jpg").setLocation(Location.BEDROOM).setMainController(this);
+        bedroom.setImageUrl("/house.jpg").setLocation(Location.BEDROOM).setMainController(this);
 
         // user tab:
-        loader = new FXMLLoader(this.getClass().getResource("room_ui.fxml"));
+        loader = new FXMLLoader(this.getClass().getResource("/room_ui.fxml"));
         tab2.setText("Bathroom");
         try {
             tab2.setContent((Node) loader.load());
@@ -95,10 +95,10 @@ public class SimulatorController implements Initializable {
             e.printStackTrace();
         }
         bathroom = loader.getController();
-        bathroom.setImageUrl("house.jpg").setLocation(Location.BATHROOM).setMainController(this);
+        bathroom.setImageUrl("/house.jpg").setLocation(Location.BATHROOM).setMainController(this);
 
         // user tab:
-        loader = new FXMLLoader(this.getClass().getResource("room_ui.fxml"));
+        loader = new FXMLLoader(this.getClass().getResource("/room_ui.fxml"));
         tab3.setText("Kitchen");
         try {
             tab3.setContent((Node) loader.load());
@@ -107,10 +107,10 @@ public class SimulatorController implements Initializable {
             e.printStackTrace();
         }
         kitchen = loader.getController();
-        kitchen.setImageUrl("house.jpg").setLocation(Location.KITCHEN).setMainController(this);
+        kitchen.setImageUrl("/house.jpg").setLocation(Location.KITCHEN).setMainController(this);
 
         // user tab:
-        loader = new FXMLLoader(this.getClass().getResource("room_ui.fxml"));
+        loader = new FXMLLoader(this.getClass().getResource("/room_ui.fxml"));
         tab4.setText("Livingroom");
         try {
             tab4.setContent((Node) loader.load());
@@ -119,7 +119,7 @@ public class SimulatorController implements Initializable {
             e.printStackTrace();
         }
         livingroom = loader.getController();
-        livingroom.setImageUrl("house.jpg").setLocation(Location.LIVINGROOM).setMainController(this);
+        livingroom.setImageUrl("/house.jpg").setLocation(Location.LIVINGROOM).setMainController(this);
 
         loadSensorList();
     }
