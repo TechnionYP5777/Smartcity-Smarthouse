@@ -83,7 +83,7 @@ public class SimulatorController implements Initializable {
             e.printStackTrace();
         }
         bedroom = loader.getController();
-        bedroom.setImageUrl("/bedroom.jpg").setLocation(Location.BEDROOM).setMainController(this);
+        bedroom.setImageUrl("/house.jpg").setLocation(Location.BEDROOM).setMainController(this);
 
         // user tab:
         loader = new FXMLLoader(this.getClass().getResource("/room_ui.fxml"));
@@ -95,7 +95,7 @@ public class SimulatorController implements Initializable {
             e.printStackTrace();
         }
         bathroom = loader.getController();
-        bathroom.setImageUrl("/bathroom.jpg").setLocation(Location.BATHROOM).setMainController(this);
+        bathroom.setImageUrl("/house.jpg").setLocation(Location.BATHROOM).setMainController(this);
 
         // user tab:
         loader = new FXMLLoader(this.getClass().getResource("/room_ui.fxml"));
@@ -107,7 +107,7 @@ public class SimulatorController implements Initializable {
             e.printStackTrace();
         }
         kitchen = loader.getController();
-        kitchen.setImageUrl("/kitchen.jpg").setLocation(Location.KITCHEN).setMainController(this);
+        kitchen.setImageUrl("/house.jpg").setLocation(Location.KITCHEN).setMainController(this);
 
         // user tab:
         loader = new FXMLLoader(this.getClass().getResource("/room_ui.fxml"));
@@ -119,7 +119,7 @@ public class SimulatorController implements Initializable {
             e.printStackTrace();
         }
         livingroom = loader.getController();
-        livingroom.setImageUrl("/livingroom.jpg").setLocation(Location.LIVINGROOM).setMainController(this);
+        livingroom.setImageUrl("/house.jpg").setLocation(Location.LIVINGROOM).setMainController(this);
 
         loadSensorList();
     }
