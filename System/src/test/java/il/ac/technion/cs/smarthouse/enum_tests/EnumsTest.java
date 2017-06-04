@@ -30,20 +30,20 @@ public class EnumsTest {
 
     @Test
     public void generalEnumStupidToStringTest() {
-        Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of(enumClass.getEnumConstants()))
+        Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of((Object[]) (enumClass.getEnumConstants())))
                         .map(enumVal -> (enumVal + ""));
         assert true;
     }
 
+    @SuppressWarnings("cast")
     @Test
-
     public void enumDeclaredFunctionsWithNoParamsStupidTest() {
-        Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of(enumClass.getDeclaredMethods()))
+        Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of((Method[]) ((Class<?>) enumClass).getDeclaredMethods()))
                         .filter(m -> ((Method) m).getParameterTypes().length == 0)
                         .forEach(m -> Stream.of(((Method) m).getDeclaringClass().getEnumConstants()).forEach(e -> {
                             try {
                                 ((Method) m).setAccessible(true);
-                                ((Method) m).invoke(e);
+                                ((Method) m).invoke((Class<?>) e);
                                 ((Method) m).setAccessible(false);
                             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
                                 e1.printStackTrace();
