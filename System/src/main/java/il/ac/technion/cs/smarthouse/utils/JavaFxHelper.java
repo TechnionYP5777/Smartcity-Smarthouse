@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.utils;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -73,22 +75,36 @@ public enum JavaFxHelper {
      *            the application
      * @param args
      */
-    public static <T extends Application> T startGui(final T a, final String... args) {
-        DummyApplication.app2launch = a;
+    public static synchronized <T extends Application> T startGui(final T a, final String... args) {
+        if (!isJavaFxThreadStarted())
+            new Thread(() -> Application.launch(DummyApplication.class, args)).start();
+
+        DummyApplication.started.blockUntilTrue();
+
+        synchronized (DummyApplication.apps2launch) {
+            DummyApplication.apps2launch.add(a);
+        }
 
         try {
             Platform.runLater(() -> {
-                try {
-                    new DummyApplication().start(new Stage());
-                } catch (final Exception e) {
-                    log.error("couldn't start the DummyApplication with: "
-                                    + (a == null ? null : a.getClass().getName()), e);
+                synchronized (DummyApplication.apps2launch) {
+                    while (!DummyApplication.apps2launch.isEmpty()) {
+                        DummyApplication.app2launch = DummyApplication.apps2launch.pop();
+                        try {
+                            new DummyApplication().start(new Stage());
+                        } catch (final Exception e) {
+                            log.error("couldn't start the DummyApplication with: "
+                                            + (DummyApplication.app2launch == null ? null
+                                                            : DummyApplication.app2launch.getClass().getName()),
+                                            e);
+                        }
+                        DummyApplication.app2launch = null;
+                    }
                 }
             });
-        } catch (final IllegalStateException __) {
-            new Thread(() -> Application.launch(DummyApplication.class, args)).start();
+        } catch (final IllegalStateException e) {
+            e.printStackTrace();
         }
-
         return a;
     }
 
@@ -102,12 +118,16 @@ public enum JavaFxHelper {
      * @since 11-05-2017
      */
     public static class DummyApplication extends Application {
+        static Deque<Application> apps2launch = new ArrayDeque<>();
         static Application app2launch;
+        static BoolLatch started = new BoolLatch();
 
         @Override
         public void start(final Stage primaryStage) throws Exception {
+            started.setTrueAndRelease();
             if (app2launch != null)
                 app2launch.start(primaryStage);
+            app2launch = null;
         }
     }
 }
