@@ -1,9 +1,9 @@
 # Smartcity - Smarthouse
 <img src="https://cloud.githubusercontent.com/assets/15971916/24823370/5f96f4fa-1c06-11e7-9784-0089af77932f.png" align="left" hspace="10" vspace="9" width="300">
 
-An autonomous system which receives data from house sensors, stores it in a database and runs applications that operate based on this data.
+This is project offers a smart-house framework, allowing comfortable development of applications utilizing existing sensors within the smart-house to assess and manipulate the state of the house.
 
-The system keeps track of the well being and day to day activity of the user. It monitors the user's state via the sensors and analyzes his or her behavior via the applications. The system can send alerts and notifications, and on request from an application through the defined API, will contact the appropriate contacts (according to their emergency-level).
+It is comprised of 3 main components: the sensors in the house (or their simulation), the system managing those sensors, and your application (and others) influencing the house at all times
 
 The system acts as a mediator between the sensors and the applications. The sensors send data to the system and the system notifies the applications that a new data has been received.
 
