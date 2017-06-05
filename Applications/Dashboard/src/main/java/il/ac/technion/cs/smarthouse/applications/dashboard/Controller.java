@@ -75,7 +75,7 @@ public class Controller implements Initializable {
 
 	private void openConfiguration(Integer position) {
 		try {
-			URL location = getClass().getClassLoader().getResource("dashboard_configuration_ui.fxml");
+			URL location = getClass().getClassLoader().getResource("/dashboard_configuration_ui.fxml");
 			// System.out.println(location);todo: ELIA why is this the location?
 			final FXMLLoader fxmlLoader = new FXMLLoader(location);
 			final Parent root1 = (Parent) fxmlLoader.load();

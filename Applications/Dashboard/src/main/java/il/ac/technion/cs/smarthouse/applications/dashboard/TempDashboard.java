@@ -47,7 +47,7 @@ public class TempDashboard extends Application {
 	public void openConfiguration() {
 		System.out.println("Clicked!");
 		try {
-			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("dashboard_configuration_ui.fxml"));
+			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dashboard_configuration_ui.fxml"));
 			final Parent root1 = (Parent) fxmlLoader.load();
 			final Stage stage = new Stage();
 			stage.setScene(new Scene(root1));
