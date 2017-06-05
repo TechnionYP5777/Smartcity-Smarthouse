@@ -17,13 +17,13 @@ public class Entry {
         MainSystemGui m = new MainSystemGui();
         m.launchGui(args);
         
-        Thread.sleep(500);
+        //Thread.sleep(500);
         JavaFxHelper.startGui(new SosSensorSimulator(), args);
         
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
         JavaFxHelper.startGui(new StoveSensorSimulator(), args);
         
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
         JavaFxHelper.startGui(new VitalsSensorSimulator(), args);
         
         // m.getPresenter().getModel().getFileSystem().sendMessage(59,

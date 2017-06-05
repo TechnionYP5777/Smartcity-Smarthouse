@@ -4,6 +4,7 @@ package il.ac.technion.cs.smarthouse.applications.dashboard;
  */
 
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
+import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.file_system_service.FileSystemService;
@@ -16,7 +17,7 @@ public class DashboardGui extends SmartHouseApplication {
 	private Controller controller;
 
 	public static void main(String[] args) throws Exception {
-		launch(StoveSensorSimulator.class);
+		launch(StoveSensorSimulator.class, VitalsSensorSimulator.class);
 	}
 
 	@Override

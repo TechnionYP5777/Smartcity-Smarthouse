@@ -8,7 +8,7 @@
   </parent>
   <artifactId>Dashboard</artifactId>
   <properties>
-    <jar.runnable.main.class>il.ac.technion.cs.smarthouse.applications.dahsboard.DashboardGui</jar.runnable.main.class>
+    <jar.runnable.main.class>il.ac.technion.cs.smarthouse.applications.dashboard.DashboardGui</jar.runnable.main.class>
   </properties>
   
   <build>
