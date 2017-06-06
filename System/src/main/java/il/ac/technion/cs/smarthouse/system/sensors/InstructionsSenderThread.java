@@ -21,6 +21,7 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
  */
 public class InstructionsSenderThread extends SensorManagingThread {
     private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);
+    private static String instructionSeperator = "##";
 
     public InstructionsSenderThread(final Socket client, final FileSystem fs) {
         super(client, fs);
@@ -28,14 +29,20 @@ public class InstructionsSenderThread extends SensorManagingThread {
 
     @Override
     protected void handleSensorMessage(final SensorMessage msg) {
-        if (MessageType.REGISTRATION.equals(msg.getType())) {
+        if (!MessageType.REGISTRATION.equals(msg.getType()))
+            log.error(getClass() + " shouldn't receive an update msg.");
+        else {
+            //todo: ELIA check for waiting instructions first
             for (final String path : msg.getInstructionRecievingPaths())
-                filesystem.subscribe((p, data) -> out.println(p + " " + data), 
-                                FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(), msg.getSensorId()));
+                filesystem.subscribe((p, data) -> out.println(p + instructionSeperator + data), FileSystemEntries.LISTENERS_OF_SENSOR
+                                .buildPath(msg.getSensorCommName(), msg.getSensorId()));
             try {
                 new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
             } catch (final IllegalMessageBaseExecption e) {}
-        } else
-            log.error(getClass() + " shouldn't receive an update msg.");
+        }
+    }
+    
+    public static String getInstructionSeperatorRegex(){
+        return instructionSeperator;
     }
 }

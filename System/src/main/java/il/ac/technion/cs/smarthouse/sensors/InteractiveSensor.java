@@ -16,11 +16,13 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
+import il.ac.technion.cs.smarthouse.system.sensors.InstructionsSenderThread;
 
 /**
  * This class represents a sensor that can get instructions and operate
  * accordingly.
  * 
+ * @author Elia Traore
  * @author Yarden
  * @since 31.3.17
  */
@@ -82,10 +84,10 @@ public abstract class InteractiveSensor extends Sensor {
 
         try {
             if (instIn.ready()) {
-                final String[] inst = instIn.readLine().split("");
-                // todo: elia document external the instruction format
-                return handler.applyInstruction(inst[0],
-                                Arrays.asList(inst).stream().skip(1).reduce("", (a, b) -> a + " " + b));
+                /** todo: elia document external the instruction format - at {@link:InstructionsSenderThread#handleSensorMessage}
+                 * */ 
+                final String[] inst = instIn.readLine().split(InstructionsSenderThread.getInstructionSeperatorRegex());
+                return handler.applyInstruction(inst[0],inst[1]);
             }
             return false;
         } catch (final IOException e) {
