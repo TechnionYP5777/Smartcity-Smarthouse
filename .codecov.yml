@@ -7,6 +7,7 @@ coverage:
     - "System/src/main/java/il/ac/technion/cs/smarthouse/sensors/*/gui/*"
     - "System/src/main/java/il/ac/technion/cs/smarthouse/system/gui/*"
     - "System/src/main/java/il/ac/technion/cs/smarthouse/mvp/*"
-    - "SensorsSimulator/src/main/java/il/ac/technion/cs/smarthouse/*"
-    - "System/src/main/java/il/ac/technion/cs/smarthouse/utils/JavaFxHelper.java"
     - "System/src/main/java/il/ac/technion/cs/smarthouse/Entry.java"
+    - "SensorsSimulator/**"
+    - "Common/src/main/java/il/ac/technion/cs/smarthouse/utils/JavaFxHelper.java"
+

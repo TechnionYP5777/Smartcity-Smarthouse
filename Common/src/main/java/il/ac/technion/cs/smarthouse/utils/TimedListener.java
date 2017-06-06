@@ -38,6 +38,7 @@ public class TimedListener {
      *            If null, the task will only run once.
      */
     public TimedListener(final Runnable task, final LocalTime timeToStartOn, final Long repeatInMilisec) {
+        assert task != null;
         this.task = task;
         this.timeToStartOn = timeToStartOn;
         this.repeatInMilisec = repeatInMilisec;
