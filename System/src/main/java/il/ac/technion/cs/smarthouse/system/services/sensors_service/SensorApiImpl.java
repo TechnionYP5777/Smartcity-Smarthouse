@@ -291,7 +291,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
             instructionsQueue.put(basePath, instruction);
         else
             fileSystem.sendMessage(instruction,
-                            FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(basePath));
+                            FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(commercialName, sensorId,basePath));
     }
 
     @Override
