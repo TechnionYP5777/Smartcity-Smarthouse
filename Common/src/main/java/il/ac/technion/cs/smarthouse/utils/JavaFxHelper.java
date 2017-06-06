@@ -1,7 +1,5 @@
 package il.ac.technion.cs.smarthouse.utils;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -9,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -69,65 +68,48 @@ public enum JavaFxHelper {
     }
 
     /**
-     * starts a {@link javafx.application.Application}
-     * 
-     * @param a
-     *            the application
-     * @param args
+     * initializes the javaFx toolkit
      */
-    public static synchronized <T extends Application> T startGui(final T a, final String... args) {
-        if (!isJavaFxThreadStarted())
-            new Thread(() -> Application.launch(DummyApplication.class, args)).start();
-
-        DummyApplication.started.blockUntilTrue();
-
-        synchronized (DummyApplication.apps2launch) {
-            DummyApplication.apps2launch.add(a);
-        }
-
-        try {
-            Platform.runLater(() -> {
-                synchronized (DummyApplication.apps2launch) {
-                    while (!DummyApplication.apps2launch.isEmpty()) {
-                        DummyApplication.app2launch = DummyApplication.apps2launch.pop();
-                        try {
-                            new DummyApplication().start(new Stage());
-                        } catch (final Exception e) {
-                            log.error("couldn't start the DummyApplication with: "
-                                            + (DummyApplication.app2launch == null ? null
-                                                            : DummyApplication.app2launch.getClass().getName()),
-                                            e);
-                        }
-                        DummyApplication.app2launch = null;
-                    }
-                }
-            });
-        } catch (final IllegalStateException e) {
-            e.printStackTrace();
-        }
-        return a;
+    public static void initJavaFxThread() {
+        // PlatformImpl.startup(()->{});
+        new JFXPanel();
     }
 
     /**
-     * An important part of the implementation of
-     * {@link JavaFxHelper#startGui(Application, String...)}
-     * <p>
-     * Please don't touch this
+     * starts a {@link javafx.application.Application} and blocks until it is
+     * loaded
      * 
-     * @author RON
-     * @since 11-05-2017
+     * @param jfxApplication
+     *            the application
+     * @param args
      */
-    public static class DummyApplication extends Application {
-        static Deque<Application> apps2launch = new ArrayDeque<>();
-        static Application app2launch;
-        static BoolLatch started = new BoolLatch();
+    public static <T extends Application> T startGui(final T jfxApplication, final String... args) {
+        assert jfxApplication != null;
 
-        @Override
-        public void start(final Stage primaryStage) throws Exception {
-            started.setTrueAndRelease();
-            if (app2launch != null)
-                app2launch.start(primaryStage);
-            app2launch = null;
+        // init javafx thread if the thread wasn't initiated yet:
+        if (!isJavaFxThreadStarted())
+            initJavaFxThread();
+
+        // make a lock that will wait for jfxApplication to start:
+        final BoolLatch guiStarted = new BoolLatch();
+
+        try {
+            Platform.runLater(() -> {
+                try {
+                    jfxApplication.start(new Stage());
+                    if (guiStarted != null)
+                        guiStarted.setTrueAndRelease();
+                } catch (final Exception e) {
+                    log.error("couldn't start " + jfxApplication.getClass().getName(), e);
+                }
+            });
+        } catch (final IllegalStateException ¢) {
+            log.error("Platform.runLater failed! This shouldn't happen!", ¢);
         }
+
+        if (guiStarted != null)
+            guiStarted.blockUntilTrue();
+
+        return jfxApplication;
     }
 }
