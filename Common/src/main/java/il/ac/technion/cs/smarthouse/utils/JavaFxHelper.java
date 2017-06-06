@@ -83,7 +83,19 @@ public enum JavaFxHelper {
      *            the application
      * @param args
      */
-    public static <T extends Application> T startGui(final T jfxApplication, final String... args) {
+
+    /**
+     * starts a {@link javafx.application.Application}
+     * 
+     * @param jfxApplication
+     *            the application
+     * @param blockUntilStarted
+     *            if true the function blocks until the application is started
+     *            (until {@link javafx.application.Application#start(Stage)}
+     *            finishes), otherwise the function returns immediately
+     * @return
+     */
+    public static <T extends Application> T startGui(final T jfxApplication, final boolean blockUntilStarted) {
         assert jfxApplication != null;
 
         // init javafx thread if the thread wasn't initiated yet:
@@ -97,8 +109,7 @@ public enum JavaFxHelper {
             Platform.runLater(() -> {
                 try {
                     jfxApplication.start(new Stage());
-                    if (guiStarted != null)
-                        guiStarted.setTrueAndRelease();
+                    guiStarted.setTrueAndRelease();
                 } catch (final Exception e) {
                     log.error("couldn't start " + jfxApplication.getClass().getName(), e);
                 }
@@ -107,9 +118,18 @@ public enum JavaFxHelper {
             log.error("Platform.runLater failed! This shouldn't happen!", ¢);
         }
 
-        if (guiStarted != null)
+        if (blockUntilStarted)
             guiStarted.blockUntilTrue();
 
         return jfxApplication;
+    }
+    
+    /**
+     * same as {@link JavaFxHelper#startGui(Application, boolean)} with blockUntilStarted = true
+     * @param jfxApplication
+     * @return
+     */
+    public static <T extends Application> T startGui(final T jfxApplication) {
+        return startGui(jfxApplication, true);
     }
 }
