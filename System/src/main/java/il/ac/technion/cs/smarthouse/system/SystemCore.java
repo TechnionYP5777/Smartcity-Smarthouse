@@ -33,11 +33,14 @@ public class SystemCore implements Savable {
     @Expose protected UserInformation user;
     private boolean userInitialized;
 
-    public void initializeSystemComponents() {
+    public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer, final boolean initRegularListeners) {
         log.info("Initializing system components...");
-         //loadSystemFromCloud();
-         //initFileSystemListeners();
-        new Thread(sensorsLocalServer).start();
+        if (useCloudServer)
+            loadSystemFromCloud();
+        if (initRegularListeners)
+            initFileSystemListeners();
+        if (useSensorsServer)
+            new Thread(sensorsLocalServer).start();
     }
 
     public UserInformation getUser() {

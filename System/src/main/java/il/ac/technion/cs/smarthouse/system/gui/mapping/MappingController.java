@@ -11,10 +11,10 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.main.SystemGuiController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -22,7 +22,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class MappingController extends SystemPresenter {
+public class MappingController extends SystemGuiController {
     private static Logger log = LoggerFactory.getLogger(MappingController.class);
 
     private static final List<SensorLocation> allLocations = Arrays.asList(SensorLocation.values());
@@ -74,10 +74,9 @@ public class MappingController extends SystemPresenter {
     public void addSensor(final String id, final String commName) throws Exception {
         if (sensors.containsKey(id))
             return;
-        final PresenterInfo child = createChildPresenter("sensor_info.fxml");
-        sensorsPaneList.getChildren().add(child.getRootViewNode());
-
-        final SensorInfoController controller = child.getPresenter();
+        final SensorInfoController controller = createChildController("sensor_info.fxml");
+        sensorsPaneList.getChildren().add(controller.getRootViewNode());
+        
         controller.setId(id);
         controller.setName(commName);
         sensors.put(id, controller);

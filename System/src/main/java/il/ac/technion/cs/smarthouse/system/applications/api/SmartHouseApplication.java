@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
-import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
-import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGui;
+import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGuiController;
+import il.ac.technion.cs.smarthouse.system.main.SystemPresenter;
+import il.ac.technion.cs.smarthouse.system.main.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.system.services.Service;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -44,19 +44,16 @@ public abstract class SmartHouseApplication {
 
     @SafeVarargs
     public static void launch(final Class<? extends Application>... sensors) throws Exception {
-        final MainSystemGui m = new MainSystemGui();
-        m.addOnKillListener(() -> System.exit(0));
-        m.launchGui();
-
-        m.getPresenter().waitUntilLoaded();
+        final SystemPresenter p = new SystemPresenterFactory()
+                        .setUseCloudServer(false)
+                        .setRegularFileSystemListeners(false)
+                        .addApplicationToInstall(new Throwable().getStackTrace()[1].getClassName())
+                        .build();
 
         for (final Class<? extends Application> s : sensors)
             JavaFxHelper.startGui(s.newInstance());
 
-        m.getPresenter().getModel().getSystemApplicationsHandler().addApplication(
-                        new ApplicationPath(PathType.CLASS_NAME, new Throwable().getStackTrace()[1].getClassName()));
-
-        m.getPresenter().gotoAppsTab();
+        p.<MainSystemGuiController>getSystemView().gotoAppsTab();
     }
 
     // [start] Public - Services to the SystemCore

@@ -3,9 +3,9 @@ package il.ac.technion.cs.smarthouse.system.gui.main_system;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.gui.applications.ApplicationViewController;
+import il.ac.technion.cs.smarthouse.system.main.SystemGuiController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -18,8 +18,8 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 
-public class MainSystemGuiController extends SystemPresenter {
-    PresenterInfo appsPresenterInfo;
+public class MainSystemGuiController extends SystemGuiController {
+    ApplicationViewController appsPresenterInfo;
 
     @FXML TabPane tabs;
     @FXML Tab homeTab;
@@ -44,13 +44,13 @@ public class MainSystemGuiController extends SystemPresenter {
             homeTabHBox.setBackground(new Background(myBI));
 
             // user tab:
-            userTab.setContent(createChildPresenter("user information.fxml").getRootViewNode());
+            userTab.setContent(createChildController("user information.fxml").getRootViewNode());
 
             // sensors tab:
-            sensorsTab.setContent(createChildPresenter("house_mapping.fxml").getRootViewNode());
+            sensorsTab.setContent(createChildController("house_mapping.fxml").getRootViewNode());
 
             // applications tab:
-            appsPresenterInfo = createChildPresenter("application_view.fxml");
+            appsPresenterInfo = createChildController("application_view.fxml");
             appsTab.setContent(appsPresenterInfo.getRootViewNode());
 
         } catch (final Exception ¢) {
@@ -60,6 +60,6 @@ public class MainSystemGuiController extends SystemPresenter {
 
     public void gotoAppsTab() {
         tabs.getSelectionModel().select(appsTab);
-        appsPresenterInfo.<ApplicationViewController>getPresenter().selectFirstApp();
+        appsPresenterInfo.selectFirstApp();
     }
 }

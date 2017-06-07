@@ -8,11 +8,11 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
+import il.ac.technion.cs.smarthouse.system.main.SystemGuiController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class ApplicationsInstallerViewController extends SystemPresenter {
+public class ApplicationsInstallerViewController extends SystemGuiController {
     private static Logger log = LoggerFactory.getLogger(ApplicationsInstallerViewController.class);
 
     @FXML private TextField browseText;
@@ -38,7 +38,7 @@ public class ApplicationsInstallerViewController extends SystemPresenter {
     private void initInstallBtn() {
         installBtn.setOnAction(e -> {
             installApp(new ApplicationPath(PathType.JAR_PATH, browseText.getText()));
-            this.<ApplicationViewController>getParentPresenter().updateListView();
+            this.<ApplicationViewController>getParentController().updateListView();
         });
     }
 

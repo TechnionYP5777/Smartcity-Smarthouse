@@ -3,9 +3,9 @@ package il.ac.technion.cs.smarthouse.system.gui.user_info;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
+import il.ac.technion.cs.smarthouse.system.main.SystemGuiController;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 import javafx.beans.property.SimpleStringProperty;
@@ -24,7 +24,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
-public class UserInfoController extends SystemPresenter {
+public class UserInfoController extends SystemGuiController {
     @FXML public TextField userNameField;
     @FXML public TextField userIDField;
     @FXML public TextField userPhoneNumField;

@@ -7,9 +7,9 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.mvp.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
+import il.ac.technion.cs.smarthouse.system.main.SystemGuiController;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -19,7 +19,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class ApplicationViewController extends SystemPresenter {
+public class ApplicationViewController extends SystemGuiController {
     private static Logger log = LoggerFactory.getLogger(ApplicationViewController.class);
 
     @FXML ListView<String> listView;
@@ -60,7 +60,7 @@ public class ApplicationViewController extends SystemPresenter {
         plusButton.setStyle("-fx-font: 42 arial; -fx-base: #b6e7c9;");
         plusButton.setOnAction(e -> {
             try {
-                JavaFxHelper.placeNodeInPane(createChildPresenter("applications_installer_view.fxml").getRootViewNode(),
+                JavaFxHelper.placeNodeInPane(createChildController("applications_installer_view.fxml").getRootViewNode(),
                                 appView);
 
             } catch (final Exception e1) {
