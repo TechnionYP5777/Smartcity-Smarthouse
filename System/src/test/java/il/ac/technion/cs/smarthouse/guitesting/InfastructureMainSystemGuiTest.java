@@ -1,82 +1,54 @@
 package il.ac.technion.cs.smarthouse.guitesting;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import org.loadui.testfx.GuiTest;
 
-import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
-import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
-import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
-import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGui;
-import javafx.application.Platform;
+import il.ac.technion.cs.smarthouse.system.main.SystemPresenter;
+import il.ac.technion.cs.smarthouse.system.main.SystemPresenterFactory;
+import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
+import javafx.application.Application;
 import javafx.scene.Parent;
-import javafx.stage.Stage;
 
 public class InfastructureMainSystemGuiTest extends GuiTest {
 
-    private final MainSystemGui gui = new MainSystemGui();
-    private SosSensorSimulator sosSim;
-    private VitalsSensorSimulator vitalsSim;
-    private StoveSensorSimulator stoveSim;
+    private SystemPresenter gui;
+    private List<Application> sensors = new ArrayList<>();
 
     @Override
     protected Parent getRootNode() {
-        return gui.getRoot();
+        gui = new SystemPresenterFactory().setUseCloudServer(false)
+                        .setRegularFileSystemListeners(false).setOpenOnNewStage(false).build();
+        return gui.getSystemView().getRootViewNode();
     }
 
     @After
-    public void closeSystem() throws Exception {
-        if (vitalsSim != null)
-            vitalsSim.stop();
-        if (sosSim != null)
-            sosSim.stop();
-        if (stoveSim != null)
-            stoveSim.stop();
-        gui.stop();
-        gui.kill();
+    public void closeSystem() {
+        sensors.forEach(s -> {
+            try {
+                s.stop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     protected void installAppOnSystem(final Class<? extends SmartHouseApplication> appClass) throws Exception {
-        gui.getPresenter().getModel().getSystemApplicationsHandler()
+        gui.getSystemModel().getSystemApplicationsHandler()
                         .addApplication(new ApplicationPath(PathType.CLASS_NAME, appClass.getName()));
         Thread.sleep(500);
     }
 
-    protected void openVitalsSensor() {
-        Platform.runLater(() -> {
-            try {
-                vitalsSim = new VitalsSensorSimulator();
-                vitalsSim.start(new Stage());
-            } catch (final Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        });
-    }
-
-    protected void openStoveSensor() {
-        Platform.runLater(() -> {
-            try {
-                stoveSim = new StoveSensorSimulator();
-                stoveSim.start(new Stage());
-            } catch (final Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        });
-    }
-
-    protected void openSOSSensor() {
-        Platform.runLater(() -> {
-            try {
-                sosSim = new SosSensorSimulator();
-                sosSim.start(new Stage());
-            } catch (final Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        });
+    protected void openSensor(Class<? extends Application> sensorSimulator) {
+        try {
+            JavaFxHelper.startGui(sensorSimulator.newInstance());
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

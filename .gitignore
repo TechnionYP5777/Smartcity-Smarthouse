@@ -170,7 +170,7 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-/screenshot*.png
+**/screenshot*.png
 *.log*
 
 # Exclude maven wrapper

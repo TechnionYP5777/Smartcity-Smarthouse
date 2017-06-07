@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.applications.stove.StoveModuleGui;
+import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -29,7 +30,7 @@ public class StoveGuiTest extends InfastructureMainSystemGuiTest {
     private static Logger log = LoggerFactory.getLogger(StoveGuiTest.class);
 
     @Before public void openSensor() {
-        openStoveSensor();
+        openSensor(StoveSensorSimulator.class);
     }
 
     @Test public void testStoveSensor() throws Exception {

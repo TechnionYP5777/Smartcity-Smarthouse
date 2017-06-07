@@ -15,13 +15,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.applications.sos.SosAppGui;
+import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 
 public class SosMainSystemGuiTest extends InfastructureMainSystemGuiTest {
 
     private static Logger log = LoggerFactory.getLogger(SosMainSystemGuiTest.class);
 
     @Before public void openSensor() {
-        openSOSSensor();
+        openSensor(SosSensorSimulator.class);
     }
 
     @Test public void testSosSensor() throws Exception {

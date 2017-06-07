@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.applications.vitals.VitalsApp;
+import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.RangeSlider;
 
@@ -30,7 +31,7 @@ public class VitalsGuiTest extends InfastructureMainSystemGuiTest {
     private static Logger log = LoggerFactory.getLogger(VitalsGuiTest.class);
 
     @Before public void openSensor() {
-        openVitalsSensor();
+        openSensor(VitalsSensorSimulator.class);
     }
 
     @Test public void testVitalsSensor() throws Exception {
