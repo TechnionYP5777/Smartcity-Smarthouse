@@ -104,16 +104,15 @@ public enum FileSystemEntries {
     private String buildPathAux(final List<String> base) {
         String out = name;
 
-        if (name == null) {
-            if (base.isEmpty()) {
-                final RuntimeException r = new RuntimeException("the given path is not big enough");
-                log.error("Error while building the path", r);
-                throw r;
-            }
-            out = base.get(0);
-            base.remove(0);
+        if (name != null)
+            return out;
+        if (base.isEmpty()) {
+            final RuntimeException r = new RuntimeException("the given path is not big enough");
+            log.error("Error while building the path", r);
+            throw r;
         }
-
+        out = base.get(0);
+        base.remove(0);
         return out;
     }
 
@@ -142,6 +141,6 @@ public enum FileSystemEntries {
 
     @Override
     public String toString() {
-        return name == null ? "<EMPTY>" : name;
+        return name != null ? name : "<EMPTY>";
     }
 }
