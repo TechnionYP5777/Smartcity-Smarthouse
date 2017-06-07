@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.main;
+package il.ac.technion.cs.smarthouse.mvp.system;
 
 import java.util.ArrayList;
 import java.util.List;

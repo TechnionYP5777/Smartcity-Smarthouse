@@ -1,9 +1,9 @@
 package il.ac.technion.cs.smarthouse;
 
+import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
-import il.ac.technion.cs.smarthouse.system.main.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 
 public class Entry {

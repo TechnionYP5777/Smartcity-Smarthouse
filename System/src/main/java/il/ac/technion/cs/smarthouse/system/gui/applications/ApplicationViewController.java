@@ -7,9 +7,9 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
-import il.ac.technion.cs.smarthouse.system.main.SystemGuiController;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

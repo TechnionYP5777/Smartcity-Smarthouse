@@ -6,11 +6,11 @@ import java.util.List;
 import org.junit.After;
 import org.loadui.testfx.GuiTest;
 
+import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenter;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
-import il.ac.technion.cs.smarthouse.system.main.SystemPresenter;
-import il.ac.technion.cs.smarthouse.system.main.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.application.Application;
 import javafx.scene.Parent;
