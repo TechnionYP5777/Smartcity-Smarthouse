@@ -31,7 +31,7 @@ public class ApplicationViewController extends SystemGuiController {
     private ApplicationsCore appsHandler;
 
     @Override
-    public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
         appsHandler = model.getSystemApplicationsHandler();
 
         model.getSystemApplicationsHandler().setOnAppsListChange(this::updateListView);

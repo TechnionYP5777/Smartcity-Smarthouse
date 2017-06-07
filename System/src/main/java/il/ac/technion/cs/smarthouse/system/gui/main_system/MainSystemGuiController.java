@@ -30,7 +30,7 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML HBox homeTabHBox;
 
     @Override
-    public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
         try {
             // home tab:
             homeTab.setContent(homeTabHBox);

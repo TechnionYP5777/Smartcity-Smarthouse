@@ -29,7 +29,7 @@ public class ApplicationsInstallerViewController extends SystemGuiController {
     @FXML private Button installBtn;
 
     @Override
-    public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
         initInstallBtn();
         initBrowseBtn();
     }

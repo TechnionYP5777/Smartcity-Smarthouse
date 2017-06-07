@@ -171,7 +171,7 @@ public class UserInfoController extends SystemGuiController {
     }
 
     @Override
-    public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
         setButtons();
         setCellsFactories();
         costumizeContactsTab();

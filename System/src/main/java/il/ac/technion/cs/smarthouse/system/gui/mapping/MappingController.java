@@ -35,7 +35,7 @@ public class MappingController extends SystemGuiController {
     @FXML private Canvas canvas;
 
     @Override
-    public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
         log.debug("initialized the map gui");
         house.addRoom(new Room(320, 320, 150, 150, SensorLocation.LIVING_ROOM));
         house.addRoom(new Room(470, 320, 150, 150, SensorLocation.KITCHEN));

@@ -26,7 +26,7 @@ public class SensorInfoController extends SystemGuiController {
     @FXML private ComboBox<String> room;
 
     @Override
-    public void init(final SystemCore model, final URL location, final ResourceBundle __) {
+    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
         fileSystem = model.getFileSystem();
 
         room.getItems().addAll(Arrays.asList(SensorLocation.values()).stream().map(loc -> loc + "")
