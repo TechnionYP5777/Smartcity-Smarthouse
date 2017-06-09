@@ -7,6 +7,11 @@ import il.ac.technion.cs.smarthouse.javafx_elements.AppGridPane;
 import il.ac.technion.cs.smarthouse.javafx_elements.AppLabel;
 import javafx.scene.Node;
 
+/**
+ * an abstract GUI layout region 
+ * @author RON
+ * @since 10-06-2017
+ */
 abstract class RegionBuilder {
     static class AppBuilderItem {
         String fieldTitle;

@@ -5,6 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * A linkable data object
+ * <p>
+ * Use this object to link data fields to the GUI's configuration and status fields
+ * @author RON
+ * @since 10-06-2017
+ */
 public class DataObject<T> {
     private T data;
     private List<Consumer<Optional<T>>> dataChangedListeners = new ArrayList<>();

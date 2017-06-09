@@ -7,6 +7,13 @@ import il.ac.technion.cs.smarthouse.javafx_elements.AppComboBoxField;
 import il.ac.technion.cs.smarthouse.javafx_elements.AppSpinnerField;
 import il.ac.technion.cs.smarthouse.javafx_elements.AppTextField;
 
+/**
+ * GUI layout - configurations region
+ * <p>
+ * A region for editable fields
+ * @author RON
+ * @since 10-06-2017
+ */
 public class ConfigurationsRegionBuilder extends RegionBuilder {
     public ConfigurationsRegionBuilder() {
         super.setTitle("Configurations");

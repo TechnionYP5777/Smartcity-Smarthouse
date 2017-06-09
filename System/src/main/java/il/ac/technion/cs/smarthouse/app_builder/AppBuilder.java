@@ -8,11 +8,16 @@ import javafx.scene.Parent;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 
+/**
+ * Allows the developer to build the GUI's layout
+ * @author RON
+ * @since 10-06-2017
+ */
 public class AppBuilder {
     private ConfigurationsRegionBuilder configurationsBuilder = new ConfigurationsRegionBuilder();
     private StatusRegionBuilder statusBuilder = new StatusRegionBuilder();
     private WidgetsRegionBuilder widgetBuilder = new WidgetsRegionBuilder();
-
+    
     public ConfigurationsRegionBuilder getConfigurationsRegionBuilder() {
         return configurationsBuilder;
     }

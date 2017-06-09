@@ -7,6 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+/**
+ * GUI layout - status region
+ * <p>
+ * A region for read-only fields
+ * @author RON
+ * @since 10-06-2017
+ */
 public class StatusRegionBuilder extends RegionBuilder {
     public StatusRegionBuilder() {
         super.setTitle("Status");
