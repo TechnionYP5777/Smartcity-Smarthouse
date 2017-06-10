@@ -73,7 +73,7 @@ public final class ApplicationMetaData {
      * it.
      */
     public void reopen(final Pane parentPane) {
-        if (application != null && rootNode != null)
+        if (parentPane != null && application != null && rootNode != null)
             JavaFxHelper.placeNodeInPane(rootNode, parentPane);
     }
 
