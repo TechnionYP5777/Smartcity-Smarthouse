@@ -3,14 +3,14 @@ package il.ac.technion.cs.smarthouse.applications.stove;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 
-public class StoveModuleGui extends SmartHouseApplication {
+public class StoveModuleGui extends SmarthouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
 
     private StoveAppController controller;

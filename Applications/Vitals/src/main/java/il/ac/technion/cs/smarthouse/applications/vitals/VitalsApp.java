@@ -3,9 +3,9 @@ package il.ac.technion.cs.smarthouse.applications.vitals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
@@ -15,7 +15,7 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 /** This class contains the logic of the vitals signs application.
  * @author Yarden
  * @since 19.1.17 */
-public class VitalsApp extends SmartHouseApplication {
+public class VitalsApp extends SmarthouseApplication {
     private static Logger log = LoggerFactory.getLogger(VitalsApp.class);
 
     private Controller controller;

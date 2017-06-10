@@ -6,9 +6,9 @@ import java.util.List;
 import org.junit.After;
 import org.loadui.testfx.GuiTest;
 
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenter;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenterFactory;
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
@@ -38,7 +38,7 @@ public class InfastructureMainSystemGuiTest extends GuiTest {
         });
     }
 
-    protected void installAppOnSystem(final Class<? extends SmartHouseApplication> appClass) throws Exception {
+    protected void installAppOnSystem(final Class<? extends SmarthouseApplication> appClass) throws Exception {
         gui.getSystemModel().getSystemApplicationsHandler()
                         .addApplication(new ApplicationPath(PathType.CLASS_NAME, appClass.getName()));
         Thread.sleep(500);

@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.app_builder;
+package il.ac.technion.cs.smarthouse.developers_api;
 
 import il.ac.technion.cs.smarthouse.javafx_elements.AppGridPane;
 import javafx.geometry.Insets;
@@ -10,14 +10,16 @@ import javafx.scene.layout.VBox;
 
 /**
  * Allows the developer to build the GUI's layout
+ * 
  * @author RON
  * @since 10-06-2017
  */
-public class AppBuilder {
+public final class AppBuilder {
     private ConfigurationsRegionBuilder configurationsBuilder = new ConfigurationsRegionBuilder();
     private StatusRegionBuilder statusBuilder = new StatusRegionBuilder();
     private WidgetsRegionBuilder widgetBuilder = new WidgetsRegionBuilder();
-    
+    private CustomRegionBuilder customBuilder = new CustomRegionBuilder();
+
     public ConfigurationsRegionBuilder getConfigurationsRegionBuilder() {
         return configurationsBuilder;
     }
@@ -30,18 +32,22 @@ public class AppBuilder {
         return widgetBuilder;
     }
 
+    public CustomRegionBuilder getCustomRegionBuilder() {
+        return customBuilder;
+    }
+
     Parent build() {
         final VBox page = new VBox(15);
         page.setPadding(new Insets(10));
         page.setAlignment(Pos.TOP_CENTER);
 
-        final RegionBuilder[] rbs = { configurationsBuilder, statusBuilder, widgetBuilder };
+        final AbstractRegionBuilder[] rbs = { configurationsBuilder, statusBuilder, widgetBuilder, customBuilder };
 
         final AppGridPane grid = new AppGridPane();
-        for (RegionBuilder regionBuilder : rbs)
+        for (AbstractRegionBuilder regionBuilder : rbs)
             if (!regionBuilder.isEmpty())
                 regionBuilder.build(grid).addRow(new Separator(Orientation.HORIZONTAL));
-        
+
         grid.setMaxWidth(500);
         page.getChildren().add(grid);
 

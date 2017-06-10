@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.app_builder;
+package il.ac.technion.cs.smarthouse.developers_api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * @author RON
  * @since 10-06-2017
  */
-public class DataObject<T> {
+public final class DataObject<T> {
     private T data;
     private List<Consumer<Optional<T>>> dataChangedListeners = new ArrayList<>();
     
@@ -33,8 +33,10 @@ public class DataObject<T> {
     }
     
     public DataObject<T> setData(T newData) {
-        data = newData;
-        dataChangedListeners.forEach(f->f.accept(Optional.ofNullable(data)));
+        if (data != newData) {
+            data = newData;
+            dataChangedListeners.forEach(f->f.accept(Optional.ofNullable(data)));
+        }
         return this;
     }
     

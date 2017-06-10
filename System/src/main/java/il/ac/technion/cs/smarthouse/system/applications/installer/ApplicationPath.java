@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.annotations.Expose;
 
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 
 /**
@@ -46,7 +46,7 @@ public class ApplicationPath {
     }
 
     @SuppressWarnings("unchecked")
-    public SmartHouseApplication installMe() throws AppInstallerException, IOException {
+    public SmarthouseApplication installMe() throws AppInstallerException, IOException {
         switch (pathType) {
             case JAR_PATH:
                 return AppInstallHelper.loadApplication((String) path);

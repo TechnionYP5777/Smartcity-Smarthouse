@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.applications.api;
+package il.ac.technion.cs.smarthouse.developers_api;
 
 import java.net.URL;
 import java.util.Optional;
@@ -9,12 +9,9 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenter;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
-import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGuiController;
 import il.ac.technion.cs.smarthouse.system.services.Service;
-import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.application.Application;
@@ -23,24 +20,24 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 
 /**
- * The API for the apps/modules developers Every app that wants to be installed
- * on the system, MUST extend this class
+ * The API for the application developers.
+ * <p>
+ * Every application that wants to be installed
+ * on the system, MUST extend this class.
  * 
  * @author RON
  * @author roysh
  * @author Elia Traore
  * @since 8.12.2016
  */
-public abstract class SmartHouseApplication {
-    private static Logger log = LoggerFactory.getLogger(SmartHouseApplication.class);
+public abstract class SmarthouseApplication {
+    private static Logger log = LoggerFactory.getLogger(SmarthouseApplication.class);
 
     private SystemCore systemCore;
-    private ServiceManager serviceManager;
-    private FileSystem fileSystem;
     private String applicationId;
     private Node rootNode;
 
-    public SmartHouseApplication() {}
+    public SmarthouseApplication() {}
 
     @SafeVarargs
     public static void launch(final Class<? extends Application>... sensors) throws Exception {
@@ -53,24 +50,22 @@ public abstract class SmartHouseApplication {
         for (final Class<? extends Application> s : sensors)
             JavaFxHelper.startGui(s.newInstance());
 
-        p.<MainSystemGuiController>getSystemView().gotoAppsTab();
+        p.getSystemView().gotoAppsTab();
     }
 
     // [start] Public - Services to the SystemCore
-    public final SmartHouseApplication setDataFromApplicationManager(final SystemCore $, final String applicationId) {
+    final SmarthouseApplication setDataFromApplicationManager(final SystemCore $, final String applicationId) {
         if (systemCore != null)
             return this;
 
         systemCore = $;
-        serviceManager = systemCore.getSystemServiceManager();
-        fileSystem = systemCore.getFileSystem();
 
         this.applicationId = applicationId;
 
         return this;
     }
 
-    public final Node getRootNode() {
+    final Node getRootNode() {
         return rootNode;
     }
     // [end]
@@ -83,6 +78,7 @@ public abstract class SmartHouseApplication {
      *            of the fxml file
      * @return
      */
+    @Deprecated
     public <T extends Initializable> T setContentView(final String fxmlFileName) {
         try {
             final FXMLLoader fxmlLoader = createFXMLLoader(fxmlFileName);
@@ -96,11 +92,13 @@ public abstract class SmartHouseApplication {
         return null;
     }
 
+    @Deprecated
     public URL getResource(final String resourcePath) {
         return Optional.ofNullable(getClass().getClassLoader().getResource(resourcePath))
                         .orElse(getClass().getResource(resourcePath));
     }
 
+    @Deprecated
     public FXMLLoader createFXMLLoader(final String fxmlFileName) {
         final URL url = getResource(fxmlFileName);
         final FXMLLoader fxmlLoader = new FXMLLoader(url);
@@ -116,7 +114,7 @@ public abstract class SmartHouseApplication {
      * @return
      */
     public <T extends Service> T getService(final ServiceType $) {
-        return serviceManager.getService($);
+        return systemCore.getSystemServiceManager().getService($);
     }
 
     /**
@@ -127,7 +125,7 @@ public abstract class SmartHouseApplication {
      */
     public final void saveApplicationData(final Object data, final String... path) {
         assert applicationId != null;
-        fileSystem.sendMessage(data,
+        systemCore.getFileSystem().sendMessage(data,
                         FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));
     }
 
@@ -138,7 +136,7 @@ public abstract class SmartHouseApplication {
      */
     public final <T> T readApplicationData(final String... path) {
         assert applicationId != null;
-        return fileSystem.getData(
+        return systemCore.getFileSystem().getData(
                         FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));
     }
     // [end]

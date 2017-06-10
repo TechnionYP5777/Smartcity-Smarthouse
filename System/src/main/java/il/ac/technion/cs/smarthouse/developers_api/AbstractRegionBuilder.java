@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.app_builder;
+package il.ac.technion.cs.smarthouse.developers_api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import javafx.scene.Node;
  * @author RON
  * @since 10-06-2017
  */
-abstract class RegionBuilder {
+abstract class AbstractRegionBuilder {
     static class AppBuilderItem {
         String fieldTitle;
         Node node;
@@ -30,7 +30,7 @@ abstract class RegionBuilder {
         return title;
     }
     
-    protected RegionBuilder setTitle(String title) {
+    protected AbstractRegionBuilder setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -43,7 +43,10 @@ abstract class RegionBuilder {
         p.addRow(new AppLabel(getTitle(), 20).addShadow());
         
         for (AppBuilderItem appBuilderItem : appBuilderItems)
-            p.addRow(new AppLabel(appBuilderItem.fieldTitle, 14), appBuilderItem.node);
+            if (appBuilderItem.fieldTitle == null)
+                p.addRow(appBuilderItem.node);
+            else
+                p.addRow(new AppLabel(appBuilderItem.fieldTitle, 14), appBuilderItem.node);
         
         return p;
     }

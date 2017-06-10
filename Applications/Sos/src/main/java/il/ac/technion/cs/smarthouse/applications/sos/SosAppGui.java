@@ -3,9 +3,9 @@ package il.ac.technion.cs.smarthouse.applications.sos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
@@ -14,7 +14,7 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 
-public class SosAppGui extends SmartHouseApplication {
+public class SosAppGui extends SmarthouseApplication {
     private static Logger log = LoggerFactory.getLogger(SosAppGui.class);
 
     SosController sosController;

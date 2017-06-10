@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.app_builder;
+package il.ac.technion.cs.smarthouse.developers_api;
 
 import java.util.Optional;
 
@@ -14,7 +14,7 @@ import il.ac.technion.cs.smarthouse.javafx_elements.AppTextField;
  * @author RON
  * @since 10-06-2017
  */
-public class ConfigurationsRegionBuilder extends RegionBuilder {
+public final class ConfigurationsRegionBuilder extends AbstractRegionBuilder {
     public ConfigurationsRegionBuilder() {
         super.setTitle("Configurations");
     }

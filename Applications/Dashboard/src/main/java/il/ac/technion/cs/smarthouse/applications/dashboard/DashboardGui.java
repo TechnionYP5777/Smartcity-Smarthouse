@@ -3,9 +3,9 @@ package il.ac.technion.cs.smarthouse.applications.dashboard;
  * 
  */
 
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.file_system_service.FileSystemService;
 
@@ -13,7 +13,7 @@ import il.ac.technion.cs.smarthouse.system.services.file_system_service.FileSyst
  * @author Elia Traore
  * @since May 29, 2017
  */
-public class DashboardGui extends SmartHouseApplication {
+public class DashboardGui extends SmarthouseApplication {
 	private Controller controller;
 
 	public static void main(String[] args) throws Exception {

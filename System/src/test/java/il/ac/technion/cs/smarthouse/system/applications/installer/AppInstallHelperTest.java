@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.examples.MyTestClass1;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 
@@ -45,7 +45,7 @@ public class AppInstallHelperTest {
     @Test
     public void testLoadGoodApp() {
         try {
-            final SmartHouseApplication a = AppInstallHelper.loadApplication(classesNames_app1);
+            final SmarthouseApplication a = AppInstallHelper.loadApplication(classesNames_app1);
             assert a instanceof MyTestClass1;
 
             final MyTestClass1 t = (MyTestClass1) a;

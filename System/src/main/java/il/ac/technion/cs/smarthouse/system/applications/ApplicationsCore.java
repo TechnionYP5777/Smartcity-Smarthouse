@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.google.gson.annotations.Expose;
 
+import il.ac.technion.cs.smarthouse.developers_api.ApplicationMetaData;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
@@ -24,7 +25,7 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  * @since Dec 13, 2016
  */
 public class ApplicationsCore extends ChildCore {
-    @Expose private final List<ApplicationManager> apps = new ArrayList<>();
+    @Expose private final List<ApplicationMetaData> apps = new ArrayList<>();
     private Runnable onAppsChange;
 
     /**
@@ -44,21 +45,21 @@ public class ApplicationsCore extends ChildCore {
      * @throws Exception
      * @throws ApplicationInitializationException
      */
-    public ApplicationManager addApplication(final ApplicationPath appPath) throws Exception {
-        final ApplicationManager $ = new ApplicationManager(UuidGenerator.GenerateUniqueIDstring(), appPath);
+    public ApplicationMetaData addApplication(final ApplicationPath appPath) throws Exception {
+        final ApplicationMetaData $ = new ApplicationMetaData(UuidGenerator.GenerateUniqueIDstring(), appPath);
         initializeApplicationManager($);
         apps.add($);
         Optional.ofNullable(onAppsChange).ifPresent(a -> a.run());
         return $;
     }
 
-    public List<ApplicationManager> getApplicationManagers() {
+    public List<ApplicationMetaData> getApplicationManagers() {
         return Collections.unmodifiableList(apps);
     }
 
     public List<String> getInstalledApplicationNames() {
         final List<String> l = new ArrayList<>();
-        for (final ApplicationManager applicationManager : apps)
+        for (final ApplicationMetaData applicationManager : apps)
             Optional.ofNullable(applicationManager.getApplicationName()).ifPresent(l::add);
         return l;
     }
@@ -69,7 +70,7 @@ public class ApplicationsCore extends ChildCore {
     // [end]
 
     // [start] Private functions
-    private void initializeApplicationManager(final ApplicationManager $) throws Exception {
+    private void initializeApplicationManager(final ApplicationMetaData $) throws Exception {
         $.initialize(systemCore);
     }
     // [end]
@@ -78,7 +79,7 @@ public class ApplicationsCore extends ChildCore {
     public void populate(final String jsonString) throws Exception {
         super.populate(jsonString);
 
-        for (final ApplicationManager applicationManager : apps)
+        for (final ApplicationMetaData applicationManager : apps)
             initializeApplicationManager(applicationManager);
     }
 }

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 
 /**
@@ -38,7 +38,7 @@ public class AppInstallHelper {
      * @throws AppInstallerException
      * @throws IOException
      */
-    public static SmartHouseApplication loadApplication(final String jarFilePath)
+    public static SmarthouseApplication loadApplication(final String jarFilePath)
                     throws AppInstallerException, IOException {
         return loadApplication_aux(getClassNamesFromJar(jarFilePath),
                         URLClassLoader.newInstance(new URL[] { new URL("jar:file:" + jarFilePath + "!/") }));
@@ -52,7 +52,7 @@ public class AppInstallHelper {
      * @return an instance of SmartHouseApplication
      * @throws AppInstallerException
      */
-    public static SmartHouseApplication loadApplication(final List<String> classesNames) throws AppInstallerException {
+    public static SmarthouseApplication loadApplication(final List<String> classesNames) throws AppInstallerException {
         return loadApplication_aux(classesNames, ClassLoader.getSystemClassLoader());
     }
     // [end]
@@ -68,16 +68,16 @@ public class AppInstallHelper {
      * @return an instance of SmartHouseApplication
      * @throws AppInstallerException
      */
-    private static SmartHouseApplication loadApplication_aux(final List<String> classNames, final ClassLoader l)
+    private static SmarthouseApplication loadApplication_aux(final List<String> classNames, final ClassLoader l)
                     throws AppInstallerException {
-        final List<Class<?>> $ = getClassesBySuperclass(loadAllClasses(l, classNames), SmartHouseApplication.class);
+        final List<Class<?>> $ = getClassesBySuperclass(loadAllClasses(l, classNames), SmarthouseApplication.class);
         if ($.isEmpty())
             throw new AppInstallerException(AppInstallerException.ErrorCode.NO_IMPL_ERROR);
         if ($.size() > 1)
             throw new AppInstallerException(AppInstallerException.ErrorCode.MORE_THAN_ONE_IMPL_ERROR,
                             "number of classes that extend is " + $.size());
         try {
-            return (SmartHouseApplication) $.get(0).newInstance();
+            return (SmarthouseApplication) $.get(0).newInstance();
         } catch (final InstantiationException ¢) {
             log.error("Instantiation error occured", ¢);
             throw new AppInstallerException(AppInstallerException.ErrorCode.INSTANTIATION_ERROR, ¢.getMessage());

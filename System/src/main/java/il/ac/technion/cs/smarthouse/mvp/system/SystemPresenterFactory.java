@@ -7,8 +7,8 @@ import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
@@ -63,7 +63,7 @@ public class SystemPresenterFactory {
         return this;
     }
     
-    public SystemPresenterFactory addApplicationToInstall(final Class<? extends SmartHouseApplication> applicationClass) {
+    public SystemPresenterFactory addApplicationToInstall(final Class<? extends SmarthouseApplication> applicationClass) {
         model_applicationsToInstall.add(applicationClass.getName());
         return this;
     }

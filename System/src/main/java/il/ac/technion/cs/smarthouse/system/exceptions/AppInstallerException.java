@@ -1,6 +1,6 @@
 package il.ac.technion.cs.smarthouse.system.exceptions;
 
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
+import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 
 /**
  * This exception describes an error in the process of installing an application
@@ -12,14 +12,14 @@ public class AppInstallerException extends Exception {
     public enum ErrorCode {
         MORE_THAN_ONE_IMPL_ERROR(
                         0,
-                        "There is more than one class that extends " + SmartHouseApplication.class.getName()),
-        NO_IMPL_ERROR(1, "There is no class that extends " + SmartHouseApplication.class.getName()),
+                        "There is more than one class that extends " + SmarthouseApplication.class.getName()),
+        NO_IMPL_ERROR(1, "There is no class that extends " + SmarthouseApplication.class.getName()),
         INSTANTIATION_ERROR(
                         2,
-                        "Can't create an instance of the class that extends " + SmartHouseApplication.class.getName()),
+                        "Can't create an instance of the class that extends " + SmarthouseApplication.class.getName()),
         ILLEGAL_ACCESS_ERROR(
                         3,
-                        "The class that extends " + SmartHouseApplication.class.getName()
+                        "The class that extends " + SmarthouseApplication.class.getName()
                                         + ", or its nullary constructor is not accessible");
 
         private final int id;

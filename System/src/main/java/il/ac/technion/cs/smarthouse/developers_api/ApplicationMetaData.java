@@ -1,11 +1,10 @@
-package il.ac.technion.cs.smarthouse.system.applications;
+package il.ac.technion.cs.smarthouse.developers_api;
 
 import java.io.IOException;
 
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.applications.api.SmartHouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
@@ -18,14 +17,14 @@ import javafx.scene.layout.Pane;
  * @author RON
  * @since 09-12-2016
  */
-public class ApplicationManager {
+public final class ApplicationMetaData {
     @Expose private String id;
     @Expose private final ApplicationPath appPath;
-    private SmartHouseApplication application;
+    private SmarthouseApplication application;
 
     private Node rootNode;
 
-    public ApplicationManager(final String id, final ApplicationPath appPath) {
+    public ApplicationMetaData(final String id, final ApplicationPath appPath) {
         this.id = id;
         this.appPath = appPath;
     }
@@ -79,7 +78,7 @@ public class ApplicationManager {
     }
 
     public String getApplicationName() {
-        return application == null ? null : application.getApplicationName();
+        return application == null ? "Application_" + id : application.getApplicationName();
     }
     // [end]
 
@@ -95,7 +94,7 @@ public class ApplicationManager {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        final ApplicationManager other = (ApplicationManager) o;
+        final ApplicationMetaData other = (ApplicationMetaData) o;
         if (id == null) {
             if (other.id != null)
                 return false;

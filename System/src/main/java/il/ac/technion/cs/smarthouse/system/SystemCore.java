@@ -101,7 +101,6 @@ public class SystemCore implements Savable {
                         FileSystemEntries.APPLICATIONS_DATA.buildPath());
     }
 
-    @SuppressWarnings("unused")
     private void loadSystemFromCloud() {
         try {
             final double startTime = System.nanoTime();
