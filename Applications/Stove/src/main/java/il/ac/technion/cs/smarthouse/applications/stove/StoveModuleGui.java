@@ -3,39 +3,52 @@ package il.ac.technion.cs.smarthouse.applications.stove;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.developers_api.DataObject;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
+import javafx.scene.paint.Color;
 
 public class StoveModuleGui extends SmarthouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
-
-    private StoveAppController controller;
     
     public static void main(String[] args) throws Exception {
         launch(StoveSensorSimulator.class);
     }
 
     @Override public void onLoad() throws Exception {
-        log.debug("App starting - in onLoad");
+        final DataObject<Integer> alertAfterSecs = new DataObject<>(30);
+        final DataObject<Integer> alertAboveDegs = new DataObject<>(120);
+        final DataObject<Integer> temps = new DataObject<>(0);
+        final DataObject<Boolean> isStoveOn = new DataObject<>(false);
+        final DataObject<Double> timer = new DataObject<>();
+        
+        getAppBuilder().getConfigurationsRegionBuilder()
+            .addIntegerInputField("Alert after (seconds):", alertAfterSecs)
+            .addIntegerInputField("Alert at (degrees celsius):", alertAboveDegs);
+        
+        getAppBuilder().getStatusRegionBuilder()
+            .addStatusField("Current tempeture:", temps, t->{
+                if (t.get() >= alertAboveDegs.getData())
+                    return Color.RED;
+                return null;
+            })
+            .addTimerStatusField("Stove running timer:", isStoveOn, timer, t->{
+                if (t.isPresent() && t.get() >= alertAfterSecs.getData())
+                    return Color.RED;
+                return null;
+            });
 
         super.<SensorsService>getService(ServiceType.SENSORS_SERVICE).getSensor("iStoves", StoveSensor.class).subscribe(stove -> {
             final String t = "Stove is " + (stove.isOn() ? "" : "Not ") + "On at " + stove.getTemperture() + " degrees";
-            if (stove.isOn())
-                controller.turnOn();
-            else
-                controller.turnOf();
-            controller.updateTemperture(stove.getTemperture());
+            isStoveOn.setData(stove.isOn());
+            temps.setData(!stove.isOn() ? 0 : stove.getTemperture());
             log.debug("App msg (from function subscibed to stove sensor): " + t + " | Sensor is located at: " + stove.getSensorLocation());
         });
-
-        controller = super.setContentView("stove_app_ui.fxml");
-        controller.setInstance(this);
         
-        saveApplicationData(5, "myNum");
     }
 
     @Override public String getApplicationName() {

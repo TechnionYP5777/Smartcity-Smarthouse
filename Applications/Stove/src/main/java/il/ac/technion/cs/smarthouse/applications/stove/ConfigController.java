@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
+@Deprecated
 public class ConfigController implements Initializable {
 
     @FXML public Button Apply;

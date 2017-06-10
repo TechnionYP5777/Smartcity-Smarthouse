@@ -40,7 +40,8 @@ abstract class AbstractRegionBuilder {
     }
     
     AppGridPane build(final AppGridPane p) {
-        p.addRow(new AppLabel(getTitle(), 20).addShadow());
+        if (getTitle() != null)
+            p.addRow(new AppLabel(getTitle(), 20).addShadow());
         
         for (AppBuilderItem appBuilderItem : appBuilderItems)
             if (appBuilderItem.fieldTitle == null)
@@ -53,6 +54,10 @@ abstract class AbstractRegionBuilder {
     
     boolean isEmpty() {
         return appBuilderItems.isEmpty();
+    }
+    
+    List<AppBuilderItem> getAppBuilderItems() {
+        return appBuilderItems;
     }
     
 }

@@ -29,6 +29,7 @@ import javafx.util.Duration;
 
 /** @author Roy
  * @since 19.12.16 */
+@Deprecated
 public class StoveAppController implements Initializable {
     static Logger log = LoggerFactory.getLogger(StoveAppController.class);
 
@@ -115,19 +116,19 @@ public class StoveAppController implements Initializable {
 
     @Override public void initialize(final URL location, final ResourceBundle __) {
 
-        stoveConfigButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(final ActionEvent __1) {
-                try {
-                    final FXMLLoader fxmlLoader = instance.createFXMLLoader("stove_app_config.fxml");
-                    final Parent root1 = (Parent) fxmlLoader.load();
-                    final Stage stage = new Stage();
-                    stage.setScene(new Scene(root1));
-                    stage.show();
-                    ((ConfigController) fxmlLoader.getController()).subscribe(StoveAppController.this);
-                } catch (final Exception $) {
-                    log.error("Failed trying to initialize the ConfigController", $);
-                }
-            }
-        });
+//        stoveConfigButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override public void handle(final ActionEvent __1) {
+//                try {
+//                    final FXMLLoader fxmlLoader = instance.createFXMLLoader("stove_app_config.fxml");
+//                    final Parent root1 = (Parent) fxmlLoader.load();
+//                    final Stage stage = new Stage();
+//                    stage.setScene(new Scene(root1));
+//                    stage.show();
+//                    ((ConfigController) fxmlLoader.getController()).subscribe(StoveAppController.this);
+//                } catch (final Exception $) {
+//                    log.error("Failed trying to initialize the ConfigController", $);
+//                }
+//            }
+//        });
     }
 }

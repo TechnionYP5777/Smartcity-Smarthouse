@@ -41,15 +41,18 @@ public final class AppBuilder {
         page.setPadding(new Insets(10));
         page.setAlignment(Pos.TOP_CENTER);
 
-        final AbstractRegionBuilder[] rbs = { configurationsBuilder, statusBuilder, widgetBuilder, customBuilder };
+        final AbstractRegionBuilder[] rbs = { configurationsBuilder, statusBuilder, widgetBuilder };
 
         final AppGridPane grid = new AppGridPane();
         for (AbstractRegionBuilder regionBuilder : rbs)
             if (!regionBuilder.isEmpty())
                 regionBuilder.build(grid).addRow(new Separator(Orientation.HORIZONTAL));
-
+        
         grid.setMaxWidth(500);
         page.getChildren().add(grid);
+        
+        if (!customBuilder.isEmpty())
+            customBuilder.getAppBuilderItems().forEach(i->page.getChildren().add(i.node));
 
         return page;
     }

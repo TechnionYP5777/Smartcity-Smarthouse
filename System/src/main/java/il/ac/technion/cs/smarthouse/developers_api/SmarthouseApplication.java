@@ -35,7 +35,7 @@ public abstract class SmarthouseApplication {
 
     private SystemCore systemCore;
     private String applicationId;
-    private Node rootNode;
+    private AppBuilder appBuilder = new AppBuilder();
 
     public SmarthouseApplication() {}
 
@@ -65,47 +65,49 @@ public abstract class SmarthouseApplication {
         return this;
     }
 
-    final Node getRootNode() {
-        return rootNode;
-    }
+    
     // [end]
 
     // [start] Public - Services to application developers
-    /**
-     * Set the fxml file that will be used
-     * 
-     * @param location
-     *            of the fxml file
-     * @return
-     */
-    @Deprecated
-    public <T extends Initializable> T setContentView(final String fxmlFileName) {
-        try {
-            final FXMLLoader fxmlLoader = createFXMLLoader(fxmlFileName);
-            fxmlLoader.setClassLoader(getClass().getClassLoader());
-            rootNode = fxmlLoader.load();
-            return fxmlLoader.getController();
-        } catch (final Exception e) {
-            rootNode = null;
-            log.error("Couldn't load the application's fxml. The rootNode is null", e);
-        }
-        return null;
+    public AppBuilder getAppBuilder() {
+        return appBuilder;
     }
-
-    @Deprecated
-    public URL getResource(final String resourcePath) {
-        return Optional.ofNullable(getClass().getClassLoader().getResource(resourcePath))
-                        .orElse(getClass().getResource(resourcePath));
-    }
-
-    @Deprecated
-    public FXMLLoader createFXMLLoader(final String fxmlFileName) {
-        final URL url = getResource(fxmlFileName);
-        final FXMLLoader fxmlLoader = new FXMLLoader(url);
-        fxmlLoader.setClassLoader(getClass().getClassLoader());
-        log.info("Creating FXML for app \"" + getApplicationName() + "\" (" + getClass().getName() + ") from: " + url);
-        return fxmlLoader;
-    }
+    
+//    /**
+//     * Set the fxml file that will be used
+//     * 
+//     * @param location
+//     *            of the fxml file
+//     * @return
+//     */
+//    @Deprecated
+//    public <T extends Initializable> T setContentView(final String fxmlFileName) {
+//        try {
+//            final FXMLLoader fxmlLoader = createFXMLLoader(fxmlFileName);
+//            fxmlLoader.setClassLoader(getClass().getClassLoader());
+//            rootNode = fxmlLoader.load();
+//            return fxmlLoader.getController();
+//        } catch (final Exception e) {
+//            rootNode = null;
+//            log.error("Couldn't load the application's fxml. The rootNode is null", e);
+//        }
+//        return null;
+//    }
+//
+//    @Deprecated
+//    public URL getResource(final String resourcePath) {
+//        return Optional.ofNullable(getClass().getClassLoader().getResource(resourcePath))
+//                        .orElse(getClass().getResource(resourcePath));
+//    }
+//
+//    @Deprecated
+//    public FXMLLoader createFXMLLoader(final String fxmlFileName) {
+//        final URL url = getResource(fxmlFileName);
+//        final FXMLLoader fxmlLoader = new FXMLLoader(url);
+//        fxmlLoader.setClassLoader(getClass().getClassLoader());
+//        log.info("Creating FXML for app \"" + getApplicationName() + "\" (" + getClass().getName() + ") from: " + url);
+//        return fxmlLoader;
+//    }
 
     /**
      * Get a service from the system

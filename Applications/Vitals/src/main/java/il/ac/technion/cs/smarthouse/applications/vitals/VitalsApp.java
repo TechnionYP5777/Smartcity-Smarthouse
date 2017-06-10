@@ -3,6 +3,7 @@ package il.ac.technion.cs.smarthouse.applications.vitals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.developers_api.DataObject;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
@@ -74,8 +75,10 @@ public class VitalsApp extends SmarthouseApplication {
             if (systolicBP <= 160 && diastolicBP <= 100)
                 highBPAlert = 0;
         });
-
-        controller = super.setContentView("vitals_app_ui.fxml");
+        
+        DataObject<Controller> c = new DataObject<>();
+        getAppBuilder().getCustomRegionBuilder().add("vitals_app_ui.fxml", c);
+        controller = c.getData();
     }
 
     @Override public String getApplicationName() {

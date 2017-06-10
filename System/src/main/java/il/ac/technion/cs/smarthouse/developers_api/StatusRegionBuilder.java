@@ -41,14 +41,25 @@ public final class StatusRegionBuilder extends AbstractRegionBuilder {
         
         bindingDataObject.addOnDataChangedListener(d -> {
             l.setText(d.get() + "");
-            if (colorFunction != null)
-                l.setTextFill(colorFunction.apply(d));
+            setColor(d, colorFunction, l);
         });
+        
+        setColor(Optional.ofNullable(bindingDataObject.getData()), colorFunction, l);
+        
         addAppBuilderItem(new AppBuilderItem(title, l));
         return this;
     }
     
+    private <T> void setColor(Optional<T> value, Function<Optional<T>, Color> colorFunction, Label l) {
+        if (colorFunction != null)
+            l.setTextFill(Optional.ofNullable(colorFunction.apply(value)).orElse(Color.BLACK));
+    }
+    
     public StatusRegionBuilder addTimerStatusField(String title, DataObject<Boolean> timerToggle, DataObject<Double> timerDuration) {
+        return addTimerStatusField(title, timerToggle, timerDuration, null);
+    }
+    
+    public StatusRegionBuilder addTimerStatusField(String title, DataObject<Boolean> timerToggle, DataObject<Double> timerDuration, Function<Optional<Double>, Color> colorFunction) {
         final Label timeLabel = createStatusLabel("");
         final Timeline timeline;
         final DoubleProperty timeSeconds = new SimpleDoubleProperty();
@@ -69,8 +80,13 @@ public final class StatusRegionBuilder extends AbstractRegionBuilder {
                 timeline.stop();
                 time.setData(Duration.ZERO);
                 timeSeconds.set(time.getData().toSeconds());
+                timerDuration.setData(0.0);
+                timeLabel.setText(timeSeconds.get() + " [sec]");
             }
         }));
+        
+        if (colorFunction != null)
+            timerDuration.addOnDataChangedListener(d->setColor(d, colorFunction, timeLabel));
         
         addAppBuilderItem(new AppBuilderItem(title, timeLabel));
         return this;

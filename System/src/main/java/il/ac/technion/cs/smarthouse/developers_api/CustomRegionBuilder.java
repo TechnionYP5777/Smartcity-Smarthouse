@@ -29,7 +29,7 @@ public class CustomRegionBuilder extends AbstractRegionBuilder {
         return this;
     }
     
-    public CustomRegionBuilder add(final String fxmlFileName, final DataObject<Initializable> outController) {
+    public CustomRegionBuilder add(final String fxmlFileName, final DataObject<? extends Initializable> outController) {
         Node rootNode;
         try {
             final FXMLLoader fxmlLoader = createFXMLLoader(fxmlFileName);

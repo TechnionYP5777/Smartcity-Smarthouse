@@ -3,6 +3,7 @@ package il.ac.technion.cs.smarthouse.developers_api;
 import java.util.Optional;
 
 import il.ac.technion.cs.smarthouse.javafx_elements.AppBooleanButtonField;
+import il.ac.technion.cs.smarthouse.javafx_elements.AppButton;
 import il.ac.technion.cs.smarthouse.javafx_elements.AppComboBoxField;
 import il.ac.technion.cs.smarthouse.javafx_elements.AppSpinnerField;
 import il.ac.technion.cs.smarthouse.javafx_elements.AppTextField;
@@ -54,6 +55,11 @@ public final class ConfigurationsRegionBuilder extends AbstractRegionBuilder {
     public ConfigurationsRegionBuilder addButtonToggleField(String title, DataObject<Boolean> bindingDataObject) {
         boolean initialValue = Optional.ofNullable(bindingDataObject.getData()).orElse(false);
         addAppBuilderItem(new AppBuilderItem(title, new AppBooleanButtonField(bindingDataObject::setData, initialValue)));
+        return this;
+    }
+    
+    public ConfigurationsRegionBuilder addButtonInputField(String title, String textOnButton, Runnable onChangeFunction) {
+        addAppBuilderItem(new AppBuilderItem(title, new AppButton(textOnButton, onChangeFunction)));
         return this;
     }
 }

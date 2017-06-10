@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
+@Deprecated
 public class SosController implements Initializable {
 
     @FXML public Label stateLabel;
