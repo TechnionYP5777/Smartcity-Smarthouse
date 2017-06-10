@@ -1,11 +1,5 @@
 package il.ac.technion.cs.smarthouse.developers_api;
 
-import java.net.URL;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenter;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
@@ -15,9 +9,6 @@ import il.ac.technion.cs.smarthouse.system.services.Service;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 
 /**
  * The API for the application developers.
@@ -31,8 +22,6 @@ import javafx.scene.Node;
  * @since 8.12.2016
  */
 public abstract class SmarthouseApplication {
-    private static Logger log = LoggerFactory.getLogger(SmarthouseApplication.class);
-
     private SystemCore systemCore;
     private String applicationId;
     private AppBuilder appBuilder = new AppBuilder();
@@ -64,50 +53,12 @@ public abstract class SmarthouseApplication {
 
         return this;
     }
-
-    
     // [end]
 
     // [start] Public - Services to application developers
     public AppBuilder getAppBuilder() {
         return appBuilder;
     }
-    
-//    /**
-//     * Set the fxml file that will be used
-//     * 
-//     * @param location
-//     *            of the fxml file
-//     * @return
-//     */
-//    @Deprecated
-//    public <T extends Initializable> T setContentView(final String fxmlFileName) {
-//        try {
-//            final FXMLLoader fxmlLoader = createFXMLLoader(fxmlFileName);
-//            fxmlLoader.setClassLoader(getClass().getClassLoader());
-//            rootNode = fxmlLoader.load();
-//            return fxmlLoader.getController();
-//        } catch (final Exception e) {
-//            rootNode = null;
-//            log.error("Couldn't load the application's fxml. The rootNode is null", e);
-//        }
-//        return null;
-//    }
-//
-//    @Deprecated
-//    public URL getResource(final String resourcePath) {
-//        return Optional.ofNullable(getClass().getClassLoader().getResource(resourcePath))
-//                        .orElse(getClass().getResource(resourcePath));
-//    }
-//
-//    @Deprecated
-//    public FXMLLoader createFXMLLoader(final String fxmlFileName) {
-//        final URL url = getResource(fxmlFileName);
-//        final FXMLLoader fxmlLoader = new FXMLLoader(url);
-//        fxmlLoader.setClassLoader(getClass().getClassLoader());
-//        log.info("Creating FXML for app \"" + getApplicationName() + "\" (" + getClass().getName() + ") from: " + url);
-//        return fxmlLoader;
-//    }
 
     /**
      * Get a service from the system
