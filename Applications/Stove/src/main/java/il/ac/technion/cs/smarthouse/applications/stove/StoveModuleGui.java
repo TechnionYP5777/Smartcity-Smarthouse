@@ -32,12 +32,12 @@ public class StoveModuleGui extends SmarthouseApplication {
         
         getAppBuilder().getStatusRegionBuilder()
             .addStatusField("Current tempeture:", temps, t->{
-                if (t.get() >= alertAboveDegs.getData())
+                if (t >= alertAboveDegs.getData())
                     return Color.RED;
                 return null;
             })
             .addTimerStatusField("Stove running timer:", isStoveOn, timer, t->{
-                if (t.isPresent() && t.get() >= alertAfterSecs.getData())
+                if (t >= alertAfterSecs.getData())
                     return Color.RED;
                 return null;
             });

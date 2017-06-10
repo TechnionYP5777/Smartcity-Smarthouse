@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  */
 public final class DataObject<T> {
     private T data;
-    private List<Consumer<Optional<T>>> dataChangedListeners = new ArrayList<>();
+    private List<Consumer<DataObject<T>>> dataChangedListeners = new ArrayList<>();
     
     public DataObject() {
     }
@@ -28,19 +28,27 @@ public final class DataObject<T> {
         return data;
     }
     
-    public String getDataStr() {
+    public String getDataAsString() {
         return data != null ? data.toString() : "";
+    }
+    
+    public Optional<T> getDataAsOptional() {
+        return Optional.ofNullable(data);
     }
     
     public DataObject<T> setData(T newData) {
         if (data != newData) {
             data = newData;
-            dataChangedListeners.forEach(f->f.accept(Optional.ofNullable(data)));
+            notifyListeners();
         }
         return this;
     }
     
-    public DataObject<T> addOnDataChangedListener(Consumer<Optional<T>> listener) {
+    public void notifyListeners() {
+        dataChangedListeners.forEach(f->f.accept(this));
+    }
+    
+    public DataObject<T> addOnDataChangedListener(Consumer<DataObject<T>> listener) {
         dataChangedListeners.add(listener);
         return this;
     }

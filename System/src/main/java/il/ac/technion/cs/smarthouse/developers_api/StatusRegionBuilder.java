@@ -6,8 +6,6 @@ import java.util.function.Function;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -36,54 +34,46 @@ public final class StatusRegionBuilder extends AbstractRegionBuilder {
     }
 
     public <T> StatusRegionBuilder addStatusField(String title, DataObject<T> bindingDataObject,
-                    Function<Optional<T>, Color> colorFunction) {
-        final Label l = createStatusLabel(bindingDataObject.getDataStr());
+                    Function<T, Color> colorFunction) {
+        final Label l = createStatusLabel(bindingDataObject.getDataAsString());
         
         bindingDataObject.addOnDataChangedListener(d -> {
-            l.setText(d.get() + "");
+            l.setText(d.getDataAsString());
             setColor(d, colorFunction, l);
         });
         
-        setColor(Optional.ofNullable(bindingDataObject.getData()), colorFunction, l);
+        setColor(bindingDataObject, colorFunction, l);
         
         addAppBuilderItem(new AppBuilderItem(title, l));
         return this;
-    }
-    
-    private <T> void setColor(Optional<T> value, Function<Optional<T>, Color> colorFunction, Label l) {
-        if (colorFunction != null)
-            l.setTextFill(Optional.ofNullable(colorFunction.apply(value)).orElse(Color.BLACK));
     }
     
     public StatusRegionBuilder addTimerStatusField(String title, DataObject<Boolean> timerToggle, DataObject<Double> timerDuration) {
         return addTimerStatusField(title, timerToggle, timerDuration, null);
     }
     
-    public StatusRegionBuilder addTimerStatusField(String title, DataObject<Boolean> timerToggle, DataObject<Double> timerDuration, Function<Optional<Double>, Color> colorFunction) {
+    public StatusRegionBuilder addTimerStatusField(String title, DataObject<Boolean> timerToggle, DataObject<Double> timerDuration, Function<Double, Color> colorFunction) {
         final Label timeLabel = createStatusLabel("");
         final Timeline timeline;
-        final DoubleProperty timeSeconds = new SimpleDoubleProperty();
         final DataObject<Duration> time = new DataObject<>(Duration.ZERO);
         
         timeline = new Timeline(new KeyFrame(Duration.millis(100), ¢ -> {
             time.setData(time.getData().add(((KeyFrame) ¢.getSource()).getTime()));
-            timeSeconds.set(time.getData().toSeconds());
-            timeLabel.setText(timeSeconds.get() + " [sec]");
-            timerDuration.setData(timeSeconds.get());
+            timerDuration.setData(time.getData().toSeconds());
+            timeLabel.setText(timerDuration.getData() + " [sec]");
         }));
         
-        timerToggle.addOnDataChangedListener(b->b.ifPresent(v->{
-            if (v) {
+        timerToggle.addOnDataChangedListener(v->{
+            if (v.getData()) {
                 timeline.setCycleCount(Animation.INDEFINITE);
                 timeline.play();
             } else {
                 timeline.stop();
                 time.setData(Duration.ZERO);
-                timeSeconds.set(time.getData().toSeconds());
-                timerDuration.setData(0.0);
-                timeLabel.setText(timeSeconds.get() + " [sec]");
+                timerDuration.setData(time.getData().toSeconds());
+                timeLabel.setText(timerDuration.getData() + " [sec]");
             }
-        }));
+        });
         
         if (colorFunction != null)
             timerDuration.addOnDataChangedListener(d->setColor(d, colorFunction, timeLabel));
@@ -96,5 +86,10 @@ public final class StatusRegionBuilder extends AbstractRegionBuilder {
         final Label l = new Label(s);
         l.setFont(Font.font(14));
         return l;
+    }
+    
+    private <T> void setColor(DataObject<T> bindingDataObject, Function<T, Color> colorFunction, Label l) {
+        if (colorFunction != null && bindingDataObject != null && bindingDataObject.getData() != null)
+            l.setTextFill(Optional.ofNullable(colorFunction.apply(bindingDataObject.getData())).orElse(Color.BLACK));
     }
 }

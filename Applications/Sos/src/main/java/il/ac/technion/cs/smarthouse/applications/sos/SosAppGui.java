@@ -27,15 +27,15 @@ public class SosAppGui extends SmarthouseApplication {
         final String INIT = "SOS not pressed";
         DataObject<String> str = new DataObject<>(INIT);
         
-        getAppBuilder().getConfigurationsRegionBuilder().addButtonInputField("Press if ok", "OK", ()->{
+        getAppBuilder().getConfigurationsRegionBuilder().addButtonInputField("Press if ok", "OK", (new DataObject<Void>()).addOnDataChangedListener(d->{
             if (!shouldAlert) {
                 shouldAlert = !shouldAlert;
                 str.setData(INIT);
             }
-        });
+        }));
         
         getAppBuilder().getStatusRegionBuilder().addStatusField("", str, v->{
-           if (!INIT.equals(v.get()))
+           if (!INIT.equals(v))
                return Color.RED;
            return Color.GREEN;
         });

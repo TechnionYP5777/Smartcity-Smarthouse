@@ -58,8 +58,8 @@ public final class ConfigurationsRegionBuilder extends AbstractRegionBuilder {
         return this;
     }
     
-    public ConfigurationsRegionBuilder addButtonInputField(String title, String textOnButton, Runnable onChangeFunction) {
-        addAppBuilderItem(new AppBuilderItem(title, new AppButton(textOnButton, onChangeFunction)));
+    public <T> ConfigurationsRegionBuilder addButtonInputField(String title, String textOnButton, DataObject<T> bindingDataObject) {
+        addAppBuilderItem(new AppBuilderItem(title, new AppButton(textOnButton, bindingDataObject::notifyListeners)));
         return this;
     }
 }
