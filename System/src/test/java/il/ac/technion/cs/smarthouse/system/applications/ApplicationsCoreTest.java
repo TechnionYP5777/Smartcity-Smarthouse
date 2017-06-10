@@ -80,7 +80,7 @@ public class ApplicationsCoreTest {
         Assert.assertNotEquals(m1.hashCode(), m3.hashCode());
         Assert.assertNotEquals(m2.hashCode(), m3.hashCode());
         
-        Assert.assertNull(m1.getApplicationName());
+        Assert.assertNotNull(m1.getApplicationName());
     }
     
     @Test(timeout = 1000)
