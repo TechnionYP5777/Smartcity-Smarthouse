@@ -3,8 +3,9 @@ package il.ac.technion.cs.smarthouse.applications.sos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.developers_api.DataObject;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.DataObject;
 import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -34,11 +35,7 @@ public class SosAppGui extends SmarthouseApplication {
             }
         }));
         
-        getAppBuilder().getStatusRegionBuilder().addStatusField("", str, v->{
-           if (!INIT.equals(v))
-               return Color.RED;
-           return Color.GREEN;
-        });
+        getAppBuilder().getStatusRegionBuilder().addStatusField("", str, new ColorRange<String>(Color.RED).addIfEquals(INIT, Color.GREEN));
 
         ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getSensor("iSOS", SosSensor.class).subscribe(sos -> {
             final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";

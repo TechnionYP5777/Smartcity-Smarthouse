@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.developers_api;
+package il.ac.technion.cs.smarthouse.developers_api.application_builder;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.developers_api;
 
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.AppBuilder;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.AppBuilderImpl;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenter;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
@@ -9,6 +11,7 @@ import il.ac.technion.cs.smarthouse.system.services.Service;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.application.Application;
+import javafx.scene.Parent;
 
 /**
  * The API for the application developers.
@@ -24,7 +27,7 @@ import javafx.application.Application;
 public abstract class SmarthouseApplication {
     private SystemCore systemCore;
     private String applicationId;
-    private AppBuilder appBuilder = new AppBuilder();
+    private AppBuilderImpl appBuilder = new AppBuilderImpl();
 
     public SmarthouseApplication() {}
 
@@ -52,6 +55,10 @@ public abstract class SmarthouseApplication {
         this.applicationId = applicationId;
 
         return this;
+    }
+    
+    final Parent buildLayout() {
+        return appBuilder.build();
     }
     // [end]
 

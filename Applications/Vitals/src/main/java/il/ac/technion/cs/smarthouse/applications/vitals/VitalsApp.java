@@ -3,8 +3,8 @@ package il.ac.technion.cs.smarthouse.applications.vitals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.developers_api.DataObject;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.DataObject;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;

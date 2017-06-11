@@ -63,7 +63,7 @@ public final class ApplicationMetaData {
 
         application.setDataFromApplicationManager($, id);
         application.onLoad();
-        rootNode = application.getAppBuilder().build();
+        rootNode = application.buildLayout();
 
         return true;
     }
