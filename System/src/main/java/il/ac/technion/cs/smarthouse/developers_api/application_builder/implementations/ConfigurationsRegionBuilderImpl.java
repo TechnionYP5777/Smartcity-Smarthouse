@@ -37,22 +37,16 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
     
     @Override
     public ConfigurationsRegionBuilderImpl addStringInputField(String title, DataObject<String> bindingDataObject) {
-//        String initialValue = Optional.ofNullable(bindingDataObject.getData()).orElse("");
-//        addAppBuilderItem(new AppBuilderItem(title, new AppTextField(bindingDataObject::setData, initialValue)));
         return aux(title, bindingDataObject, "", AppTextField::new);
     }
 
     @Override
     public ConfigurationsRegionBuilderImpl addDoubleInputField(String title, DataObject<Double> bindingDataObject) {
-//        double initialValue = Optional.ofNullable(bindingDataObject.getData()).orElse(0.0);
-//        addAppBuilderItem(new AppBuilderItem(title, AppSpinnerField.createDoubleAppSpinner(bindingDataObject::setData, initialValue)));
         return aux(title, bindingDataObject, 0.0, AppSpinnerField::createDoubleAppSpinner);
     }
 
     @Override
     public ConfigurationsRegionBuilderImpl addIntegerInputField(String title, DataObject<Integer> bindingDataObject) {
-//        int initialValue = Optional.ofNullable(bindingDataObject.getData()).orElse(0);
-//        addAppBuilderItem(new AppBuilderItem(title, AppSpinnerField.createIntegerAppSpinner(bindingDataObject::setData, initialValue)));
         return aux(title, bindingDataObject, 0, AppSpinnerField::createIntegerAppSpinner);
     }
 
@@ -67,8 +61,6 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
 
     @Override
     public ConfigurationsRegionBuilderImpl addButtonToggleField(String title, DataObject<Boolean> bindingDataObject) {
-//        boolean initialValue = Optional.ofNullable(bindingDataObject.getData()).orElse(false);
-//        addAppBuilderItem(new AppBuilderItem(title, new AppBooleanButtonField(bindingDataObject::setData, initialValue)));
         return aux(title, bindingDataObject, false, AppBooleanButtonField::new);
     }
     
