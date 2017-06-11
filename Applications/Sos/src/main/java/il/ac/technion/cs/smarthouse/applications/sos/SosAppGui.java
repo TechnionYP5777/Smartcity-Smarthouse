@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
-import il.ac.technion.cs.smarthouse.developers_api.application_builder.DataObject;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -26,9 +26,9 @@ public class SosAppGui extends SmarthouseApplication {
 
     @Override public void onLoad() throws Exception {
         final String INIT = "SOS not pressed";
-        DataObject<String> str = new DataObject<>(INIT);
+        GuiBinderObject<String> str = new GuiBinderObject<>(INIT);
         
-        getAppBuilder().getConfigurationsRegionBuilder().addButtonInputField("Press if ok", "OK", (new DataObject<Void>()).addOnDataChangedListener(d->{
+        getAppBuilder().getConfigurationsRegionBuilder().addButtonInputField("Press if ok", "OK", (new GuiBinderObject<Void>()).addOnDataChangedListener(d->{
             if (!shouldAlert) {
                 shouldAlert = !shouldAlert;
                 str.setData(INIT);

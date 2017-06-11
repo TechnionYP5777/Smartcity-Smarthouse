@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
-import il.ac.technion.cs.smarthouse.developers_api.application_builder.DataObject;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -76,7 +76,7 @@ public class VitalsApp extends SmarthouseApplication {
                 highBPAlert = 0;
         });
         
-        DataObject<Controller> c = new DataObject<>();
+        GuiBinderObject<Controller> c = new GuiBinderObject<>();
         getAppBuilder().getCustomRegionBuilder().add("vitals_app_ui.fxml", c);
         controller = c.getData();
     }

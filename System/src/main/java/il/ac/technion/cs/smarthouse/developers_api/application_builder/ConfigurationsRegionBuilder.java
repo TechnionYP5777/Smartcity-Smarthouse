@@ -10,16 +10,16 @@ package il.ac.technion.cs.smarthouse.developers_api.application_builder;
 public interface ConfigurationsRegionBuilder {
     public ConfigurationsRegionBuilder setTitle(String title);
     
-    public ConfigurationsRegionBuilder addStringInputField(String title, DataObject<String> bindingDataObject);
+    public ConfigurationsRegionBuilder addStringInputField(String title, GuiBinderObject<String> bindingDataObject);
 
-    public ConfigurationsRegionBuilder addDoubleInputField(String title, DataObject<Double> bindingDataObject);
+    public ConfigurationsRegionBuilder addDoubleInputField(String title, GuiBinderObject<Double> bindingDataObject);
 
-    public ConfigurationsRegionBuilder addIntegerInputField(String title, DataObject<Integer> bindingDataObject);
+    public ConfigurationsRegionBuilder addIntegerInputField(String title, GuiBinderObject<Integer> bindingDataObject);
 
-    public <T> ConfigurationsRegionBuilder addComboboxInputField(String title, DataObject<T> bindingDataObject,
+    public <T> ConfigurationsRegionBuilder addComboboxInputField(String title, GuiBinderObject<T> bindingDataObject,
                     @SuppressWarnings("unchecked") T... comboOptions);
 
-    public ConfigurationsRegionBuilder addButtonToggleField(String title, DataObject<Boolean> bindingDataObject);
+    public ConfigurationsRegionBuilder addButtonToggleField(String title, GuiBinderObject<Boolean> bindingDataObject);
     
-    public <T> ConfigurationsRegionBuilder addButtonInputField(String title, String textOnButton, DataObject<T> bindingDataObject);
+    public <T> ConfigurationsRegionBuilder addButtonInputField(String title, String textOnButton, GuiBinderObject<T> bindingDataObject);
 }

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
-import il.ac.technion.cs.smarthouse.developers_api.application_builder.DataObject;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
@@ -21,11 +21,11 @@ public class StoveModuleGui extends SmarthouseApplication {
     }
 
     @Override public void onLoad() throws Exception {
-        final DataObject<Double> alertAfterSecs = new DataObject<>(30.0);
-        final DataObject<Integer> alertAboveDegs = new DataObject<>(120);
-        final DataObject<Integer> temps = new DataObject<>(0);
-        final DataObject<Boolean> isStoveOn = new DataObject<>(false);
-        final DataObject<Double> timer = new DataObject<>();
+        final GuiBinderObject<Double> alertAfterSecs = new GuiBinderObject<>(30.0);
+        final GuiBinderObject<Integer> alertAboveDegs = new GuiBinderObject<>(120);
+        final GuiBinderObject<Integer> temps = new GuiBinderObject<>(0);
+        final GuiBinderObject<Boolean> isStoveOn = new GuiBinderObject<>(false);
+        final GuiBinderObject<Double> timer = new GuiBinderObject<>();
         
         getAppBuilder().getConfigurationsRegionBuilder()
             .addDoubleInputField("Alert after (seconds):", alertAfterSecs)

@@ -12,14 +12,14 @@ import java.util.function.Consumer;
  * @author RON
  * @since 10-06-2017
  */
-public final class DataObject<T> {
+public final class GuiBinderObject<T> {
     private T data;
-    private List<Consumer<DataObject<T>>> dataChangedListeners = new ArrayList<>();
+    private List<Consumer<GuiBinderObject<T>>> dataChangedListeners = new ArrayList<>();
     
-    public DataObject() {
+    public GuiBinderObject() {
     }
     
-    public DataObject(T initialValue) {
+    public GuiBinderObject(T initialValue) {
         this();
         data = initialValue;
     }
@@ -36,7 +36,7 @@ public final class DataObject<T> {
         return Optional.ofNullable(data);
     }
     
-    public DataObject<T> setData(T newData) {
+    public GuiBinderObject<T> setData(T newData) {
         if (data != newData) {
             data = newData;
             notifyListeners();
@@ -48,7 +48,7 @@ public final class DataObject<T> {
         dataChangedListeners.forEach(f->f.accept(this));
     }
     
-    public DataObject<T> addOnDataChangedListener(Consumer<DataObject<T>> listener) {
+    public GuiBinderObject<T> addOnDataChangedListener(Consumer<GuiBinderObject<T>> listener) {
         dataChangedListeners.add(listener);
         return this;
     }

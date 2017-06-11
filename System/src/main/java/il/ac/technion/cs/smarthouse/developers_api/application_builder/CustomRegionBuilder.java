@@ -8,5 +8,5 @@ public interface CustomRegionBuilder {
     
     public CustomRegionBuilder add(final Node n);
     
-    public CustomRegionBuilder add(final String fxmlFileName, final DataObject<? extends Initializable> outController);
+    public CustomRegionBuilder add(final String fxmlFileName, final GuiBinderObject<? extends Initializable> outController);
 }

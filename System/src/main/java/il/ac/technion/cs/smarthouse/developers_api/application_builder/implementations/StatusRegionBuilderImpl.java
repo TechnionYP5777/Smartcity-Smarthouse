@@ -1,7 +1,7 @@
 package il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations;
 
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
-import il.ac.technion.cs.smarthouse.developers_api.application_builder.DataObject;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.StatusRegionBuilder;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -28,7 +28,7 @@ public final class StatusRegionBuilderImpl extends AbstractRegionBuilder impleme
     }
 
     @Override
-    public <T> StatusRegionBuilderImpl addStatusField(String title, DataObject<T> bindingDataObject) {
+    public <T> StatusRegionBuilderImpl addStatusField(String title, GuiBinderObject<T> bindingDataObject) {
         final Label l = createStatusLabel(bindingDataObject.getDataAsString());
 
         bindingDataObject.addOnDataChangedListener(d -> l.setText(d.getDataAsString()));
@@ -38,7 +38,7 @@ public final class StatusRegionBuilderImpl extends AbstractRegionBuilder impleme
     }
 
     @Override
-    public <T extends Comparable<T>> StatusRegionBuilderImpl addStatusField(String title, DataObject<T> bindingDataObject,
+    public <T extends Comparable<T>> StatusRegionBuilderImpl addStatusField(String title, GuiBinderObject<T> bindingDataObject,
                     ColorRange<T> r) {        
         final Label l = createStatusLabel(bindingDataObject.getDataAsString());
 
@@ -54,17 +54,17 @@ public final class StatusRegionBuilderImpl extends AbstractRegionBuilder impleme
     }
 
     @Override
-    public StatusRegionBuilderImpl addTimerStatusField(String title, DataObject<Boolean> timerToggle,
-                    DataObject<Double> timerDuration) {
+    public StatusRegionBuilderImpl addTimerStatusField(String title, GuiBinderObject<Boolean> timerToggle,
+                    GuiBinderObject<Double> timerDuration) {
         return addTimerStatusField(title, timerToggle, timerDuration, null);
     }
 
     @Override
-    public StatusRegionBuilderImpl addTimerStatusField(String title, DataObject<Boolean> timerToggle,
-                    DataObject<Double> timerDuration, ColorRange<Double> d) {
+    public StatusRegionBuilderImpl addTimerStatusField(String title, GuiBinderObject<Boolean> timerToggle,
+                    GuiBinderObject<Double> timerDuration, ColorRange<Double> d) {
         final Label timeLabel = createStatusLabel("");
         final Timeline timeline;
-        final DataObject<Duration> time = new DataObject<>(Duration.ZERO);
+        final GuiBinderObject<Duration> time = new GuiBinderObject<>(Duration.ZERO);
 
         timeline = new Timeline(new KeyFrame(Duration.millis(100), ¢ -> {
             time.setData(time.getData().add(((KeyFrame) ¢.getSource()).getTime()));
@@ -97,7 +97,7 @@ public final class StatusRegionBuilderImpl extends AbstractRegionBuilder impleme
         return l;
     }
 
-    private <T extends Comparable<T>> void setColor(DataObject<T> bindingDataObject, ColorRange<T> r, Label l) {
+    private <T extends Comparable<T>> void setColor(GuiBinderObject<T> bindingDataObject, ColorRange<T> r, Label l) {
         if (r != null && bindingDataObject != null && bindingDataObject.getData() != null)
             l.setTextFill(r.getColorOfValue(bindingDataObject.getData()));
     }

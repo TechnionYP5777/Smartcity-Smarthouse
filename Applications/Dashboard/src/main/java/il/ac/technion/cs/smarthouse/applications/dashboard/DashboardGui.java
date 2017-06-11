@@ -4,7 +4,7 @@ package il.ac.technion.cs.smarthouse.applications.dashboard;
  */
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
-import il.ac.technion.cs.smarthouse.developers_api.application_builder.DataObject;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -28,7 +28,7 @@ public class DashboardGui extends SmarthouseApplication {
 	@Override
 	public void onLoad() throws Exception {
 		// no need to subscribe to sensors automatically
-	    DataObject<Controller> c = new DataObject<>();
+	    GuiBinderObject<Controller> c = new GuiBinderObject<>();
 	    getAppBuilder().getCustomRegionBuilder().setTitle(null).add("dashboard_ui.fxml", c);
 		c.getData().setFileSystem((FileSystemService) super.getService(ServiceType.FILE_SYSTEM_SERVICE));
 	}

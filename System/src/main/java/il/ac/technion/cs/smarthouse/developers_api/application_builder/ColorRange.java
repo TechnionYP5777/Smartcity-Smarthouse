@@ -17,10 +17,10 @@ public class ColorRange<T extends Comparable<T>> {
     class ColorAndValue {
         private final boolean isRegularValue;
         private final T value;
-        private final DataObject<T> dataObject;
+        private final GuiBinderObject<T> dataObject;
         final Color color;
 
-        ColorAndValue(final DataObject<T> dataObject, final Color c) {
+        ColorAndValue(final GuiBinderObject<T> dataObject, final Color c) {
             assert dataObject != null;
             this.isRegularValue = false;
             this.value = null;
@@ -59,7 +59,7 @@ public class ColorRange<T extends Comparable<T>> {
         return this;
     }
 
-    public ColorRange<T> addRange(final DataObject<T> from, final Color c) {
+    public ColorRange<T> addRange(final GuiBinderObject<T> from, final Color c) {
         assert from != null;
         rangeList.add(new ColorAndValue(from, c));
         return this;
@@ -71,7 +71,7 @@ public class ColorRange<T extends Comparable<T>> {
         return this;
     }
 
-    public ColorRange<T> addIfEquals(final DataObject<T> value, final Color c) {
+    public ColorRange<T> addIfEquals(final GuiBinderObject<T> value, final Color c) {
         assert value != null;
         ifEqualsList.add(new ColorAndValue(value, c));
         return this;

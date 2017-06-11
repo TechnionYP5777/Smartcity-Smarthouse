@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.CustomRegionBuilder;
-import il.ac.technion.cs.smarthouse.developers_api.application_builder.DataObject;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -39,7 +39,7 @@ public class CustomRegionBuilderImpl extends AbstractRegionBuilder implements Cu
     }
     
     @Override
-    public CustomRegionBuilderImpl add(final String fxmlFileName, final DataObject<? extends Initializable> outController) {
+    public CustomRegionBuilderImpl add(final String fxmlFileName, final GuiBinderObject<? extends Initializable> outController) {
         Node rootNode;
         try {
             final FXMLLoader fxmlLoader = createFXMLLoader(fxmlFileName);
