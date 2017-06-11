@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.developers_api;
+package il.ac.technion.cs.smarthouse.developers_api.application_builder;
 
 /**
  * GUI layout - widgets region
@@ -7,16 +7,8 @@ package il.ac.technion.cs.smarthouse.developers_api;
  * @author RON
  * @since 10-06-2017
  */
-public final class WidgetsRegionBuilder extends AbstractRegionBuilder {
-    public WidgetsRegionBuilder() {
-        super.setTitle("Widgets");
-    }
-    
-    @Override
-    public WidgetsRegionBuilder setTitle(String title) {
-        super.setTitle(title);
-        return this;
-    }
+public interface WidgetsRegionBuilder {    
+    public WidgetsRegionBuilder setTitle(String title);
     
     //TODO: Ron + Elia
 }
