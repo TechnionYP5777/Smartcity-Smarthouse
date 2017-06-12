@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
@@ -50,7 +49,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     // the sensor's preferred location. the selected sensor will be located at
     // this location. if null or UNDEFINED, the location is ignored, and only
     // the commercial name will affect the sensor selection process
-    private final SensorLocation defaultLocation;
+    private final String defaultLocation;
 
     // the class that extends SensorData. the developer will receive information
     // from the sensor via this class
@@ -85,13 +84,13 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
      *            The class representing the sensor being listened to, defined
      *            by the developer
      */
-    SensorApiImpl(final FileSystem fileSystem, final String commercialName, final SensorLocation defaultLocation,
+    SensorApiImpl(final FileSystem fileSystem, final String commercialName, final String defaultLocation,
                     final Class<T> sensorDataClass) {
         assert fileSystem != null && commercialName != null && sensorDataClass != null;
 
         this.fileSystem = fileSystem;
         this.commercialName = commercialName;
-        this.defaultLocation = defaultLocation != null ? defaultLocation : SensorLocation.UNDEFINED;
+        this.defaultLocation = defaultLocation != null ? defaultLocation : "UNDEFINED";
         this.sensorDataClass = sensorDataClass;
 
         searchForSensorId();
@@ -180,9 +179,9 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
         for (final String sensorId1 : fileSystem.getChildren(commNamePath)) {
             final String locationPath = getPath_location(sensorId1);
-            if (defaultLocation == null || defaultLocation == SensorLocation.UNDEFINED
+            if (defaultLocation == null || defaultLocation == "UNDEFINED"
                             || fileSystem.wasPathInitiated(locationPath)
-                                            && fileSystem.<SensorLocation>getData(locationPath) == defaultLocation) {
+                                            && fileSystem.<String>getData(locationPath) == defaultLocation) {
 
                 // set the sensor's ID
                 sensorId = sensorId1;
@@ -262,8 +261,8 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     // ================================================================================
 
     @Override
-    public SensorLocation getSensorLocation() {
-        return sensorId == null ? SensorLocation.UNDEFINED : fileSystem.getData(getPath_location(sensorId));
+    public String getSensorLocation() {
+        return sensorId == null ? "UNDEFINED" : fileSystem.getData(getPath_location(sensorId));
     }
 
     @Override

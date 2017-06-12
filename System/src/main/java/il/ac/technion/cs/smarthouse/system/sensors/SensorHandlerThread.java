@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
-import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
@@ -55,7 +54,7 @@ public class SensorHandlerThread extends SensorManagingThread {
 
     private void handleRegisterMessage(final SensorMessage msg) {
         log.info(msg.toJson() + "\n" + msg.getObservationSendingPaths());
-        filesystem.sendMessage(SensorLocation.UNDEFINED,
+        filesystem.sendMessage("UNDEFINED",
                         FileSystemEntries.LOCATION.buildPath(msg.getSensorCommName(), msg.getSensorId()));
 
         donePath = FileSystemEntries.DONE_SENDING_MSG.buildPath(msg.getSensorCommName(), msg.getSensorId());

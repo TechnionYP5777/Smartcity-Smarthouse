@@ -2,53 +2,62 @@ package il.ac.technion.cs.smarthouse.system.gui.mapping;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
-import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class MappingController extends SystemGuiController {
     private static Logger log = LoggerFactory.getLogger(MappingController.class);
-
-    private static final List<SensorLocation> allLocations = Arrays.asList(SensorLocation.values());
+    private static final int ROOM_IN_ROW = 4;
+    private static final int MARGIN = 20;
+    private static final int HEIGHT = 150;
+    private static final int WIDTH = 160;
+    private List<String> allLocations = new ArrayList<>();
     private final Map<String, SensorInfoController> sensors = new HashMap<>();
-    private final Map<SensorLocation, List<String>> locationsContents = new HashMap<>();
-    private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
+    private final Map<String, List<String>> locationsContents = new HashMap<>();
+    private final Map<String, String> sensorsLocations = new HashMap<>();
     private final House house = new House();
+    private int roomNumbers;
+    int xPlusRoom;
+    int yPlusRoom;
 
     @FXML private VBox sensorsPaneList;
     @FXML private Canvas canvas;
 
+    void addRoom(String roomName) {
+        allLocations.add(roomName);
+        house.addRoom(new Room(MARGIN + (roomNumbers % ROOM_IN_ROW) * WIDTH,
+                        MARGIN + (roomNumbers / ROOM_IN_ROW) * HEIGHT, WIDTH, HEIGHT, roomName));
+        ++roomNumbers;
+        sensors.values().forEach(e->e.updateRooms());
+        drawMapping();
+    }
+
     @Override
     public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
         log.debug("initialized the map gui");
-        house.addRoom(new Room(320, 320, 150, 150, SensorLocation.LIVING_ROOM));
-        house.addRoom(new Room(470, 320, 150, 150, SensorLocation.KITCHEN));
-        house.addRoom(new Room(470, 470, 150, 150, SensorLocation.DINING_ROOM));
-        house.addRoom(new Room(320, 170, 150, 150, SensorLocation.HALLWAY));
-        house.addRoom(new Room(170, 170, 150, 150, SensorLocation.BEDROOM));
-        house.addRoom(new Room(20, 170, 150, 150, SensorLocation.BATHROOM));
-        house.addRoom(new Room(320, 20, 150, 150, SensorLocation.PORCH));
 
         canvas.setWidth(2000);
         canvas.setHeight(2000);
 
-        drawMapping();
+        addRoom("UNDEFINED");
 
         log.debug("subscribed to sensors root");
         // this is somewhat whiteboxing. todo: reactor nicer.
@@ -76,13 +85,12 @@ public class MappingController extends SystemGuiController {
             return;
         final SensorInfoController controller = createChildController("sensor_info.fxml");
         sensorsPaneList.getChildren().add(controller.getRootViewNode());
-        
-        controller.setId(id);
-        controller.setName(commName);
+
+        controller.setId(id).setName(commName).setMapController(this);
         sensors.put(id, controller);
     }
 
-    public void updateSensorLocation(final String id, final SensorLocation l) {
+    public void updateSensorLocation(final String id, final String l) {
         if (sensorsLocations.containsKey(id) && locationsContents.containsKey(sensorsLocations.get(id)))
             locationsContents.get(sensorsLocations.get(id)).remove(id);
 
@@ -97,19 +105,22 @@ public class MappingController extends SystemGuiController {
 
     }
 
+    public List<String> getAlllocations() {
+        return allLocations;
+    }
+
     private void drawMapping() {
         final GraphicsContext g = canvas.getGraphicsContext2D();
 
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        g.setFont(new Font(14.0));
         g.setStroke(Color.BLACK);
 
         for (final Room room : house.getRooms()) {
             g.strokeRect(room.x, room.y, room.width, room.height);
             g.strokeLine(room.x, room.y + 20, room.x + room.width, room.y + 20);
             g.setFill(Color.BLACK);
-            g.fillText(room.location.name(), room.x + 4, room.y + 15);
-            g.setFill(Color.BLUE);
-
+            g.fillText(room.location, room.x + 4, room.y + 15);
             if (locationsContents.containsKey(room.location)) {
                 int dy = 20;
 
@@ -119,5 +130,29 @@ public class MappingController extends SystemGuiController {
                 }
             }
         }
+
+        xPlusRoom = MARGIN + (roomNumbers % ROOM_IN_ROW) * WIDTH;
+        yPlusRoom = MARGIN + (roomNumbers / ROOM_IN_ROW) * HEIGHT;
+        g.strokeRect(xPlusRoom, yPlusRoom, WIDTH, HEIGHT);
+        g.setFont(new Font(45.0));
+        g.fillText("+", xPlusRoom + 70, yPlusRoom + 75);
+        g.setFill(Color.BLUE);
+        g.setFont(new Font(14.0));
+        canvas.setOnMouseClicked(mouseEvent -> {
+            double x = mouseEvent.getX();
+            double y = mouseEvent.getY();
+            if (x > xPlusRoom && x < xPlusRoom + WIDTH && y > yPlusRoom && y < yPlusRoom + HEIGHT) {
+                final TextInputDialog dialog = new TextInputDialog("sensor name");
+                dialog.setTitle("Create Room");
+                dialog.setHeaderText("Config your smarthouse");
+                dialog.setContentText("Please enter room name:");
+                final Optional<String> result = dialog.showAndWait();
+                if (!result.isPresent())
+                    return;
+                final String name = result.get();
+                addRoom(name);
+            }
+        });
+
     }
 }

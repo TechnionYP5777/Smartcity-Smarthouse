@@ -1,6 +1,5 @@
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
-import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.smarthouse.system.services.Service;
@@ -36,7 +35,7 @@ public final class SensorsService extends Service {
      *             if no sensor was found with the given commercial names
      */
     public <T extends SensorData> SensorApi<T> getSensor(final String commercialName, final Class<T> sensorDataClass,
-                    final SensorLocation defaultLocation) {
+                    final String defaultLocation) {
         return new SensorApiImpl<>(systemCore.getFileSystem(), commercialName, defaultLocation, sensorDataClass);
     }
 

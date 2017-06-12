@@ -3,7 +3,6 @@ package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 import java.time.LocalTime;
 import java.util.function.Consumer;
 
-import il.ac.technion.cs.smarthouse.system.SensorLocation;
 
 /**
  * An API class for the developers, that allows interactions with a specific
@@ -37,7 +36,7 @@ public interface SensorApi<T extends SensorData> {
      *         if the sensor was not found yet, {@link SensorLocation#UNDEFINED}
      *         will be returned
      */
-    SensorLocation getSensorLocation();
+    String getSensorLocation();
 
     /**
      * Allows registration to a sensor. On an update from the sensor, the data
