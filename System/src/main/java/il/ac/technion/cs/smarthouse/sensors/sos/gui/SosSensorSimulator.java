@@ -25,7 +25,7 @@ public class SosSensorSimulator extends Application {
 
     @Override
     public void start(final Stage s) throws Exception {
-        sensor = new SosSensor(Random.sensorId(), 40001);
+        sensor = new SosSensor(Random.sensorId(), "Elia's sos sensor");
         for (boolean res = false; !res;)
             res = sensor.register();
         final Image sosImage = new Image(getClass().getResourceAsStream("/sensors/sos/sos_icon.png"), 320, 0, true,

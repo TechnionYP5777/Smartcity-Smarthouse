@@ -17,8 +17,8 @@ public class VitalsSensor extends Sensor {
     static final String sysBPPath = "vitals" + PathBuilder.DELIMITER + "systolicBP";
     static final String diBPPath = "vitals" + PathBuilder.DELIMITER + "diastolicBP";
 
-    public VitalsSensor(final String id, final int systemPort) {
-        super("iVitals", id, Arrays.asList(pulsePath, sysBPPath, diBPPath), systemPort);
+    public VitalsSensor(final String id, final String alias) {
+        super("iVitals", id, alias, Arrays.asList(pulsePath, sysBPPath, diBPPath));
     }
 
     public void updateSystem(final int pulse, final int systolicBP, final int diastolicBP) {

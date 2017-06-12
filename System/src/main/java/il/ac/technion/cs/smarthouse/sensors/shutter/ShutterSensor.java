@@ -16,8 +16,8 @@ public class ShutterSensor extends Sensor {
     static final String openPath = "shutter" + PathBuilder.DELIMITER + "open";
     static final String timePath = "shutter" + PathBuilder.DELIMITER + "time";
 
-    public ShutterSensor(final String id, final String systemIP, final int systemPort) {
-        super("ShutterSensor", id, Arrays.asList(openPath, timePath), systemPort);
+    public ShutterSensor(final String id, final String alias) {
+        super("ShutterSensor", id, alias, Arrays.asList(openPath, timePath));
     }
 
     public void updateSystem(final boolean open, final int fromTime, final int toTime) {
