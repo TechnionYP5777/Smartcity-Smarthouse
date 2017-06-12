@@ -26,9 +26,9 @@ public class InstructionsSenderThreadTest {
         Integer numOfInstruction = 0;
         
         public TestInteractiveSensor(){
-            super(getCommName(), Random.sensorId(), 
+            super(getCommName(), Random.sensorId(), "MyAlias", 
                             Arrays.asList(), 
-                            Arrays.asList(getInstructionPath()), 40001, 40002);
+                            Arrays.asList(getInstructionPath()));
            setInstructionHandler((path, inst)->  {
                System.out.println("path:"+path+"; inst:"+inst);
                numOfInstruction += inst.equals(true+"")? 1: 0;
@@ -127,7 +127,7 @@ public class InstructionsSenderThreadTest {
         assert sensor.numOfReceivedInstructions() == times;
     }
     
-    @Ignore @Test public void GetsAlreadyWaitingInstructionTest() {
+    @Test public void GetsAlreadyWaitingInstructionTest() {
         instructInc();
         
         sensor.register();

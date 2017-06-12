@@ -34,6 +34,8 @@ import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMes
 public abstract class Sensor {
     private static Logger log = LoggerFactory.getLogger(Sensor.class);
 
+    protected static final int SYSTEM_PORT = 40001;
+
     /**
      * Defines the maximal amount of update messages that can be sent by this
      * sensor each second.
@@ -41,7 +43,7 @@ public abstract class Sensor {
     public static final int MAX_MESSAGES_PER_SECOND = 10;
     private final List<Long> lastMessagesMillis = new ArrayList<>();
 
-    protected String commname, id;
+    protected String commname, id, alias;
     protected List<String> observationSendingPaths, instructionRecievingPaths;
 
     protected InetAddress systemIP;
@@ -52,11 +54,11 @@ public abstract class Sensor {
     protected BufferedReader in;
 
     /**
-     * see {@link #Sensor(String, String, List, List, int)}
+     * see {@link #Sensor(String, String, String, List, List)}
      */
-    public Sensor(final String commname, final String id, final List<String> observationSendingPaths,
-                    final int systemPort) {
-        this(commname, id, observationSendingPaths, null, systemPort);
+    public Sensor(final String commname, final String id, final String alias,
+                    final List<String> observationSendingPaths) {
+        this(commname, id, alias, observationSendingPaths, null);
     }
 
     /**
@@ -72,15 +74,16 @@ public abstract class Sensor {
      * @param systemPort
      *            the port on which the system listens to incoming messages
      */
-    protected Sensor(final String commname, final String id, final List<String> observationSendingPaths,
-                    final List<String> instructionRecievingPaths, final int systemPort) {
+    protected Sensor(final String commname, final String id, final String alias,
+                    final List<String> observationSendingPaths, final List<String> instructionRecievingPaths) {
 
         this.commname = commname;
         this.id = id;
+        this.alias = alias;
         this.observationSendingPaths = observationSendingPaths;
         this.instructionRecievingPaths = instructionRecievingPaths;
 
-        this.systemPort = systemPort;
+        this.systemPort = SYSTEM_PORT;
     }
 
     public String getCommname() {
@@ -89,6 +92,10 @@ public abstract class Sensor {
 
     public String getId() {
         return id;
+    }
+
+    public String getAlias() {
+        return alias;
     }
 
     public List<String> getObservationSendingPaths() {
@@ -100,25 +107,26 @@ public abstract class Sensor {
     }
 
     private InetAddress getSystemIp() throws IOException, SocketException, InterruptedException {
-        final DatagramChannel channel = DatagramChannel.open();
-        channel.configureBlocking(false);
-        channel.socket().bind(new InetSocketAddress(0)); // zero means the port
-                                                         // number is chosen
-                                                         // dynamically
-        channel.socket().setBroadcast(true);
+        try (DatagramChannel channel = DatagramChannel.open()) {
+            channel.configureBlocking(false);
+            channel.socket().bind(new InetSocketAddress(0)); // zero means the
+                                                             // port
+                                                             // number is chosen
+                                                             // dynamically
+            channel.socket().setBroadcast(true);
 
-        final ByteBuffer buf = ByteBuffer.allocate(8);
-        buf.clear();
-        SocketAddress serverAddress;
-        do {
-            channel.send(buf, new InetSocketAddress("255.255.255.255", systemPort));
-            Thread.sleep(1000);
-            // see if got answer
-            serverAddress = channel.receive(buf);
-        } while (serverAddress == null);
+            final ByteBuffer buf = ByteBuffer.allocate(8);
+            buf.clear();
+            SocketAddress serverAddress;
+            do {
+                channel.send(buf, new InetSocketAddress("255.255.255.255", systemPort));
+                Thread.sleep(1000);
+                // see if got answer
+                serverAddress = channel.receive(buf);
+            } while (serverAddress == null);
 
-        channel.close();
-        return ((InetSocketAddress) serverAddress).getAddress();
+            return ((InetSocketAddress) serverAddress).getAddress();
+        }
     }
 
     /**

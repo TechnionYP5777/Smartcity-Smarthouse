@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,6 +27,8 @@ import il.ac.technion.cs.smarthouse.system.sensors.InstructionsSenderThread;
  */
 public abstract class InteractiveSensor extends Sensor {
     private static Logger log = LoggerFactory.getLogger(InteractiveSensor.class);
+    
+    protected static final int INSTRACTIONS_PORT = 40002;
 
     protected int instPort;
     protected Socket instSocket;
@@ -36,10 +37,10 @@ public abstract class InteractiveSensor extends Sensor {
     protected InstructionHandler handler;
     protected long period;
 
-    public InteractiveSensor(final String commname, final String id, final List<String> observationSendingPaths,
-                    final List<String> instructionRecievingPaths, final int systemPort, final int instPort) {
-        super(commname, id, observationSendingPaths, instructionRecievingPaths, systemPort);
-        this.instPort = instPort;
+    public InteractiveSensor(final String commname, final String id, final String alias, final List<String> observationSendingPaths,
+                    final List<String> instructionRecievingPaths) {
+        super(commname, id, alias, observationSendingPaths, instructionRecievingPaths);
+        this.instPort = INSTRACTIONS_PORT;
     }
 
     /**

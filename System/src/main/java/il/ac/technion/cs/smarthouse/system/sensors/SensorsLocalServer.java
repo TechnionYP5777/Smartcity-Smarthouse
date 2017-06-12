@@ -65,7 +65,7 @@ public class SensorsLocalServer implements Runnable {
     }
 
     private void runBasicSensorServer(final Integer port) {
-        runBasicTcpServer(port, SensorHandlerThread.class);
+        runBasicTcpServer(port, SensorDataRecevierThread.class);
     }
 
     private void runInstructionSensorServer(final Integer port) {

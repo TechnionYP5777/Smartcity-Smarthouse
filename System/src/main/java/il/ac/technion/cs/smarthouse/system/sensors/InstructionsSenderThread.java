@@ -26,16 +26,23 @@ public class InstructionsSenderThread extends SensorManagingThread {
     public InstructionsSenderThread(final Socket client, final FileSystem fs) {
         super(client, fs);
     }
+    
+    private void notifySensor(final String path, final Object data){
+        if(data == null)
+            return;
+        out.println(path + instructionSeperator + data);
+    }
 
     @Override
     protected void handleSensorMessage(final SensorMessage msg) {
         if (!MessageType.REGISTRATION.equals(msg.getType()))
             log.error(getClass() + " shouldn't receive an update msg.");
         else {
-            //todo: ELIA check for waiting instructions first
-            for (final String path : msg.getInstructionRecievingPaths())
-                filesystem.subscribe((p, data) -> out.println(p + instructionSeperator + data), FileSystemEntries.LISTENERS_OF_SENSOR
-                                .buildPath(msg.getSensorCommName(), msg.getSensorId()));
+            msg.getInstructionRecievingPaths().forEach(path ->{
+                String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(), msg.getSensorId(), path);
+                notifySensor(path,filesystem.getData(legalPath));
+                filesystem.subscribe((p, data)->notifySensor(path, data), legalPath);
+            });
             try {
                 new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
             } catch (final IllegalMessageBaseExecption e) {}
