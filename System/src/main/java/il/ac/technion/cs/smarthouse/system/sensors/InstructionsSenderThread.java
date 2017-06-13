@@ -40,12 +40,15 @@ public class InstructionsSenderThread extends SensorManagingThread {
         else {
             msg.getInstructionRecievingPaths().forEach(path ->{
                 String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(), msg.getSensorId(), path);
-                notifySensor(path,filesystem.getData(legalPath));
                 filesystem.subscribe((p, data)->notifySensor(path, data), legalPath);
             });
             try {
                 new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
             } catch (final IllegalMessageBaseExecption e) {}
+            msg.getInstructionRecievingPaths().forEach(path ->{
+                String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(), msg.getSensorId(), path);
+                notifySensor(path,filesystem.getData(legalPath));
+            });
         }
     }
     

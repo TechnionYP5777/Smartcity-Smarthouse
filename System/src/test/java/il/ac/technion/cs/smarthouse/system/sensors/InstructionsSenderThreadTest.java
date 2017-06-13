@@ -80,16 +80,20 @@ public class InstructionsSenderThreadTest {
     @After public void closeServerSocket(){
         server.closeSockets();
     }
-    
+
+    //------------------------- private helpers -------------------------------------------
     private void instructInc(){
         sensorRepresentingObj.instruct(true+"", TestInteractiveSensor.getInstructionPath());
     }
     
+    private void fullyRegisterSensor(){
+        while(!sensor.register());
+        while(!sensor.registerInstructions());
+    }
     
+    //------------------------- tests -----------------------------------------------------
     @Test public void GetsInstuctionOnPathTest() {
-        sensor.register();
-        sensor.registerInstructions();
-        
+        fullyRegisterSensor();
         instructInc();
        
         while(!sensor.operate());
@@ -98,8 +102,7 @@ public class InstructionsSenderThreadTest {
     
     //TODO: move this test to InteractiveSensorTest class [create mutual parent class with initSystem]
     @Test public void GetsInstuctionByPollingTest() {
-        sensor.register();
-        sensor.registerInstructions();
+        fullyRegisterSensor();
         
         final long waitTime = 500;
         sensor.pollInstructions(waitTime);
@@ -129,8 +132,7 @@ public class InstructionsSenderThreadTest {
     @Test public void GetsAlreadyWaitingInstructionTest() {
         instructInc();
         
-        sensor.register();
-        sensor.registerInstructions();
+        fullyRegisterSensor();
        
         while(!sensor.operate());
         assert sensor.didGetInstruction();

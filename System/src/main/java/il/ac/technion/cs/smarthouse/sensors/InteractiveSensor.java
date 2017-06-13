@@ -89,16 +89,7 @@ public abstract class InteractiveSensor extends Sensor {
             if (instIn.ready()) {
                 /** TODO: elia document external the instruction format - at {@link:InstructionsSenderThread#handleSensorMessage}
                  * */ 
-                String respond = instIn.readLine();
-                System.out.println(respond+" ya bishhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-
-                try {
-                    if(new SensorMessage(respond).isRespond()){
-                        return false; //TODO: different behaviour on succesful respond and failed respond?
-                    }
-                } catch (IllegalMessageBaseExecption e) {}
-                
-                final String[] inst = respond.split(InstructionsSenderThread.getInstructionSeperatorRegex());
+                final String[] inst = instIn.readLine().split(InstructionsSenderThread.getInstructionSeperatorRegex());
                 return handler.applyInstruction(inst[0],inst[1]);
             }
             return false;
