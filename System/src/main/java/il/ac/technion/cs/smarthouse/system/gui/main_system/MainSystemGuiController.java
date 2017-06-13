@@ -7,6 +7,7 @@ import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.gui.applications.ApplicationViewController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -61,5 +62,13 @@ public class MainSystemGuiController extends SystemGuiController {
     public void gotoAppsTab() {
         tabs.getSelectionModel().select(appsTab);
         appsPresenterInfo.selectFirstApp();
+    }
+
+    public void setMode(boolean devMode) {
+        setDescription("Welcome! You are in " + (devMode ? "Developer" : "User") + " Mode.");
+    }
+
+    public void setDescription(String description) {
+        homeTabHBox.getChildren().add(new Label(description));
     }
 }
