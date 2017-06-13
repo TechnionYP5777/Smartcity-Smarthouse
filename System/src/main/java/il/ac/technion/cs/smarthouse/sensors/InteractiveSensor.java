@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,6 +13,7 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
@@ -85,9 +87,18 @@ public abstract class InteractiveSensor extends Sensor {
 
         try {
             if (instIn.ready()) {
-                /** todo: elia document external the instruction format - at {@link:InstructionsSenderThread#handleSensorMessage}
+                /** TODO: elia document external the instruction format - at {@link:InstructionsSenderThread#handleSensorMessage}
                  * */ 
-                final String[] inst = instIn.readLine().split(InstructionsSenderThread.getInstructionSeperatorRegex());
+                String respond = instIn.readLine();
+                System.out.println(respond+" ya bishhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+
+                try {
+                    if(new SensorMessage(respond).isRespond()){
+                        return false; //TODO: different behaviour on succesful respond and failed respond?
+                    }
+                } catch (IllegalMessageBaseExecption e) {}
+                
+                final String[] inst = respond.split(InstructionsSenderThread.getInstructionSeperatorRegex());
                 return handler.applyInstruction(inst[0],inst[1]);
             }
             return false;

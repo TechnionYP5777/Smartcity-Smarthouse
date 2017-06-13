@@ -161,6 +161,10 @@ public class SensorMessage extends Message {
     public Boolean isSuccesful() {
         return answerTypes.contains(type) ? MessageType.SUCCESS_ANSWER.equals(type) : null;
     }
+    
+    public Boolean isRespond(){
+        return answerTypes.contains(type);
+    }
 
     public SensorMessage setData(final Map<String, String> data) {
         this.data = data;

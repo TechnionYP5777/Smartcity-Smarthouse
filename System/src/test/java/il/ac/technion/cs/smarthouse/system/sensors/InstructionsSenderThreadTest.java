@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
@@ -97,7 +96,7 @@ public class InstructionsSenderThreadTest {
         assert sensor.didGetInstruction();
     }
     
-    //todo: move this test to InteractiveSensorTest class [create mutual parent class with initSystem]
+    //TODO: move this test to InteractiveSensorTest class [create mutual parent class with initSystem]
     @Test public void GetsInstuctionByPollingTest() {
         sensor.register();
         sensor.registerInstructions();
