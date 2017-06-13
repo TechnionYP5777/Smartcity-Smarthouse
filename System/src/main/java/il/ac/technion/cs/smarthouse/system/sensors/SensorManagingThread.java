@@ -77,5 +77,5 @@ public abstract class SensorManagingThread extends Thread {
         }
     }
 
-    protected abstract void handleSensorMessage(final SensorMessage msg);
+    protected abstract void handleSensorMessage(SensorMessage msg);
 }

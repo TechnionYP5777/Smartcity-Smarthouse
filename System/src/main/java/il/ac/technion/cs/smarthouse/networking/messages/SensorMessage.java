@@ -38,7 +38,7 @@ public class SensorMessage extends Message {
     }
 
     public class IllegalMessageBaseExecption extends Exception {
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1;
 
         public IllegalMessageBaseExecption(final MessageType type) {
             super("Tried to create " + type + " message, without sensor information.");
@@ -137,13 +137,13 @@ public class SensorMessage extends Message {
     public String getSensorCommName() {
         return commName;
     }
-    
+
     public String getAlias() {
         return alias;
     }
 
-    private List<String> getPaths(final PathType pathType) {
-        return data.keySet().stream().filter(path -> data.get(path).equals(pathType + "")).collect(Collectors.toList());
+    private List<String> getPaths(final PathType t) {
+        return data.keySet().stream().filter(path -> data.get(path).equals(t + "")).collect(Collectors.toList());
     }
 
     public List<String> getObservationSendingPaths() {
@@ -161,8 +161,8 @@ public class SensorMessage extends Message {
     public Boolean isSuccesful() {
         return answerTypes.contains(type) ? MessageType.SUCCESS_ANSWER.equals(type) : null;
     }
-    
-    public Boolean isRespond(){
+
+    public Boolean isRespond() {
         return answerTypes.contains(type);
     }
 

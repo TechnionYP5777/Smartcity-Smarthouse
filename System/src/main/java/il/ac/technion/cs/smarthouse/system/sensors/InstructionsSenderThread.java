@@ -26,9 +26,9 @@ public class InstructionsSenderThread extends SensorManagingThread {
     public InstructionsSenderThread(final Socket client, final FileSystem fs) {
         super(client, fs);
     }
-    
-    private void notifySensor(final String path, final Object data){
-        if(data == null)
+
+    private void notifySensor(final String path, final Object data) {
+        if (data == null)
             return;
         out.println(path + instructionSeperator + data);
     }
@@ -38,21 +38,23 @@ public class InstructionsSenderThread extends SensorManagingThread {
         if (!MessageType.REGISTRATION.equals(msg.getType()))
             log.error(getClass() + " shouldn't receive an update msg.");
         else {
-            msg.getInstructionRecievingPaths().forEach(path ->{
-                String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(), msg.getSensorId(), path);
-                filesystem.subscribe((p, data)->notifySensor(path, data), legalPath);
+            msg.getInstructionRecievingPaths().forEach(path -> {
+                final String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),
+                                msg.getSensorId(), path);
+                filesystem.subscribe((p, data) -> notifySensor(path, data), legalPath);
             });
             try {
                 new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
             } catch (final IllegalMessageBaseExecption e) {}
-            msg.getInstructionRecievingPaths().forEach(path ->{
-                String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(), msg.getSensorId(), path);
-                notifySensor(path,filesystem.getData(legalPath));
+            msg.getInstructionRecievingPaths().forEach(path -> {
+                final String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),
+                                msg.getSensorId(), path);
+                notifySensor(path, filesystem.getData(legalPath));
             });
         }
     }
-    
-    public static String getInstructionSeperatorRegex(){
+
+    public static String getInstructionSeperatorRegex() {
         return instructionSeperator;
     }
 }

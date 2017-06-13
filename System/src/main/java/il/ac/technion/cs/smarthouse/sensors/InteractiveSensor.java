@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,7 +12,6 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.networking.messages.Message;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
@@ -29,7 +27,7 @@ import il.ac.technion.cs.smarthouse.system.sensors.InstructionsSenderThread;
  */
 public abstract class InteractiveSensor extends Sensor {
     private static Logger log = LoggerFactory.getLogger(InteractiveSensor.class);
-    
+
     protected static final int INSTRACTIONS_PORT = 40002;
 
     protected int instPort;
@@ -39,10 +37,10 @@ public abstract class InteractiveSensor extends Sensor {
     protected InstructionHandler handler;
     protected long period;
 
-    public InteractiveSensor(final String commname, final String id, final String alias, final List<String> observationSendingPaths,
-                    final List<String> instructionRecievingPaths) {
+    public InteractiveSensor(final String commname, final String id, final String alias,
+                    final List<String> observationSendingPaths, final List<String> instructionRecievingPaths) {
         super(commname, id, alias, observationSendingPaths, instructionRecievingPaths);
-        this.instPort = INSTRACTIONS_PORT;
+        instPort = INSTRACTIONS_PORT;
     }
 
     /**
@@ -87,10 +85,12 @@ public abstract class InteractiveSensor extends Sensor {
 
         try {
             if (instIn.ready()) {
-                /** TODO: elia document external the instruction format - at {@link:InstructionsSenderThread#handleSensorMessage}
-                 * */ 
+                /**
+                 * TODO: elia document external the instruction format - at
+                 * {@link:InstructionsSenderThread#handleSensorMessage}
+                 */
                 final String[] inst = instIn.readLine().split(InstructionsSenderThread.getInstructionSeperatorRegex());
-                return handler.applyInstruction(inst[0],inst[1]);
+                return handler.applyInstruction(inst[0], inst[1]);
             }
             return false;
         } catch (final IOException e) {
