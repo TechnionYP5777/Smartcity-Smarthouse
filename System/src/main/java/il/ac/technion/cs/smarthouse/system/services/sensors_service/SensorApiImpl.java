@@ -229,7 +229,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
                 // send instructions
                 instructionsQueue.forEach((basePath, instruction) -> fileSystem.sendMessage(instruction,
-                                FileSystemEntries.SENSORS_DATA_FULL__WITH_SENSOR_ID.buildPath(basePath, sensorId)));
+                                FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(commercialName, sensorId, basePath)));
 
                 return true;
             }
