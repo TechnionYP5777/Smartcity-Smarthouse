@@ -1,8 +1,8 @@
 package il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations;
 
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
-import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.StatusRegionBuilder;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -65,6 +65,8 @@ public final class StatusRegionBuilderImpl extends AbstractRegionBuilder impleme
         final Label timeLabel = createStatusLabel("");
         final Timeline timeline;
         final GuiBinderObject<Duration> time = new GuiBinderObject<>(Duration.ZERO);
+        
+        timeLabel.setText(0.0 + " [sec]");
 
         timeline = new Timeline(new KeyFrame(Duration.millis(100), ¢ -> {
             time.setData(time.getData().add(((KeyFrame) ¢.getSource()).getTime()));

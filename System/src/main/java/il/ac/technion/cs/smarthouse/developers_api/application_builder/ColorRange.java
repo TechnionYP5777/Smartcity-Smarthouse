@@ -2,8 +2,8 @@ package il.ac.technion.cs.smarthouse.developers_api.application_builder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import javafx.scene.paint.Color;
 
 /**
@@ -78,19 +78,20 @@ public class ColorRange<T extends Comparable<T>> {
     }
 
     public Color getColorOfValue(T value) {
-        Color outColor = defaultColor;
-
         if (value == null)
-            return outColor;
+            return defaultColor;
 
         for (ColorAndValue colorAndValue : ifEqualsList)
             if (value.equals(colorAndValue.getValue()))
                 return colorAndValue.color;
 
+        ColorAndValue choosenCv = null;
         for (ColorAndValue colorAndValue : rangeList)
-            if (value.compareTo(colorAndValue.getValue()) >= 0)
-                outColor = Optional.ofNullable(colorAndValue.color).orElse(defaultColor);
-
-        return outColor;
+            if (value.compareTo(colorAndValue.getValue()) >= 0 && (choosenCv == null || choosenCv.getValue().compareTo(colorAndValue.getValue()) < 0))
+                choosenCv = colorAndValue;
+        
+        if (choosenCv != null)
+            return choosenCv.color;
+        return defaultColor;
     }
 }
