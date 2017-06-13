@@ -174,6 +174,8 @@ public class SensorApiTest {
             wasCalled.setTrueAndRelease();
         }, LocalTime.now().plusSeconds(2));
         
+        System.out.println(fileSystem);
+        
         wasCalled.blockUntilTrue();
     }
     
