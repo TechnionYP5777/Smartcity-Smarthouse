@@ -3,7 +3,9 @@ package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -11,7 +13,6 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
@@ -47,11 +48,6 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     // or the fileSystem
     private String sensorId;
 
-    // the sensor's preferred location. the selected sensor will be located at
-    // this location. if null or UNDEFINED, the location is ignored, and only
-    // the commercial name will affect the sensor selection process
-    private final SensorLocation defaultLocation;
-
     // the class that extends SensorData. the developer will receive information
     // from the sensor via this class
     private final Class<T> sensorDataClass;
@@ -71,30 +67,45 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
     // the ID of the fileSystem's listener on:
     // sensors.commercialName.sensorId.msg_recevied
-    @SuppressWarnings("unused") private String onSensorMesgRecivedListenerId;
+    private String onSensorMesgRecivedListenerId;
+    
+    private List<String> onNewAliasListenersId = new ArrayList<>();
 
     /**
      * This c'tor should be used only by the {@link SensorsService}
      * 
-     * @param systemCore
-     *            a reference to the system's core
-     * @param sensorId
-     *            The ID of the sensor, returned from
-     *            inquireAbout(sensorCommercialName)
+     * @param fileSystem
+     *            A reference to the system's fileSystem
+     * @param commercialName
+     *            The sensor's commercial name
      * @param sensorDataClass
      *            The class representing the sensor being listened to, defined
      *            by the developer
+     * @param alias
+     *            The sensor's alias
      */
-    SensorApiImpl(final FileSystem fileSystem, final String commercialName, final SensorLocation defaultLocation,
-                    final Class<T> sensorDataClass) {
+    SensorApiImpl(final FileSystem fileSystem, final String commercialName, final Class<T> sensorDataClass,
+                    final String alias) {
         assert fileSystem != null && commercialName != null && sensorDataClass != null;
 
         this.fileSystem = fileSystem;
         this.commercialName = commercialName;
-        this.defaultLocation = defaultLocation != null ? defaultLocation : SensorLocation.UNDEFINED;
         this.sensorDataClass = sensorDataClass;
 
-        searchForSensorId();
+        searchForSensorId(alias);
+    }
+
+    /**
+     * {@link #SensorApiImpl(FileSystem, String, Class, String)}
+     * <p>
+     * alias is null by default
+     * 
+     * @param fileSystem
+     * @param commercialName
+     * @param sensorDataClass
+     */
+    SensorApiImpl(final FileSystem fileSystem, final String commercialName, final Class<T> sensorDataClass) {
+        this(fileSystem, commercialName, sensorDataClass, null);
     }
 
     // ===================================================================
@@ -116,10 +127,21 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         return FileSystemEntries.LOCATION.buildPath(commercialName, sensorId1);
     }
 
+    private String getPath_alias(final String sensorId1) {
+        assert commercialName != null && sensorId1 != null;
+        return FileSystemEntries.ALIAS.buildPath(commercialName, sensorId1);
+    }
+
     // =====================================================================
     // ======================== Important functions ========================
     // =====================================================================
 
+    /**
+     * Creates an instance of the {@link #sensorDataClass} class with the
+     * current data from the fileSystem
+     * 
+     * @return the new instance
+     */
     private T createSensorDataObj() {
         assert sensorId != null;
 
@@ -147,6 +169,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
         sensorData.sensorLocation = getSensorLocation();
         sensorData.commercialName = getCommercialName();
+        sensorData.sensorAlias = getSensorAlias();
 
         return sensorData;
     }
@@ -157,8 +180,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
      * A valid sensor ID represents a sensor that has connected to the system
      * (at some point in the past), and has a commercial name of
      * {@link #commercialName}. <br>
-     * The sensor should also be found at {@link #defaultLocation}. If
-     * {@link #defaultLocation} is null or {@link SensorLocation#UNDEFINED} than
+     * The sensor should also have the alias `alias`. If `alias` is null than
      * any sensor with the given {@link #commercialName} can be selected.
      * <p>
      * If an ID is not found, a listener will be placed on the file system under
@@ -170,19 +192,19 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
      * When a sensor ID is found, a new listener is placed under the
      * {@link FileSystemEntries#DONE_SENDING_MSG} entry.
      * 
+     * @param alias
      * @return true if a sensor ID was found (or if it was already set)
      */
-    private boolean searchForSensorId() {
+    private boolean searchForSensorId(String alias) {
         if (sensorId != null)
             return true;
 
         final String commNamePath = getPath_commercialNamePath();
 
         for (final String sensorId1 : fileSystem.getChildren(commNamePath)) {
-            final String locationPath = getPath_location(sensorId1);
-            if (defaultLocation == null || defaultLocation == SensorLocation.UNDEFINED
-                            || fileSystem.wasPathInitiated(locationPath)
-                                            && fileSystem.<SensorLocation>getData(locationPath) == defaultLocation) {
+            final String aliasPath = getPath_alias(sensorId1);
+            if (alias == null || fileSystem.wasPathInitiated(aliasPath)
+                            && alias.equals(fileSystem.<String>getData(aliasPath))) {
 
                 // set the sensor's ID
                 sensorId = sensorId1;
@@ -213,14 +235,26 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         }
 
         if (sensorIdListenerId == null)
-            sensorIdListenerId = fileSystem.subscribe((path, data) -> searchForSensorId(), commNamePath);
+            sensorIdListenerId = fileSystem.subscribe((path, data) -> searchForSensorId(alias), commNamePath);
         return false;
     }
 
-    // ==============================================================================
-    // ======================== Generate Listeners functions
-    // ========================
-    // ==============================================================================
+    /**
+     * Removes all of this API's event handlers from the fileSystem.
+     */
+    private void disconnectSensor() {
+        if (sensorIdListenerId != null)
+            fileSystem.unsubscribe(sensorIdListenerId);
+        if (onSensorMesgRecivedListenerId != null)
+            fileSystem.unsubscribe(onSensorMesgRecivedListenerId);
+        sensorId = null;
+        sensorIdListenerId = null;
+        onSensorMesgRecivedListenerId = null;
+    }
+
+    // ======================================================================
+    // ==================== Generate Listeners functions ====================
+    // ======================================================================
 
     /**
      * Wraps the <code>functionToRun</code> Consumer with a javaFx wrapper.
@@ -256,19 +290,24 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         return () -> generateListener_WithoutSensorDataCreation(functionToRun, runOnFx).accept(createSensorDataObj());
     }
 
-    // ================================================================================
-    // ======================== Overridden SensorApi functions
-    // ========================
-    // ================================================================================
+    // ======================================================================
+    // =================== Overridden SensorApi functions ===================
+    // ======================================================================
 
     @Override
-    public SensorLocation getSensorLocation() {
-        return sensorId == null ? SensorLocation.UNDEFINED : fileSystem.getData(getPath_location(sensorId));
+    public String getSensorLocation() {
+        return sensorId == null ? ""
+                        : Optional.ofNullable(fileSystem.getData(getPath_location(sensorId)).toString()).orElse("");
     }
 
     @Override
     public String getCommercialName() {
         return commercialName;
+    }
+
+    @Override
+    public String getSensorAlias() {
+        return sensorId != null ? fileSystem.getData(getPath_alias(sensorId)) : "";
     }
 
     @Override
@@ -282,6 +321,8 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
     public void unsubscribe(final String listenerId) {
         functionsToRunOnMessageRecived.remove(listenerId);
         Optional.of(functionsToRunOnTime.remove(listenerId)).ifPresent(tl -> tl.kill());
+        if (onNewAliasListenersId.remove(listenerId))
+            fileSystem.unsubscribe(listenerId);
     }
 
     @Override
@@ -291,7 +332,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
             instructionsQueue.put(basePath, instruction);
         else
             fileSystem.sendMessage(instruction,
-                            FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(commercialName, sensorId,basePath));
+                            FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(commercialName, sensorId, basePath));
     }
 
     @Override
@@ -300,10 +341,19 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
                                 // (or FS) that the sensor is still connected...
     }
 
-    // ===========================================================================
-    // ======================== subscribeOnTime functions
-    // ========================
-    // ===========================================================================
+    @Override
+    public void reselectSensorByAlias(String alias) {
+        if (alias == null)
+            return;
+        log.info("SensorApi: reselectSensorByAlias: " + alias);
+        functionsToRunOnTime.values().forEach(TimedListener::kill);
+        disconnectSensor();
+        searchForSensorId(alias);
+    }
+
+    // ===================================================================
+    // ==================== subscribeOnTime functions ====================
+    // ===================================================================
 
     private String subscribeOnTimeAux(final Consumer<T> functionToRun, final LocalTime timeToStartOn,
                     final Long repeatInMillisec) {
@@ -337,15 +387,27 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
         return subscribeOnTimeAux(functionToRun, null, null);
     }
 
-    // =================================================================
-    // ======================== other functions ========================
-    // =================================================================
+    // ======================================================================
+    // ================= commercialName's aliases functions =================
+    // ======================================================================
 
-    // public void close() throws Exception {
-    // if (sensorIdListenerId != null)
-    // fileSystem.unsubscribe(sensorIdListenerId, getPath_commercialNamePath());
-    // if (onSensorMesgRecivedListenerId != null)
-    // fileSystem.unsubscribe(onSensorMesgRecivedListenerId,
-    // getPath_doneMsg(sensorId));
-    // }
+    @Override
+    public List<String> getAllAliases() {
+        final List<String> l = new ArrayList<>();
+        for (String sensorId1 : fileSystem.getChildren(FileSystemEntries.COMMERCIAL_NAME.buildPath(commercialName)))
+            l.add(fileSystem.getData(FileSystemEntries.ALIAS.buildPath(commercialName, sensorId1)));
+        return l;
+    }
+
+    @Override
+    public String listenForNewAliases(Consumer<String> functionToRun) {
+        final String id = fileSystem.subscribe((path, data) -> {
+            if (FileSystemEntries.ALIAS.isValidPath(path))
+                JavaFxHelper.surroundConsumerWithFx(functionToRun).accept(data + "");
+        }, getPath_commercialNamePath());
+        
+        onNewAliasListenersId.add(id);
+        
+        return id;
+    }
 }

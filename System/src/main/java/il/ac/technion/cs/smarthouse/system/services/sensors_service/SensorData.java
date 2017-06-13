@@ -1,8 +1,6 @@
 
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
-import il.ac.technion.cs.smarthouse.system.SensorLocation;
-
 /**
  * A base class for all sensor classes that will be used by the
  * SmartHouseApplication
@@ -12,7 +10,8 @@ import il.ac.technion.cs.smarthouse.system.SensorLocation;
  */
 public class SensorData {
     protected String commercialName;
-    protected SensorLocation sensorLocation;
+    protected String sensorLocation;
+    protected String sensorAlias;
 
     public SensorData() {}
 
@@ -20,7 +19,11 @@ public class SensorData {
         return commercialName;
     }
 
-    public SensorLocation getSensorLocation() {
+    public String getSensorLocation() {
         return sensorLocation;
+    }
+    
+    public String getSensorAlias() {
+        return sensorAlias;
     }
 }
