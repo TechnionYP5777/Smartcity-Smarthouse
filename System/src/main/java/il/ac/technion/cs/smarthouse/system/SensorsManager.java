@@ -20,7 +20,7 @@ public class SensorsManager {
     private static Logger log = LoggerFactory.getLogger(SensorsManager.class);
 
     private final List<String> sensors = new ArrayList<>();
-    private final Map<String, SensorLocation> sensorsLocations = new HashMap<>();
+    private final Map<String, String> sensorsLocations = new HashMap<>();
 
     /**
      * Adds a new sensor to the system, initializing its information List.
@@ -35,7 +35,7 @@ public class SensorsManager {
     public void addSensor(final String sensorId) {
 
         sensors.add(sensorId);
-        sensorsLocations.put(sensorId, SensorLocation.UNDEFINED);
+        sensorsLocations.put(sensorId, "UNDEFINED");
 
     }
 
@@ -52,7 +52,7 @@ public class SensorsManager {
      * @return the location of the sensor with sensorId
      * @throws SensorNotFoundException
      */
-    public SensorLocation getSensorLocation(final String sensorId) throws SensorNotFoundException {
+    public String getSensorLocation(final String sensorId) throws SensorNotFoundException {
         if (sensorsLocations.get(sensorId) == null) {
             log.error("Sensor was not found");
             throw new SensorNotFoundException(sensorId);
@@ -67,7 +67,7 @@ public class SensorsManager {
      *            the Id of the sensor it's location to be changed
      * @throws SensorNotFoundException
      */
-    public void setSensorLocation(final String sensorId, final SensorLocation l) throws SensorNotFoundException {
+    public void setSensorLocation(final String sensorId, final String l) throws SensorNotFoundException {
         if (!sensorsLocations.containsKey(sensorId)) {
             log.error("Sensor was not found");
             throw new SensorNotFoundException(sensorId);

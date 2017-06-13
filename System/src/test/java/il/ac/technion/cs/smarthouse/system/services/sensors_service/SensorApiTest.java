@@ -92,6 +92,7 @@ public class SensorApiTest {
         sensorConnect();
         
         Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
+
         Assert.assertEquals(s.getSensorAlias(), "");
         Assert.assertEquals(s.isConnected(), false);
         

@@ -1,12 +1,9 @@
 package il.ac.technion.cs.smarthouse.system.gui.mapping;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
-import il.ac.technion.cs.smarthouse.system.SensorLocation;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
@@ -24,21 +21,17 @@ public class SensorInfoController extends SystemGuiController {
     @FXML private Label nameLabel;
     @FXML private Label idLabel;
     @FXML private ComboBox<String> room;
-
+    private MappingController mapController;
+    
     @Override
     public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
         fileSystem = model.getFileSystem();
 
-        room.getItems().addAll(Arrays.asList(SensorLocation.values()).stream().map(loc -> loc + "")
-                        .collect(Collectors.toList()));
-
         room.getSelectionModel().select(0);
         room.valueProperty().addListener((ov, prevVal, newVal) -> {
-            final SensorLocation newLoc = SensorLocation.fromString(newVal);
-            // update view
-            this.<MappingController>getParentController().updateSensorLocation(id, newLoc);
+            this.<MappingController>getParentController().updateSensorLocation(id, newVal);
             // update model
-            fileSystem.sendMessage(newLoc, FileSystemEntries.LOCATION.buildPath(commName, id));
+            fileSystem.sendMessage(newVal, FileSystemEntries.LOCATION.buildPath(commName, id));
         });
     }
 
@@ -47,6 +40,17 @@ public class SensorInfoController extends SystemGuiController {
         nameLabel.setText("Name: " + name);
         updateUI();
 
+        return this;
+    }
+    
+    public SensorInfoController setMapController(final MappingController controller){
+        mapController = controller;
+        room.getItems().setAll(mapController.getAlllocations());
+        return this;
+    }
+    
+    public SensorInfoController updateRooms(){
+        room.getItems().setAll(mapController.getAlllocations());
         return this;
     }
 

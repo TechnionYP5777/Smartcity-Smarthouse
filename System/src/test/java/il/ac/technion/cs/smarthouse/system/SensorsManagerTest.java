@@ -21,8 +21,8 @@ public class SensorsManagerTest {
         assert sManager.sensorExists(sensorId);
 
         try {
-            sManager.setSensorLocation(sensorId, SensorLocation.DINING_ROOM);
-            Assert.assertEquals(SensorLocation.DINING_ROOM, sManager.getSensorLocation(sensorId));
+            sManager.setSensorLocation(sensorId, "DINING_ROOM");
+            Assert.assertEquals("DINING_ROOM", sManager.getSensorLocation(sensorId));
         } catch (SensorNotFoundException e) {
             assert null != null;
         }
@@ -32,7 +32,7 @@ public class SensorsManagerTest {
     @Test(expected = SensorNotFoundException.class)
     public void testSensorWasntFound() throws SensorNotFoundException {
 
-        sManager.setSensorLocation(sensorId2, SensorLocation.BASEMENT);
+        sManager.setSensorLocation(sensorId2, "BASEMENT");
 
     }
 

@@ -4,6 +4,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.function.Consumer;
 
+import il.ac.technion.cs.smarthouse.system.sensors.SensorLocation;
+
 /**
  * An API class for the developers, that allows interactions with a specific
  * sensor.
@@ -45,7 +47,7 @@ public interface SensorApi<T extends SensorData> {
      * Queries the system for the sensor's current location
      * 
      * @return the sensors location.<br>
-     *         if the sensor was not found yet, "" will be returned
+     *         if the sensor was not found yet, {@link SensorLocation#UNDIFINED} will be returned
      */
     String getSensorLocation();
 

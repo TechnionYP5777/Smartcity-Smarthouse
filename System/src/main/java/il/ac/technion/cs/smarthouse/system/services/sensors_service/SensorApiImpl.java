@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
+import il.ac.technion.cs.smarthouse.system.sensors.SensorLocation;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import il.ac.technion.cs.smarthouse.utils.StringConverter;
 import il.ac.technion.cs.smarthouse.utils.TimedListener;
@@ -296,7 +297,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
     @Override
     public String getSensorLocation() {
-        return sensorId == null ? ""
+        return sensorId == null ? SensorLocation.UNDIFINED
                         : Optional.ofNullable(fileSystem.getData(getPath_location(sensorId)).toString()).orElse("");
     }
 
