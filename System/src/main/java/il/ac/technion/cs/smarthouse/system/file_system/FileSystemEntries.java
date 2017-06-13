@@ -3,8 +3,6 @@ package il.ac.technion.cs.smarthouse.system.file_system;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,30 +15,31 @@ import org.slf4j.LoggerFactory;
  * @since 28-05-2017
  */
 public enum FileSystemEntries {
-    ROOT("", null, false),
-        APPLICATIONS_DATA("applications_data", ROOT, false),
+    ROOT("", null),
+        APPLICATIONS_DATA("applications_data", ROOT),
         
-        SENSORS("sensors", ROOT, false),
-            COMMERCIAL_NAME(null, SENSORS, true),
-                SENSOR_ID(null, COMMERCIAL_NAME, true),
-                    LOCATION("location", SENSOR_ID, true),
-                    DONE_SENDING_MSG("done", SENSOR_ID, true),
-                    LISTENERS_OF_SENSOR("listeners_of_sensor", SENSOR_ID,true),
+        SENSORS("sensors", ROOT),
+            COMMERCIAL_NAME(null, SENSORS, PathComponentType.SOFT_SUFFIX),
+                SENSOR_ID(null, COMMERCIAL_NAME, PathComponentType.SOFT_SUFFIX),
+                    LOCATION("location", SENSOR_ID, PathComponentType.HARD_SUFFIX),
+                    ALIAS("alias", SENSOR_ID, PathComponentType.HARD_SUFFIX),
+                    DONE_SENDING_MSG("done", SENSOR_ID, PathComponentType.HARD_SUFFIX),
+                    LISTENERS_OF_SENSOR("listeners_of_sensor", SENSOR_ID),
                     
         /**
          * Don't forget to add the id at the end of the path when needed! 
          */
-        SENSORS_DATA("sensors_data", ROOT, false),
-            SENSORS_DATA_FULL__WITH_SENSOR_ID(null, SENSORS_DATA, false),
+        SENSORS_DATA("sensors_data", ROOT),
+            SENSORS_DATA_FULL__WITH_SENSOR_ID(null, SENSORS_DATA),
         
-        SYSTEM("system", ROOT, false),
-            SYSTEM_INTERNALS("internals", SYSTEM, false),
-                SAVEME("saveme", SYSTEM_INTERNALS, true),
-                LOAD_DATA_IMAGE("load", SYSTEM_INTERNALS, true),
-            SYSTEM_DATA_IMAGE("data_image", SYSTEM, true),
+        SYSTEM("system", ROOT),
+            SYSTEM_INTERNALS("internals", SYSTEM),
+                SAVEME("saveme", SYSTEM_INTERNALS, PathComponentType.HARD_SUFFIX),
+                LOAD_DATA_IMAGE("load", SYSTEM_INTERNALS, PathComponentType.HARD_SUFFIX),
+            SYSTEM_DATA_IMAGE("data_image", SYSTEM, PathComponentType.HARD_SUFFIX),
             
-        TESTS("tests", ROOT, false),
-            TESTS_SENSORS_DATA("sensors_data_tests", TESTS, false)
+        TESTS("tests", ROOT),
+            TESTS_SENSORS_DATA("sensors_data_tests", TESTS)
     ;
         
     /*
@@ -74,12 +73,16 @@ public enum FileSystemEntries {
      *          └───saveme
      */
   //@formatter:on
+    
+    private static enum PathComponentType {
+        HARD_SUFFIX, SOFT_SUFFIX, PREFIX
+    }
 
     private static Logger log = LoggerFactory.getLogger(FileSystemEntries.class);
 
     private String name;
     private FileSystemEntries parent;
-    private boolean isSuffix;
+    private PathComponentType pathType;
 
     /**
      * A new file system entry
@@ -95,30 +98,23 @@ public enum FileSystemEntries {
      *            appended to the entry.<br>
      *            If true, it won't (only back-filling will be allowed)
      */
-    private FileSystemEntries(final String name, final FileSystemEntries parent, final boolean isSuffix) {
+    private FileSystemEntries(final String name, final FileSystemEntries parent, final PathComponentType pathType) {
         this.name = name;
         this.parent = parent;
-        this.isSuffix = false;// isSuffix; // TODO: suffix support is disabled
+        this.pathType = pathType;
     }
-
-    private String buildPathAux(final List<String> base) {
-        String out = name;
-
-        if (name != null)
-            return out;
-        if (base.isEmpty()) {
-            final RuntimeException r = new RuntimeException("the given path is not big enough");
-            log.error("Error while building the path", r);
-            throw r;
-        }
-        out = base.get(0);
-        base.remove(0);
-        return out;
+    
+    private FileSystemEntries(final String name, final FileSystemEntries parent) {
+        this(name, parent, PathComponentType.PREFIX);
     }
-
-    private String buildPathRecurcive(final List<String> base) {
-        return parent == null ? buildPathAux(base)
-                        : PathBuilder.buildPath(parent.buildPathRecurcive(base), buildPathAux(base));
+    
+    private List<FileSystemEntries> getBranch() {
+        final List<FileSystemEntries> l = new ArrayList<>();
+        
+        for (FileSystemEntries p = this; p != null; p = p.parent)
+            l.add(0, p);
+        
+        return l;
     }
 
     /**
@@ -130,17 +126,67 @@ public enum FileSystemEntries {
      * @return
      */
     public String buildPath(final String... base) {
-        final ArrayList<String> l = PathBuilder.decomposePath(base).stream()
-                        .collect(Collectors.toCollection(ArrayList::new));
-        if (!isSuffix)
-            return PathBuilder.buildPath(buildPathRecurcive(l), PathBuilder.buildPath(l.toArray(new String[0])));
-        if (!l.isEmpty())
-            log.warn("Path (" + Arrays.toString(base) + ") was longer than expected");
-        return PathBuilder.buildPath(buildPathRecurcive(l));
+        final List<String> l = new ArrayList<>();
+        final List<FileSystemEntries> branch = getBranch();
+        
+        int baseIdx = 0;
+        for (FileSystemEntries e : branch)
+            if (e.name != null)
+                l.add(e.name);
+            else {
+                if (baseIdx >= base.length) {
+                    final RuntimeException r = new RuntimeException("Path (" + Arrays.toString(base) + ") was not long enough");
+                    log.error("Error while building the path", r);
+                    throw r;
+                }
+                l.add(base[baseIdx++]);
+            }
+        
+        final List<String> pathToAppend = Arrays.asList(base).subList(baseIdx, base.length);
+        
+        if (!pathToAppend.isEmpty()) {
+            final RuntimeException r = new RuntimeException("Path (" + Arrays.toString(base) + ") was longer than expected");
+            
+            switch (pathType) {
+                case SOFT_SUFFIX:
+                    log.warn("Warning while building the path", r);
+                    break;
+                case HARD_SUFFIX:
+                    log.error("Error while building the path", r);
+                    throw r;
+                default:
+                    break;
+            }
+        }
+        
+        l.addAll(pathToAppend);
+        
+        return PathBuilder.buildPath(l);
     }
-
-    @Override
-    public String toString() {
-        return name != null ? name : "<EMPTY>";
+    
+    public String getPartFromPath(final String... path) {
+        int idx = 0;
+        FileSystemEntries p = this;
+        for (idx = 0; p.parent != ROOT; ++idx)
+            p = p.parent;
+        return PathBuilder.decomposePath(path).get(idx);
+    }
+    
+    public boolean isValidPath(final String... path) {
+        final List<String> l = PathBuilder.decomposePath(path);
+        final List<FileSystemEntries> branch = getBranch();
+        
+        for (int ib = 0, ip = 0; ib < branch.size() && ip < l.size(); ++ib, ++ip) {
+            if (branch.get(ib).name == null)
+                continue;
+            if (branch.get(ib).name.isEmpty()) {
+                --ip;
+                continue;
+            }
+            if (!branch.get(ib).name.equals(l.get(ip)))
+                return false;
+        }
+        
+        return true;
     }
 }
