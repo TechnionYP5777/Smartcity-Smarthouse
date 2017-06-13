@@ -25,7 +25,9 @@ public class SosSensorSimulator extends Application {
 
     @Override
     public void start(final Stage s) throws Exception {
-        sensor = new SosSensor(Random.sensorId(), 40001);
+        final String alias = "Elia's sos sensor";
+        //final String alias = "Ron's sos sensor";
+        sensor = new SosSensor(Random.sensorId(), alias);
         for (boolean res = false; !res;)
             res = sensor.register();
         final Image sosImage = new Image(getClass().getResourceAsStream("/sensors/sos/sos_icon.png"), 320, 0, true,
@@ -38,7 +40,7 @@ public class SosSensorSimulator extends Application {
         final StackPane layout = new StackPane();
         layout.getChildren().add(sosButton);
         s.setScene(new Scene(layout, 320, 268));
-        s.setTitle("SOS Sensor Simulator");
+        s.setTitle("SOS Sensor Simulator - " + alias);
         s.show();
 
     }

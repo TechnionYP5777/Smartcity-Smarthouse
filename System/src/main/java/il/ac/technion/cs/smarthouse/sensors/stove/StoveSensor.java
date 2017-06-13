@@ -18,8 +18,8 @@ public class StoveSensor extends Sensor {
     final static String onPath = "stove" + PathBuilder.DELIMITER + "is_on";
     final static String temperPath = "stove" + PathBuilder.DELIMITER + "temperature";
 
-    public StoveSensor(final String id, final int systemPort) {
-        super("iStoves", id, Arrays.asList(onPath, temperPath), systemPort);
+    public StoveSensor(final String id, final String alias) {
+        super("iStoves", id, alias, Arrays.asList(onPath, temperPath));
     }
 
     public void updateSystem(final boolean on, final int temperature) {

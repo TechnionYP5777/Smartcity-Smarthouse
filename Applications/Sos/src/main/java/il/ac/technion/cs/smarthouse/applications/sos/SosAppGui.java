@@ -10,6 +10,7 @@ import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
@@ -25,10 +26,14 @@ public class SosAppGui extends SmarthouseApplication {
     }
 
     @Override public void onLoad() throws Exception {
+        SensorApi<SosSensor> mySosSensor = ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getSensor("iSOS", SosSensor.class);
+        
         final String INIT = "SOS not pressed";
         GuiBinderObject<String> str = new GuiBinderObject<>(INIT);
         
-        getAppBuilder().getConfigurationsRegionBuilder().addButtonInputField("Press if ok", "OK", (new GuiBinderObject<Void>()).addOnDataChangedListener(d->{
+        getAppBuilder().getConfigurationsRegionBuilder()
+            .addSensorAliasSelectionField("Selected SOS button", mySosSensor)
+            .addButtonInputField("Press if ok", "OK", (new GuiBinderObject<Void>()).addOnDataChangedListener(d->{
             if (!shouldAlert) {
                 shouldAlert = !shouldAlert;
                 str.setData(INIT);
@@ -37,7 +42,7 @@ public class SosAppGui extends SmarthouseApplication {
         
         getAppBuilder().getStatusRegionBuilder().addStatusField("", str, new ColorRange<String>(Color.RED).addIfEquals(INIT, Color.GREEN));
 
-        ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE)).getSensor("iSOS", SosSensor.class).subscribe(sos -> {
+        mySosSensor.subscribe(sos -> {
             final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
             if (shouldAlert) {
                 str.setData(t);

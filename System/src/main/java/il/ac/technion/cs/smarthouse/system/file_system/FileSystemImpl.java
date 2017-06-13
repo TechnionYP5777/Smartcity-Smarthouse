@@ -180,10 +180,11 @@ public class FileSystemImpl implements FileSystem, Savable {
 
     @Override
     public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {
-        log.info("FileSystem: subscribed on " + PathBuilder.buildPath(path) + " | Subscriber is " + new Throwable().getStackTrace()[1].getClassName());
         FileNode n = fileSystemWalk(true, null, path).fileNode;
         String id = n.addEventHandler(eventHandler);
         listenersBuffer.put(id, n);
+        log.info("\n\tFileSystem: Subscribing a new listener (event handler)\n\tSubscribed on path: "
+                        + PathBuilder.buildPath(path) + "\n\tSubscriber: " + getNameOfCaller());
         return id;
     }
 
@@ -195,15 +196,20 @@ public class FileSystemImpl implements FileSystem, Savable {
     @Override
     public void sendMessage(Object data, String... path) {
         FileSystemWalkResults r = fileSystemWalk(true, data, path);
-        log.info("FileSystem: Sending message on " + PathBuilder.buildPath(path) + " | Sender is " + new Throwable().getStackTrace()[1].getClassName() + " | Firing " + r.eventHandlersOnBranch.size() + " listeners");
+        log.info("\n\tFileSystem: Sending message \n\tMessage on path: " + PathBuilder.buildPath(path) + "\n\tSender: "
+                        + getNameOfCaller() + "\n\tData: " + data + "\n\tFiring " + r.eventHandlersOnBranch.size()
+                        + " listeners (event handlers)");
         for (BiConsumer<String, Object> eventHandler : r.eventHandlersOnBranch)
             eventHandler.accept(PathBuilder.buildPath(path), data);
     }
 
     @Override
     public <T> T getData(final String... path) {
-        return fileSystemWalk(false, null, path).fileNode == null ? null
+        final T data = fileSystemWalk(false, null, path).fileNode == null ? null
                         : fileSystemWalk(false, null, path).fileNode.getData();
+        log.info("\n\tFileSystem: GetData\n\tThe data requester: " + getNameOfCaller() + "\n\tThe path: "
+                        + PathBuilder.buildPath(path) + "\n\tThe data: " + data);
+        return data;
     }
 
     @Override
@@ -234,5 +240,11 @@ public class FileSystemImpl implements FileSystem, Savable {
 
     public void deleteFromPath(final String... path) {
         Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).ifPresent(n -> n.children.clear());
+    }
+
+    private String getNameOfCaller() {
+        final StackTraceElement t = new Throwable().getStackTrace()[2];
+
+        return t.getClassName() + "#" + t.getMethodName() + " (Line " + t.getLineNumber() + ")";
     }
 }

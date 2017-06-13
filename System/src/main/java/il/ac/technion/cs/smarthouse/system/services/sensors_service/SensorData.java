@@ -11,6 +11,7 @@ package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 public class SensorData {
     protected String commercialName;
     protected String sensorLocation;
+    protected String sensorAlias;
 
     public SensorData() {}
 
@@ -20,5 +21,9 @@ public class SensorData {
 
     public String getSensorLocation() {
         return sensorLocation;
+    }
+    
+    public String getSensorAlias() {
+        return sensorAlias;
     }
 }

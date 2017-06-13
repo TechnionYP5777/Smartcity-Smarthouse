@@ -58,7 +58,7 @@ public class SensorMessage extends Message {
     private static final List<MessageType> noneAnswerTypes = Arrays.asList(MessageType.REGISTRATION,
                     MessageType.UPDATE);
 
-    private final String sensorId, commName;
+    private final String sensorId, commName, alias;
     private Map<String, String> data;
 
     /**
@@ -74,6 +74,7 @@ public class SensorMessage extends Message {
             throw new IllegalMessageBaseExecption(type);
         sensorId = null;
         commName = null;
+        alias = null;
         data = null;
     }
 
@@ -90,6 +91,7 @@ public class SensorMessage extends Message {
             throw new IllegalMessageBaseExecption(type, sensor);
         sensorId = sensor.getId();
         commName = sensor.getCommname();
+        alias = sensor.getAlias();
         data = new HashMap<>();
 
         if (MessageType.UPDATE.equals(type))
@@ -119,6 +121,7 @@ public class SensorMessage extends Message {
         type = msg.getType();
         sensorId = msg.getSensorId();
         commName = msg.getSensorCommName();
+        alias = msg.getAlias();
         data = msg.getData();
     }
 
@@ -133,6 +136,10 @@ public class SensorMessage extends Message {
 
     public String getSensorCommName() {
         return commName;
+    }
+    
+    public String getAlias() {
+        return alias;
     }
 
     private List<String> getPaths(final PathType pathType) {
@@ -153,6 +160,10 @@ public class SensorMessage extends Message {
 
     public Boolean isSuccesful() {
         return answerTypes.contains(type) ? MessageType.SUCCESS_ANSWER.equals(type) : null;
+    }
+    
+    public Boolean isRespond(){
+        return answerTypes.contains(type);
     }
 
     public SensorMessage setData(final Map<String, String> data) {

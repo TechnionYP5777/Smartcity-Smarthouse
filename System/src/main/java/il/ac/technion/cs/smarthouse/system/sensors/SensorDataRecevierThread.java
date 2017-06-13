@@ -22,19 +22,18 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
  * @author Yarden
  * @since 24.12.16
  */
-public class SensorHandlerThread extends SensorManagingThread {
-    private static Logger log = LoggerFactory.getLogger(SensorHandlerThread.class);
+public class SensorDataRecevierThread extends SensorManagingThread {
+    private static Logger log = LoggerFactory.getLogger(SensorDataRecevierThread.class);
 
-    private final Map<String, String> legalSystemPaths = new HashMap<>();// short
-                                                                         // path
-                                                                         // &
-                                                                         // full
-                                                                         // path
-    private Map<String, String> dataBuffer = new HashMap<>(); // short path &
-                                                              // counter
+    // short path & full path:
+    private final Map<String, String> legalSystemPaths = new HashMap<>();
+    
+    // short path & counter:
+    private Map<String, String> dataBuffer = new HashMap<>();
+    
     private String donePath;
 
-    public SensorHandlerThread(final Socket client, final FileSystem fs) {
+    public SensorDataRecevierThread(final Socket client, final FileSystem fs) {
         super(client, fs);
     }
 
@@ -48,22 +47,25 @@ public class SensorHandlerThread extends SensorManagingThread {
                 handleUpdateMessage(msg);
                 break;
             default:
-                ;
+                break;
         }
     }
 
     private void handleRegisterMessage(final SensorMessage msg) {
-        log.info(msg.toJson() + "\n" + msg.getObservationSendingPaths());
-        filesystem.sendMessage("UNDEFINED",
+        log.info("\n\tSensorDataRecevierThread: Recived registration message\n\tMessage: " + msg.toJson() + 
+                        "\n\tThe sensor will update on paths: " + msg.getObservationSendingPaths() + 
+                        "\n\tThe sensor will listen on paths: " + msg.getInstructionRecievingPaths());
+        
+        filesystem.sendMessage(SensorLocation.UNDIFINED,
                         FileSystemEntries.LOCATION.buildPath(msg.getSensorCommName(), msg.getSensorId()));
+        
+        filesystem.sendMessage(msg.getAlias(),
+                        FileSystemEntries.ALIAS.buildPath(msg.getSensorCommName(), msg.getSensorId()));
 
         donePath = FileSystemEntries.DONE_SENDING_MSG.buildPath(msg.getSensorCommName(), msg.getSensorId());
         msg.getObservationSendingPaths().stream().forEach(
                         p -> legalSystemPaths.put(p, FileSystemEntries.SENSORS_DATA.buildPath(p, msg.getSensorId())));
-
-        msg.getObservationSendingPaths().stream()
-                        .forEach(p -> log.info("Resolved " + p + " to the full path:" + legalSystemPaths.get(p)));
-        log.info("done showing resolved paths");
+        
         try {
             new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
         } catch (final IllegalMessageBaseExecption e) {}

@@ -16,6 +16,8 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 public class SensorApiTest {
     static final String PARAM1_BASE_PATH = "my_sensor.data.param1";
     static final String SENSOR_COMM_NAME = "iCoolSensor";
+    static final String SENSOR_ALIAS_NAME_1 = "MyAlias_1";
+    static final String SENSOR_ALIAS_NAME_2 = "MyAlias_2";
     static final String SENSOR_SID = UuidGenerator.GenerateUniqueIDstring();
     
     private FileSystem fileSystem;
@@ -29,17 +31,17 @@ public class SensorApiTest {
         System.out.println("\n>> Running test: " + Thread.currentThread().getStackTrace()[2].getMethodName());
     }
     
-    public <T extends SensorData> SensorApi<T> getSensor(final String commercialName, final Class<T> sensorDataClass, final String defaultLocation) {
-        return new SensorApiImpl<>(fileSystem, commercialName, defaultLocation, sensorDataClass);
+    public <T extends SensorData> SensorApi<T> getSensor(final String commercialName, final Class<T> sensorDataClass, final String alias) {
+        return new SensorApiImpl<>(fileSystem, commercialName, sensorDataClass, alias);
     }
     
     public void sensorConnect() {
-        sensorSetLocation("UNDEFINED");
+        sensorSetAlias(SENSOR_ALIAS_NAME_1);
         System.out.println(">> sensor has connected");
     }
     
-    public void sensorSetLocation(String l) {
-        fileSystem.sendMessage(l, FileSystemEntries.LOCATION.buildPath(SENSOR_COMM_NAME, SENSOR_SID));
+    public void sensorSetAlias(String alias) {
+        fileSystem.sendMessage(alias, FileSystemEntries.ALIAS.buildPath(SENSOR_COMM_NAME, SENSOR_SID));
     }
     
     public void sensorSendMsg(String param1AsStr) {
@@ -53,19 +55,18 @@ public class SensorApiTest {
         SensorApi<MySensor> s = getSensor(SENSOR_COMM_NAME, MySensor.class, null);
         
         Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
-        Assert.assertEquals(s.getSensorLocation(), "UNDEFINED");
         Assert.assertEquals(s.isConnected(), false);
         
         sensorConnect();
         
         Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
-        Assert.assertEquals(s.getSensorLocation(), "UNDEFINED");
+        Assert.assertEquals(s.getSensorAlias(), SENSOR_ALIAS_NAME_1);
         Assert.assertEquals(s.isConnected(), true);
         
-        sensorSetLocation("BASEMENT");
+        sensorSetAlias(SENSOR_ALIAS_NAME_2);
         
         Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
-        Assert.assertEquals(s.getSensorLocation(), "BASEMENT");
+        Assert.assertEquals(s.getSensorAlias(), SENSOR_ALIAS_NAME_2);
         Assert.assertEquals(s.isConnected(), true);
     }
     
@@ -77,35 +78,40 @@ public class SensorApiTest {
         SensorApi<MySensor> s = getSensor(SENSOR_COMM_NAME, MySensor.class, null);
         
         Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
-        Assert.assertEquals(s.getSensorLocation(), "UNDEFINED");
         Assert.assertEquals(s.isConnected(), true);
     }
     
     @Test
-    public void connectionTest_OnSpecificLocation() {
+    public void connectionTest_BySpecificAlias() {
         printTestName();
-        SensorApi<MySensor> s = getSensor(SENSOR_COMM_NAME, MySensor.class, "KITCHEN");
+        SensorApi<MySensor> s = getSensor(SENSOR_COMM_NAME, MySensor.class, SENSOR_ALIAS_NAME_2);
         
         Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
-        Assert.assertEquals(s.getSensorLocation(), "UNDEFINED");
         Assert.assertEquals(s.isConnected(), false);
         
         sensorConnect();
         
         Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
-        Assert.assertEquals(s.getSensorLocation(), "UNDEFINED");
+
+        Assert.assertEquals(s.getSensorAlias(), "");
         Assert.assertEquals(s.isConnected(), false);
         
-        sensorSetLocation("BASEMENT");
+        s.reselectSensorByAlias(SENSOR_ALIAS_NAME_1);
         
         Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
-        Assert.assertEquals(s.getSensorLocation(), "UNDEFINED");
+        Assert.assertEquals(s.getSensorAlias(), SENSOR_ALIAS_NAME_1);
+        Assert.assertEquals(s.isConnected(), true);
+        
+        s.reselectSensorByAlias(SENSOR_ALIAS_NAME_2);
+        
+        Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
+        Assert.assertEquals(s.getSensorAlias(), "");
         Assert.assertEquals(s.isConnected(), false);
         
-        sensorSetLocation("KITCHEN");
+        sensorSetAlias(SENSOR_ALIAS_NAME_2);
         
         Assert.assertEquals(s.getCommercialName(), SENSOR_COMM_NAME);
-        Assert.assertEquals(s.getSensorLocation(), "KITCHEN");
+        Assert.assertEquals(s.getSensorAlias(), SENSOR_ALIAS_NAME_2);
         Assert.assertEquals(s.isConnected(), true);
     }
     
@@ -124,7 +130,6 @@ public class SensorApiTest {
         s.subscribe(sensorData->{
             Assert.assertEquals(sensorData.getParam1(), param1Data);
             Assert.assertEquals(sensorData.getCommercialName(), SENSOR_COMM_NAME);
-            Assert.assertEquals(sensorData.getSensorLocation(), "UNDEFINED");
             wasCalled.setTrueAndRelease();
         });
         
@@ -146,7 +151,6 @@ public class SensorApiTest {
         s.subscribeOnTime(sensorData->{
             Assert.assertEquals(sensorData.getParam1(), 0);
             Assert.assertEquals(sensorData.getCommercialName(), SENSOR_COMM_NAME);
-            Assert.assertEquals(sensorData.getSensorLocation(), "UNDEFINED");
             wasCalled.setTrueAndRelease();
         }, LocalTime.now().plusSeconds(2));
         
@@ -167,7 +171,6 @@ public class SensorApiTest {
         s.subscribeOnTime(sensorData->{
             Assert.assertEquals(sensorData.getParam1(), param1Data);
             Assert.assertEquals(sensorData.getCommercialName(), SENSOR_COMM_NAME);
-            Assert.assertEquals(sensorData.getSensorLocation(), "UNDEFINED");
             wasCalled.setTrueAndRelease();
         }, LocalTime.now().plusSeconds(2));
         
@@ -188,7 +191,6 @@ public class SensorApiTest {
         String id = s.subscribeOnTime(sensorData->{
             Assert.assertEquals(sensorData.getParam1(), param1Data);
             Assert.assertEquals(sensorData.getCommercialName(), SENSOR_COMM_NAME);
-            Assert.assertEquals(sensorData.getSensorLocation(), "UNDEFINED");
             ++counter;
         }, LocalTime.now().plusSeconds(4), 4000);
         Thread.sleep(1000);//1000
@@ -219,7 +221,6 @@ public class SensorApiTest {
         String id = s.subscribeOnTime(sensorData->{
             Assert.assertEquals(sensorData.getParam1(), param1Data);
             Assert.assertEquals(sensorData.getCommercialName(), SENSOR_COMM_NAME);
-            Assert.assertEquals(sensorData.getSensorLocation(), "UNDEFINED");
             ++counter;
         }, 4000);
         Thread.sleep(1000);//1000

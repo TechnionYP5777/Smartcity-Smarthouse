@@ -16,13 +16,13 @@ import il.ac.technion.cs.smarthouse.utils.Random;
 public class SensorLocalServerTest {
     class TestBasicSensor extends Sensor{
         public TestBasicSensor(String id) {
-            super("testBasicSensor", id, new ArrayList<>(), new ArrayList<>(), 40001);
+            super("testBasicSensor", id, "MyAlias", new ArrayList<>(), new ArrayList<>());
         }
     }
     class TestInteractionSensor extends InteractiveSensor{
 
         public TestInteractionSensor(String id) {
-            super("TestInteractionSensor", id, new ArrayList<>(), new ArrayList<>(), 40001, 40002);
+            super("TestInteractionSensor", id, "MyAlias", new ArrayList<>(), new ArrayList<>());
         }
     }
     

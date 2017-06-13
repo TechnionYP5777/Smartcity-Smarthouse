@@ -1,7 +1,11 @@
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.services.Service;
 
 /**
@@ -34,12 +38,17 @@ public final class SensorsService extends Service {
      * @throws SensorNotFoundException
      *             if no sensor was found with the given commercial names
      */
-    public <T extends SensorData> SensorApi<T> getSensor(final String commercialName, final Class<T> sensorDataClass,
-                    final String defaultLocation) {
-        return new SensorApiImpl<>(systemCore.getFileSystem(), commercialName, defaultLocation, sensorDataClass);
+    public <T extends SensorData> SensorApi<T> getSensor(final String commercialName, final Class<T> sensorDataClass, final String sensorAlias) {
+        return new SensorApiImpl<>(systemCore.getFileSystem(), commercialName, sensorDataClass, sensorAlias);
     }
 
     public <T extends SensorData> SensorApi<T> getSensor(final String commercialName, final Class<T> sensorDataClass) {
         return getSensor(commercialName, sensorDataClass, null);
+    }
+    
+    public List<String> getCommercialNames() {
+        final List<String> l = new ArrayList<>();
+        l.addAll(systemCore.getFileSystem().getChildren(FileSystemEntries.SENSORS.buildPath()));
+        return l;
     }
 }

@@ -20,7 +20,7 @@ public class SensorMessageTest extends MessageTest {
     private MessageType type = MessageType.REGISTRATION;
     
     @Before public void init(){
-        sensor = new InteractiveSensor("ACUSensor", Random.sensorId(), obserPaths, instPaths, 40001, 40002){};
+        sensor = new InteractiveSensor("ACUSensor", Random.sensorId(), "MyAlias", obserPaths, instPaths){};
     }
     
     @Override

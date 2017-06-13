@@ -1,8 +1,10 @@
 package il.ac.technion.cs.smarthouse.system.services.sensors_service;
 
 import java.time.LocalTime;
+import java.util.List;
 import java.util.function.Consumer;
 
+import il.ac.technion.cs.smarthouse.system.sensors.SensorLocation;
 
 /**
  * An API class for the developers, that allows interactions with a specific
@@ -23,6 +25,18 @@ public interface SensorApi<T extends SensorData> {
     String getCommercialName();
 
     /**
+     * Queries the system for the sensor's current alias
+     * 
+     * @return the sensors alias.<br>
+     *         if the sensor was not found yet, "" will be returned
+     */
+    String getSensorAlias();
+    
+    List<String> getAllAliases();
+    
+    String listenForNewAliases(Consumer<String> functionToRun);
+
+    /**
      * Check if the sensor was already found by the SensorApi
      * 
      * @return true if the sensor was found, false if not found yet
@@ -33,8 +47,7 @@ public interface SensorApi<T extends SensorData> {
      * Queries the system for the sensor's current location
      * 
      * @return the sensors location.<br>
-     *         if the sensor was not found yet, {@link SensorLocation#UNDEFINED}
-     *         will be returned
+     *         if the sensor was not found yet, {@link SensorLocation#UNDIFINED} will be returned
      */
     String getSensorLocation();
 
@@ -122,6 +135,15 @@ public interface SensorApi<T extends SensorData> {
      *         listener with {@link SensorApi#unsubscribe(String)}
      */
     String runWhenSensorIsFound(Consumer<T> functionToRun);
+
+    /**
+     * Restart the sensor API with a new sensor alias. <br>
+     * Note that all of the listeners will not be deleted, and will be
+     * re-enabled when a new sensor is found
+     * 
+     * @param alias
+     */
+    void reselectSensorByAlias(String alias);
 
     /**
      * Unsubscribe a subscribed listener. If the ID isn't valid, nothing will
