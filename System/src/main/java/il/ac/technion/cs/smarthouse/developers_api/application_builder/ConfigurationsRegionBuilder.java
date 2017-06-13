@@ -1,5 +1,9 @@
 package il.ac.technion.cs.smarthouse.developers_api.application_builder;
 
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
+
 /**
  * GUI layout - configurations region
  * <p>
@@ -22,4 +26,6 @@ public interface ConfigurationsRegionBuilder {
     public ConfigurationsRegionBuilder addButtonToggleField(String title, GuiBinderObject<Boolean> bindingDataObject);
     
     public <T> ConfigurationsRegionBuilder addButtonInputField(String title, String textOnButton, GuiBinderObject<T> bindingDataObject);
+    
+    public <T extends SensorData> ConfigurationsRegionBuilder addSensorAliasSelectionField(String title, SensorApi<T> sensorApiObject);
 }

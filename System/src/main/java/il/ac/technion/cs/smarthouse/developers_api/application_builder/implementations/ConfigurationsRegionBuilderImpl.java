@@ -10,6 +10,8 @@ import il.ac.technion.cs.smarthouse.javafx_elements.AppButton;
 import il.ac.technion.cs.smarthouse.javafx_elements.AppComboBoxField;
 import il.ac.technion.cs.smarthouse.javafx_elements.AppSpinnerField;
 import il.ac.technion.cs.smarthouse.javafx_elements.AppTextField;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import javafx.scene.Node;
 
 /**
@@ -39,17 +41,20 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
     }
 
     @Override
-    public ConfigurationsRegionBuilderImpl addStringInputField(String title, GuiBinderObject<String> bindingDataObject) {
+    public ConfigurationsRegionBuilderImpl addStringInputField(String title,
+                    GuiBinderObject<String> bindingDataObject) {
         return aux(title, bindingDataObject, "", AppTextField::new);
     }
 
     @Override
-    public ConfigurationsRegionBuilderImpl addDoubleInputField(String title, GuiBinderObject<Double> bindingDataObject) {
+    public ConfigurationsRegionBuilderImpl addDoubleInputField(String title,
+                    GuiBinderObject<Double> bindingDataObject) {
         return aux(title, bindingDataObject, 0.0, AppSpinnerField::createDoubleAppSpinner);
     }
 
     @Override
-    public ConfigurationsRegionBuilderImpl addIntegerInputField(String title, GuiBinderObject<Integer> bindingDataObject) {
+    public ConfigurationsRegionBuilderImpl addIntegerInputField(String title,
+                    GuiBinderObject<Integer> bindingDataObject) {
         return aux(title, bindingDataObject, 0, AppSpinnerField::createIntegerAppSpinner);
     }
 
@@ -64,7 +69,8 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
     }
 
     @Override
-    public ConfigurationsRegionBuilderImpl addButtonToggleField(String title, GuiBinderObject<Boolean> bindingDataObject) {
+    public ConfigurationsRegionBuilderImpl addButtonToggleField(String title,
+                    GuiBinderObject<Boolean> bindingDataObject) {
         return aux(title, bindingDataObject, false, AppBooleanButtonField::new);
     }
 
@@ -72,6 +78,27 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
     public <T> ConfigurationsRegionBuilderImpl addButtonInputField(String title, String textOnButton,
                     GuiBinderObject<T> bindingDataObject) {
         addAppBuilderItem(new AppBuilderItem(title, new AppButton(textOnButton, bindingDataObject::notifyListeners)));
+        return this;
+    }
+
+    @Override
+    public <T extends SensorData> ConfigurationsRegionBuilder addSensorAliasSelectionField(final String title,
+                    final SensorApi<T> sensorApiObject) {
+        final AppComboBoxField<String> cBox = new AppComboBoxField<>(
+                        alias -> sensorApiObject.reselectSensorByAlias(alias), null, sensorApiObject.getAllAliases().toArray(new String[0]));
+        
+        addAppBuilderItem(new AppBuilderItem(title, cBox));
+        
+        sensorApiObject.listenForNewAliases(alias -> {
+            final String currValue = cBox.getValue();
+            cBox.getItems().clear();
+            cBox.getItems().addAll(sensorApiObject.getAllAliases());
+            if (!cBox.getItems().isEmpty())
+                if (cBox.getItems().contains(currValue))
+                    cBox.setValue(currValue);
+                else
+                    cBox.setValue(cBox.getItems().get(0));
+        });
         return this;
     }
 }
