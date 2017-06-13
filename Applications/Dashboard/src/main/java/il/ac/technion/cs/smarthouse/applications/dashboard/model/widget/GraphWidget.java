@@ -3,50 +3,49 @@
  */
 package il.ac.technion.cs.smarthouse.applications.dashboard.model.widget;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import eu.hansolo.tilesfx.Tile;
+import il.ac.technion.cs.smarthouse.applications.dashboard.model.InfoCollector;
 import il.ac.technion.cs.smarthouse.applications.dashboard.model.WidgetType;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
+import javafx.scene.paint.Stop;
 
 /**
  * @author Elia Traore
  * @since Jun 3, 2017
  */
 public class GraphWidget extends BasicWidget {
-	XYChart.Series<String, Number>[] data;
+	private Map<String, XYChart.Series<String, Number>> dataSeries = new HashMap<>();//path -> series
 
-	public GraphWidget(WidgetType t, XYChart.Series<String, Number>... data) {
-		super(t);
-		builder.series(data);
-		this.data = data;
+	@SuppressWarnings("unchecked")
+	public GraphWidget(WidgetType t, Double tileSize, InfoCollector data) {
+		super(t,tileSize, data);
+		
+		data.getInfoEntries().keySet().forEach(path -> {
+			dataSeries.put(path, new XYChart.Series<>());
+			dataSeries.get(path).setName(data.getInfoEntries().get(path));
+		});
+		
+		builder.series(dataSeries.values().stream().map(s -> (XYChart.Series)s).collect(Collectors.toList()));
 
-		// if(WidgetType.PROGRESS_LINE_GRAPH.equals(type)){
-		// /*todo: specific for spark line - allow dynamic marking of color
-		// margins,
-		// * or move this code to the tiletype#getbuilder method*/
-		// builder.gradientStops(new Stop(0, Tile.GREEN),
-		// new Stop(0.5, Tile.YELLOW),
-		// new Stop(1.0, Tile.RED))
-		// .strokeWithGradient(true);
-		//// .unit("mb")
-		// }
-	}
-
-	public static XYChart.Series<String, Number> getDefaultSerie() {
-		XYChart.Series<String, Number> series3 = new XYChart.Series();
-		series3.setName("Outside");
-		series3.getData().add(new XYChart.Data("MO", 8));
-		series3.getData().add(new XYChart.Data("TU", 5));
-		series3.getData().add(new XYChart.Data("WE", 0));
-		series3.getData().add(new XYChart.Data("TH", 2));
-		series3.getData().add(new XYChart.Data("FR", 4));
-		series3.getData().add(new XYChart.Data("SA", 3));
-		series3.getData().add(new XYChart.Data("SU", 5));
-		return series3;
-	}
-
-	public GraphWidget(WidgetType t) {
-		this(t, getDefaultSerie());
+		 if(WidgetType.PROGRESS_LINE_GRAPH.equals(type)){
+			 builder.gradientStops(new Stop(0, Tile.GREEN),
+					 				new Stop(0.5, Tile.YELLOW),
+					 					new Stop(1.0, Tile.RED))
+					 .strokeWithGradient(true)
+					 .unit(data.getUnit());
+		 }
 	}
 
 	@Override
@@ -54,13 +53,24 @@ public class GraphWidget extends BasicWidget {
 		return "Graph Widget";
 	}
 
-	@Override
-	public void updateExisting(Number value, String key) {
-		Stream.of(data).forEach(serie -> serie.getData().stream().filter(data -> data.getXValue().equals(key))
-				.forEach(data -> data.setYValue(value)));
+	public void update(Number value, String key) {
+		if(WidgetType.PROGRESS_LINE_GRAPH.equals(type))
+			super.update(value, key);
+		if(!dataSeries.containsKey(key))
+			return;
+		Integer maxDataSize = 7;
+		ObservableList<Data<String, Number>> keySerie = dataSeries.get(key).getData();
+		if(keySerie.size() > maxDataSize){ //shift data and remove the oldest
+			for(Integer i=0; i < keySerie.size()-1; ++i)
+				keySerie.get(i).setYValue(keySerie.get(i+1).getYValue());
+//			keySerie.remove(keySesrie.size()-1);
+		}
+		
+		keySerie.add(new XYChart.Data<>((keySerie.size())+"", value));
+	}
+	
+	public Set<String> getUpdateKeys(){
+		return dataSeries.keySet();
 	}
 
-	public void addEntry(Number value, String key, Integer index) {
-		data[index].getData().add(new XYChart.Data(key, value));
-	}
 }
