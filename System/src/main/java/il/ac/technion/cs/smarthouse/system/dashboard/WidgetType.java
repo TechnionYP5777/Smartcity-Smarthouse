@@ -1,7 +1,7 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.applications.dashboard.model;
+package il.ac.technion.cs.smarthouse.system.dashboard;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -17,13 +17,13 @@ import eu.hansolo.medusa.GaugeBuilder;
 import eu.hansolo.medusa.Clock.ClockSkinType;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.widget.BasicWidget;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.widget.ClockWidget;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.widget.DashboardWidget;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.widget.GraphWidget;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.widget.ListWidget;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.widget.PrecenetageWidget;
 import eu.hansolo.tilesfx.Tile.SkinType;
+import il.ac.technion.cs.smarthouse.system.dashboard.widget.BasicWidget;
+import il.ac.technion.cs.smarthouse.system.dashboard.widget.ClockWidget;
+import il.ac.technion.cs.smarthouse.system.dashboard.widget.DashboardWidget;
+import il.ac.technion.cs.smarthouse.system.dashboard.widget.GraphWidget;
+import il.ac.technion.cs.smarthouse.system.dashboard.widget.ListWidget;
+import il.ac.technion.cs.smarthouse.system.dashboard.widget.PrecenetageWidget;
 
 /**
  * @author Elia Traore

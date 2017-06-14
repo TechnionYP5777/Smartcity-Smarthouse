@@ -48,7 +48,7 @@ public class DashboardCore extends ChildCore {
         
         public void removeFromDashboard(){
             Optional.ofNullable(id).ifPresent(i -> {
-                DashboardCore.this.widgetHider.accept(i);           //update front
+                DashboardCore.this.widgetRemover.accept(i);           //update front
                 DashboardCore.this.deregisterWidget(i);             //update end
             });
         }
@@ -56,8 +56,8 @@ public class DashboardCore extends ChildCore {
     
     FileSystem fileSystem;
     Function<BasicWidget,String> widgetPresenter;
-    Consumer<String> widgetHider;
-    Map<String, wInfo> widgetsInfo = new HashMap<>();
+    Consumer<String> widgetRemover;
+    private Map<String, wInfo> widgetsInfo = new HashMap<>();
     
     public DashboardCore(SystemCore systemCore) {
         super(systemCore); 
@@ -79,8 +79,8 @@ public class DashboardCore extends ChildCore {
         widgetPresenter = presenter;
     }
     
-    public void setWidgetHider(Consumer<String> hider){
-        widgetHider = hider;
+    public void setWidgetRemover(Consumer<String> remover){
+        widgetRemover = remover;
     }
     
     //-------------------back-end offered "api"-------------------------

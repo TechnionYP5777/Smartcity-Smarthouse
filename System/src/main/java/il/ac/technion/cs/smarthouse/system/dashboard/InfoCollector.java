@@ -1,7 +1,7 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.applications.dashboard.model;
+package il.ac.technion.cs.smarthouse.system.dashboard;
 
 import java.util.HashMap;
 import java.util.Map;
