@@ -11,10 +11,24 @@ import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
+import il.ac.technion.cs.smarthouse.utils.Communicate;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import il.ac.technion.cs.smarthouse.utils.Tuple;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * A factory for {@link SystemPresenter}
@@ -94,16 +108,47 @@ public class SystemPresenterFactory {
             return;
 
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\n\nError:\n"
-                            + e.getClass().getName() + "\n" + e.toString() + "\n" + e.getMessage();
+            final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\n\nError:\n" + e.toString();
             log.error(errTxt, e);
             if (JavaFxHelper.isJavaFxThreadStarted())
                 JavaFxHelper.surroundConsumerWithFx(p -> {
-                    Alert a = new Alert(AlertType.ERROR);
+                    ButtonType reportType = new ButtonType("Send Report");
+                    Alert a = new Alert(AlertType.ERROR, errTxt, reportType, ButtonType.CLOSE);
                     a.setTitle("Uncaught exception");
-                    a.setContentText(errTxt);
-                    a.showAndWait();
-                    System.exit(-1);
+                    a.showAndWait().ifPresent(response -> {
+                        if (response == reportType) {
+                            Stage dialogStage = new Stage();
+                            dialogStage.initModality(Modality.WINDOW_MODAL);
+                            TextArea userInput = new TextArea();
+                            Text text = new Text(
+                                            "Please describe what happened when the error occurred (not mandatory):");
+                            Button reportButton = new Button("Send");
+                            reportButton.setOnMouseClicked(event -> {
+                                String input = userInput.getText();
+                                Communicate.throughEmailFromHere("smarthouse5777@gmail.com",
+                                                "We got new report...\n\n" + errTxt + "\n\n"
+                                                                + (input == null || "".equals(input)
+                                                                                ? "The user did not add a description of the error."
+                                                                                : "User Description:\n" + input));
+                                ((Stage) reportButton.getScene().getWindow()).close();
+                            });
+                            Pane pane1 = new Pane();
+                            Pane pane2 = new Pane();
+                            HBox hbox1 = new HBox(text, pane1);
+                            hbox1.setPadding(new Insets(0, 0, 5, 0));
+                            HBox hbox2 = new HBox(pane2, reportButton);
+                            hbox2.setPadding(new Insets(5, 0, 0, 0));
+                            HBox.setHgrow(pane1, Priority.ALWAYS);
+                            HBox.setHgrow(pane2, Priority.ALWAYS);
+                            VBox vbox = new VBox(hbox1, userInput, hbox2);
+                            VBox.setVgrow(userInput, Priority.ALWAYS);
+                            vbox.setPadding(new Insets(15));
+
+                            dialogStage.setScene(new Scene(vbox));
+                            dialogStage.showAndWait();
+                        }
+                        System.exit(-1);
+                    });
                 }).accept(null);
         });
     }

@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.services.communication_services;
+package il.ac.technion.cs.smarthouse.utils;
 
 import java.util.Properties;
 
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author Elia Traore
  * @since Jan 16, 2017
  */
-class Communicate {
+public class Communicate {
 
     private static Logger log = LoggerFactory.getLogger(Communicate.class);
 
