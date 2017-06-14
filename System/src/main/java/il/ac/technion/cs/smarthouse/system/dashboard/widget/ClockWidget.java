@@ -1,12 +1,12 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.applications.dashboard.model.widget;
+package il.ac.technion.cs.smarthouse.system.dashboard.widget;
 
 import java.util.Locale;
 
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.InfoCollector;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.WidgetType;
+import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
+import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.services.file_system_service.FileSystemService;
 
@@ -27,7 +27,7 @@ public class ClockWidget extends BasicWidget {
 	}
 
 	@Override
-	public void updateAutomaticallyFrom(FileSystemService fs) {
+	public void updateAutomaticallyFrom(FileSystem fs) {
 		return;
 	}
 

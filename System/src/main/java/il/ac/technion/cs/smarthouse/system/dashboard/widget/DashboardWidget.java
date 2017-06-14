@@ -1,11 +1,11 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.applications.dashboard.model.widget;
+package il.ac.technion.cs.smarthouse.system.dashboard.widget;
 
 import eu.hansolo.medusa.Gauge;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.InfoCollector;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.WidgetType;
+import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
+import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 
 /**

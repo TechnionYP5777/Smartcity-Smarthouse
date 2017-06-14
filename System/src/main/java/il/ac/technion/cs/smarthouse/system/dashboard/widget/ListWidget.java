@@ -1,7 +1,7 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.applications.dashboard.model.widget;
+package il.ac.technion.cs.smarthouse.system.dashboard.widget;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.InfoCollector;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.WidgetType;
+import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
+import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import javafx.scene.paint.Color;
 

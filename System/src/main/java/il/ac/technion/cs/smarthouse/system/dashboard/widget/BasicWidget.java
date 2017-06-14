@@ -1,7 +1,7 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.applications.dashboard.model.widget;
+package il.ac.technion.cs.smarthouse.system.dashboard.widget;
 
 import java.util.Set;
 
@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.InfoCollector;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.WidgetType;
+import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
+import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.services.file_system_service.FileSystemService;
 
@@ -36,11 +36,11 @@ public abstract class BasicWidget {
 
 	public abstract String getTitle();
 	
-	public void updateAutomaticallyFrom(FileSystemService fs) {
+	public void updateAutomaticallyFrom(FileSystem fs) {
 		data.getInfoEntries().keySet().forEach(path -> updateAutomaticallyFrom(fs, path));
 	}
 	
-	protected void updateAutomaticallyFrom(FileSystemService fileSystem, String path){
+	protected void updateAutomaticallyFrom(FileSystem fileSystem, String path){
 		fileSystem.subscribe((rPath, data) -> {
 			log.info("rquested to be notified on " + path + " got notified on (p,d)=(" + rPath + "," + data+ ").");
 			if (rPath.equals(path))

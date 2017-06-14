@@ -1,7 +1,7 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.applications.dashboard.model.widget;
+package il.ac.technion.cs.smarthouse.system.dashboard.widget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import eu.hansolo.tilesfx.Tile;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.InfoCollector;
-import il.ac.technion.cs.smarthouse.applications.dashboard.model.WidgetType;
+import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
+import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
