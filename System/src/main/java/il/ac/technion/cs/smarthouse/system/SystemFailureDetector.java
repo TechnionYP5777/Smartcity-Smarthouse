@@ -24,10 +24,16 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Enables a failure detector
+ * 
+ * @author Yarden
+ * @since 14-06-2017
+ */
 public enum SystemFailureDetector {
     ;
     static final Logger log = LoggerFactory.getLogger(SystemFailureDetector.class);
-    
+
     public static void enable() {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\n\nException:\n" + e.toString();
@@ -42,8 +48,7 @@ public enum SystemFailureDetector {
                             Stage dialogStage = new Stage();
                             dialogStage.initModality(Modality.WINDOW_MODAL);
                             TextArea userInput = new TextArea();
-                            Text text = new Text(
-                                            "Please describe what happened when the error occurred (optional):");
+                            Text text = new Text("Please describe what happened when the error occurred (optional):");
                             Button reportButton = new Button("Send");
                             reportButton.setOnMouseClicked(event -> {
                                 String input = userInput.getText();
@@ -54,8 +59,8 @@ public enum SystemFailureDetector {
                                                 "We got new report...\n\n" + errTxt + "\n\n"
                                                                 + (input == null || "".equals(input)
                                                                                 ? "The user did not add a description of the error."
-                                                                                : "User Description:\n" + input)  + "\n\nStack Trace:\n" +
-                                                                                sw.toString());
+                                                                                : "User Description:\n" + input)
+                                                                + "\n\nStack Trace:\n" + sw.toString());
                                 ((Stage) reportButton.getScene().getWindow()).close();
                             });
                             Pane pane1 = new Pane();

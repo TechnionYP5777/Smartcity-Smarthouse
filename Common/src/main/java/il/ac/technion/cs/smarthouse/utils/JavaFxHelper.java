@@ -44,15 +44,18 @@ public enum JavaFxHelper {
         };
     }
     
+    @Deprecated
     public static void runOnFx(final Runnable functionToRun, final boolean wait) {
         final BoolLatch isDone = new BoolLatch();
         
-        initJavaFxThread();
+        if (!isJavaFxThreadStarted())
+            initJavaFxThread();
         
-        surroundConsumerWithFx(p->{
+        Platform.runLater(()->{
             functionToRun.run();
             isDone.setTrueAndRelease();
-        }).accept(null);
+            
+        });
         
         if (wait)
             isDone.blockUntilTrue();
