@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -10,7 +11,6 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import org.controlsfx.control.ToggleSwitch?>
 <?import javafx.scene.control.Label?>
 
 <SplitPane dividerPositions="0.3" prefHeight="400.0"
@@ -24,12 +24,28 @@
 					prefWidth="200.0" text="Applications" AnchorPane.bottomAnchor="0.0"
 					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 					AnchorPane.topAnchor="0.0">
-					<VBox fx:id="vBox" alignment="TOP_CENTER" >
-						<children>
-							<ListView fx:id="listView" />
-							<Button fx:id="plusButton" text="+" />
-						</children>
-					</VBox>
+					<content>
+						<VBox fx:id="vBox" alignment="TOP_CENTER" spacing="10.0">
+							<children>
+								<ListView fx:id="listView" />
+								<VBox fx:id="dnd_box" prefHeight="300.0"
+									prefWidth="200.0" alignment="CENTER"
+									style="-fx-background-color: #c9daea; -fx-border-radius: 10; -fx-background-radius: 10;">
+									<children>
+										<Label fx:id="dnd_label" contentDisplay="CENTER"
+											text="Drag &amp; drop\napplication's JAR here"
+											textAlignment="CENTER" VBox.vgrow="ALWAYS">
+											<font>
+												<Font name="System Bold" size="14.0" />
+											</font>
+										</Label>
+									</children>
+								</VBox>
+								<Button fx:id="plusButton" style="-fx-base: #b6e7c9; -fx-font: 28 arial;"
+									text="+" />
+							</children>
+						</VBox>
+					</content>
 				</TitledPane>
 			</children>
 		</AnchorPane>

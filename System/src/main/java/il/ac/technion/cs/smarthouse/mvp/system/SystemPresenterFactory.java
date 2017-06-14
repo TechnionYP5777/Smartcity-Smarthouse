@@ -1,6 +1,5 @@
 package il.ac.technion.cs.smarthouse.mvp.system;
 
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -84,18 +83,19 @@ public class SystemPresenterFactory {
         view_openOnNewStage = openOnNewStage;
         return this;
     }
-    
+
     public SystemPresenterFactory disableFailureDetector(final boolean disable) {
         disableFailureDetector = disable;
         return this;
-    }    
+    }
 
     private void setFailureDetector() {
         if (disableFailureDetector)
             return;
-        
+
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\n\nError:\n" + e.getMessage();
+            final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\n\nError:\n"
+                            + e.getClass().getName() + "\n" + e.toString() + "\n" + e.getMessage();
             log.error(errTxt, e);
             if (JavaFxHelper.isJavaFxThreadStarted())
                 JavaFxHelper.surroundConsumerWithFx(p -> {
