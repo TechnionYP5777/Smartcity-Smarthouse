@@ -8,11 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
-import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.SystemFailureDetector;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
-import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import il.ac.technion.cs.smarthouse.utils.Tuple;
 
 /**
@@ -35,6 +32,8 @@ public class SystemPresenterFactory {
     private List<Runnable> view_onCloseListeners = new ArrayList<>();
     private boolean view_openOnNewStage = true;
     private boolean disableFailureDetector;
+    private SystemMode initMode = SystemMode.USER_MODE;
+    private boolean enablePopup = true;
 
     public SystemPresenterFactory addFileSystemSubscriber(final BiConsumer<String, Object> eventHandler,
                     final String... path) {
@@ -88,46 +87,37 @@ public class SystemPresenterFactory {
         return this;
     }
 
-    private void setFailureDetector() {
-        if (disableFailureDetector)
-            return;
+    public SystemPresenterFactory enableModePopup(boolean enablePopup1) {
+        enablePopup = enablePopup1;
+        return this;
+    }
 
-        SystemFailureDetector.enable();
+    public SystemPresenterFactory initMode(final SystemMode m) {
+        initMode = m;
+        return this;
     }
 
     public SystemPresenter build() {
-        setFailureDetector();
+        final SystemPresenter p = new SystemPresenter(view_enableView, view_openOnNewStage, enablePopup, initMode, !disableFailureDetector);
 
-        SystemPresenter p = new SystemPresenter();
-        p.model = new SystemCore();
+        model_fileSystemListeners.forEach(t -> p.getSystemModel().getFileSystem().subscribe(t.left, t.right));
 
-        model_fileSystemListeners.forEach(t -> p.model.getFileSystem().subscribe(t.left, t.right));
-
-        if (view_enableView) {
-
+        if (view_enableView)
             p.viewOnCloseListeners.addAll(view_onCloseListeners);
-            p.viewOnCloseListeners.add(() -> p.model.shutdown());
-            p.viewOnCloseListeners.add(() -> System.exit(0));
-
-            if (view_openOnNewStage)
-                JavaFxHelper.startGui(p.new MainSystemGui());
-            else
-                p.viewController = SystemGuiController.createRootController(SystemPresenter.APP_ROOT_FXML, p.model);
-        }
 
         model_applicationsToInstall.forEach(clsName -> {
             try {
-                p.model.getSystemApplicationsHandler()
+                p.getSystemModel().getSystemApplicationsHandler()
                                 .addApplication(new ApplicationPath(PathType.CLASS_NAME, clsName));
             } catch (Exception e) {
                 log.error("Can't install the application " + clsName + " on the system", e);
             }
         });
 
-        p.model.initializeSystemComponents(model_useSensorsServer, model_useCloudServer,
+        p.getSystemModel().initializeSystemComponents(model_useSensorsServer, model_useCloudServer,
                         model_initRegularFileSystemListeners);
 
-        p.viewController.waitUntilInitFinishes();
+        p.getSystemView().waitUntilInitFinishes();
 
         return p;
     }
