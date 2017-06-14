@@ -66,6 +66,9 @@ public class FileSystemImplTest {
         assert !fs.wasPathInitiated("s");
         assert fs.wasPathInitiated("a");
         
+        System.out.println(fs.getReadOnlyFileSystem());
+        System.out.println(fs);
+        
         assert fs.<Integer>getMostRecentDataOnBranch("a") == NEW_VAL;
     }
 
