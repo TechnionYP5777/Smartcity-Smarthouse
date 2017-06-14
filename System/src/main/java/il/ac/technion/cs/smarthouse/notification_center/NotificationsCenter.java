@@ -23,11 +23,22 @@ public enum NotificationsCenter {
                     final EmergencyLevel eLevel) {
         sendNotification("Alert! " + senderName, message + "\n" + eLevel.toPretty(), Notification.WARNING_ICON);
     }
+    
+    public static void sendNewAppInstalled(final String applicationName) {
+        sendNotification(applicationName, "Installed successfully", Notification.SUCCESS_ICON);
+    }
+    
+    public static void sendAppFailedToInstall(final String error) {
+        sendNotification("Failed installation", error, Notification.ERROR_ICON);
+    }
 
     public static void sendNotification(final String title, final String msg, final Image icon) {
-        log.info("\n\tNotificationsCenter: send notification\n\tTitle: " + title + "\n\tMessage:\n\t\t" + msg.replace("\n", "\n\t\t"));
-        JavaFxHelper.surroundConsumerWithFx(
-                        t -> Notification.Notifier.INSTANCE.notify(new Notification(title, msg, icon))).accept(null);
+        log.info("\n\tNotificationsCenter: send notification\n\tTitle: " + title + "\n\tMessage:\n\t\t"
+                        + msg.replace("\n", "\n\t\t"));
+        if (JavaFxHelper.isJavaFxThreadStarted())
+            JavaFxHelper.surroundConsumerWithFx(
+                            t -> Notification.Notifier.INSTANCE.notify(new Notification(title, msg, icon)))
+                            .accept(null);
     }
 
     public static void close() {

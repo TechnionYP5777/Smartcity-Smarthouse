@@ -52,30 +52,9 @@ public class ApplicationsInstallerViewController extends SystemGuiController {
         });
     }
     // [end]
-
-    // [start] install app and alert if needed
+    
     private void installApp(final ApplicationPath p) {
-        try {
-            getModel().getSystemApplicationsHandler().addApplication(p);
-        } catch (final AppInstallerException $) {
-            log.debug("An exception while installing: " + p, $);
-            alert("Installer Error: " + $.getMessage());
-        } catch (final IOException $) {
-            log.debug("An exception while installing: " + p, $);
-            alert("IO Error: " + $.getMessage());
-        } catch (final Exception $) {
-            log.debug("An exception while installing: " + p, $);
-            alert($.getClass().getName() + ": " + $.getMessage());
-        }
+        getModel().getSystemApplicationsHandler().addApplication(p);
     }
-
-    private static void alert(final String messege) {
-        final Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle("ALERT");
-        alert.setHeaderText("Installation Error");
-        alert.setContentText(messege);
-        alert.show();
-    }
-    // [end]
 
 }
