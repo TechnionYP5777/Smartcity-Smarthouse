@@ -27,7 +27,7 @@ import javafx.scene.Parent;
 public abstract class SmarthouseApplication {
     private SystemCore systemCore;
     private String applicationId;
-    private AppBuilderImpl appBuilder = new AppBuilderImpl();
+    private AppBuilderImpl appBuilder = new AppBuilderImpl(getClass().getClassLoader());
 
     public SmarthouseApplication() {}
 

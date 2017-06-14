@@ -6,7 +6,7 @@ import javafx.scene.Node;
 public interface CustomRegionBuilder {
     public CustomRegionBuilder setTitle(String title);
     
-    public CustomRegionBuilder add(final Node n);
+    public CustomRegionBuilder add(Node n);
     
-    public CustomRegionBuilder add(final String fxmlFileName, final GuiBinderObject<? extends Initializable> outController);
+    public CustomRegionBuilder add(String fxmlFileName, GuiBinderObject<? extends Initializable> outController);
 }
