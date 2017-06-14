@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.utils.Communicate;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.geometry.Insets;
@@ -34,7 +35,7 @@ public enum SystemFailureDetector {
     ;
     static final Logger log = LoggerFactory.getLogger(SystemFailureDetector.class);
 
-    public static void enable() {
+    public static void enable(final SystemMode m) {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\n\nException:\n" + e.toString();
             log.error(errTxt, e);

@@ -44,26 +44,32 @@ public class SystemPresenter {
     final List<Runnable> viewOnCloseListeners = new ArrayList<>();
 
     SystemPresenter(final boolean createGui, final boolean createPrimaryStage, final boolean showModePopup,
-                    final SystemMode defaultMode, final boolean enableFailureDetector, final boolean enableNotifications) {
+                    final SystemMode defaultMode, final boolean enableFailureDetector,
+                    final boolean enableNotifications) {
         model = new SystemCore();
         systemMode = defaultMode;
 
         if (enableFailureDetector)
-            SystemFailureDetector.enable();
-        
-        if (enableNotifications)
-            NotificationsCenter.enable();
+            SystemFailureDetector.enable(systemMode); // initial FD
 
         if (!createGui)
             return;
-        
+
+        if (enableNotifications)
+            NotificationsCenter.enable();
+
         viewOnCloseListeners.add(() -> model.shutdown());
         viewOnCloseListeners.add(() -> System.exit(0));
-        if (createPrimaryStage)
-            JavaFxHelper.startGui(new MainSystemGui(showModePopup));
-        else
-            viewController = SystemGuiController.createRootController(APP_ROOT_FXML, model, systemMode);
 
+        if (!createPrimaryStage)
+            viewController = SystemGuiController.createRootController(APP_ROOT_FXML, model, systemMode);
+        else {
+            JavaFxHelper.startGui(new MainSystemGui(showModePopup));
+
+            // in case of showModePopup changing the mode
+            if (enableFailureDetector)
+                SystemFailureDetector.enable(systemMode);
+        }
     }
 
     public SystemCore getSystemModel() {
