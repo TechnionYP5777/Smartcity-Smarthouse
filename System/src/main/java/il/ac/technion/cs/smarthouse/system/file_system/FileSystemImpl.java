@@ -337,8 +337,8 @@ public class FileSystemImpl implements FileSystem, Savable {
     }
     
     @Override
-    public ReadOnlyFileNode getReadOnlyFileSystem() {
-        return new ReadOnlyFileNodeImpl(root);
+    public ReadOnlyFileNode getReadOnlyFileSystem(String... path) {
+        return new ReadOnlyFileNodeImpl(fileSystemWalk(false, null, path).fileNode);
     }
 
     // ------------------------------------------------

@@ -150,7 +150,9 @@ public interface FileSystem {
     /**
      * get a read only file node from the file system's root
      * 
+     * @param path
+     *            starting path
      * @return the read-only node
      */
-    ReadOnlyFileNode getReadOnlyFileSystem();
+    ReadOnlyFileNode getReadOnlyFileSystem(String... path);
 }
