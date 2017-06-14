@@ -10,6 +10,7 @@ import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
+import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
@@ -30,6 +31,7 @@ public class SystemCore implements Savable {
     private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     @Expose private final FileSystemImpl fileSystem = new FileSystemImpl();
     public final SensorsLocalServer sensorsLocalServer = new SensorsLocalServer(fileSystem);
+    private final DashboardCore dashboardCore = new DashboardCore(this);
     @Expose protected UserInformation user;
     private boolean userInitialized;
 
@@ -62,6 +64,10 @@ public class SystemCore implements Savable {
 
     public ApplicationsCore getSystemApplicationsHandler() {
         return applicationsHandler;
+    }
+    
+    public DashboardCore getSystemDashboardCore() {
+        return dashboardCore;
     }
 
     public ServiceManager getSystemServiceManager() {
