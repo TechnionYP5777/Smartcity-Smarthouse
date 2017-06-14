@@ -3,7 +3,9 @@ package il.ac.technion.cs.smarthouse.system.gui.main_system;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.smarthouse.mvp.GuiController;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.gui.applications.ApplicationViewController;
 import javafx.fxml.FXML;
@@ -31,7 +33,8 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML HBox homeTabHBox;
 
     @Override
-    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
+    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
+                    SystemMode m, URL location, ResourceBundle b) {
         try {
             // home tab:
             homeTab.setContent(homeTabHBox);

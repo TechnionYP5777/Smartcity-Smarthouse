@@ -4,7 +4,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.smarthouse.mvp.GuiController;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
@@ -33,9 +35,10 @@ public class ApplicationViewController extends SystemGuiController {
     @FXML Label dnd_label;
 
     private ApplicationsCore appsHandler;
-
+    
     @Override
-    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
+    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
+                    SystemMode m, URL location, ResourceBundle b) {
         appsHandler = model.getSystemApplicationsHandler();
 
         model.getSystemApplicationsHandler().setOnAppsListChange(this::updateListView);

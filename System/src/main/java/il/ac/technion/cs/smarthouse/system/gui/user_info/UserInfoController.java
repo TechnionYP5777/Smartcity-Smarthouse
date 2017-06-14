@@ -3,7 +3,9 @@ package il.ac.technion.cs.smarthouse.system.gui.user_info;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.smarthouse.mvp.GuiController;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
@@ -171,7 +173,8 @@ public class UserInfoController extends SystemGuiController {
     }
 
     @Override
-    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
+    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
+                    SystemMode m, URL location, ResourceBundle b) {
         setButtons();
         setCellsFactories();
         costumizeContactsTab();
