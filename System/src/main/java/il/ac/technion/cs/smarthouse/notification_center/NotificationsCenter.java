@@ -1,0 +1,36 @@
+package il.ac.technion.cs.smarthouse.notification_center;
+
+import javafx.scene.image.Image;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.hansolo.enzo.notification.*;
+import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
+import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
+
+public enum NotificationsCenter {
+    ;
+    private static Logger log = LoggerFactory.getLogger(NotificationsCenter.class);
+
+    public static void sendSensorConnectedNotification(final String sensorCommercialName, final String sensorId,
+                    final String sensorAlias) {
+        sendNotification("A new sensor has connected to the house", "Commercial name: " + sensorCommercialName
+                        + "\nMac id: " + sensorId + "\nAlias: " + sensorAlias, Notification.INFO_ICON);
+    }
+
+    public static void sendAlertNotifications(final String senderName, final String message,
+                    final EmergencyLevel eLevel) {
+        sendNotification("Alert! " + senderName, message + "\n" + eLevel.toPretty(), Notification.WARNING_ICON);
+    }
+
+    public static void sendNotification(final String title, final String msg, final Image icon) {
+        log.info("\n\tNotificationsCenter: send notification\n\tTitle: " + title + "\n\tMessage:\n\t\t" + msg.replace("\n", "\n\t\t"));
+        JavaFxHelper.surroundConsumerWithFx(
+                        t -> Notification.Notifier.INSTANCE.notify(new Notification(title, msg, icon))).accept(null);
+    }
+
+    public static void close() {
+        Notification.Notifier.INSTANCE.stop();
+    }
+}
