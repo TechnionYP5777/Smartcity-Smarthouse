@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.services.Service;
@@ -32,9 +33,11 @@ public class AlertsManager extends Service {
      * @param eLevel
      *            The level of personnel needed in the situation
      */
-    public final void sendAlert(final String message, final EmergencyLevel eLevel) {
+    public final void sendAlert(final String senderName, final String message, final EmergencyLevel eLevel) {
         final UserInformation user = systemCore.getUser();
-
+        
+        NotificationsCenter.sendAlertNotifications(senderName, message, eLevel); // TODO: should be after user == null check
+        
         if (user == null) {
             log.debug("systemCore.getUser() returned a null");
             return;
@@ -45,6 +48,9 @@ public class AlertsManager extends Service {
         final EmailService es = (EmailService) getAnotherService(ServiceType.EMAIL_SERVICE);
 
         final List<Contact> $ = user.getContacts(eLevel);
+        
+        //NotificationsCenter.sendAlertNotifications(senderName, message, eLevel);
+        
         switch (eLevel) {
             case SMS_EMERGENCY_CONTACT:
                 $.stream().forEach(c -> ss.sendMsg(c.getPhoneNumber(), message));

@@ -67,7 +67,7 @@ public class StoveAppController implements Initializable {
     }
 
     private void alert(final String messege) {
-        ((AlertsManager) instance.getService(ServiceType.ALERTS_SERVICE)).sendAlert(messege, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+        ((AlertsManager) instance.getService(ServiceType.ALERTS_SERVICE)).sendAlert("", messege, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
     }
 
     public void turnOn() {

@@ -1,7 +1,8 @@
 package il.ac.technion.cs.smarthouse.system;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The level of emergency, defined by the level of expertise needed to take care
@@ -55,11 +56,11 @@ public enum EmergencyLevel {
     }
 
     public static List<String> stringValues() {
-        final ArrayList<String> $ = new ArrayList<>();
-        for (final EmergencyLevel elvl : EmergencyLevel.values())
-            $.add(elvl.name());
-
-        return $;
+        return Stream.of(EmergencyLevel.values()).map(v->v.name()).collect(Collectors.toList());
+    }
+    
+    public String toPretty() {
+        return name().toLowerCase().replace('_', ' ');
     }
 
 }
