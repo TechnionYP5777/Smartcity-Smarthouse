@@ -35,24 +35,8 @@ public enum EmergencyLevel {
     /** High level of emergency, requires fire fighters assistance */
     CONTACT_FIRE_FIGHTERS;
 
-    public static EmergencyLevel fromString(final String ¢) {
-
-        switch (¢) {
-            case "NOTIFY_ELDERLY":
-                return NOTIFY_ELDERLY;
-            case "EMAIL_EMERGENCY_CONTACT":
-                return EMAIL_EMERGENCY_CONTACT;
-            case "SMS_EMERGENCY_CONTACT":
-                return SMS_EMERGENCY_CONTACT;
-            case "CALL_EMERGENCY_CONTACT":
-                return CALL_EMERGENCY_CONTACT;
-            case "CONTACT_POLICE":
-                return CONTACT_POLICE;
-            case "CONTACT_HOSPITAL":
-                return CONTACT_HOSPITAL;
-            default:
-                return CONTACT_FIRE_FIGHTERS;
-        }
+    public static EmergencyLevel fromString(final String $) {
+        return EmergencyLevel.valueOf($);
     }
 
     public static List<String> stringValues() {

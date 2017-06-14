@@ -87,7 +87,8 @@ public class FileSystemImplTest {
         if (n.isLeaf())
             return ss;
         
-        ss.add(n.getFullPath());
+        List<String> l = PathBuilder.decomposePath(n.getFullPath());
+        ss.add(PathBuilder.buildPath(l.subList(1, l.size())));
         
         n.getChildren().forEach(c->ss.addAll(allPathsWithOutLeaves(c, new ArrayList<>())));
         return ss;
