@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemFailureDetector;
 import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGuiController;
@@ -43,12 +44,15 @@ public class SystemPresenter {
     final List<Runnable> viewOnCloseListeners = new ArrayList<>();
 
     SystemPresenter(final boolean createGui, final boolean createPrimaryStage, final boolean showModePopup,
-                    final SystemMode defaultMode, final boolean enableFailureDetector) {
+                    final SystemMode defaultMode, final boolean enableFailureDetector, final boolean enableNotifications) {
         model = new SystemCore();
         systemMode = defaultMode;
 
         if (enableFailureDetector)
             SystemFailureDetector.enable();
+        
+        if (enableNotifications)
+            NotificationsCenter.enable();
 
         if (!createGui)
             return;

@@ -98,7 +98,7 @@ public class SystemPresenterFactory {
     }
 
     public SystemPresenter build() {
-        final SystemPresenter p = new SystemPresenter(view_enableView, view_openOnNewStage, enablePopup, initMode, !disableFailureDetector);
+        final SystemPresenter p = new SystemPresenter(view_enableView, view_openOnNewStage, enablePopup, initMode, !disableFailureDetector, true);
 
         model_fileSystemListeners.forEach(t -> p.getSystemModel().getFileSystem().subscribe(t.left, t.right));
 

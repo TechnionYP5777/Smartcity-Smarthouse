@@ -12,6 +12,8 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 public enum NotificationsCenter {
     ;
     private static Logger log = LoggerFactory.getLogger(NotificationsCenter.class);
+    
+    private static boolean isEnabled;
 
     public static void sendSensorConnectedNotification(final String sensorCommercialName, final String sensorId,
                     final String sensorAlias) {
@@ -33,12 +35,19 @@ public enum NotificationsCenter {
     }
 
     public static void sendNotification(final String title, final String msg, final Image icon) {
+        if (!isEnabled)
+            return;
+        
         log.info("\n\tNotificationsCenter: send notification\n\tTitle: " + title + "\n\tMessage:\n\t\t"
                         + msg.replace("\n", "\n\t\t"));
         if (JavaFxHelper.isJavaFxThreadStarted())
             JavaFxHelper.surroundConsumerWithFx(
                             t -> Notification.Notifier.INSTANCE.notify(new Notification(title, msg, icon)))
                             .accept(null);
+    }
+    
+    public static void enable() {
+        isEnabled = true;
     }
 
     public static void close() {
