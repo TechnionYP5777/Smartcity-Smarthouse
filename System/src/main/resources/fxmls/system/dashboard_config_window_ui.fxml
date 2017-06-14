@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-1.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" prefWidth="418.0002999999924" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="il.ac.technion.cs.smarthouse.applications.dashboard.ConfigController">
+<AnchorPane id="AnchorPane" maxHeight="-1.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" prefWidth="418.0002999999924" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="il.ac.technion.cs.smarthouse.system.gui.dashboard.ConfigController">
   <children>
     <Label prefWidth="116.99999482421117" text="Widget Type:" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="284.0" AnchorPane.topAnchor="27.0" />
     <ComboBox fx:id="typesComboBox" prefHeight="30.0" prefWidth="267.99999482421117" AnchorPane.leftAnchor="134.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="20.0">
