@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.mvp.system;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -20,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
@@ -108,11 +111,11 @@ public class SystemPresenterFactory {
             return;
 
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\n\nError:\n" + e.toString();
+            final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\n\nException:\n" + e.toString();
             log.error(errTxt, e);
             if (JavaFxHelper.isJavaFxThreadStarted())
                 JavaFxHelper.surroundConsumerWithFx(p -> {
-                    ButtonType reportType = new ButtonType("Send Report");
+                    ButtonType reportType = new ButtonType("Send Report", ButtonBar.ButtonData.LEFT);
                     Alert a = new Alert(AlertType.ERROR, errTxt, reportType, ButtonType.CLOSE);
                     a.setTitle("Uncaught exception");
                     a.showAndWait().ifPresent(response -> {
@@ -121,15 +124,19 @@ public class SystemPresenterFactory {
                             dialogStage.initModality(Modality.WINDOW_MODAL);
                             TextArea userInput = new TextArea();
                             Text text = new Text(
-                                            "Please describe what happened when the error occurred (not mandatory):");
+                                            "Please describe what happened when the error occurred (optional):");
                             Button reportButton = new Button("Send");
                             reportButton.setOnMouseClicked(event -> {
                                 String input = userInput.getText();
+                                StringWriter sw = new StringWriter();
+                                PrintWriter pw = new PrintWriter(sw);
+                                e.printStackTrace(pw);
                                 Communicate.throughEmailFromHere("smarthouse5777@gmail.com",
                                                 "We got new report...\n\n" + errTxt + "\n\n"
                                                                 + (input == null || "".equals(input)
                                                                                 ? "The user did not add a description of the error."
-                                                                                : "User Description:\n" + input));
+                                                                                : "User Description:\n" + input)  + "\n\nStack Trace:\n" +
+                                                                                sw.toString());
                                 ((Stage) reportButton.getScene().getWindow()).close();
                             });
                             Pane pane1 = new Pane();
