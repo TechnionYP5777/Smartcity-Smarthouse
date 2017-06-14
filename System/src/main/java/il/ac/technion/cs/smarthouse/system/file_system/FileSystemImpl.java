@@ -189,6 +189,14 @@ public class FileSystemImpl implements FileSystem, Savable {
     }
 
     @Override
+    public <T> String subscribe(BiConsumer<String, T> eventHandler, Class<T> dataClass, String... path) {
+        return subscribe((path1, data) -> {
+            if (dataClass.isInstance(data))
+                eventHandler.accept(path1, dataClass.cast(data));
+        }, path);
+    }
+
+    @Override
     public void unsubscribe(final String eventHandlerId) {
         Optional.of(listenersBuffer.get(eventHandlerId)).ifPresent(n -> n.removeEventHandler(eventHandlerId));
     }

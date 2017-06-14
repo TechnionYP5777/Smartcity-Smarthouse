@@ -31,6 +31,17 @@ public interface FileSystem {
      *         {@link FileSystem#unsubscribe(String)}
      */
     String subscribe(BiConsumer<String, Object> eventHandler, String... path);
+    
+    /**
+     * Same as {@link #subscribe(BiConsumer, String...)}
+     * <br>
+     * But here, the eventHandler will be called only of the data is an instance of dataClass
+     * @param eventHandler
+     * @param dataClass
+     * @param path
+     * @return
+     */
+    <T> String subscribe(BiConsumer<String, T> eventHandler, Class<T> dataClass, String... path);
 
     /**
      * This method will allow to unsubscribe a subscribed eventHandler.
