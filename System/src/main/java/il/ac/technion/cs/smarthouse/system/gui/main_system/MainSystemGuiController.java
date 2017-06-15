@@ -20,6 +20,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class MainSystemGuiController extends SystemGuiController {
     ApplicationViewController appsPresenterInfo;
@@ -57,6 +58,13 @@ public class MainSystemGuiController extends SystemGuiController {
             appsPresenterInfo = createChildController("application_view.fxml");
             appsTab.setContent(appsPresenterInfo.getRootViewNode());
 
+            setDescription("Welcome! You are in " + (m == SystemMode.DEVELOPER_MODE ? "Developer" : "User") + " Mode.", m);
+
+            if (m == SystemMode.DEVELOPER_MODE)
+                tabs.getTabs().removeAll(userTab, sensorsTab);
+            
+            setMyTheme();
+
         } catch (final Exception ¢) {
             ¢.printStackTrace();
         }
@@ -67,11 +75,10 @@ public class MainSystemGuiController extends SystemGuiController {
         appsPresenterInfo.selectFirstApp();
     }
 
-    public void setMode(boolean devMode) {
-        setDescription("Welcome! You are in " + (devMode ? "Developer" : "User") + " Mode.");
-    }
-
-    public void setDescription(String description) {
-        homeTabHBox.getChildren().add(new Label(description));
+    public void setDescription(String description, SystemMode m) {
+        Label label = new Label(description);
+        if (m == SystemMode.DEVELOPER_MODE)
+            label.setTextFill(Color.BEIGE);
+        homeTabHBox.getChildren().add(label);
     }
 }

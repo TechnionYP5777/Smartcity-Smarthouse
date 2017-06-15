@@ -17,4 +17,9 @@ public abstract class SystemGuiController extends GuiController<SystemCore, Syst
     public SystemMode getSystemMode() {
         return getExtraData();
     }
+    
+    public void setMyTheme() {
+        if (getSystemMode() == SystemMode.DEVELOPER_MODE)
+            getRootViewNode().setStyle("-fx-background-color: #262626");
+    }
 }

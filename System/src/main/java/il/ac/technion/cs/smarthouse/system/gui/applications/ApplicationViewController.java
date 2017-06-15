@@ -50,6 +50,8 @@ public class ApplicationViewController extends SystemGuiController {
         initPlusBtn();
 
         updateListView();
+        
+        setMyTheme();
     }
     
     private void initDndLabel() {
