@@ -36,15 +36,12 @@ public abstract class GuiController<M, D> implements Initializable {
     private final BoolLatch startedLatch = new BoolLatch();
 
     @Override
-    public final void initialize(final URL location, final ResourceBundle b) {
-        initialize(getModel(), getParentController(), getExtraData(), location, b);
-        notifyOnLoaded();
-    }
+    public final void initialize(final URL location, final ResourceBundle b) {}
 
     /**
      * This function will be called by
-     * {@link Initializable#initialize(URL, ResourceBundle)} (the first function
-     * that the {@link FXMLLoader} runs)
+     * {@link #loadPresenter(FXMLLoader, Object, Object, GuiController)} when
+     * the controller is initialized
      * 
      * @param model1
      *            the model that was passed by the parent (by
@@ -55,7 +52,8 @@ public abstract class GuiController<M, D> implements Initializable {
      * @param b
      *            resources
      */
-    protected abstract <T extends GuiController<M, D>> void initialize(M model1, T parent1, D extraData1, URL location, ResourceBundle b);
+    protected abstract <T extends GuiController<M, D>> void initialize(M model1, T parent1, D extraData1, URL location,
+                    ResourceBundle b);
 
     /**
      * Block until the function
@@ -100,7 +98,7 @@ public abstract class GuiController<M, D> implements Initializable {
         assert model != null;
         return model;
     }
-    
+
     protected final D getExtraData() {
         return extraData;
     }
@@ -115,25 +113,13 @@ public abstract class GuiController<M, D> implements Initializable {
      * @return the new controller
      */
     @SuppressWarnings("unchecked")
-    private static <ModelType, ExtraDataType, T extends GuiController<ModelType, ExtraDataType>> T loadPresenter(final FXMLLoader l,
-                    final ModelType model1, final ExtraDataType extraData1, final GuiController<ModelType, ExtraDataType> parent) {
+    private static <ModelType, ExtraDataType, T extends GuiController<ModelType, ExtraDataType>> T loadPresenter(
+                    final FXMLLoader l, final ModelType model1, final ExtraDataType extraData1,
+                    final GuiController<ModelType, ExtraDataType> parent) {
         assert l != null;
         assert model1 != null;
 
         try {
-            l.setControllerFactory(controllerClass -> {
-                try {
-                    final GuiController<ModelType, ExtraDataType> c = (GuiController<ModelType, ExtraDataType>) controllerClass.newInstance();
-                    c.model = model1;
-                    c.parent = parent;
-                    c.extraData = extraData1;
-                    return c;
-                } catch (final Exception e) {
-                    log.error("Couldn't start controller", e);
-                }
-                return null;
-            });
-
             final Parent p = l.load();
             final Object child = l.getController();
 
@@ -141,7 +127,13 @@ public abstract class GuiController<M, D> implements Initializable {
                 throw new Exception("Child (" + child.getClass() + ") must extend " + GuiController.class);
 
             GuiController<ModelType, ExtraDataType> c = (GuiController<ModelType, ExtraDataType>) child;
+            c.model = model1;
+            c.parent = parent;
+            c.extraData = extraData1;
             c.rootViewNode = p;
+
+            c.initialize(c.getModel(), c.getParentController(), c.getExtraData(), l.getLocation(), l.getResources());
+            c.notifyOnLoaded();
 
             return (T) c;
         } catch (Exception e) {
@@ -160,8 +152,8 @@ public abstract class GuiController<M, D> implements Initializable {
      * @param model1
      * @return the new controller
      */
-    public static <ModelType, ExtraDataType, T extends GuiController<ModelType, ExtraDataType>> T createRootController(final URL fxmlLocation,
-                    final ModelType model1, ExtraDataType extraData1) {
+    public static <ModelType, ExtraDataType, T extends GuiController<ModelType, ExtraDataType>> T createRootController(
+                    final URL fxmlLocation, final ModelType model1, ExtraDataType extraData1) {
         return loadPresenter(new FXMLLoader(fxmlLocation), model1, extraData1, null);
     }
 
