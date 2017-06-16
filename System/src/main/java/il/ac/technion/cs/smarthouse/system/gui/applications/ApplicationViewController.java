@@ -18,6 +18,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TitledPane;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -33,16 +35,18 @@ public class ApplicationViewController extends SystemGuiController {
     @FXML VBox vBox;
     @FXML VBox dnd_box;
     @FXML Label dnd_label;
+    @FXML SplitPane splitPane;
+    @FXML TitledPane titledPane;
 
     private ApplicationsCore appsHandler;
-    
+
     @Override
     protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
                     SystemMode m, URL location, ResourceBundle b) {
         appsHandler = model.getSystemApplicationsHandler();
 
         model.getSystemApplicationsHandler().setOnAppsListChange(this::updateListView);
-        
+
         initDndLabel();
 
         initListView();
@@ -50,11 +54,8 @@ public class ApplicationViewController extends SystemGuiController {
         initPlusBtn();
 
         updateListView();
-        
-        setMyTheme();
-        setMyTheme(vBox);
     }
-    
+
     private void initDndLabel() {
         dnd_label.setText("Drag & drop\napplication's JAR here");
         JavaFxHelper.placeNodeInPane(dnd_label, dnd_box);
