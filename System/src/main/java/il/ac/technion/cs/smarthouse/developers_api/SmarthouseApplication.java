@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse.developers_api;
 
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.AppBuilder;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.AppBuilderImpl;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenter;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
@@ -37,6 +38,8 @@ public abstract class SmarthouseApplication {
                         .setUseCloudServer(false)
                         .setRegularFileSystemListeners(false)
                         .addApplicationToInstall(new Throwable().getStackTrace()[1].getClassName())
+                        .initMode(SystemMode.DEVELOPER_MODE)
+                        .enableModePopup(false)
                         .build();
 
         for (final Class<? extends Application> s : sensors)
