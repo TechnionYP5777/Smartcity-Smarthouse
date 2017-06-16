@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem.ReadOnlyFileNode;
 import il.ac.technion.cs.smarthouse.utils.BoolLatch;
 
@@ -80,6 +81,17 @@ public class FileSystemImplTest {
         
         
         assert fs.<Integer>getMostRecentDataOnBranch("a") == NEW_VAL;
+    }
+    
+    @Test //(timeout = 1000)
+    public void testOnCoreFs() {
+        String path = FileSystemEntries.SENSORS_DATA.buildPath();
+        System.out.println(path);
+        ReadOnlyFileNode n = new SystemCore()
+                                    .getFileSystem()
+                                    .getReadOnlyFileSystem(path);
+        for (String p : allPathsWithOutLeaves(n, new ArrayList<>()))
+            System.out.println(p);
     }
     
     private List<String> allPathsWithOutLeaves(ReadOnlyFileNode n, List<String> ss) {
