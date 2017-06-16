@@ -20,7 +20,6 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 
 public class MainSystemGuiController extends SystemGuiController {
     ApplicationViewController appsPresenterInfo;
@@ -33,6 +32,7 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML Tab dashboardTab;
     @FXML ImageView homePageImageView;
     @FXML HBox homeTabHBox;
+    @FXML Label descriptionLabel;
 
     @Override
     protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
@@ -62,12 +62,11 @@ public class MainSystemGuiController extends SystemGuiController {
             //Dashboard tab:
             dashboardTab.setContent(createChildController("dashboard_ui.fxml").getRootViewNode());
 
-            setDescription("Welcome! You are in " + (m == SystemMode.DEVELOPER_MODE ? "Developer" : "User") + " Mode.", m);
+            setDescription("Welcome! You are in " + (m == SystemMode.DEVELOPER_MODE ? "Developer" : "User") + " Mode.");
 
             if (m == SystemMode.DEVELOPER_MODE)
-                tabs.getTabs().removeAll(userTab);
-            
-            setMyTheme();
+                tabs.getTabs().removeAll(userTab, sensorsTab);
+
 
         } catch (final Exception ¢) {
             ¢.printStackTrace();
@@ -79,10 +78,7 @@ public class MainSystemGuiController extends SystemGuiController {
         appsPresenterInfo.selectFirstApp();
     }
 
-    public void setDescription(String description, SystemMode m) {
-        Label label = new Label(description);
-        if (m == SystemMode.DEVELOPER_MODE)
-            label.setTextFill(Color.BEIGE);
-        homeTabHBox.getChildren().add(label);
+    public void setDescription(String description) {
+        descriptionLabel.setText(description);
     }
 }

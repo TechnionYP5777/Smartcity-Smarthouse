@@ -31,6 +31,7 @@ public class SystemPresenter {
     static final Logger log = LoggerFactory.getLogger(SystemPresenter.class);
 
     static final String APP_ROOT_FXML = "main_system_ui.fxml";
+    static final String DEV_CSS = "/fxmls/system/css/modena_dark.css";
 
     static final String APP_NAME = "Smarthouse";
     static final String APP_LOGO = "/icons/smarthouse-icon.png";
@@ -112,6 +113,10 @@ public class SystemPresenter {
             final Scene scene = new Scene(viewController.getRootViewNode(), APP_WIDTH, APP_HEIGHT);
             primaryStage.setTitle(APP_NAME);
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(APP_LOGO)));
+
+            if (systemMode == SystemMode.DEVELOPER_MODE)
+                scene.getStylesheets().add(getClass().getResource(DEV_CSS).toExternalForm());
+
             primaryStage.setScene(scene);
 
             primaryStage.setOnCloseRequest(e -> {
@@ -128,15 +133,14 @@ public class SystemPresenter {
 
             log.info("Asking for mode...");
 
-            ButtonType userType = new ButtonType("User Mode");
-            ButtonType devType = new ButtonType("Developer Mode");
+            ButtonType userType = new ButtonType("User Mode"), devType = new ButtonType("Developer Mode");
             Alert alert = new Alert(AlertType.INFORMATION, "Please select a mode:", userType, devType);
             alert.setTitle("Smarthouse Mode Selection");
             alert.setHeaderText("The Smarthouse has two operation modes.");
 
             ButtonType response = alert.showAndWait().get();
             if (response != null)
-                systemMode = response == devType ? SystemMode.DEVELOPER_MODE : SystemMode.USER_MODE;
+                systemMode = response != devType ? SystemMode.USER_MODE : SystemMode.DEVELOPER_MODE;
         }
     }
 }
