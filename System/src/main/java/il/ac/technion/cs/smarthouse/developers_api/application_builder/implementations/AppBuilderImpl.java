@@ -20,10 +20,17 @@ import javafx.scene.layout.VBox;
  * @since 10-06-2017
  */
 public final class AppBuilderImpl implements AppBuilder {
-    private ConfigurationsRegionBuilderImpl configurationsBuilder = new ConfigurationsRegionBuilderImpl();
-    private StatusRegionBuilderImpl statusBuilder = new StatusRegionBuilderImpl();
-    private WidgetsRegionBuilderImpl widgetBuilder = new WidgetsRegionBuilderImpl();
-    private CustomRegionBuilderImpl customBuilder = new CustomRegionBuilderImpl();
+    private final ConfigurationsRegionBuilderImpl configurationsBuilder;
+    private final StatusRegionBuilderImpl statusBuilder;
+    private final WidgetsRegionBuilderImpl widgetBuilder;
+    private final CustomRegionBuilderImpl customBuilder;
+
+    public AppBuilderImpl(final ClassLoader applicationsClassLoader) {
+        configurationsBuilder = new ConfigurationsRegionBuilderImpl();
+        statusBuilder = new StatusRegionBuilderImpl();
+        widgetBuilder = new WidgetsRegionBuilderImpl();
+        customBuilder = new CustomRegionBuilderImpl(applicationsClassLoader);
+    }
 
     @Override
     public ConfigurationsRegionBuilder getConfigurationsRegionBuilder() {

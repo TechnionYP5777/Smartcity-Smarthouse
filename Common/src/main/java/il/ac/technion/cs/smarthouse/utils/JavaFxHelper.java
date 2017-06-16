@@ -43,6 +43,23 @@ public enum JavaFxHelper {
                 }
         };
     }
+    
+    @Deprecated
+    public static void runOnFx(final Runnable functionToRun, final boolean wait) {
+        final BoolLatch isDone = new BoolLatch();
+        
+        if (!isJavaFxThreadStarted())
+            initJavaFxThread();
+        
+        Platform.runLater(()->{
+            functionToRun.run();
+            isDone.setTrueAndRelease();
+            
+        });
+        
+        if (wait)
+            isDone.blockUntilTrue();
+    }
 
     public static void placeNodeInPane(final Node n, final Pane parent) {
         AnchorPane.setTopAnchor(n, 0.0);

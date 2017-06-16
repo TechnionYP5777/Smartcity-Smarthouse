@@ -77,8 +77,9 @@ public class InstructionsSenderThreadTest {
     }
 
     @After
-    public void closeServerSocket() {
+    public void closeServerSocket() throws InterruptedException {
         server.closeSockets();
+        Thread.sleep(1000);
     }
 
     // ------------------------- private helpers

@@ -29,14 +29,26 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  * This implementation uses a file tree for storing the data and eventHandlers
  * 
  * @author RON
- * @author Inbal Zukerman
  * @since 28-05-2017
  */
 public class FileSystemImpl implements FileSystem, Savable {
     private static final Logger log = LoggerFactory.getLogger(FileSystemImpl.class);
 
+    @Expose private final FileNode root = new FileNode("<ROOT>");
+    private final Map<String, FileNode> listenersBuffer = new HashMap<>();
+    
+    // ---------------------------------------------------------------
+    // -------------------------- FileNodes --------------------------
+    // ---------------------------------------------------------------
+
+    /**
+     * a class to store a Node in the file system tree
+     * 
+     * @author RON
+     * @since 28-05-2017
+     */
     static class FileNode implements Savable {
-        @Expose private final String myName;
+        @Expose final String myName;
         @Expose private Object data;
         @Expose private Object mostRecentDataOnBranch;
         private final Map<String, BiConsumer<String, Object>> eventHandlers = new HashMap<>();
@@ -118,7 +130,14 @@ public class FileSystemImpl implements FileSystem, Savable {
         }
     }
 
-    private class FileSystemWalkResults {
+    /**
+     * a class to store the results of the
+     * {@link FileSystemImpl#fileSystemWalk(boolean, Object, String...)}
+     * 
+     * @author RON
+     * @since 28-05-2017
+     */
+    private static class FileSystemWalkResults {
         FileNode fileNode;
         List<BiConsumer<String, Object>> eventHandlersOnBranch;
 
@@ -127,9 +146,6 @@ public class FileSystemImpl implements FileSystem, Savable {
             this.eventHandlersOnBranch = eventHandlersOnBranch;
         }
     }
-
-    @Expose private final FileNode root = new FileNode("<ROOT>");
-    private final Map<String, FileNode> listenersBuffer = new HashMap<>();
 
     /**
      * Performs a walk on the file system tree
@@ -178,6 +194,10 @@ public class FileSystemImpl implements FileSystem, Savable {
         return new FileSystemWalkResults(node, eventHandlersOnBranch);
     }
 
+    // --------------------------------------------------------------------
+    // -------------------- Public interface functions --------------------
+    // --------------------------------------------------------------------
+
     @Override
     public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {
         FileNode n = fileSystemWalk(true, null, path).fileNode;
@@ -186,6 +206,14 @@ public class FileSystemImpl implements FileSystem, Savable {
         log.info("\n\tFileSystem: Subscribing a new listener (event handler)\n\tSubscribed on path: "
                         + PathBuilder.buildPath(path) + "\n\tSubscriber: " + getNameOfCaller());
         return id;
+    }
+
+    @Override
+    public <T> String subscribe(BiConsumer<String, T> eventHandler, Class<T> dataClass, String... path) {
+        return subscribe((path1, data) -> {
+            if (dataClass.isInstance(data))
+                eventHandler.accept(path1, dataClass.cast(data));
+        }, path);
     }
 
     @Override
@@ -229,6 +257,9 @@ public class FileSystemImpl implements FileSystem, Savable {
         return fileSystemWalk(false, null, path).fileNode != null;
     }
 
+    // -----------------------------------------------------
+    // ---------------- To String functions ----------------
+    // -----------------------------------------------------
     @Override
     public String toString() {
         return "Total number of listeners: " + listenersBuffer.size() + "\n" + root.toString();
@@ -237,14 +268,92 @@ public class FileSystemImpl implements FileSystem, Savable {
     public String toString(final String... pathToFirstNode) {
         return Optional.ofNullable(fileSystemWalk(false, null, pathToFirstNode).fileNode).orElse(root).toString();
     }
+    
+    // -----------------------------------------------------
+    // ----------- All paths to String functions -----------
+    // -----------------------------------------------------
+    public static class ReadOnlyFileNodeImpl implements ReadOnlyFileNode {
+        private final String name;
+        private final String fullPath;
+        private Map<String, ReadOnlyFileNodeImpl> children = new HashMap<>();
+        
+        ReadOnlyFileNodeImpl(final String name) {
+            this.name = name;
+            this.fullPath = name;
+        }
+        
+        ReadOnlyFileNodeImpl(final FileNode root) {
+            this(root.myName);
+            for (FileNode child : root.children.values())
+                this.children.put(child.myName, new ReadOnlyFileNodeImpl(child, fullPath));
+        }
+        
+        ReadOnlyFileNodeImpl(final FileNode root, final String parentPath) {
+            this.name = root.myName;
+            this.fullPath = PathBuilder.buildPath(parentPath, name);
+            for (FileNode child : root.children.values())
+                this.children.put(child.myName, new ReadOnlyFileNodeImpl(child, fullPath));
+        }
+        
+        @Override
+        public Collection<? extends ReadOnlyFileNode> getChildren() {
+            return children.values();
+        }
 
+        @Override
+        public ReadOnlyFileNode getChild(final String name1) {
+            return children.get(name1);
+        }
+
+        private void print(final int depth, final PrintWriter w) {
+            for (int i = 0; i < depth; ++i)
+                w.print("\t");
+            w.println(fullPath);
+            for (final ReadOnlyFileNodeImpl child : children.values())
+                child.print(depth + 1, w);
+        }
+
+        @Override
+        public String toString() {
+            final StringWriter writer = new StringWriter();
+            print(0, new PrintWriter(writer));
+            return writer.toString();
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String getFullPath() {
+            return fullPath;
+        }
+
+        @Override
+        public boolean isLeaf() {
+            return children.isEmpty();
+        }
+    }
+    
+    @Override
+    public ReadOnlyFileNode getReadOnlyFileSystem(String... path) {
+        return new ReadOnlyFileNodeImpl(fileSystemWalk(false, null, path).fileNode);
+    }
+
+    // ------------------------------------------------
+    // ---------------- For the logger ----------------
+    // ------------------------------------------------
+    private String getNameOfCaller() {
+        final StackTraceElement t = new Throwable().getStackTrace()[2];
+        return t.getClassName() + "#" + t.getMethodName() + " (Line " + t.getLineNumber() + ")";
+    }
+
+    // --------------------------------------------------------------------
+    // -------- Public functions that aren't part of the interface --------
+    // --------------------------------------------------------------------
     public void deleteFromPath(final String... path) {
         Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).ifPresent(n -> n.children.clear());
     }
 
-    private String getNameOfCaller() {
-        final StackTraceElement t = new Throwable().getStackTrace()[2];
-
-        return t.getClassName() + "#" + t.getMethodName() + " (Line " + t.getLineNumber() + ")";
-    }
 }

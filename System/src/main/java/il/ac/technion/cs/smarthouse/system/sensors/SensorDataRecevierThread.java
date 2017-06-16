@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage;
 import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMessageBaseExecption;
+import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
@@ -65,6 +66,8 @@ public class SensorDataRecevierThread extends SensorManagingThread {
         donePath = FileSystemEntries.DONE_SENDING_MSG.buildPath(msg.getSensorCommName(), msg.getSensorId());
         msg.getObservationSendingPaths().stream().forEach(
                         p -> legalSystemPaths.put(p, FileSystemEntries.SENSORS_DATA.buildPath(p, msg.getSensorId())));
+        
+        NotificationsCenter.sendSensorConnectedNotification(msg.getSensorCommName(), msg.getSensorId(), msg.getAlias());
 
         try {
             new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);

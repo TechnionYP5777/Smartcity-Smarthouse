@@ -6,9 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.developers_api.ApplicationMetaData;
+import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
@@ -25,6 +29,8 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  * @since Dec 13, 2016
  */
 public class ApplicationsCore extends ChildCore {
+    private static Logger log = LoggerFactory.getLogger(ApplicationsCore.class);
+    
     @Expose private final List<ApplicationMetaData> apps = new ArrayList<>();
     private Runnable onAppsChange;
 
@@ -45,12 +51,19 @@ public class ApplicationsCore extends ChildCore {
      * @throws Exception
      * @throws ApplicationInitializationException
      */
-    public ApplicationMetaData addApplication(final ApplicationPath appPath) throws Exception {
-        final ApplicationMetaData $ = new ApplicationMetaData(UuidGenerator.GenerateUniqueIDstring(), appPath);
-        initializeApplicationManager($);
-        apps.add($);
-        Optional.ofNullable(onAppsChange).ifPresent(a -> a.run());
-        return $;
+    public ApplicationMetaData addApplication(final ApplicationPath appPath) {
+        try {
+            final ApplicationMetaData $ = new ApplicationMetaData(UuidGenerator.GenerateUniqueIDstring(), appPath);
+            initializeApplicationManager($);
+            apps.add($);
+            Optional.ofNullable(onAppsChange).ifPresent(a -> a.run());
+            NotificationsCenter.sendNewAppInstalled($.getApplicationName());
+            return $;
+        } catch (final Exception $) {
+            log.warn("Aplication ("+appPath+") failed to install", $);
+            NotificationsCenter.sendAppFailedToInstall($.getMessage());
+        }
+        return null;
     }
 
     public List<ApplicationMetaData> getApplicationManagers() {

@@ -38,11 +38,12 @@ public class SensorLocalServerTest {
         new Thread(server).start();
     }
     
-    @After public void closeServerSocket(){
+    @After public void closeServerSocket() throws InterruptedException{
         server.closeSockets();
+        Thread.sleep(1000);
     }
     
-    final long timeout = 3000;
+    final long timeout = 5000;
     @Test(timeout = timeout) public void basicSensorCanConnectTest(){
         for (Sensor s = new TestBasicSensor(sensorId) ;!s.register(););
         assert true; //if you got to this line the sensor have connected

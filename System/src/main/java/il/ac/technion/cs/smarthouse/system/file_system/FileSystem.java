@@ -33,6 +33,18 @@ public interface FileSystem {
     String subscribe(BiConsumer<String, Object> eventHandler, String... path);
 
     /**
+     * Same as {@link #subscribe(BiConsumer, String...)} <br>
+     * But here, the eventHandler will be called only of the data is an instance
+     * of dataClass
+     * 
+     * @param eventHandler
+     * @param dataClass
+     * @param path
+     * @return
+     */
+    <T> String subscribe(BiConsumer<String, T> eventHandler, Class<T> dataClass, String... path);
+
+    /**
      * This method will allow to unsubscribe a subscribed eventHandler.
      * 
      * @param eventHandlerId
@@ -91,4 +103,56 @@ public interface FileSystem {
      * @return true if the path exists, or false otherwise
      */
     boolean wasPathInitiated(String... path);
+
+    /**
+     * A read only node in the file system tree
+     * 
+     * @author RON
+     * @since 14-06-2017
+     */
+    public interface ReadOnlyFileNode {
+        /**
+         * get the node's children
+         * 
+         * @return ReadOnlyFileNodes for all of the children
+         */
+        public Collection<? extends ReadOnlyFileNode> getChildren();
+
+        /**
+         * get a specific child by name
+         * 
+         * @param name
+         *            the child's name
+         * @return the read-only child
+         */
+        public ReadOnlyFileNode getChild(String name);
+
+        /**
+         * get the name of this read-only node
+         * 
+         * @return the node's name
+         */
+        public String getName();
+
+        /**
+         * get the full path to this read-only node
+         * 
+         * @return the path
+         */
+        public String getFullPath();
+
+        /**
+         * @return true if this node has no children
+         */
+        public boolean isLeaf();
+    }
+
+    /**
+     * get a read only file node from the file system's root
+     * 
+     * @param path
+     *            starting path
+     * @return the read-only node
+     */
+    ReadOnlyFileNode getReadOnlyFileSystem(String... path);
 }

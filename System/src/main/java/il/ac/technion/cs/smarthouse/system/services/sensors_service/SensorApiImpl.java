@@ -297,8 +297,10 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
     @Override
     public String getSensorLocation() {
-        return sensorId == null ? SensorLocation.UNDIFINED
-                        : Optional.ofNullable(fileSystem.getData(getPath_location(sensorId)).toString()).orElse("");
+        if (sensorId == null)
+            return SensorLocation.UNDIFINED;
+        return Optional.ofNullable(fileSystem.getData(getPath_location(sensorId))).orElse(SensorLocation.UNDIFINED)
+                        + "";
     }
 
     @Override

@@ -11,7 +11,9 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.mvp.GuiController;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import javafx.application.Platform;
@@ -51,7 +53,8 @@ public class MappingController extends SystemGuiController {
     }
 
     @Override
-    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
+    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
+                    SystemMode m, URL location, ResourceBundle b) {
         log.debug("initialized the map gui");
 
         canvas.setWidth(2000);

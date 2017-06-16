@@ -33,17 +33,17 @@ public class AlertsServiceTest {
     public void withoutUserTest() {
         AlertsManager a;
         Assert.assertNotNull(a = serviceManager_noUser.<AlertsManager>getService(ServiceType.ALERTS_SERVICE));
-        a.sendAlert("I'm dead", EmergencyLevel.CALL_EMERGENCY_CONTACT);
-        a.sendAlert("I'm dead", EmergencyLevel.SMS_EMERGENCY_CONTACT);
-        a.sendAlert("I'm dead", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+        a.sendAlert("", "I'm dead", EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        a.sendAlert("", "I'm dead", EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        a.sendAlert("", "I'm dead", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
     }
     
     @Test
     public void withUserTest() {
         AlertsManager a;
         Assert.assertNotNull(a = serviceManager_withUser.<AlertsManager>getService(ServiceType.ALERTS_SERVICE));
-        a.sendAlert("I'm dead", EmergencyLevel.CALL_EMERGENCY_CONTACT);
-        a.sendAlert("I'm dead", EmergencyLevel.SMS_EMERGENCY_CONTACT);
-        a.sendAlert("I'm dead", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+        a.sendAlert("", "I'm dead", EmergencyLevel.CALL_EMERGENCY_CONTACT);
+        a.sendAlert("", "I'm dead", EmergencyLevel.SMS_EMERGENCY_CONTACT);
+        a.sendAlert("", "I'm dead", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
     }
 }

@@ -14,17 +14,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /** @author Roy
@@ -67,7 +61,7 @@ public class StoveAppController implements Initializable {
     }
 
     private void alert(final String messege) {
-        ((AlertsManager) instance.getService(ServiceType.ALERTS_SERVICE)).sendAlert(messege, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+        ((AlertsManager) instance.getService(ServiceType.ALERTS_SERVICE)).sendAlert("", messege, EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
     }
 
     public void turnOn() {

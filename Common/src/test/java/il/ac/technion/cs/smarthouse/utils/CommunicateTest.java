@@ -1,6 +1,8 @@
-package il.ac.technion.cs.smarthouse.system.services.communication_services;
+package il.ac.technion.cs.smarthouse.utils;
 
 import org.junit.Test;
+
+import il.ac.technion.cs.smarthouse.utils.Communicate;
 
 /**
  * @author Elia Traore

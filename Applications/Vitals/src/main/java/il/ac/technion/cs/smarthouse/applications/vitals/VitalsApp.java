@@ -45,31 +45,31 @@ public class VitalsApp extends SmarthouseApplication {
             // major alerts
             if (pulse < 45 && !lowPulseAlert) {
                 lowPulseAlert = true;
-                alertsManager.sendAlert("ATTENTION: Client has an extremely low pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                alertsManager.sendAlert(getApplicationName(), "ATTENTION: Client has an extremely low pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
             }
             if (pulse >= 45 && lowPulseAlert)
                 lowPulseAlert = false;
 
             if (pulse > 115 && !highPulseAlert) {
                 highPulseAlert = true;
-                alertsManager.sendAlert("ATTENTION: Client has an extremely high pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                alertsManager.sendAlert(getApplicationName(), "ATTENTION: Client has an extremely high pulse.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
             }
             if (pulse <= 115 && highPulseAlert)
                 highPulseAlert = false;
 
             if ((systolicBP < 80 || diastolicBP < 50) && !lowBPAlert) {
                 lowBPAlert = true;
-                alertsManager.sendAlert("ATTENTION: Client suffers from hypotension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                alertsManager.sendAlert(getApplicationName(), "ATTENTION: Client suffers from hypotension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
             }
             if (systolicBP >= 80 && diastolicBP >= 50 && lowBPAlert)
                 lowBPAlert = false;
 
             if ((systolicBP > 190 || diastolicBP > 120) && highBPAlert < 2) {
                 highBPAlert = 2;
-                alertsManager.sendAlert("ATTENTION: Client suffers from hypertensive emergency.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                alertsManager.sendAlert(getApplicationName(), "ATTENTION: Client suffers from hypertensive emergency.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
             } else if ((systolicBP > 160 && systolicBP <= 190 || diastolicBP > 100 && diastolicBP <= 120) && highBPAlert < 1) {
                 highBPAlert = 1;
-                alertsManager.sendAlert("ATTENTION: Client suffers from hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                alertsManager.sendAlert(getApplicationName(), "ATTENTION: Client suffers from hypertension.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
             }
 
             if (systolicBP <= 160 && diastolicBP <= 100)

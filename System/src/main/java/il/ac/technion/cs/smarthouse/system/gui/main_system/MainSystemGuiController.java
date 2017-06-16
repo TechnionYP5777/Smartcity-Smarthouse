@@ -3,10 +3,13 @@ package il.ac.technion.cs.smarthouse.system.gui.main_system;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.smarthouse.mvp.GuiController;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.gui.applications.ApplicationViewController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -17,6 +20,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class MainSystemGuiController extends SystemGuiController {
     ApplicationViewController appsPresenterInfo;
@@ -31,7 +35,8 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML HBox homeTabHBox;
 
     @Override
-    public void initialize(final SystemCore model, final URL location, final ResourceBundle __) {
+    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
+                    SystemMode m, URL location, ResourceBundle b) {
         try {
             // home tab:
             homeTab.setContent(homeTabHBox);
@@ -57,6 +62,13 @@ public class MainSystemGuiController extends SystemGuiController {
             //Dashboard tab:
             dashboardTab.setContent(createChildController("dashboard_ui.fxml").getRootViewNode());
 
+            setDescription("Welcome! You are in " + (m == SystemMode.DEVELOPER_MODE ? "Developer" : "User") + " Mode.", m);
+
+            if (m == SystemMode.DEVELOPER_MODE)
+                tabs.getTabs().removeAll(userTab, sensorsTab);
+            
+            setMyTheme();
+
         } catch (final Exception ¢) {
             ¢.printStackTrace();
         }
@@ -65,5 +77,12 @@ public class MainSystemGuiController extends SystemGuiController {
     public void gotoAppsTab() {
         tabs.getSelectionModel().select(appsTab);
         appsPresenterInfo.selectFirstApp();
+    }
+
+    public void setDescription(String description, SystemMode m) {
+        Label label = new Label(description);
+        if (m == SystemMode.DEVELOPER_MODE)
+            label.setTextFill(Color.BEIGE);
+        homeTabHBox.getChildren().add(label);
     }
 }

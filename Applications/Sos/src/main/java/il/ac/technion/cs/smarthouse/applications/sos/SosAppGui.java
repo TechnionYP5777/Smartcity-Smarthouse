@@ -46,7 +46,7 @@ public class SosAppGui extends SmarthouseApplication {
             final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
             if (shouldAlert) {
                 str.setData(t);
-                ((AlertsManager) super.getService(ServiceType.ALERTS_SERVICE)).sendAlert("ATTENTION SOS: Client is requesting help.",
+                ((AlertsManager) super.getService(ServiceType.ALERTS_SERVICE)).sendAlert(getApplicationName(), "ATTENTION SOS: Client is requesting help.",
                         EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
                 shouldAlert = false;
             }

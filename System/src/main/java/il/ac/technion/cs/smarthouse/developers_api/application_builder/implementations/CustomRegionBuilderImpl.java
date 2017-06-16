@@ -21,8 +21,11 @@ import javafx.scene.Node;
 public class CustomRegionBuilderImpl extends AbstractRegionBuilder implements CustomRegionBuilder {
     private static Logger log = LoggerFactory.getLogger(CustomRegionBuilderImpl.class);
     
-    public CustomRegionBuilderImpl() {
+    private final ClassLoader applicationsClassLoader;
+    
+    public CustomRegionBuilderImpl(final ClassLoader applicationsClassLoader) {
         super.setTitle("Custom Region");
+        this.applicationsClassLoader = applicationsClassLoader;
     }
     
     @Override
@@ -43,13 +46,12 @@ public class CustomRegionBuilderImpl extends AbstractRegionBuilder implements Cu
         Node rootNode;
         try {
             final FXMLLoader fxmlLoader = createFXMLLoader(fxmlFileName);
-            fxmlLoader.setClassLoader(getClass().getClassLoader());
             rootNode = fxmlLoader.load();
             if (outController != null)
                 outController.setData(fxmlLoader.getController());
         } catch (final Exception e) {
-            rootNode = null;
             log.error("Couldn't load the fxml: " + fxmlFileName, e);
+            throw new RuntimeException("Couldn't load the fxml: " + fxmlFileName + "\n" + e.getClass().getSimpleName());
         }
         
         return add(rootNode);
@@ -58,12 +60,12 @@ public class CustomRegionBuilderImpl extends AbstractRegionBuilder implements Cu
     private FXMLLoader createFXMLLoader(final String fxmlFileName) {
         final URL url = getResource(fxmlFileName);
         final FXMLLoader fxmlLoader = new FXMLLoader(url);
-        fxmlLoader.setClassLoader(getClass().getClassLoader());
+        fxmlLoader.setClassLoader(applicationsClassLoader);
         return fxmlLoader;
     }
     
     private URL getResource(final String resourcePath) {
-        return Optional.ofNullable(getClass().getClassLoader().getResource(resourcePath))
+        return Optional.ofNullable(applicationsClassLoader.getResource(resourcePath))
                         .orElse(getClass().getResource(resourcePath));
     }
 }

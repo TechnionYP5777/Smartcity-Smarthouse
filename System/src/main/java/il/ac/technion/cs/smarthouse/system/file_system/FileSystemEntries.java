@@ -1,7 +1,6 @@
 package il.ac.technion.cs.smarthouse.system.file_system;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,6 +125,7 @@ public enum FileSystemEntries {
      * @return
      */
     public String buildPath(final String... base) {
+        final List<String> baseSplited = PathBuilder.decomposePath(base);
         final List<String> l = new ArrayList<>();
         final List<FileSystemEntries> branch = getBranch();
         
@@ -134,18 +134,18 @@ public enum FileSystemEntries {
             if (e.name != null)
                 l.add(e.name);
             else {
-                if (baseIdx >= base.length) {
-                    final RuntimeException r = new RuntimeException("Path (" + Arrays.toString(base) + ") was not long enough");
+                if (baseIdx >= baseSplited.size()) {
+                    final RuntimeException r = new RuntimeException("Path (" + baseSplited + ") was not long enough");
                     log.error("Error while building the path", r);
                     throw r;
                 }
-                l.add(base[baseIdx++]);
+                l.add(baseSplited.get(baseIdx++));
             }
         
-        final List<String> pathToAppend = Arrays.asList(base).subList(baseIdx, base.length);
+        final List<String> pathToAppend = baseSplited.subList(baseIdx, baseSplited.size());
         
         if (!pathToAppend.isEmpty()) {
-            final RuntimeException r = new RuntimeException("Path (" + Arrays.toString(base) + ") was longer than expected");
+            final RuntimeException r = new RuntimeException("Path (" + baseSplited + ") was longer than expected");
             
             switch (pathType) {
                 case SOFT_SUFFIX:

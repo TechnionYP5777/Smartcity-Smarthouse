@@ -26,24 +26,22 @@ import javafx.scene.Parent;
  * @author RON
  * @since 07-06-2017
  */
-public abstract class GuiController<M> implements Initializable {
+public abstract class GuiController<M, D> implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(GuiController.class);
 
-    private GuiController<M> parent;
+    private GuiController<M, D> parent;
     private M model;
     private Parent rootViewNode;
+    private D extraData;
     private final BoolLatch startedLatch = new BoolLatch();
 
     @Override
-    public final void initialize(final URL location, final ResourceBundle b) {
-        initialize(getModel(), location, b);
-        notifyOnLoaded();
-    }
+    public final void initialize(final URL location, final ResourceBundle b) {}
 
     /**
      * This function will be called by
-     * {@link Initializable#initialize(URL, ResourceBundle)} (the first function
-     * that the {@link FXMLLoader} runs)
+     * {@link #loadPresenter(FXMLLoader, Object, Object, GuiController)} when
+     * the controller is initialized
      * 
      * @param model1
      *            the model that was passed by the parent (by
@@ -54,7 +52,8 @@ public abstract class GuiController<M> implements Initializable {
      * @param b
      *            resources
      */
-    protected abstract void initialize(M model1, URL location, ResourceBundle b);
+    protected abstract <T extends GuiController<M, D>> void initialize(M model1, T parent1, D extraData1, URL location,
+                    ResourceBundle b);
 
     /**
      * Block until the function
@@ -86,7 +85,7 @@ public abstract class GuiController<M> implements Initializable {
      * @return the parent controller (or null if this is the root controller)
      */
     @SuppressWarnings("unchecked")
-    protected <T extends GuiController<M>> T getParentController() {
+    protected <T extends GuiController<M, D>> T getParentController() {
         return (T) parent;
     }
 
@@ -96,7 +95,12 @@ public abstract class GuiController<M> implements Initializable {
      * @return the model
      */
     protected final M getModel() {
+        assert model != null;
         return model;
+    }
+
+    protected final D getExtraData() {
+        return extraData;
     }
 
     /**
@@ -109,32 +113,27 @@ public abstract class GuiController<M> implements Initializable {
      * @return the new controller
      */
     @SuppressWarnings("unchecked")
-    private static <ModelType, T extends GuiController<ModelType>> T loadPresenter(final FXMLLoader l,
-                    final ModelType model1, final GuiController<ModelType> parent) {
+    private static <ModelType, ExtraDataType, T extends GuiController<ModelType, ExtraDataType>> T loadPresenter(
+                    final FXMLLoader l, final ModelType model1, final ExtraDataType extraData1,
+                    final GuiController<ModelType, ExtraDataType> parent) {
         assert l != null;
         assert model1 != null;
 
         try {
-            l.setControllerFactory(controllerClass -> {
-                try {
-                    final GuiController<ModelType> c = (GuiController<ModelType>) controllerClass.newInstance();
-                    c.model = model1;
-                    c.parent = parent;
-                    return c;
-                } catch (final Exception e) {
-                    log.error("Couldn't start controller", e);
-                }
-                return null;
-            });
-
             final Parent p = l.load();
             final Object child = l.getController();
 
             if (!GuiController.class.isAssignableFrom(child.getClass()))
                 throw new Exception("Child (" + child.getClass() + ") must extend " + GuiController.class);
 
-            GuiController<ModelType> c = (GuiController<ModelType>) child;
+            GuiController<ModelType, ExtraDataType> c = (GuiController<ModelType, ExtraDataType>) child;
+            c.model = model1;
+            c.parent = parent;
+            c.extraData = extraData1;
             c.rootViewNode = p;
+
+            c.initialize(c.getModel(), c.getParentController(), c.getExtraData(), l.getLocation(), l.getResources());
+            c.notifyOnLoaded();
 
             return (T) c;
         } catch (Exception e) {
@@ -153,9 +152,9 @@ public abstract class GuiController<M> implements Initializable {
      * @param model1
      * @return the new controller
      */
-    public static <ModelType, T extends GuiController<ModelType>> T createRootController(final URL fxmlLocation,
-                    final ModelType model1) {
-        return loadPresenter(new FXMLLoader(fxmlLocation), model1, null);
+    public static <ModelType, ExtraDataType, T extends GuiController<ModelType, ExtraDataType>> T createRootController(
+                    final URL fxmlLocation, final ModelType model1, ExtraDataType extraData1) {
+        return loadPresenter(new FXMLLoader(fxmlLocation), model1, extraData1, null);
     }
 
     /**
@@ -166,7 +165,7 @@ public abstract class GuiController<M> implements Initializable {
      * @param fxmlLocation
      * @return the new controller
      */
-    protected final <T extends GuiController<M>> T createChildController(final URL fxmlLocation) {
-        return loadPresenter(new FXMLLoader(fxmlLocation), getModel(), this);
+    protected final <T extends GuiController<M, D>> T createChildController(final URL fxmlLocation) {
+        return loadPresenter(new FXMLLoader(fxmlLocation), getModel(), extraData, this);
     }
 }

@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.services.communication_services;
 
 import il.ac.technion.cs.smarthouse.system.SystemCore;
+import il.ac.technion.cs.smarthouse.utils.Communicate;
 
 public class PhoneService extends CommunicationService {
 

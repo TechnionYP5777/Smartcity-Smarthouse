@@ -1,8 +1,13 @@
 package il.ac.technion.cs.smarthouse.system.file_system;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem.ReadOnlyFileNode;
 import il.ac.technion.cs.smarthouse.utils.BoolLatch;
 
 public class FileSystemImplTest {
@@ -66,7 +71,27 @@ public class FileSystemImplTest {
         assert !fs.wasPathInitiated("s");
         assert fs.wasPathInitiated("a");
         
+        System.out.println(fs.getReadOnlyFileSystem("a"));
+        System.out.println(fs);
+        
+        System.out.println("--- paths with out leaves ---");
+        for (String p : allPathsWithOutLeaves(fs.getReadOnlyFileSystem(), new ArrayList<>()))
+            System.out.println(p);
+        
+        
         assert fs.<Integer>getMostRecentDataOnBranch("a") == NEW_VAL;
+    }
+    
+    private List<String> allPathsWithOutLeaves(ReadOnlyFileNode n, List<String> ss) {
+        
+        if (n.isLeaf())
+            return ss;
+        
+        List<String> l = PathBuilder.decomposePath(n.getFullPath());
+        ss.add(PathBuilder.buildPath(l.subList(1, l.size())));
+        
+        n.getChildren().forEach(c->ss.addAll(allPathsWithOutLeaves(c, new ArrayList<>())));
+        return ss;
     }
 
 }

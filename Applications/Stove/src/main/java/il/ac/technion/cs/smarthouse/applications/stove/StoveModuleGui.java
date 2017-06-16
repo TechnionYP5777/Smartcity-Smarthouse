@@ -7,7 +7,9 @@ import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
+import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
+import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsService;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
@@ -15,6 +17,8 @@ import javafx.scene.paint.Color;
 
 public class StoveModuleGui extends SmarthouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
+    
+    private boolean alertCalled = false;
     
     public static void main(String[] args) throws Exception {
         launch(StoveSensorSimulator.class);
@@ -42,6 +46,18 @@ public class StoveModuleGui extends SmarthouseApplication {
             log.debug("App msg (from function subscibed to stove sensor): " + t + " | Sensor is located at: " + stove.getSensorLocation());
         });
         
+        Runnable c = ()->{
+            if (timer.getData(0.0) <= alertAfterSecs.getData(0.0) || temps.getData(0) <= alertAboveDegs.getData(0))
+                alertCalled = false;
+            else if (!alertCalled) {
+                ((AlertsManager) getService(ServiceType.ALERTS_SERVICE)).sendAlert(getApplicationName(),
+                                "Stove is running too long", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                alertCalled = true;
+            }
+        };
+        
+        timer.addOnDataChangedListener(c);
+        temps.addOnDataChangedListener(c);
     }
 
     @Override public String getApplicationName() {
