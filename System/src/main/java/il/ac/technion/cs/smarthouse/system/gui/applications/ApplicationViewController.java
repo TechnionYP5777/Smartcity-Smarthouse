@@ -52,6 +52,7 @@ public class ApplicationViewController extends SystemGuiController {
         updateListView();
         
         setMyTheme();
+        setMyTheme(vBox);
     }
     
     private void initDndLabel() {

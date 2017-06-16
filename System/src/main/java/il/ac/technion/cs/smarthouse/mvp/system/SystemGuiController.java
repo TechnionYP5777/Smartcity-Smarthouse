@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse.mvp.system;
 
 import il.ac.technion.cs.smarthouse.mvp.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
+import javafx.scene.Node;
 
 public abstract class SystemGuiController extends GuiController<SystemCore, SystemMode> {
     public static final String FXML_BASE_PATH = "/fxmls/system/";
@@ -18,8 +19,12 @@ public abstract class SystemGuiController extends GuiController<SystemCore, Syst
         return getExtraData();
     }
     
-    public void setMyTheme() {
+    public void setMyTheme(Node n) {
         if (getSystemMode() == SystemMode.DEVELOPER_MODE)
-            getRootViewNode().setStyle("-fx-background-color: #262626");
+            n.setStyle("-fx-background-color: #262626");
+    }
+    
+    public void setMyTheme() {
+        setMyTheme(getRootViewNode());
     }
 }
