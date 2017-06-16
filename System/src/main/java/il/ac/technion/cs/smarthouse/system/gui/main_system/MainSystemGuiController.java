@@ -26,6 +26,7 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML Tab userTab;
     @FXML Tab appsTab;
     @FXML Tab sensorsTab;
+    @FXML Tab dashboardTab;
     @FXML ImageView homePageImageView;
     @FXML HBox homeTabHBox;
 
@@ -52,6 +53,9 @@ public class MainSystemGuiController extends SystemGuiController {
             // applications tab:
             appsPresenterInfo = createChildController("application_view.fxml");
             appsTab.setContent(appsPresenterInfo.getRootViewNode());
+            
+            //Dashboard tab:
+            dashboardTab.setContent(createChildController("dashboard_ui.fxml").getRootViewNode());
 
         } catch (final Exception ¢) {
             ¢.printStackTrace();
