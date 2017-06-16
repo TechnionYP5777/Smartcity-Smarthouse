@@ -37,6 +37,10 @@ public class ApplicationViewController extends SystemGuiController {
     @FXML Label dnd_label;
     @FXML SplitPane splitPane;
     @FXML TitledPane titledPane;
+    @FXML TitledPane titledPaneInstaller;
+    @FXML VBox vBoxInstaller;
+    @FXML AnchorPane anchorPaneInstaller;
+    @FXML SplitPane leftPanelSplitPane;
 
     private ApplicationsCore appsHandler;
 
@@ -54,6 +58,22 @@ public class ApplicationViewController extends SystemGuiController {
         initPlusBtn();
 
         updateListView();
+        
+        initMode(m);
+    }
+    
+    private void initMode(SystemMode m) {
+        switch (m) {
+            case DEVELOPER_MODE:
+                titledPaneInstaller.setVisible(false);
+                leftPanelSplitPane.setDividerPositions(1);
+                break;
+            case USER_MODE:
+                anchorPaneInstaller.setMinHeight(200);
+                break;
+            default:
+                break;
+        }
     }
 
     private void initDndLabel() {

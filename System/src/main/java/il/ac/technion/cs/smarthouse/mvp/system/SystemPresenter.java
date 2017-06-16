@@ -31,7 +31,7 @@ public class SystemPresenter {
     static final Logger log = LoggerFactory.getLogger(SystemPresenter.class);
 
     static final String APP_ROOT_FXML = "main_system_ui.fxml";
-    static final String DEV_CSS = "/fxmls/system/css/custom.css";
+    static final String DEV_CSS = "/fxmls/system/css/modena_dark.css";
 
     static final String APP_NAME = "Smarthouse";
     static final String APP_LOGO = "/icons/smarthouse-icon.png";
