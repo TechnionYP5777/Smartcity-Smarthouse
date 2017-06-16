@@ -17,7 +17,7 @@ public enum NotificationsCenter {
 
     public static void sendSensorConnectedNotification(final String sensorCommercialName, final String sensorId,
                     final String sensorAlias) {
-        sendNotification("A new sensor has connected to the house", "Commercial name: " + sensorCommercialName
+        sendNotification("A new sensor has connected!", "Commercial name: " + sensorCommercialName
                         + "\nMac id: " + sensorId + "\nAlias: " + sensorAlias, Notification.INFO_ICON);
     }
 
