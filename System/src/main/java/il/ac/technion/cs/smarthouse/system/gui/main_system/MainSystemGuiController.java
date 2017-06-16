@@ -42,7 +42,7 @@ public class MainSystemGuiController extends SystemGuiController {
             homeTab.setContent(homeTabHBox);
             homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
             homePageImageView.setFitHeight(200);
-            // homePageImageView.fitHeightProperty().bind(homeTabHBox.heightProperty().divide(2));
+//             homePageImageView.fitHeightProperty().bind(homeTabHBox.heightProperty().divide(2));
             final BackgroundImage myBI = new BackgroundImage(
                             new Image(getClass().getResourceAsStream("/backgrounds/bg_4.png"), 0, 200, false, false),
                             BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -65,7 +65,7 @@ public class MainSystemGuiController extends SystemGuiController {
             setDescription("Welcome! You are in " + (m == SystemMode.DEVELOPER_MODE ? "Developer" : "User") + " Mode.", m);
 
             if (m == SystemMode.DEVELOPER_MODE)
-                tabs.getTabs().removeAll(userTab, sensorsTab);
+                tabs.getTabs().removeAll(userTab);
             
             setMyTheme();
 
