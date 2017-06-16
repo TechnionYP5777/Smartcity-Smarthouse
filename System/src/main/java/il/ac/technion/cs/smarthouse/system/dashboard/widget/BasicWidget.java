@@ -13,6 +13,7 @@ import eu.hansolo.tilesfx.TileBuilder;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.services.file_system_service.FileSystemService;
 
 /**
@@ -41,11 +42,7 @@ public abstract class BasicWidget {
 	}
 	
 	protected void updateAutomaticallyFrom(FileSystem fileSystem, String path){
-		fileSystem.subscribe((rPath, data) -> {
-			log.info("rquested to be notified on " + path + " got notified on (p,d)=(" + rPath + "," + data+ ").");
-			if (rPath.equals(path))
-				this.update(Double.valueOf((String) data), path);
-		}, path);
+	      fileSystem.subscribe((rPath, data) -> this.update(Double.valueOf((String) data), path), FileSystemEntries.SENSORS_DATA.buildPath(path));
 	}
 	
 	public void update(Number value, String key){
