@@ -9,6 +9,7 @@ import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.gui.applications.ApplicationViewController;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -20,6 +21,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class MainSystemGuiController extends SystemGuiController {
     ApplicationViewController appsPresenterInfo;
@@ -31,7 +33,7 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML Tab sensorsTab;
     @FXML ImageView homePageImageView;
     @FXML HBox homeTabHBox;
-    @FXML Label descriptionLabel;
+    @FXML VBox homeVBox;
 
     @Override
     protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
@@ -40,13 +42,13 @@ public class MainSystemGuiController extends SystemGuiController {
             // home tab:
             homeTab.setContent(homeTabHBox);
             homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
-            homePageImageView.setFitHeight(200);
+            homePageImageView.setFitHeight(300);
             // homePageImageView.fitHeightProperty().bind(homeTabHBox.heightProperty().divide(2));
-            final BackgroundImage myBI = new BackgroundImage(
-                            new Image(getClass().getResourceAsStream("/backgrounds/bg_4.png"), 0, 200, false, false),
-                            BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                            BackgroundSize.DEFAULT);
-            homeTabHBox.setBackground(new Background(myBI));
+//            final BackgroundImage myBI = new BackgroundImage(
+//                            new Image(getClass().getResourceAsStream("/backgrounds/bg_4.png"), 0, 200, false, false),
+//                            BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+//                            BackgroundSize.DEFAULT);
+//            homeTabHBox.setBackground(new Background(myBI));
 
             // user tab:
             userTab.setContent(createChildController("user information.fxml").getRootViewNode());
@@ -57,8 +59,22 @@ public class MainSystemGuiController extends SystemGuiController {
             // applications tab:
             appsPresenterInfo = createChildController("application_view.fxml");
             appsTab.setContent(appsPresenterInfo.getRootViewNode());
-
-            setDescription("Welcome! You are in " + (m == SystemMode.DEVELOPER_MODE ? "Developer" : "User") + " Mode.");
+            
+            homeVBox.setAlignment(Pos.BASELINE_LEFT);
+            
+            if (m == SystemMode.DEVELOPER_MODE) {
+                addDescriptionLine("Welcome! You are in Developer Mode.");
+                addDescriptionLine("In this mode you can test your application.");
+            } else {
+                addDescriptionLine("Welcome! You are in User Mode.");
+                addDescriptionLine("In this mode you can:");
+                addDescriptionLine("- Add applications and view them");
+                addDescriptionLine("   (\"applications\" tab).");
+                addDescriptionLine("- Design your own home structure, add");
+                addDescriptionLine("   sensors and view them (\"sensors\" tab).");
+                addDescriptionLine("- Register, add emergency contacts and");
+                addDescriptionLine("   view them (\"user information\" tab).");
+            }
 
             if (m == SystemMode.DEVELOPER_MODE)
                 tabs.getTabs().removeAll(userTab, sensorsTab);
@@ -73,7 +89,9 @@ public class MainSystemGuiController extends SystemGuiController {
         appsPresenterInfo.selectFirstApp();
     }
 
-    public void setDescription(String description) {
-        descriptionLabel.setText(description);
+    public void addDescriptionLine(String description) {
+        Label label = new Label(description);
+        label.setStyle("-fx-font: 20 System");
+        homeVBox.getChildren().add(label);
     }
 }
