@@ -50,8 +50,11 @@ public abstract class BasicWidget {
 	}
 
 	public Tile getTile() {
-		if (tile == null)
+		if (tile == null){
 			tile = builder.build();
+			tile.setMaxSize(getTileSize(), getTileSize());
+			tile.setMinSize(getTileSize(), getTileSize());
+		}
 		return tile;
 	}
 

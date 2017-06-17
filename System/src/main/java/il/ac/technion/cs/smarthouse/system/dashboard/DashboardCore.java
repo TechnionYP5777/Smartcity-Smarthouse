@@ -70,6 +70,7 @@ public class DashboardCore extends ChildCore {
     @Override
     public void populate(final String jsonString) throws Exception {
         super.populate(jsonString);
+        //todo: is gui initialized at this point?
         widgetsInfo.values().forEach(winfo -> winfo.getRepresentedWidget().addToDashboard());
     }
     

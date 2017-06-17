@@ -21,6 +21,7 @@ import il.ac.technion.cs.smarthouse.system.dashboard.widget.BasicWidget;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
@@ -42,7 +43,7 @@ public class DashboardController extends SystemGuiController {
     private FileSystem filesystem;
     private DashboardCore core;
     
-    private static final double TILE_SIZE = 150;
+    private static final double TILE_SIZE = 200;
     private Map<String,BasicWidget> currentWidgets = new HashMap<>();
     private Integer id = 0;
     
@@ -72,6 +73,7 @@ public class DashboardController extends SystemGuiController {
         
         pane.setBackground(new Background(new BackgroundFill(Tile.BACKGROUND.darker(), null, null)));
         pane.setPrefSize(3000, 3000);
+        pane.setPadding(new Insets(5));
         pane.getChildren().add(addWidgetTile);
     }
 
@@ -101,12 +103,11 @@ public class DashboardController extends SystemGuiController {
     }
 
     private String addWidget(final BasicWidget widget){
-        widget.getTile().setMaxSize(TILE_SIZE, TILE_SIZE);
-        widget.getTile().setMinSize(TILE_SIZE, TILE_SIZE);
+        final String wid = getId();
         widget.getTile().setOnMouseClicked(e -> {
             if(e.getButton().equals(MouseButton.SECONDARY)){
                 final MenuItem deleteOption =  new MenuItem("Delete");
-                deleteOption.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseE -> removeWidget(getId()));
+                deleteOption.setOnAction(e1-> removeWidget(wid));
                 final ContextMenu popup = new ContextMenu();
                 popup.getItems().add(deleteOption);
                 popup.show(widget.getTile(), e.getScreenX(), e.getScreenY());
@@ -114,9 +115,9 @@ public class DashboardController extends SystemGuiController {
         });
         widget.updateAutomaticallyFrom(filesystem);
         
-        currentWidgets.put(getId(), widget);
+        currentWidgets.put(wid, widget);
         pane.getChildren().add(widget.getTile());
-        core.registerWidget(getId(), widget);
+        core.registerWidget(wid, widget);
         
         return incId();
     }

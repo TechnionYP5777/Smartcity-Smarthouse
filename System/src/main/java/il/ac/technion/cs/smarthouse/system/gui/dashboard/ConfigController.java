@@ -121,7 +121,7 @@ public class ConfigController extends SystemGuiController {
 	
 	//------------------ other members -----------------------------------------------------------
 	private static Logger log = LoggerFactory.getLogger(ConfigController.class);
-	private static final Color chosenColor = Color.AQUA, 
+	private static final Color chosenColor = Color.DEEPSKYBLUE, 
 	                            enteredTileColor = Color.BISQUE, 
 	                            normalTileColor = Color.WHITE;
 	//don't change order of lines - timer definition needs to come before initWidgets() call
@@ -130,9 +130,9 @@ public class ConfigController extends SystemGuiController {
 	
 	private ConfigConsumer consumer;
 	private WidgetType chosenType;
-	private final String unitfDefaultText = "(optional)";
-	private final String namefDefaultText = "<name>";
-	private final String pathscbDefaultText = "<choose path>";
+	private final String unitfDefaultText = "(optional)",
+	                            namefDefaultText = "<name>",
+                                pathscbDefaultText = "<choose path>";
 	
 	//------------------ private helper methods --------------------------------------------------
 	private Map<String, List<BasicWidget>> initWidgets() {
@@ -235,8 +235,6 @@ public class ConfigController extends SystemGuiController {
 	}
 
 	private List<String> getAvailablePaths(FileSystem fs){
-//	    return Arrays.asList("foo", "bar");
-	    System.out.println(FileSystemEntries.SENSORS_DATA.buildPath());
 	    return getAvailablePathsInner(fs.getReadOnlyFileSystem(FileSystemEntries.SENSORS_DATA.buildPath()), new ArrayList<>());
 	}
 	
