@@ -9,18 +9,16 @@ import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.gui.applications.ApplicationViewController;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class MainSystemGuiController extends SystemGuiController {
@@ -35,6 +33,8 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML ImageView homePageImageView;
     @FXML HBox homeTabHBox;
     @FXML VBox homeVBox;
+    @FXML Pane dummyPaneLeft;
+    @FXML Pane dummyPaneRight;
 
     @Override
     protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
@@ -43,14 +43,7 @@ public class MainSystemGuiController extends SystemGuiController {
             // home tab:
             homeTab.setContent(homeTabHBox);
             homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
-            homePageImageView.setFitHeight(300);
-            // homePageImageView.fitHeightProperty().bind(homeTabHBox.heightProperty().divide(2));
-//            final BackgroundImage myBI = new BackgroundImage(
-//                            new Image(getClass().getResourceAsStream("/backgrounds/bg_4.png"), 0, 200, false, false),
-//                            BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-//                            BackgroundSize.DEFAULT);
-//            homeTabHBox.setBackground(new Background(myBI));
-
+            homePageImageView.setFitHeight(250);
 
             // user tab:
             userTab.setContent(createChildController("user information.fxml").getRootViewNode());
@@ -61,29 +54,34 @@ public class MainSystemGuiController extends SystemGuiController {
             // applications tab:
             appsPresenterInfo = createChildController("application_view.fxml");
             appsTab.setContent(appsPresenterInfo.getRootViewNode());
-            
-            //Dashboard tab:
+
+            // Dashboard tab:
             dashboardTab.setContent(createChildController("dashboard_ui.fxml").getRootViewNode());
 
+            HBox.setHgrow(dummyPaneLeft, Priority.ALWAYS);
+            HBox.setHgrow(dummyPaneRight, Priority.ALWAYS);
+            HBox.setHgrow(homeVBox, Priority.ALWAYS);
+            homeVBox.setPadding(new Insets(50));
+
             homeVBox.setAlignment(Pos.BASELINE_LEFT);
-            
+
             if (m == SystemMode.DEVELOPER_MODE) {
                 addDescriptionLine("Welcome! You are in Developer Mode.");
-                addDescriptionLine("In this mode you can test your application.");
+                addDescriptionLine("In this mode you can:");
+                addDescriptionLine("- Test your application (\"Applications\" tab).");
+                addDescriptionLine("- View widgets you add (\"Dashboard\" tab).");
             } else {
                 addDescriptionLine("Welcome! You are in User Mode.");
                 addDescriptionLine("In this mode you can:");
-                addDescriptionLine("- Add applications and view them");
-                addDescriptionLine("   (\"applications\" tab).");
-                addDescriptionLine("- Design your own home structure, add");
-                addDescriptionLine("   sensors and view them (\"sensors\" tab).");
-                addDescriptionLine("- Register, add emergency contacts and");
-                addDescriptionLine("   view them (\"user information\" tab).");
+                addDescriptionLine("- Add applications and view them (\"Applications\" tab).");
+                addDescriptionLine("- Design your own home structure, add sensors and view them (\"Sensors\" tab).");
+                addDescriptionLine("- Register, add emergency contacts and view them (\"User Information\" tab).");
+                addDescriptionLine(
+                                "- View specific data collected from the sensors in your Smarthouse, using widgets (\"Dashboard\" tab).");
             }
 
             if (m == SystemMode.DEVELOPER_MODE)
                 tabs.getTabs().removeAll(userTab, sensorsTab);
-
 
         } catch (final Exception ¢) {
             ¢.printStackTrace();

@@ -1,7 +1,6 @@
 package il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations;
 
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.WidgetsRegionBuilder;
-import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.AbstractRegionBuilder.AppBuilderItem;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;

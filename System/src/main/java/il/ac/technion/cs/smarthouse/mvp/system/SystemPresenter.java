@@ -137,6 +137,9 @@ public class SystemPresenter {
             Alert alert = new Alert(AlertType.INFORMATION, "Please select a mode:", userType, devType);
             alert.setTitle("Smarthouse Mode Selection");
             alert.setHeaderText("The Smarthouse has two operation modes.");
+            Stage s = (Stage) alert.getDialogPane().getScene().getWindow();
+            s.getIcons().add(new Image(getClass().getResourceAsStream(APP_LOGO)));
+            s.setOnCloseRequest(e->System.exit(0));
 
             ButtonType response = alert.showAndWait().get();
             if (response != null)

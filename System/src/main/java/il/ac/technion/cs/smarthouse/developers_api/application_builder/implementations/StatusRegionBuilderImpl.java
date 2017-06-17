@@ -95,6 +95,7 @@ public final class StatusRegionBuilderImpl extends AbstractRegionBuilder impleme
 
     private Label createStatusLabel(String s) {
         final Label l = new Label(s);
+        l.setId("AppLabelId");
         l.setFont(Font.font(14));
         return l;
     }
