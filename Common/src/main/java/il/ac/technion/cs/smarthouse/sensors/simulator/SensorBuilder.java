@@ -25,7 +25,7 @@ public class SensorBuilder {
 														genericSensor.getPaths(PathType.INSTRUCTION_RECEIVING)));
 		genericSensor.getSensor().setInstructionHandler((path,inst)->{
 			genericSensor.logInstruction(path,inst);
-			return (iHandler == null)? true :iHandler.applyInstruction(path, inst);
+			return iHandler == null || iHandler.applyInstruction(path, inst);
 		});
 		return genericSensor;
 	}
@@ -57,6 +57,11 @@ public class SensorBuilder {
     
     public SensorBuilder addLogger(PathType t, Consumer<String> logger){
     	genericSensor.addLogger(t, logger);
+    	return this;
+    }
+    
+    public SensorBuilder setPollingInterval(Long milliseconds){
+    	genericSensor.setPollingInterval(milliseconds);
     	return this;
     }
 }

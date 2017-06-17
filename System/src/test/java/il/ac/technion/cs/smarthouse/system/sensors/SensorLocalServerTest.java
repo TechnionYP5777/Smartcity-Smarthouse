@@ -40,13 +40,13 @@ public class SensorLocalServerTest {
     
     final long timeout = 5000;
     @Test(timeout = timeout) public void basicSensorCanConnectTest(){
-        builder.build().sendMessage(new HashMap<>());
+        builder.build().connect();
         assert true; //if you got to this line the sensor have connected
     }
     
     @Test(timeout = timeout)  public void instructionSensorCanConnectTest(){
         builder.addPath(PathType.INSTRUCTION_RECEIVING, "idk", String.class)
-                .build().sendMessage(new HashMap<>());
+                .build().connect();
         assert true; //if you got to this line the sensor have connected
     }
 }

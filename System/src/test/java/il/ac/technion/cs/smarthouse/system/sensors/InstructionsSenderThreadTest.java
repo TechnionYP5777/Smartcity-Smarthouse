@@ -7,6 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
+import il.ac.technion.cs.smarthouse.sensors.PathType;
+import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
+import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -21,39 +24,9 @@ import il.ac.technion.cs.smarthouse.utils.Random;
  */
 public class InstructionsSenderThreadTest {
 
-    private static class TestInteractiveSensor extends InteractiveSensor {
-        Integer numOfInstruction = 0;
+    private static class TestISdata extends SensorData {}
 
-        public TestInteractiveSensor() {
-            super(getCommName(), Random.sensorId(), "MyAlias", Arrays.asList(), Arrays.asList(getInstructionPath()));
-            setInstructionHandler((path, inst) -> {
-                System.out.println("path:" + path + "; inst:" + inst);
-                numOfInstruction += inst.equals(true + "") ? 1 : 0;
-                return true;
-            });
-        }
-
-        public static String getCommName() {
-            return "testSensor";
-        }
-
-        public static String getInstructionPath() {
-            return "acu.state";
-        }
-
-        public Boolean didGetInstruction() {
-            return numOfInstruction > 0;
-        }
-
-        public Integer numOfReceivedInstructions() {
-            return numOfInstruction;
-        }
-    }
-
-    private static class TestISdata extends SensorData {
-
-    }
-
+    Integer numOfInstructionReceived;
     // system
     private FileSystem fileSystem;
     private SensorsLocalServer server;
@@ -61,8 +34,12 @@ public class InstructionsSenderThreadTest {
     private SensorsService sensorsService;
 
     // sensor + app
-    private TestInteractiveSensor sensor;
     private SensorApi<TestISdata> sensorRepresentingObj;
+    private SensorBuilder builder;
+    
+    final String commname = "testSensor";
+    final String instPath = "acu.state";
+
 
     @Before
     public void initSystem() {
@@ -72,8 +49,20 @@ public class InstructionsSenderThreadTest {
         sensorsService = (SensorsService) systemCore.getSystemServiceManager().getService(ServiceType.SENSORS_SERVICE);
         new Thread(server).start();
 
-        sensor = new TestInteractiveSensor();
-        sensorRepresentingObj = sensorsService.getSensor(TestInteractiveSensor.getCommName(), TestISdata.class);
+        numOfInstructionReceived = 0;
+        builder = new SensorBuilder()
+                        .setSensorId(Random.sensorId())
+                        .setAlias("myAlias")
+                        .setCommname(commname)
+                        .addPath(PathType.INSTRUCTION_RECEIVING, instPath, String.class)
+                        .setPollingInterval((long)10)
+                        .setInstructionHandler((path, inst) -> {
+                            if(inst.equals(true + ""))
+                                incNumOfInstructions();
+                            return true;
+                        });
+                        
+        sensorRepresentingObj = sensorsService.getSensor(commname, TestISdata.class);
     }
 
     @After
@@ -82,39 +71,38 @@ public class InstructionsSenderThreadTest {
         Thread.sleep(1000);
     }
 
-    // ------------------------- private helpers
-    // -------------------------------------------
+    // ------------------------- private helpers ------------------------------
     private void instructInc() {
-        sensorRepresentingObj.instruct(true + "", TestInteractiveSensor.getInstructionPath());
+        sensorRepresentingObj.instruct(true + "", instPath);
+    }
+    
+    //instruction verification
+    private void incNumOfInstructions(){
+        ++numOfInstructionReceived;
+    }
+    private Boolean didGetInstruction() {
+        return numOfInstructionReceived > 0;
+    }
+    private Integer numOfReceivedInstructions() {
+        return numOfInstructionReceived;
     }
 
-    private void fullyRegisterSensor() {
-        while (!sensor.register())
-            ;
-        while (!sensor.registerInstructions())
-            ;
-    }
 
-    // ------------------------- tests
-    // -----------------------------------------------------
+    // ------------------------- tests ----------------------------------------
     @Test
-    public void GetsInstuctionOnPathTest() {
-        fullyRegisterSensor();
+    public void GetsInstuctionOnPathTest() throws InterruptedException {
+        builder.build().connect();
         instructInc();
-
-        while (!sensor.operate())
-            ;
-        assert sensor.didGetInstruction();
+        Thread.sleep(100);
+        assert didGetInstruction();
     }
 
     // TODO: move this test to InteractiveSensorTest class [create mutual parent
     // class with initSystem]
     @Test
     public void GetsInstuctionByPollingTest() {
-        fullyRegisterSensor();
-
         final long waitTime = 500;
-        sensor.pollInstructions(waitTime);
+        builder.setPollingInterval(waitTime).build().connect();
 
         final Integer times = 4;
         new Thread(() -> {
@@ -135,18 +123,18 @@ public class InstructionsSenderThreadTest {
             assert false;
         }
 
-        assert sensor.numOfReceivedInstructions() == times;
+        assert numOfReceivedInstructions() == times;
     }
 
     @Test
     public void GetsAlreadyWaitingInstructionTest() {
         instructInc();
 
-        fullyRegisterSensor();
-
-        while (!sensor.operate())
-            ;
-        assert sensor.didGetInstruction();
+        GenericSensor sensor = builder.setPollingInterval((long)10000).build().connect();
+        if(!didGetInstruction())
+            sensor.waitForInstruction();
+                        
+        assert didGetInstruction();
     }
 
 }

@@ -81,6 +81,7 @@ public class GenericSensor {
     private Map<PathType, List<Consumer<String>>> loggers = new HashMap<>();
     private Map<PathType, Map<String,Class>> paths = new HashMap<>();
     private Boolean interactive=false, connected = false;
+    private Long pollInterval = TimeUnit.SECONDS.toMillis(5);
     
     private Map<String, List> LastReceivedRanges;
     
@@ -96,7 +97,7 @@ public class GenericSensor {
     	while(!sensor.register());
     	if(interactive){
     		while(!sensor.registerInstructions());
-    		sensor.pollInstructions(TimeUnit.SECONDS.toMillis(30));
+    		sensor.pollInstructions(pollInterval);
     	}
     	connected = true;
     }
@@ -121,6 +122,10 @@ public class GenericSensor {
         loggers.get(t).add(logger);
     }
     
+    void setPollingInterval(Long milliseconds){
+    	pollInterval = milliseconds;
+    }
+    
     void setSensor(InteractiveSensor s){
     	sensor = s;
     }
@@ -138,7 +143,8 @@ public class GenericSensor {
 
     //------------------------ logging --------------------------------------
     void logInstruction(String path, String inst){
-    	loggers.get(PathType.INSTRUCTION_RECEIVING).forEach(logger -> logger.accept("Received instruction:\n\t"+inst+"\nOn path:\n\t"+path));
+    	Optional.ofNullable(loggers.get(PathType.INSTRUCTION_RECEIVING))
+    			.ifPresent(ls -> ls.forEach(logger -> logger.accept("Received instruction:\n\t"+inst+"\nOn path:\n\t"+path)));
     }
     
     void logMsgSent(Map<String,String> data){
@@ -147,50 +153,12 @@ public class GenericSensor {
     	data.keySet().forEach(path -> $.add("path:"+path+"\tvalue:"+data.get(path)));
     	
     	$.stream().reduce((x,y)-> x+y).ifPresent(
-    			formatedData -> loggers.get(PathType.INSTRUCTION_RECEIVING).forEach(logger -> logger.accept(formatedData)));
-    }
-    
-    //------------------------ public getters -------------------------------
-    public String getCommname() {
-        return sensor.getCommname();
-    }
-
-    
-    public String getId() {
-        return sensor.getId();
-    }
-
-    
-    public String getAlias() {
-        return sensor.getAlias();
-    }
-
-    
-    public List<String> getObservationSendingPaths() {
-        return sensor.getObservationSendingPaths();
-    }
-
-    
-    public List<String> getInstructionRecievingPaths() {
-        return sensor.getInstructionRecievingPaths();
-    }
-    
-  //------------------------ Data sending methods -------------------------
-    
-    /** this method is blocking in the first time it called
-     * */
-    public void sendMessage(Map<String, Object> data){//todo: change to package level?
-    	connectIfNeeded();
-        
-    	if(!paths.containsKey(PathType.INFO_SENDING))
-            return;
-        Map<String, String> d = new HashMap<>();
-        data.keySet().forEach(k -> d.put(k, data.get(k)+""));
-        sensor.updateSystem(d);
-        logMsgSent(d);
+    			formatedData -> Optional.ofNullable(loggers.get(PathType.INSTRUCTION_RECEIVING))
+    									.ifPresent(ls -> ls.forEach(logger -> logger.accept(formatedData))));
     }
     
     
+    //------------------------ Data sending methods -------------------------    
     /** the list object is interperated by the path (key type)
      * if the type is string or boolean, the list contains all the legal values
      * if the type is double or integer, the list contains (low,high) so that low <= legal values < high
@@ -221,6 +189,56 @@ public class GenericSensor {
     	if(LastReceivedRanges == null)
     		return;
     	streamMessages(LastReceivedRanges);
+    }
+    
+    //------------------------ public method -------------------------------
+    /**blocks until an instruction is sent*/
+    public void waitForInstruction(){
+    	while(!sensor.operate());
+    }
+    
+    /**blocking mehtod*/
+    public GenericSensor connect(){
+    	connectIfNeeded();
+    	return this;
+    }
+
+    /** will also connect if sensor not connected yet
+     * */
+    public void sendMessage(Map<String, Object> data){//todo: change to package level?
+    	connectIfNeeded();
+        
+    	if(!paths.containsKey(PathType.INFO_SENDING))
+            return;
+        Map<String, String> d = new HashMap<>();
+        data.keySet().forEach(k -> d.put(k, data.get(k)+""));
+        sensor.updateSystem(d);
+        logMsgSent(d);
+    }
+    
+    
+    public String getCommname() {
+        return sensor.getCommname();
+    }
+
+    
+    public String getId() {
+        return sensor.getId();
+    }
+
+    
+    public String getAlias() {
+        return sensor.getAlias();
+    }
+
+    
+    public List<String> getObservationSendingPaths() {
+        return sensor.getObservationSendingPaths();
+    }
+
+    
+    public List<String> getInstructionRecievingPaths() {
+        return sensor.getInstructionRecievingPaths();
     }
     
 }
