@@ -13,9 +13,15 @@
    			<content>
                <HBox fx:id="homeTabHBox" alignment="CENTER" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                   <children>
-                  <VBox fx:id="homeVBox" prefHeight="371.0" prefWidth="406.0">
+                  <VBox fx:id="homeVBox" prefHeight="371.0" prefWidth="502.0">
                      <children>
-                           <ImageView fx:id="homePageImageView" pickOnBounds="true" preserveRatio="true" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Pane fx:id="dummyPaneLeft" prefHeight="200.0" prefWidth="200.0" />
+                                 <ImageView fx:id="homePageImageView" pickOnBounds="true" preserveRatio="true" />
+                              <Pane fx:id="dummyPaneRight" prefHeight="200.0" prefWidth="200.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                   </children>
