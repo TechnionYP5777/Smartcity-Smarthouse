@@ -29,8 +29,8 @@ public class DashboardWidget extends BasicWidget {
         if (!WidgetType.NEEDLE_DASHBOARD.equals(type))
             super.update(value, key);
         else
-             ((Gauge) getTile().getGraphic()).setValue(value);
-        
+            ((Gauge) getTile().getGraphic()).setValue(value);
+
     }
 
 }

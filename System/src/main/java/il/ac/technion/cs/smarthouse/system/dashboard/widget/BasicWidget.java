@@ -35,23 +35,23 @@ public abstract class BasicWidget {
         data.getInfoEntries().keySet().forEach(path -> updateAutomaticallyFrom(s, path));
     }
 
-    protected Double cast(Object data){
-        String sdata = (String) data;
+    protected Double cast(final Object data) {
+        final String sdata = (String) data;
         try {
             return Double.valueOf(sdata);
-        }catch(NumberFormatException| ClassCastException e){}
+        } catch (NumberFormatException | ClassCastException e) {}
         try {
-            return Integer.valueOf(sdata)+0.0;
-        }catch(NumberFormatException e){}
+            return Integer.valueOf(sdata) + 0.0;
+        } catch (final NumberFormatException e) {}
         try {
-            return Boolean.valueOf(sdata)?1.0:0.0;
-        }catch(NumberFormatException e){}
+            return Boolean.valueOf(sdata) ? 1.0 : 0.0;
+        } catch (final NumberFormatException e) {}
         return null;
-        
+
     }
+
     protected void updateAutomaticallyFrom(final FileSystem s, final String path) {
-        s.subscribe((rPath, data) -> update(cast(data), path),
-                        FileSystemEntries.SENSORS_DATA.buildPath(path));
+        s.subscribe((rPath, data) -> update(cast(data), path), FileSystemEntries.SENSORS_DATA.buildPath(path));
     }
 
     public void update(final Double value, final String key) {
@@ -78,8 +78,8 @@ public abstract class BasicWidget {
         return data;
     }
 
-    public void setSize(double tileSize2) {
+    public void setSize(final double tileSize2) {
         tile.setMaxSize(tileSize2, tileSize2);
-        tile.setMinSize(tileSize2, tileSize2);        
+        tile.setMinSize(tileSize2, tileSize2);
     }
 }

@@ -43,13 +43,13 @@ public class DashboardCore extends ChildCore {
         Widget(final WidgetType type, final InfoCollector pathsInfo, final Double size) {
             widget = type.createWidget(size, pathsInfo);
             widget.updateAutomaticallyFrom(fileSystem);
-            
+
             widget.getTile().setOnMouseClicked(e -> {
-                if(e.getButton().equals(MouseButton.SECONDARY)){
-                    final MenuItem addOpt =  new MenuItem("Add to Dashboard");
-                    final MenuItem removeOpt =  new MenuItem("Remove from Dashboard");
-                    addOpt.setOnAction(e1-> addToDashboard());
-                    removeOpt.setOnAction(e1-> removeFromDashboard());
+                if (e.getButton().equals(MouseButton.SECONDARY)) {
+                    final MenuItem addOpt = new MenuItem("Add to Dashboard");
+                    final MenuItem removeOpt = new MenuItem("Remove from Dashboard");
+                    addOpt.setOnAction(e1 -> addToDashboard());
+                    removeOpt.setOnAction(e1 -> removeFromDashboard());
                     final ContextMenu popup = new ContextMenu();
                     popup.getItems().addAll(addOpt, removeOpt);
                     popup.show(widget.getTile(), e.getScreenX(), e.getScreenY());
@@ -57,7 +57,7 @@ public class DashboardCore extends ChildCore {
             });
         }
 
-        private Widget(Widget other){
+        private Widget(final Widget other) {
             this(other.widget.getType(), other.widget.getInitalInfo(), other.widget.getTileSize());
         }
 
@@ -74,8 +74,8 @@ public class DashboardCore extends ChildCore {
                 deregisterWidget(i); // update end
             });
         }
-        
-        public Tile get(){
+
+        public Tile get() {
             return widget.getTile();
         }
     }
