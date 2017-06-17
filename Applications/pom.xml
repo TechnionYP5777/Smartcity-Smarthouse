@@ -28,6 +28,5 @@
 		<module>Stove</module>
 		<module>Vitals</module>
 		<module>Shutter</module>
-	    <module>Dashboard</module>
  	</modules>
 </project>
