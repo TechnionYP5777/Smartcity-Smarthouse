@@ -41,6 +41,7 @@ public class DashboardCore extends ChildCore {
             widget.updateAutomaticallyFrom(fileSystem);
         }
         
+        // TODO: can backend update be removed? may happen throught the front -- @addToDashboard,removeFromDashboard
         public void addToDashboard(){
             id = DashboardCore.this.widgetPresenter.apply(widget);  //update front
             DashboardCore.this.registerWidget(id, widget);          //update end
@@ -49,15 +50,17 @@ public class DashboardCore extends ChildCore {
         public void removeFromDashboard(){
             Optional.ofNullable(id).ifPresent(i -> {
                 DashboardCore.this.widgetRemover.accept(i);           //update front
-                DashboardCore.this.deregisterWidget(i);             //update end
+                DashboardCore.this.deregisterWidget(i);             //update end 
             });
         }
     }
     
     FileSystem fileSystem;
+    private Map<String, wInfo> widgetsInfo = new HashMap<>();
+    
+    //GUI helpers 
     Function<BasicWidget,String> widgetPresenter;
     Consumer<String> widgetRemover;
-    private Map<String, wInfo> widgetsInfo = new HashMap<>();
     
     public DashboardCore(SystemCore systemCore) {
         super(systemCore); 
@@ -74,7 +77,7 @@ public class DashboardCore extends ChildCore {
         return new Widget(type, pathsInfo, size);
     }
     
-    //-------------------front-end setters------------------------------
+    //-------------------front-end setters---------------------------------------------
     public void setWidgetPresenter(Function<BasicWidget,String> presenter){
         widgetPresenter = presenter;
     }
@@ -82,8 +85,8 @@ public class DashboardCore extends ChildCore {
     public void setWidgetRemover(Consumer<String> remover){
         widgetRemover = remover;
     }
-    
-    //-------------------back-end offered "api"-------------------------
+
+    //-------------------"API" for the gui to inform on front end changes -------------
     public void registerWidget(String id, BasicWidget widget){
         widgetsInfo.put(id, new wInfo(widget));
     }
@@ -91,5 +94,6 @@ public class DashboardCore extends ChildCore {
     public void deregisterWidget(String id){
         widgetsInfo.remove(id);
     }
+    
 
 }

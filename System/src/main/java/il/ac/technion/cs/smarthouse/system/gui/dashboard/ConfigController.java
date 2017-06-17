@@ -19,11 +19,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.hansolo.tilesfx.Tile;
+import il.ac.technion.cs.smarthouse.mvp.GuiController;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
+import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.BasicWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.GraphWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.ListWidget;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem.ReadOnlyFileNode;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -49,7 +57,7 @@ import javafx.scene.text.FontWeight;
  * @author Elia Traore
  * @since Jun 11, 2017
  */
-public class ConfigController implements Initializable {
+public class ConfigController extends SystemGuiController {
 	private class ButtonCell extends TableCell<NamedPath, String> {
         final Button cellButton = new Button("X");
         final ObservableList<NamedPath> data = ConfigController.this.tableData;
@@ -69,7 +77,7 @@ public class ConfigController implements Initializable {
         }
 	}
 
-	public class NamedPath {//todo: wrap in properties
+	public class NamedPath {
 		private String name, path;
 
 		public NamedPath(String name, String path) {
@@ -95,25 +103,27 @@ public class ConfigController implements Initializable {
 		
 	}
 
-	//------------------ members representing the actual config window ---------------------------
-	@FXML public ScrollPane scrollPane;
-	@FXML public ComboBox<String> typesComboBox;
-	@FXML public HBox widgetsHbox;
+	//------------------ GUI element in the config window ----------------------------------------
+	@FXML ScrollPane scrollPane;
+	@FXML ComboBox<String> typesComboBox;
+	@FXML HBox widgetsHbox;
 	
-	@FXML public TableView<NamedPath> table;
-	@FXML public TableColumn<NamedPath, String> nameCol, pathCol, cancelCol;
+	@FXML TableView<NamedPath> table;
+	@FXML TableColumn<NamedPath, String> nameCol, pathCol, cancelCol;
 	private final ObservableList<NamedPath> tableData = FXCollections.observableArrayList();
 	
-	@FXML public TextField nameField;
-	@FXML public ComboBox<String> sysPathsComboBox;
-	@FXML public TextField unitField;
-	@FXML public Button addPathBtn;
+	@FXML TextField nameField;
+	@FXML ComboBox<String> sysPathsComboBox;
+	@FXML TextField unitField;
+	@FXML Button addPathBtn;
 	
-	@FXML public Button okBtn, cancelBtn;
+	@FXML Button okBtn, cancelBtn;
 	
 	//------------------ other members -----------------------------------------------------------
 	private static Logger log = LoggerFactory.getLogger(ConfigController.class);
-	private static final Color chosenColor = Color.AQUA, enteredTileColor = Color.BISQUE, normalTileColor = Color.WHITE;
+	private static final Color chosenColor = Color.AQUA, 
+	                            enteredTileColor = Color.BISQUE, 
+	                            normalTileColor = Color.WHITE;
 	//don't change order of lines - timer definition needs to come before initWidgets() call
 	private final Map<String, List<AnimationTimer>> timers = new HashMap<>();
 	private final Map<String, List<BasicWidget>> widgets = initWidgets();
@@ -122,8 +132,9 @@ public class ConfigController implements Initializable {
 	private WidgetType chosenType;
 	private final String unitfDefaultText = "(optional)";
 	private final String namefDefaultText = "<name>";
+	private final String pathscbDefaultText = "<choose path>";
 	
-	//------------------ private methods ---------------------------------------------------------
+	//------------------ private helper methods --------------------------------------------------
 	private Map<String, List<BasicWidget>> initWidgets() {
 		Map<String, List<BasicWidget>> widgets = new HashMap<>();
 		InfoCollector info = new InfoCollector()
@@ -190,7 +201,8 @@ public class ConfigController implements Initializable {
 			t.setForegroundBaseColor(chosenColor);
 		});
 	}
-	
+
+	// --------
 	private static void setDefaultText(final TextField f, final String defaultText){
 		f.focusedProperty().addListener((obsr, oldV, newV)->{
 			if(Arrays.asList(defaultText, "").contains(f.getText()))
@@ -207,70 +219,101 @@ public class ConfigController implements Initializable {
 	
 	private InfoCollector getCollectedInfo(){
 		InfoCollector c = new InfoCollector();
+		
 		if(!unitfDefaultText.equals(unitField.getText()))
 			c.setUnit(unitField.getText());
+		
 		List<String> badNames = Arrays.asList(namefDefaultText, "", null);
 		tableData.forEach(namedPath -> {
-			String actualname = badNames.contains(namedPath.getName())? null : namedPath.getName();
-			c.addInfoEntry(namedPath.getPath(), actualname);
+			if(!pathscbDefaultText.equals(namedPath.getPath())){
+			    String actualname = badNames.contains(namedPath.getName())? null : namedPath.getName();
+			    c.addInfoEntry(namedPath.getPath(), actualname);
+			}
 		});
+		
 		return c;
 	}
 
-	//------------------ public methods ----------------------------------------------------------
-	/* (non-Javadoc)
-	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
-	 */
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		//widgets
-		typesComboBox.setItems(FXCollections.observableArrayList(widgets.keySet()));
-		typesComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-			Optional.ofNullable(timers.get(newValue)).ifPresent(l -> l.stream().forEach(t -> t.start()));
-			widgetsHbox.getChildren()
-					.setAll(widgets.get(newValue).stream().map(BasicWidget::getTile).collect(Collectors.toList()));
-			Optional.ofNullable(timers.get(oldValue)).ifPresent(l -> l.stream().forEach(t -> t.stop()));
-			Optional.ofNullable(widgets.get(oldValue))
-					.ifPresent(l -> l.stream().forEach(w -> w.getTile().setForegroundBaseColor(normalTileColor)));
-		});
-		widgetsHbox.setSpacing(5);
-		scrollPane.setContent(widgetsHbox);
-		scrollPane.setFitToWidth(true);
-		
-		//path fields
-		table.setItems(tableData);
-		nameCol.setCellValueFactory(new PropertyValueFactory<NamedPath,String>("name"));
-		pathCol.setCellValueFactory(new PropertyValueFactory<NamedPath,String>("path"));
-		cancelCol.setCellValueFactory(namedpath -> new SimpleStringProperty(""));
-		cancelCol.setCellFactory(namedpath -> new ButtonCell());
-		
-		sysPathsComboBox.setOnMouseClicked(e -> addPathBtn.setVisible(true));
-		setDefaultText(nameField, namefDefaultText );
-		nameField.setOnMouseClicked(e -> addPathBtn.setVisible(true));
-		addPathBtn.setOnMouseClicked(e -> {
-			if(sysPathsComboBox.getSelectionModel().getSelectedIndex() != 0){
-				tableData.add(new NamedPath(nameField.getText(), sysPathsComboBox.getSelectionModel().getSelectedItem()));
-				addPathBtn.setVisible(false);
-			}
-		});
-		setDefaultText(unitField, unitfDefaultText);
-		
-		//final buttons
-		okBtn.setOnMouseClicked(e ->{
-			if (consumer != null)
-				Platform.runLater(()->consumer.create(chosenType, getCollectedInfo()));
-			shutdownFrom(okBtn);
-		});
-		
-		cancelBtn.setOnMouseClicked(e -> shutdownFrom(cancelBtn));
+	private List<String> getAvailablePaths(FileSystem fs){
+//	    return Arrays.asList("foo", "bar");
+	    System.out.println(FileSystemEntries.SENSORS_DATA.buildPath());
+	    return getAvailablePathsInner(fs.getReadOnlyFileSystem(FileSystemEntries.SENSORS_DATA.buildPath()), new ArrayList<>());
 	}
 	
-	public void setListenablePaths(String ... paths){
-		sysPathsComboBox.setItems(FXCollections.observableArrayList(paths));
-		sysPathsComboBox.getItems().add(0, "<choose path>");
-		sysPathsComboBox.getSelectionModel().selectFirst();
+	private List<String> getAvailablePathsInner(ReadOnlyFileNode n, List<String> ss) {
+        
+        if (n.isLeaf())
+            return ss;
+        
+        List<String> l = PathBuilder.decomposePath(n.getFullPath());
+        ss.add(PathBuilder.buildPath(l.subList(1, l.size())));
+        
+        n.getChildren().forEach(c->ss.addAll(getAvailablePathsInner(c, new ArrayList<>())));
+        return ss;
+    }
+
+    //------------------ GUI elements initializers -----------------------------------------------	
+	private void initWidgetsRegion(){
+        //widgets
+        typesComboBox.setItems(FXCollections.observableArrayList(widgets.keySet()));
+        typesComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+            Optional.ofNullable(timers.get(newValue)).ifPresent(l -> l.stream().forEach(t -> t.start()));
+            widgetsHbox.getChildren()
+                    .setAll(widgets.get(newValue).stream().map(BasicWidget::getTile).collect(Collectors.toList()));
+            Optional.ofNullable(timers.get(oldValue)).ifPresent(l -> l.stream().forEach(t -> t.stop()));
+            Optional.ofNullable(widgets.get(oldValue))
+                    .ifPresent(l -> l.stream().forEach(w -> w.getTile().setForegroundBaseColor(normalTileColor)));
+        });
+        widgetsHbox.setSpacing(5);
+        scrollPane.setContent(widgetsHbox);
+        scrollPane.setFitToWidth(true);
 	}
 	
+	private void initPathDataAddingRegion(SystemCore model){
+        //path fields
+        table.setItems(tableData);
+        nameCol.setCellValueFactory(new PropertyValueFactory<NamedPath,String>("name"));
+        pathCol.setCellValueFactory(new PropertyValueFactory<NamedPath,String>("path"));
+        cancelCol.setCellValueFactory(namedpath -> new SimpleStringProperty(""));
+        cancelCol.setCellFactory(namedpath -> new ButtonCell());
+        
+        sysPathsComboBox.setItems(FXCollections.observableArrayList(getAvailablePaths(model.getFileSystem())));
+        sysPathsComboBox.getItems().set(0, pathscbDefaultText);
+        sysPathsComboBox.getSelectionModel().selectFirst();
+        sysPathsComboBox.setOnMouseClicked(e -> addPathBtn.setVisible(true));
+        setDefaultText(nameField, namefDefaultText );
+        nameField.setOnMouseClicked(e -> addPathBtn.setVisible(true));
+        addPathBtn.setOnMouseClicked(e -> {
+            if(sysPathsComboBox.getSelectionModel().getSelectedIndex() != 0){
+                tableData.add(new NamedPath(nameField.getText(), sysPathsComboBox.getSelectionModel().getSelectedItem()));
+                addPathBtn.setVisible(false);
+            }
+        });
+        setDefaultText(unitField, unitfDefaultText);
+	}
+	
+	private void initExitButtonsRegion(){
+        //final buttons
+        okBtn.setOnMouseClicked(e ->{
+            if (consumer != null)
+                Platform.runLater(()->consumer.create(chosenType, getCollectedInfo()));
+            shutdownFrom(okBtn);
+        });
+        
+        cancelBtn.setOnMouseClicked(e -> shutdownFrom(cancelBtn));
+	}
+	
+    @Override
+    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model1, T parent1,
+                    SystemMode extraData1, URL location, ResourceBundle b) {
+        initWidgetsRegion();
+        
+        initPathDataAddingRegion(model1);
+        
+        initExitButtonsRegion();        
+    }
+	
+    //------------------ public methods ----------------------------------------------------------
 	public void setConfigConsumer(ConfigConsumer cc) {
 		consumer = cc;
 	}

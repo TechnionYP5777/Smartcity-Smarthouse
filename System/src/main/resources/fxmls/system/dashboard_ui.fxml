@@ -6,12 +6,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="550.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="il.ac.technion.cs.smarthouse.system.gui.dashboard.DashboardController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="il.ac.technion.cs.smarthouse.system.gui.dashboard.DashboardController">
   <children>
-    <ScrollPane prefHeight="395.9998779296875" prefWidth="550.0">
+    <ScrollPane layoutX="0.0" layoutY="0.0">
       <content>
-        <FlowPane fx:id="pane" hgap="5.0" orientation="HORIZONTAL" prefHeight="393.0" prefWidth="550.0" vgap="5.0" />
+        <FlowPane fx:id="pane" hgap="5.0" orientation="HORIZONTAL" vgap="5.0" />
       </content>
     </ScrollPane>
   </children>
-</VBox>
+</AnchorPane>
