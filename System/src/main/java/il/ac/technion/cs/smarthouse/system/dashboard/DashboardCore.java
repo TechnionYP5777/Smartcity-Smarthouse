@@ -82,6 +82,7 @@ public class DashboardCore extends ChildCore {
 
     FileSystem fileSystem;
     private final Map<String, wInfo> widgetsInfo = new HashMap<>();
+    private Boolean waitingToBePresented;
 
     // GUI helpers
     Function<BasicWidget, String> widgetPresenter;
@@ -95,8 +96,7 @@ public class DashboardCore extends ChildCore {
     @Override
     public void populate(final String jsonString) throws Exception {
         super.populate(jsonString);
-        // todo: is gui initialized at this point?
-        widgetsInfo.values().forEach(winfo -> winfo.getRepresentedWidget().addToDashboard());
+        waitingToBePresented = false;
     }
 
     public Widget createWidget(final WidgetType t, final InfoCollector pathsInfo, final Double size) {
@@ -107,6 +107,10 @@ public class DashboardCore extends ChildCore {
     // setters---------------------------------------------
     public void setWidgetPresenter(final Function<BasicWidget, String> presenter) {
         widgetPresenter = presenter;
+        if(Boolean.TRUE.equals(waitingToBePresented)){
+            widgetsInfo.values().forEach(winfo -> winfo.getRepresentedWidget().addToDashboard());
+            waitingToBePresented = false;
+        }
     }
 
     public void setWidgetRemover(final Consumer<String> remover) {
