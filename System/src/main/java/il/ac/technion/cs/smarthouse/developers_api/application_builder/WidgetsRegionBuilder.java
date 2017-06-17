@@ -1,6 +1,5 @@
 package il.ac.technion.cs.smarthouse.developers_api.application_builder;
 
-import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 
