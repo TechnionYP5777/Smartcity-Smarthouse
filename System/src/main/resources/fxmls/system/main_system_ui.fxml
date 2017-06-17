@@ -13,8 +13,11 @@
    			<content>
                <HBox fx:id="homeTabHBox" alignment="CENTER" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                   <children>
-                     <ImageView fx:id="homePageImageView" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="descriptionLabel" />
+                  <VBox fx:id="homeVBox" prefHeight="371.0" prefWidth="406.0">
+                     <children>
+                           <ImageView fx:id="homePageImageView" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </VBox>
                   </children>
                </HBox>
    			</content>

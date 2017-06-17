@@ -338,7 +338,13 @@ public class FileSystemImpl implements FileSystem, Savable {
     
     @Override
     public ReadOnlyFileNode getReadOnlyFileSystem(String... path) {
-        return new ReadOnlyFileNodeImpl(fileSystemWalk(false, null, path).fileNode);
+        String name = "";
+        if (path.length > 0) {
+            List<String> l = PathBuilder.decomposePath(path);
+            name = l.get(l.size() - 1);
+        }
+        
+        return new ReadOnlyFileNodeImpl(Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).orElse(new FileNode(name)));
     }
 
     // ------------------------------------------------

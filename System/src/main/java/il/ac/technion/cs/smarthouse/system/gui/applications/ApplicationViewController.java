@@ -58,10 +58,10 @@ public class ApplicationViewController extends SystemGuiController {
         initPlusBtn();
 
         updateListView();
-        
+
         initMode(m);
     }
-    
+
     private void initMode(SystemMode m) {
         switch (m) {
             case DEVELOPER_MODE:
