@@ -22,7 +22,7 @@ import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
  * @author Elia Traore
  * @since Jun 17, 2017
  */
-class GenericSensor {
+class GenericSensor {	
 	private static Logger log = LoggerFactory.getLogger(GenericSensor.class);
 
 	@SuppressWarnings("rawtypes")
@@ -134,7 +134,7 @@ class GenericSensor {
     InteractiveSensor getSensor(){
     	return sensor;
     }
-    
+
     //------------------------ logging --------------------------------------
     void logInstruction(String path, String inst){
     	loggers.get(PathType.INSTRUCTIONS).forEach(logger -> logger.accept("Received instruction:\n\t"+inst+"\nOn path:\n\t"+path));
@@ -176,7 +176,8 @@ class GenericSensor {
     
   //------------------------ Data sending methods -------------------------
     
-    //------------------------ msg sending ----------------------------------
+    /** this method is blocking in the first time it called
+     * */
     public void sendMessage(Map<String, Object> data){//todo: change to package level?
     	connectIfNeeded();
         
@@ -220,7 +221,5 @@ class GenericSensor {
     		return;
     	streamMessages(LastReceivedRanges);
     }
-        
-    //------------------------ loggers --------------------------------------
-
+    
 }
