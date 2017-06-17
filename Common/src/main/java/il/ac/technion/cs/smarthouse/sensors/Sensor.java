@@ -31,7 +31,7 @@ import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMes
  * @author Yarden
  * @since 7.12.16
  */
-public abstract class Sensor {
+public class Sensor {
     private static Logger log = LoggerFactory.getLogger(Sensor.class);
 
     protected static final int SYSTEM_PORT = 40001;

@@ -24,7 +24,7 @@ import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMes
  * @author Yarden
  * @since 31.3.17
  */
-public abstract class InteractiveSensor extends Sensor {
+public class InteractiveSensor extends Sensor {
     private static Logger log = LoggerFactory.getLogger(InteractiveSensor.class);
 
     protected static final int INSTRACTIONS_PORT = 40002;
