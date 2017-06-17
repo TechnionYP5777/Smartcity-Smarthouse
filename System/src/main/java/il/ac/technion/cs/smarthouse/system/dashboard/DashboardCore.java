@@ -6,10 +6,14 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import eu.hansolo.tilesfx.Tile;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.BasicWidget;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
 
 public class DashboardCore extends ChildCore {
     private class wInfo {
@@ -39,6 +43,18 @@ public class DashboardCore extends ChildCore {
         Widget(final WidgetType type, final InfoCollector pathsInfo, final Double size) {
             widget = type.createWidget(size, pathsInfo);
             widget.updateAutomaticallyFrom(fileSystem);
+            
+            widget.getTile().setOnMouseClicked(e -> {
+                if(e.getButton().equals(MouseButton.SECONDARY)){
+                    final MenuItem addOpt =  new MenuItem("Add to Dashboard");
+                    final MenuItem removeOpt =  new MenuItem("Remove from Dashboard");
+                    addOpt.setOnAction(e1-> addToDashboard());
+                    removeOpt.setOnAction(e1-> removeFromDashboard());
+                    final ContextMenu popup = new ContextMenu();
+                    popup.getItems().addAll(addOpt, removeOpt);
+                    popup.show(widget.getTile(), e.getScreenX(), e.getScreenY());
+                }
+            });
         }
 
         // TODO: can backend update be removed? may happen throught the front --
@@ -53,6 +69,10 @@ public class DashboardCore extends ChildCore {
                 widgetRemover.accept(i); // update front
                 deregisterWidget(i); // update end
             });
+        }
+        
+        public Tile get(){
+            return widget.getTile();
         }
     }
 
