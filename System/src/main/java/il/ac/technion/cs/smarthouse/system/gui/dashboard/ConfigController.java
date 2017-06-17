@@ -168,10 +168,10 @@ public class ConfigController extends SystemGuiController {
 				if (now > lastTimerCall + 500_000_000) {
 					if (isGraph){
 						final GraphWidget realW = (GraphWidget)widget;
-						realW.getUpdateKeys().forEach(key -> realW.update(RND.nextInt(100), key));
+						realW.getUpdateKeys().forEach(key -> realW.update(RND.nextInt(100)+0.0, key));
 					}else if(isList){
 						final ListWidget realW = (ListWidget)widget;
-						realW.getUpdateKeys().forEach(key -> realW.update(RND.nextInt(100), key));
+						realW.getUpdateKeys().forEach(key -> realW.update(RND.nextInt(100)+0.0, key));
 					}else
 						widget.update(RND.nextDouble() * 100, null);
 					lastTimerCall = now;

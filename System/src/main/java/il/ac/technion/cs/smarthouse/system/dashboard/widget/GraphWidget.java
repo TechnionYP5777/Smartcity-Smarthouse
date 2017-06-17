@@ -44,7 +44,7 @@ public class GraphWidget extends BasicWidget {
     }
 
     @Override
-    public void update(final Number value, final String key) {
+    public void update(final Double value, final String key) {
         if (WidgetType.PROGRESS_LINE_GRAPH.equals(type))
             super.update(value, key);
         if (!dataSeries.containsKey(key))

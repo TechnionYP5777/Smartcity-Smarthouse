@@ -55,15 +55,14 @@ public class ListWidget extends BasicWidget {
     }
 
     @Override
-    public void update(final Number value, final String key) {
+    public void update(final Double value, final String key) {
         final String name = namedPaths.get(key);
-        final double val = value.doubleValue();
         if (WidgetType.BAR_CHART.equals(type))
             getTile().getBarChartItems().stream().filter(item -> item.getName().equals(name))
-                            .forEach(v -> v.setValue(val));
+                            .forEach(v -> v.setValue(value));
         if (WidgetType.LEAD_CHART.equals(type))
             getTile().getLeaderBoardItems().stream().filter(item -> item.getName().equals(name)).findFirst()
-                            .ifPresent(v -> v.setValue(val));
+                            .ifPresent(v -> v.setValue(value));
     }
 
     public Set<String> getUpdateKeys() {

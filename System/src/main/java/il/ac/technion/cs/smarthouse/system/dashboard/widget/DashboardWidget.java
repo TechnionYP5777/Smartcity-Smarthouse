@@ -25,11 +25,12 @@ public class DashboardWidget extends BasicWidget {
     }
 
     @Override
-    public void update(final Number value, final String key) {
+    public void update(final Double value, final String key) {
         if (!WidgetType.NEEDLE_DASHBOARD.equals(type))
             super.update(value, key);
         else
-            ((Gauge) getTile().getGraphic()).setValue((double) value);
+             ((Gauge) getTile().getGraphic()).setValue(value);
+        
     }
 
 }
