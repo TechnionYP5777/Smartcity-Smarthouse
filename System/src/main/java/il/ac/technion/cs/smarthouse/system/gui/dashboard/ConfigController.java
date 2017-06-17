@@ -234,7 +234,10 @@ public class ConfigController extends SystemGuiController {
 	}
 
 	private List<String> getAvailablePaths(final FileSystem fs){
-	    return getAvailablePathsInner(fs.getReadOnlyFileSystem(FileSystemEntries.SENSORS_DATA.buildPath()), new ArrayList<>());
+	    List<String> $ =  getAvailablePathsInner(fs.getReadOnlyFileSystem(FileSystemEntries.SENSORS_DATA.buildPath()), new ArrayList<>());
+	    if($.isEmpty())
+	        $.add("");
+	    return $;
 	}
 	
 	private List<String> getAvailablePathsInner(final ReadOnlyFileNode n, final List<String> ss) {

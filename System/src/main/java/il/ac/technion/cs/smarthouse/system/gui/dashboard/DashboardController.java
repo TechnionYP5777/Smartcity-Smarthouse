@@ -86,7 +86,8 @@ public class DashboardController extends SystemGuiController {
             stage.setScene(new Scene(configController.getRootViewNode()));
             stage.show();
         } catch (final Exception $) {
-            log.error("failed to open widget configuration window, got:\n\t"+$);
+            log.error("Failed to open widget configuration window, as a result of:\n\t"+$);
+            throw new RuntimeException();
         }
     }
     
@@ -114,7 +115,7 @@ public class DashboardController extends SystemGuiController {
         widget.setSize(TILE_SIZE);
         
         currentWidgets.put(wid, widget);
-        pane.getChildren().add(widget.getTile());
+        pane.getChildren().add(pane.getChildren().indexOf(addWidgetTile),widget.getTile());
         core.registerWidget(wid, widget);
         
         return incId();
