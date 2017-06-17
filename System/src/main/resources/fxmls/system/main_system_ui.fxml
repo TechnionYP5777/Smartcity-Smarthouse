@@ -9,7 +9,7 @@
 
 <TabPane fx:id="tabs" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGuiController">
 	<tabs>
-		<Tab fx:id="homeTab" text="home screen">
+		<Tab fx:id="homeTab" text="Home">
    			<content>
                <HBox fx:id="homeTabHBox" alignment="CENTER" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                   <children>
@@ -28,8 +28,9 @@
                </HBox>
    			</content>
         </Tab>
-		<Tab fx:id="appsTab" text="applications" />
-		<Tab fx:id="sensorsTab" text="sensors" />
-		<Tab fx:id="userTab" text="user information" />
+		<Tab fx:id="appsTab" text="Applications" />
+		<Tab fx:id="sensorsTab" text="Sensors" />
+		<Tab fx:id="userTab" text="User Information" />
+		<Tab fx:id="dashboardTab" text="Dashboard" />
 	</tabs>
 </TabPane>

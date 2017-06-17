@@ -8,6 +8,8 @@ import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRang
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
+import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
+import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
@@ -58,6 +60,15 @@ public class StoveModuleGui extends SmarthouseApplication {
         
         timer.addOnDataChangedListener(c);
         temps.addOnDataChangedListener(c);
+        
+        getAppBuilder().getWidgetsRegionBuilder()
+                        .addWidget(WidgetType.BASIC_DASHBOARD, 
+                                   new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
+                        .addWidget(WidgetType.LINES_GRAPH, 
+                                    new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
+                        .addWidget(WidgetType.BASIC_DASHBOARD, 
+                                        new InfoCollector().setUnit("Boolean").addInfoEntry("stove.is_on", "isOn"));
+
     }
 
     @Override public String getApplicationName() {

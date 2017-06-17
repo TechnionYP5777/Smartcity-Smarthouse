@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="il.ac.technion.cs.smarthouse.system.gui.dashboard.DashboardController">
+  <children>
+    <ScrollPane layoutX="0.0" layoutY="0.0">
+      <content>
+        <FlowPane fx:id="pane" hgap="5.0" orientation="HORIZONTAL" vgap="5.0" />
+      </content>
+    </ScrollPane>
+  </children>
+</AnchorPane>

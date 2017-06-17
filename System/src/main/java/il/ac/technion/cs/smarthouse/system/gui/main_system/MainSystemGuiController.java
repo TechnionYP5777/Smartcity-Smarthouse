@@ -29,6 +29,7 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML Tab userTab;
     @FXML Tab appsTab;
     @FXML Tab sensorsTab;
+    @FXML Tab dashboardTab;
     @FXML ImageView homePageImageView;
     @FXML HBox homeTabHBox;
     @FXML VBox homeVBox;
@@ -54,10 +55,14 @@ public class MainSystemGuiController extends SystemGuiController {
             appsPresenterInfo = createChildController("application_view.fxml");
             appsTab.setContent(appsPresenterInfo.getRootViewNode());
 
+            // Dashboard tab:
+            dashboardTab.setContent(createChildController("dashboard_ui.fxml").getRootViewNode());
+
             HBox.setHgrow(dummyPaneLeft, Priority.ALWAYS);
             HBox.setHgrow(dummyPaneRight, Priority.ALWAYS);
             HBox.setHgrow(homeVBox, Priority.ALWAYS);
             homeVBox.setPadding(new Insets(50));
+
             homeVBox.setAlignment(Pos.BASELINE_LEFT);
 
             if (m == SystemMode.DEVELOPER_MODE) {
@@ -66,13 +71,15 @@ public class MainSystemGuiController extends SystemGuiController {
             } else {
                 addDescriptionLine("Welcome! You are in User Mode.");
                 addDescriptionLine("In this mode you can:");
-                addDescriptionLine("- Add applications and view them (\"applications\" tab).");
-                addDescriptionLine("- Design your own home structure, add sensors and view them (\"sensors\" tab).");
-                addDescriptionLine("- Register, add emergency contacts and view them (\"user information\" tab).");
+                addDescriptionLine("- Add applications and view them (\"Applications\" tab).");
+                addDescriptionLine("- Design your own home structure, add sensors and view them (\"Sensors\" tab).");
+                addDescriptionLine("- Register, add emergency contacts and view them (\"User Information\" tab).");
+                addDescriptionLine(
+                                "- View specific data collected from the sensors in your Smarthouse, using widgets (\"Dashboard\" tab).");
             }
 
             if (m == SystemMode.DEVELOPER_MODE)
-                tabs.getTabs().removeAll(userTab, sensorsTab);
+                tabs.getTabs().removeAll(userTab, sensorsTab, dashboardTab);
 
         } catch (final Exception ¢) {
             ¢.printStackTrace();
