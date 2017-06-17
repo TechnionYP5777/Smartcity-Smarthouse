@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse.developers_api;
 
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.AppBuilder;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.AppBuilderImpl;
+import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.WidgetsRegionBuilderImpl;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenter;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemPresenterFactory;
@@ -56,6 +57,8 @@ public abstract class SmarthouseApplication {
         systemCore = $;
 
         this.applicationId = applicationId;
+        
+        ((WidgetsRegionBuilderImpl) getAppBuilder().getWidgetsRegionBuilder()).setDashboardCore(systemCore.getSystemDashboardCore());
 
         return this;
     }

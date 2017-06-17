@@ -6,6 +6,7 @@ import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore.Widget;
+import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 
@@ -32,6 +33,9 @@ public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implem
 
     private void initWidgetPane(){
         widgetsHbox = new HBox();
+        widgetsHbox.setSpacing(5);
+        widgetsHbox.setPadding(new Insets(5));
+        
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(widgetsHbox);
         scrollPane.setFitToWidth(true);
@@ -39,7 +43,7 @@ public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implem
         addAppBuilderItem(new AppBuilderItem(null, widgetsHbox));
     }
     
-    @Override
+//    @Override
     public WidgetsRegionBuilder setDashboardCore(DashboardCore core){
         this.core = core;
         return this;

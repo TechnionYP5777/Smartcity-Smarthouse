@@ -111,6 +111,7 @@ public class DashboardController extends SystemGuiController {
             }
         });
         widget.updateAutomaticallyFrom(filesystem);
+        widget.setSize(TILE_SIZE);
         
         currentWidgets.put(wid, widget);
         pane.getChildren().add(widget.getTile());

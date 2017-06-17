@@ -47,8 +47,7 @@ public abstract class BasicWidget {
     public Tile getTile() {
         if (tile == null) {
             tile = builder.build();
-            tile.setMaxSize(getTileSize(), getTileSize());
-            tile.setMinSize(getTileSize(), getTileSize());
+            setSize(getTileSize());
         }
         return tile;
     }
@@ -63,5 +62,10 @@ public abstract class BasicWidget {
 
     public InfoCollector getInitalInfo() {
         return data;
+    }
+
+    public void setSize(double tileSize2) {
+        tile.setMaxSize(tileSize2, tileSize2);
+        tile.setMinSize(tileSize2, tileSize2);        
     }
 }
