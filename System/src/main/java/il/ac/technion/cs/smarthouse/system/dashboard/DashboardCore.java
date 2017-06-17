@@ -57,10 +57,14 @@ public class DashboardCore extends ChildCore {
             });
         }
 
+        private Widget(Widget other){
+            this(other.widget.getType(), other.widget.getInitalInfo(), other.widget.getTileSize());
+        }
+
         // TODO: can backend update be removed? may happen throught the front --
         // @addToDashboard,removeFromDashboard
         public void addToDashboard() {
-            id = widgetPresenter.apply(widget); // update front
+            id = widgetPresenter.apply(new Widget(this).widget); // update front
             registerWidget(id, widget); // update end
         }
 
