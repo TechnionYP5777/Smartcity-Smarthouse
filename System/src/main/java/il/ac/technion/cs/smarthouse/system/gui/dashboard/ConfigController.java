@@ -28,30 +28,29 @@ import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.BasicWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.GraphWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.ListWidget;
-import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem.ReadOnlyFileNode;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import javafx.util.Callback;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 /**
  * @author Elia Traore
@@ -60,27 +59,27 @@ import javafx.scene.text.FontWeight;
 public class ConfigController extends SystemGuiController {
 	private class ButtonCell extends TableCell<NamedPath, String> {
         final Button cellButton = new Button("X");
-        final ObservableList<NamedPath> data = ConfigController.this.tableData;
+        final ObservableList<NamedPath> data = tableData;
         
         ButtonCell(){
-        	Font oldFont = cellButton.getFont();
+        	final Font oldFont = cellButton.getFont();
         	cellButton.setFont(Font.font(oldFont.getFamily(), FontWeight.BOLD, oldFont.getSize()));
             cellButton.setOnAction(e->{
-            	NamedPath path = (NamedPath) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+            	final NamedPath path = ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
             	data.remove(path);
             });
         }
 
-        @Override protected void updateItem(String item, boolean empty) {
+        @Override protected void updateItem(final String item, final boolean empty) {
         	super.updateItem(item, empty);
-        	this.setGraphic(empty? null : cellButton); //Display button if the row is not empty
+        	setGraphic(empty? null : cellButton); //Display button if the row is not empty
         }
 	}
 
 	public class NamedPath {
 		private String name, path;
 
-		public NamedPath(String name, String path) {
+		public NamedPath(final String name, final String path) {
 			this.name = name;
 			this.path = path;
 		}
@@ -93,11 +92,11 @@ public class ConfigController extends SystemGuiController {
 			return path;
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
-		public void setPath(String path) {
+		public void setPath(final String path) {
 			this.path = path;
 		}
 		
@@ -136,16 +135,16 @@ public class ConfigController extends SystemGuiController {
 	
 	//------------------ private helper methods --------------------------------------------------
 	private Map<String, List<BasicWidget>> initWidgets() {
-		Map<String, List<BasicWidget>> widgets = new HashMap<>();
-		InfoCollector info = new InfoCollector()
+		final Map<String, List<BasicWidget>> widgets = new HashMap<>();
+		final InfoCollector info = new InfoCollector()
 									.addInfoEntry("path.to.foo","foo")
 									.addInfoEntry("path.to.bar", "bar")
 									.setUnit("m/s");
-		Double tileSize = 150.0;
+		final Double tileSize = 150.0;
 		Stream.of(WidgetType.values()).forEach(type ->{
-			Optional<BasicWidget> nullableWidget = Optional.ofNullable(type.createWidget(tileSize, info));
+			final Optional<BasicWidget> nullableWidget = Optional.ofNullable(type.createWidget(tileSize, info));
 			nullableWidget.ifPresent(widget ->{
-				List<BasicWidget> newlist = widgets.getOrDefault(widget.getTitle(), new ArrayList<>());
+				final List<BasicWidget> newlist = widgets.getOrDefault(widget.getTitle(), new ArrayList<>());
 				newlist.add(widget);
 				widgets.put(widget.getTitle(), newlist);
 				addWidgetTimer(widget);
@@ -156,8 +155,8 @@ public class ConfigController extends SystemGuiController {
 	}
 	
 	private void addWidgetTimer(final BasicWidget widget) {
-		String key = widget.getTitle();
-		List<AnimationTimer> where = timers.getOrDefault(key, new ArrayList<>());
+		final String key = widget.getTitle();
+		final List<AnimationTimer> where = timers.getOrDefault(key, new ArrayList<>());
 		where.add(new AnimationTimer() {
 
 			private long lastTimerCall;
@@ -165,13 +164,13 @@ public class ConfigController extends SystemGuiController {
 			final Boolean isGraph = key.equals(new GraphWidget(WidgetType.AREA_GRAPH, widget.getTileSize(), widget.getInitalInfo()).getTitle());
 			final Boolean isList = key.equals(new ListWidget(WidgetType.BAR_CHART, widget.getTileSize(), widget.getInitalInfo()).getTitle());
 			@Override
-			public void handle(long now) {
+			public void handle(final long now) {
 				if (now > lastTimerCall + 500_000_000) {
 					if (isGraph){
-						GraphWidget realW = (GraphWidget)widget;
+						final GraphWidget realW = (GraphWidget)widget;
 						realW.getUpdateKeys().forEach(key -> realW.update(RND.nextInt(100), key));
 					}else if(isList){
-						ListWidget realW = (ListWidget)widget;
+						final ListWidget realW = (ListWidget)widget;
 						realW.getUpdateKeys().forEach(key -> realW.update(RND.nextInt(100), key));
 					}else
 						widget.update(RND.nextDouble() * 100, null);
@@ -185,7 +184,7 @@ public class ConfigController extends SystemGuiController {
 	}
 	
 	private void setWidgetColorListeners(final BasicWidget widget) {
-		Tile t = widget.getTile();
+		final Tile t = widget.getTile();
 		t.setOnMouseEntered(e -> {
 			if (!chosenColor.equals(t.getForegroundColor()))
 				t.setForegroundBaseColor(enteredTileColor);
@@ -210,7 +209,7 @@ public class ConfigController extends SystemGuiController {
 		});
 	}
 
-	private void shutdownFrom(Button b){
+	private void shutdownFrom(final Button b){
 		timers.values().stream().filter(l -> l != null).flatMap(l -> l.stream()).forEach(t -> t.stop());
 		widgets.values().stream().filter(l -> l != null).flatMap(l -> l.stream())
 				.forEach(w -> w.getTile().setForegroundBaseColor(normalTileColor));
@@ -218,15 +217,15 @@ public class ConfigController extends SystemGuiController {
 	}
 	
 	private InfoCollector getCollectedInfo(){
-		InfoCollector c = new InfoCollector();
+		final InfoCollector c = new InfoCollector();
 		
 		if(!unitfDefaultText.equals(unitField.getText()))
 			c.setUnit(unitField.getText());
 		
-		List<String> badNames = Arrays.asList(namefDefaultText, "", null);
+		final List<String> badNames = Arrays.asList(namefDefaultText, "", null);
 		tableData.forEach(namedPath -> {
 			if(!pathscbDefaultText.equals(namedPath.getPath())){
-			    String actualname = badNames.contains(namedPath.getName())? null : namedPath.getName();
+			    final String actualname = badNames.contains(namedPath.getName())? null : namedPath.getName();
 			    c.addInfoEntry(namedPath.getPath(), actualname);
 			}
 		});
@@ -234,16 +233,16 @@ public class ConfigController extends SystemGuiController {
 		return c;
 	}
 
-	private List<String> getAvailablePaths(FileSystem fs){
+	private List<String> getAvailablePaths(final FileSystem fs){
 	    return getAvailablePathsInner(fs.getReadOnlyFileSystem(FileSystemEntries.SENSORS_DATA.buildPath()), new ArrayList<>());
 	}
 	
-	private List<String> getAvailablePathsInner(ReadOnlyFileNode n, List<String> ss) {
+	private List<String> getAvailablePathsInner(final ReadOnlyFileNode n, final List<String> ss) {
         
         if (n.isLeaf())
             return ss;
         
-        List<String> l = PathBuilder.decomposePath(n.getFullPath());
+        final List<String> l = PathBuilder.decomposePath(n.getFullPath());
         ss.add(PathBuilder.buildPath(l.subList(1, l.size())));
         
         n.getChildren().forEach(c->ss.addAll(getAvailablePathsInner(c, new ArrayList<>())));
@@ -267,7 +266,7 @@ public class ConfigController extends SystemGuiController {
         scrollPane.setFitToWidth(true);
 	}
 	
-	private void initPathDataAddingRegion(SystemCore model){
+	private void initPathDataAddingRegion(final SystemCore model){
         //path fields
         table.setItems(tableData);
         nameCol.setCellValueFactory(new PropertyValueFactory<NamedPath,String>("name"));
@@ -302,8 +301,8 @@ public class ConfigController extends SystemGuiController {
 	}
 	
     @Override
-    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model1, T parent1,
-                    SystemMode extraData1, URL location, ResourceBundle b) {
+    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(final SystemCore model1, final T parent1,
+                    final SystemMode extraData1, final URL location, final ResourceBundle b) {
         initWidgetsRegion();
         
         initPathDataAddingRegion(model1);
@@ -312,7 +311,7 @@ public class ConfigController extends SystemGuiController {
     }
 	
     //------------------ public methods ----------------------------------------------------------
-	public void setConfigConsumer(ConfigConsumer cc) {
+	public void setConfigConsumer(final ConfigConsumer cc) {
 		consumer = cc;
 	}
 

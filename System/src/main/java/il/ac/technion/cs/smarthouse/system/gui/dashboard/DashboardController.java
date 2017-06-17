@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.Tile.SkinType;
+import eu.hansolo.tilesfx.TileBuilder;
 import il.ac.technion.cs.smarthouse.mvp.GuiController;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
@@ -20,13 +20,12 @@ import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.BasicWidget;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
@@ -34,8 +33,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 
 public class DashboardController extends SystemGuiController {
     private static Logger log = LoggerFactory.getLogger(DashboardController.class);
@@ -44,7 +41,7 @@ public class DashboardController extends SystemGuiController {
     private DashboardCore core;
     
     private static final double TILE_SIZE = 200;
-    private Map<String,BasicWidget> currentWidgets = new HashMap<>();
+    private final Map<String,BasicWidget> currentWidgets = new HashMap<>();
     private Integer id = 0;
     
    //---- GUI elements members -----
@@ -52,15 +49,15 @@ public class DashboardController extends SystemGuiController {
     private Tile addWidgetTile;
 
     @Override
-    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model1, T parent1,
-                    SystemMode extraData1, URL location, ResourceBundle b) {
+    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(final SystemCore model1, final T parent1,
+                    final SystemMode extraData1, final URL location, final ResourceBundle b) {
         
         filesystem = model1.getFileSystem();
         core = model1.getSystemDashboardCore();
         core.setWidgetPresenter(this::addWidget);
         core.setWidgetRemover(this::removeWidget);
         
-        Label plus = new Label("+");
+        final Label plus = new Label("+");
         plus.setFont(Font.font("Arial Black", FontWeight.EXTRA_BOLD, 70)); // font fam: Alegreya* are cute too
         plus.setTextFill(Color.ANTIQUEWHITE);
         addWidgetTile = TileBuilder.create()
@@ -79,9 +76,9 @@ public class DashboardController extends SystemGuiController {
 
     private void openConfigWindow() {
         try {
-            ConfigController configController = createChildController("dashboard_config_window_ui.fxml");
+            final ConfigController configController = createChildController("dashboard_config_window_ui.fxml");
             configController.setConfigConsumer((type, info)->{
-                String wid = addWidget(type.createWidget(TILE_SIZE, info));
+                final String wid = addWidget(type.createWidget(TILE_SIZE, info));
                 core.registerWidget(wid, currentWidgets.get(wid));
             });
             final Stage stage = new Stage();
@@ -99,7 +96,7 @@ public class DashboardController extends SystemGuiController {
     
     //returns the old id
     private String incId(){
-        return ""+ (id++);
+        return ""+ id++;
     }
 
     private String addWidget(final BasicWidget widget){
@@ -122,7 +119,7 @@ public class DashboardController extends SystemGuiController {
         return incId();
     }
     
-    private void removeWidget(String givenId){
+    private void removeWidget(final String givenId){
         Optional.ofNullable(currentWidgets.get(givenId)).ifPresent(widget -> {
             currentWidgets.remove(givenId);
             pane.getChildren().remove(widget.getTile());
