@@ -67,7 +67,9 @@ public class MainSystemGuiController extends SystemGuiController {
 
             if (m == SystemMode.DEVELOPER_MODE) {
                 addDescriptionLine("Welcome! You are in Developer Mode.");
-                addDescriptionLine("In this mode you can test your application.");
+                addDescriptionLine("In this mode you can:");
+                addDescriptionLine("- Test your application (\"Applications\" tab).");
+                addDescriptionLine("- View widgets you add (\"Dashboard\" tab).");
             } else {
                 addDescriptionLine("Welcome! You are in User Mode.");
                 addDescriptionLine("In this mode you can:");
@@ -79,7 +81,7 @@ public class MainSystemGuiController extends SystemGuiController {
             }
 
             if (m == SystemMode.DEVELOPER_MODE)
-                tabs.getTabs().removeAll(userTab, sensorsTab, dashboardTab);
+                tabs.getTabs().removeAll(userTab, sensorsTab);
 
         } catch (final Exception ¢) {
             ¢.printStackTrace();
