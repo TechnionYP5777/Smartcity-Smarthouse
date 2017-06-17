@@ -8,6 +8,7 @@ import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore.Widget;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.HBox;
 
 /**
@@ -39,8 +40,12 @@ public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implem
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(widgetsHbox);
         scrollPane.setFitToWidth(true);
+        Double size = tileSize+30;
+        scrollPane.setMaxHeight(size);
+        scrollPane.setMinHeight(size);
+        scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
         
-        addAppBuilderItem(new AppBuilderItem(null, widgetsHbox));
+        addAppBuilderItem(new AppBuilderItem(null, scrollPane));
     }
     
 //    @Override
