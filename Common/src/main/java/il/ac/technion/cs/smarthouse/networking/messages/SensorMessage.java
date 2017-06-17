@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import il.ac.technion.cs.smarthouse.sensors.PathType;
 import il.ac.technion.cs.smarthouse.sensors.Sensor;
 
 /**
@@ -18,24 +19,24 @@ import il.ac.technion.cs.smarthouse.sensors.Sensor;
  */
 public class SensorMessage extends Message {
 
-    public enum PathType {
-        INFO_SENDING("INFO_SENDING"),
-        INSTRUCTION_RECEIVING("INSTRUCTION_RECEIVING");
-
-        private final String type;
-
-        private PathType(final String type) {
-            this.type = type;
-        }
-
-        public static PathType fromString(final String from) {
-            final String fromLower = from.toLowerCase();
-            final List<PathType> $ = Arrays.asList(PathType.values()).stream().filter(mt -> mt.type.equals(fromLower))
-                            .collect(Collectors.toList());
-            $.add(null);
-            return $.get(0);
-        }
-    }
+//    public enum PathType {
+//        INFO_SENDING("INFO_SENDING"),
+//        INSTRUCTION_RECEIVING("INSTRUCTION_RECEIVING");
+//
+//        private final String type;
+//
+//        private PathType(final String type) {
+//            this.type = type;
+//        }
+//
+//        public static PathType fromString(final String from) {
+//            final String fromLower = from.toLowerCase();
+//            final List<PathType> $ = Arrays.asList(PathType.values()).stream().filter(mt -> mt.type.equals(fromLower))
+//                            .collect(Collectors.toList());
+//            $.add(null);
+//            return $.get(0);
+//        }
+//    }
 
     public class IllegalMessageBaseExecption extends Exception {
         private static final long serialVersionUID = 1;

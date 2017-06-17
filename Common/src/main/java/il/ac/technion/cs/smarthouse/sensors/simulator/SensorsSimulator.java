@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import il.ac.technion.cs.smarthouse.sensors.PathType;
+
 /**
  * @author Elia Traore
  * @since Jun 17, 2017
@@ -50,12 +52,12 @@ public class SensorsSimulator {
 	}
 	
 	public SensorsSimulator setSentMsgLogger(Consumer<String> logger){
-		loggers.put(PathType.MESSAGE, logger);
+		loggers.put(PathType.INFO_SENDING, logger);
 		return this;
 	}
 	
 	public SensorsSimulator setInstructionReceivedLogger(Consumer<String> logger){
-		loggers.put(PathType.INSTRUCTIONS, logger);
+		loggers.put(PathType.INSTRUCTION_RECEIVING, logger);
 		return this;
     }
 

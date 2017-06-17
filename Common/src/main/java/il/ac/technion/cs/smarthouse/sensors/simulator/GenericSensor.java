@@ -17,12 +17,13 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.sensors.InstructionHandler;
 import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
+import il.ac.technion.cs.smarthouse.sensors.PathType;
 
 /**
  * @author Elia Traore
  * @since Jun 17, 2017
  */
-class GenericSensor {	
+public class GenericSensor {	
 	private static Logger log = LoggerFactory.getLogger(GenericSensor.class);
 
 	@SuppressWarnings("rawtypes")
@@ -54,19 +55,19 @@ class GenericSensor {
 		
 		@SuppressWarnings("unchecked")
 		private boolean legalRanges() {
-			return paths.get(PathType.MESSAGE).keySet().stream().map(path -> {
-						Class c = paths.get(PathType.MESSAGE).get(path);
+			return paths.get(PathType.INFO_SENDING).keySet().stream().map(path -> {
+						Class c = paths.get(PathType.INFO_SENDING).get(path);
 						List vals = ranges.get(path);
-						Boolean $ = Integer.class.isAssignableFrom(c) || Double.class.isAssignableFrom(c) ? vals.size() == 2 : true;
-						vals.stream().map(o -> c.isAssignableFrom(o.getClass()))
-									.reduce((x,y)-> x && y)
-									.ifPresent(b -> $ &= b);
-						return $;
+						Boolean sizeOk = Integer.class.isAssignableFrom(c) || Double.class.isAssignableFrom(c) ? vals.size() == 2 : true;
+						Boolean valsOk = (Boolean) vals.stream().map(o -> c.isAssignableFrom(o.getClass()))
+																.reduce((x,y)-> (Boolean)x && (Boolean)x)
+																.orElse(true);
+						return sizeOk && valsOk;
 					}).reduce((x,y)-> x && y).orElse(false);
 		}
 
 		private Object random(String path) {
-			Class c = paths.get(PathType.MESSAGE).get(path);
+			Class c = paths.get(PathType.INFO_SENDING).get(path);
 			List vals = ranges.get(path);
             if(Integer.class.isAssignableFrom(c))
             	return ThreadLocalRandom.current().nextInt((Integer)vals.get(0), (Integer)vals.get(1));
@@ -79,7 +80,7 @@ class GenericSensor {
 	
     private Map<PathType, List<Consumer<String>>> loggers = new HashMap<>();
     private Map<PathType, Map<String,Class>> paths = new HashMap<>();
-    private Boolean interactive, connected = false;
+    private Boolean interactive=false, connected = false;
     
     private Map<String, List> LastReceivedRanges;
     
@@ -105,7 +106,7 @@ class GenericSensor {
         if(!paths.containsKey(type))
             paths.put(type, new HashMap<>());
         paths.get(type).put(path, pathClass);
-        interactive |= PathType.INSTRUCTIONS.equals(type);
+        interactive |= PathType.INSTRUCTION_RECEIVING.equals(type);
     }
     
     void addRange(String path, @SuppressWarnings("rawtypes") List values){
@@ -137,7 +138,7 @@ class GenericSensor {
 
     //------------------------ logging --------------------------------------
     void logInstruction(String path, String inst){
-    	loggers.get(PathType.INSTRUCTIONS).forEach(logger -> logger.accept("Received instruction:\n\t"+inst+"\nOn path:\n\t"+path));
+    	loggers.get(PathType.INSTRUCTION_RECEIVING).forEach(logger -> logger.accept("Received instruction:\n\t"+inst+"\nOn path:\n\t"+path));
     }
     
     void logMsgSent(Map<String,String> data){
@@ -146,7 +147,7 @@ class GenericSensor {
     	data.keySet().forEach(path -> $.add("path:"+path+"\tvalue:"+data.get(path)));
     	
     	$.stream().reduce((x,y)-> x+y).ifPresent(
-    			formatedData -> loggers.get(PathType.INSTRUCTIONS).forEach(logger -> logger.accept(formatedData)));
+    			formatedData -> loggers.get(PathType.INSTRUCTION_RECEIVING).forEach(logger -> logger.accept(formatedData)));
     }
     
     //------------------------ public getters -------------------------------
@@ -181,7 +182,7 @@ class GenericSensor {
     public void sendMessage(Map<String, Object> data){//todo: change to package level?
     	connectIfNeeded();
         
-    	if(!paths.containsKey(PathType.MESSAGE))
+    	if(!paths.containsKey(PathType.INFO_SENDING))
             return;
         Map<String, String> d = new HashMap<>();
         data.keySet().forEach(k -> d.put(k, data.get(k)+""));
@@ -195,7 +196,7 @@ class GenericSensor {
      * if the type is double or integer, the list contains (low,high) so that low <= legal values < high
      * */
     void streamMessages(final Map<String, List> ranges){
-        if(!paths.containsKey(PathType.MESSAGE))
+        if(!paths.containsKey(PathType.INFO_SENDING))
             return;
         
         LastReceivedRanges = ranges;

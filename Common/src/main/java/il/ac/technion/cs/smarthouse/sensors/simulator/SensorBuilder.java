@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import il.ac.technion.cs.smarthouse.sensors.InstructionHandler;
 import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
+import il.ac.technion.cs.smarthouse.sensors.PathType;
 
 /**
  * @author Elia Traore
@@ -20,8 +21,8 @@ public class SensorBuilder {
     
 	public GenericSensor build(){
 		genericSensor.setSensor(new InteractiveSensor(commname, sensorId, alias, 
-														genericSensor.getPaths(PathType.MESSAGE),
-														genericSensor.getPaths(PathType.INSTRUCTIONS)));
+														genericSensor.getPaths(PathType.INFO_SENDING),
+														genericSensor.getPaths(PathType.INSTRUCTION_RECEIVING)));
 		genericSensor.getSensor().setInstructionHandler((path,inst)->{
 			genericSensor.logInstruction(path,inst);
 			return (iHandler == null)? true :iHandler.applyInstruction(path, inst);
