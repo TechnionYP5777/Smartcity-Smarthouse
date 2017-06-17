@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.sensors.SensorType;
 import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -24,7 +23,7 @@ import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 public class EnumsTest {
 
     final Class<?>[] enumClassesToTest = { FileSystemEntries.class, ServiceType.class,
-            MessageType.class, SensorType.class, EmergencyLevel.class };
+            MessageType.class, EmergencyLevel.class };
 
     @Test
     public void generalEnumStupidToStringTest() {
