@@ -53,7 +53,7 @@ public class MappingController extends SystemGuiController {
     }
 
     @Override
-    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
+    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent,
                     SystemMode m, URL location, ResourceBundle b) {
         log.debug("initialized the map gui");
 
