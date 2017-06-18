@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.database;
+package il.ac.technion.cs.smarthouse.system.database;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
