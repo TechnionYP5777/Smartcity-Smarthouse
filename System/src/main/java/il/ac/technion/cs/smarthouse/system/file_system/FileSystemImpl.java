@@ -125,7 +125,8 @@ public class FileSystemImpl implements FileSystem, Savable {
                     f.set(this, gsonBuilder.create().fromJson(e.getValue(), f.getGenericType()));
                 else
                     for (final Entry<String, JsonElement> e2 : e.getValue().getAsJsonObject().entrySet())
-                        getChild(e2.getKey(), true).populate(e2.getValue().toString());
+                        if (!FileSystemEntries.SENSORS.buildPath().equals(e2.getKey()) && !FileSystemEntries.SYSTEM.buildPath().equals(e2.getKey()))
+                            getChild(e2.getKey(), true).populate(e2.getValue().toString());
             }
         }
     }
