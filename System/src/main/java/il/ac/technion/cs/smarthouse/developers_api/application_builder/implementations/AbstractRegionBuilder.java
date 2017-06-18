@@ -3,8 +3,8 @@ package il.ac.technion.cs.smarthouse.developers_api.application_builder.implemen
 import java.util.ArrayList;
 import java.util.List;
 
-import il.ac.technion.cs.smarthouse.javafx_elements.AppGridPane;
-import il.ac.technion.cs.smarthouse.javafx_elements.AppLabel;
+import il.ac.technion.cs.smarthouse.gui.javafx_elements.AppGridPane;
+import il.ac.technion.cs.smarthouse.gui.javafx_elements.AppLabel;
 import javafx.scene.Node;
 
 /**

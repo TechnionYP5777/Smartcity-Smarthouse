@@ -5,7 +5,7 @@ import il.ac.technion.cs.smarthouse.developers_api.application_builder.Configura
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.CustomRegionBuilder;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.StatusRegionBuilder;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.WidgetsRegionBuilder;
-import il.ac.technion.cs.smarthouse.javafx_elements.AppGridPane;
+import il.ac.technion.cs.smarthouse.gui.javafx_elements.AppGridPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;

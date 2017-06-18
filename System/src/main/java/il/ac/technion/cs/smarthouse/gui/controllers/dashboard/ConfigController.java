@@ -1,7 +1,7 @@
 /**
  * 
  */
-package il.ac.technion.cs.smarthouse.system.gui.dashboard;
+package il.ac.technion.cs.smarthouse.gui.controllers.dashboard;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,10 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.hansolo.tilesfx.Tile;
-import il.ac.technion.cs.smarthouse.mvp.GuiController;
-import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
-import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
+import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
+import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
+import il.ac.technion.cs.smarthouse.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.BasicWidget;

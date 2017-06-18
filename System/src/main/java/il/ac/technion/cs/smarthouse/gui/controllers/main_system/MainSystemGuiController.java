@@ -1,13 +1,13 @@
-package il.ac.technion.cs.smarthouse.system.gui.main_system;
+package il.ac.technion.cs.smarthouse.gui.controllers.main_system;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import il.ac.technion.cs.smarthouse.mvp.GuiController;
-import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
-import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
+import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
+import il.ac.technion.cs.smarthouse.gui.controllers.applications.ApplicationViewController;
+import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.gui.applications.ApplicationViewController;
+import il.ac.technion.cs.smarthouse.system.SystemMode;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

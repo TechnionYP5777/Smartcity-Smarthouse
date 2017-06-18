@@ -1,10 +1,11 @@
-package il.ac.technion.cs.smarthouse.mvp.system;
+package il.ac.technion.cs.smarthouse.gui.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import il.ac.technion.cs.smarthouse.mvp.GuiController;
+import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
+import il.ac.technion.cs.smarthouse.system.SystemMode;
 
 public abstract class SystemGuiController extends GuiController<SystemCore> {
     public static final String FXML_BASE_PATH = "/fxmls/system/";

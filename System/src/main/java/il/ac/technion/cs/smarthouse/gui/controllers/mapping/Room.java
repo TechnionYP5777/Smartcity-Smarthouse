@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.gui.mapping;
+package il.ac.technion.cs.smarthouse.gui.controllers.mapping;
 
 public class Room {
     public final int x;

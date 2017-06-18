@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.mvp;
+package il.ac.technion.cs.smarthouse.gui_controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;

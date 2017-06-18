@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.javafx_elements;
+package il.ac.technion.cs.smarthouse.gui.javafx_elements;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;

@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.mvp.system;
+package il.ac.technion.cs.smarthouse.system_presenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
+import il.ac.technion.cs.smarthouse.gui.controllers.main_system.MainSystemGuiController;
 import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemFailureDetector;
-import il.ac.technion.cs.smarthouse.system.gui.main_system.MainSystemGuiController;
+import il.ac.technion.cs.smarthouse.system.SystemMode;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.application.Application;
 import javafx.scene.Scene;

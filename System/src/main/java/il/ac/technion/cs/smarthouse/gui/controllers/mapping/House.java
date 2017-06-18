@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.gui.mapping;
+package il.ac.technion.cs.smarthouse.gui.controllers.mapping;
 
 import java.util.ArrayList;
 import java.util.List;

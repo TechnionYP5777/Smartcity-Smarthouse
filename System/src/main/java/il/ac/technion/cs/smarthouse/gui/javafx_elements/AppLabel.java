@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.javafx_elements;
+package il.ac.technion.cs.smarthouse.gui.javafx_elements;
 
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;

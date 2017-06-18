@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.gui.mapping;
+package il.ac.technion.cs.smarthouse.gui.controllers.mapping;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,10 +11,10 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.mvp.GuiController;
-import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
-import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
+import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
+import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
+import il.ac.technion.cs.smarthouse.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorLocation;
 import javafx.application.Platform;
