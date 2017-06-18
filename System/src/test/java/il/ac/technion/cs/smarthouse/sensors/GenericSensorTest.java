@@ -17,39 +17,44 @@ import il.ac.technion.cs.smarthouse.system.sensors.SensorsLocalServer;
  * @since Jun 18, 2017
  */
 public class GenericSensorTest {
-    private final String sendPath = "foo.send", recPath = "foo.receive";
+    private class Counter {
+        Integer c = 0;
+        public Counter() {
+        }
+        public void inc(){c++;}
+        public Integer get(){return c;}
+    }
+    
     private SensorBuilder builder;
     private SystemCore systemCore;
     private SensorsLocalServer server;
-    private Integer counter;
 
     @Before
     public void init() {
-        builder = new SensorBuilder().setCommname("testComm").setAlias("testAlias")
-                        .addInfoSendingPath(sendPath, String.class).addInstructionsReceiveingPath(recPath);
+        builder = new SensorBuilder().setCommname("testComm").setAlias("testAlias");
         systemCore = new SystemCore();
         server = new SensorsLocalServer(systemCore.getFileSystem());
         new Thread(server).start();
-        counter = 0;
     }
 
-    private void incCounter() {
-        ++counter;
-    }
 
     @Test
     public void sendMessageSuccesfully() throws InterruptedException {
-        systemCore.getFileSystem().subscribe((path, val) -> incCounter(),
+        final Counter c = new Counter();
+        String sendPath = "foo.send";
+        
+        systemCore.getFileSystem().subscribe((path, val) -> c.inc(),
                         FileSystemEntries.SENSORS_DATA.buildPath(sendPath));
         final Map<String, Object> data = new HashMap<>();
+        
         data.put(sendPath, "yo");
-        builder.build().sendMessage(data);
+        builder.addInfoSendingPath(sendPath, String.class).build().sendMessage(data);
         Thread.sleep(2000);
-        Assert.assertEquals((Integer) 1, counter);
+        Assert.assertEquals((Integer) 1, c.get());
     }
 
     @Test
     public void StreamMessagesSuccesfully() {
-        // todo: elia, implement
+        //todo
     }
 }
