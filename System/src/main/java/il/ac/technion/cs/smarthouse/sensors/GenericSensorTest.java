@@ -50,4 +50,8 @@ public class GenericSensorTest {
 		Thread.sleep(2000);
 		Assert.assertEquals((Integer)1, counter);
 	}
+	
+	@Test public void StreamMessagesSuccesfully(){
+		//todo: elia, implement
+	}
 }
