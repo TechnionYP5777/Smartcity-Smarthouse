@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.mvp.system;
+package il.ac.technion.cs.smarthouse.system_presenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
+import il.ac.technion.cs.smarthouse.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.utils.Tuple;
@@ -23,7 +24,8 @@ import il.ac.technion.cs.smarthouse.utils.Tuple;
 public class SystemPresenterFactory {
     static final Logger log = LoggerFactory.getLogger(SystemPresenterFactory.class);
 
-    private boolean model_useCloudServer = true;
+    private boolean model_useCloudServer;
+    private boolean model_enableLocalDatabase;
     private boolean model_useSensorsServer = true;
     private List<Tuple<BiConsumer<String, Object>, String[]>> model_fileSystemListeners = new ArrayList<>();
     private boolean model_initRegularFileSystemListeners = true;
@@ -96,6 +98,11 @@ public class SystemPresenterFactory {
         initMode = m;
         return this;
     }
+    
+    public SystemPresenterFactory enableLocalDatabase(final boolean enable) {
+        model_enableLocalDatabase = true;
+        return this;
+    }
 
     public SystemPresenter build() {
         final SystemPresenter p = new SystemPresenter(view_enableView, view_openOnNewStage, enablePopup, initMode, !disableFailureDetector, true);
@@ -114,7 +121,7 @@ public class SystemPresenterFactory {
             }
         });
 
-        p.getSystemModel().initializeSystemComponents(model_useSensorsServer, model_useCloudServer,
+        p.getSystemModel().initializeSystemComponents(model_useSensorsServer, model_useCloudServer, model_enableLocalDatabase,
                         model_initRegularFileSystemListeners);
 
         p.getSystemView().waitUntilInitFinishes();

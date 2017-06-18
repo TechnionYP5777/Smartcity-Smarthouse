@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.annotations.Expose;
 
-import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
@@ -35,11 +34,11 @@ public class SystemCore implements Savable {
     @Expose protected UserInformation user;
     private boolean userInitialized;
 
-    public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer,
+    public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer, final boolean useLocalDatabase,
                     final boolean initRegularListeners) {
         log.info("Initializing system components...");
         
-        systemSaver.init(useCloudServer, true);
+        systemSaver.init(useCloudServer, useLocalDatabase, true);
         systemSaver.loadSystem();
         
         if (initRegularListeners)

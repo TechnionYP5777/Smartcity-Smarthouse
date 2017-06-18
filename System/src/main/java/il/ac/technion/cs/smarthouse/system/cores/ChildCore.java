@@ -10,7 +10,5 @@ public abstract class ChildCore implements Savable {
         this.systemCore = systemCore;
     }
     
-    public void close() {
-        
-    }
+    public void close() {}
 }

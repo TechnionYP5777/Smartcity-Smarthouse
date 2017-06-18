@@ -16,67 +16,83 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.utils.TimeCounter;
 import il.ac.technion.cs.smarthouse.utils.TimedListener;
 
+/**
+ * All system saving stuff is in this class
+ * <p>
+ * The system is saved both on server and locally.
+ * <br>
+ * The system is loaded from the local DB if possible, and from the cloud if not.
+ * 
+ * @author RON
+ * @since 18-06-2017
+ */
 public class SystemSaver extends ChildCore {
     private static Logger log = LoggerFactory.getLogger(SystemSaver.class);
-    
+
     private static final long MILISEC_TO_SAVE = TimeUnit.MINUTES.toMillis(5);
-    
+
     private final DatabaseManager databaseManager = new DatabaseManager();
-    private final FileSystemImpl fileSystem;
     private boolean useCloudServer;
+    private boolean useLocalDatabase;
     private TimedListener timedSaveme;
-    
+
     public SystemSaver(final SystemCore systemCore, final FileSystemImpl fs) {
         super(systemCore);
-        fileSystem = fs;
     }
-    
-    public SystemSaver init(final boolean useCloudServer1, final boolean initSavemeListener) {
+
+    public SystemSaver init(final boolean useCloudServer1, final boolean useLocalDatabase1,
+                    final boolean initSavemeListener) {
         this.useCloudServer = useCloudServer1;
+        this.useLocalDatabase = useLocalDatabase1;
+
         if (initSavemeListener)
             initFileSystemSavemeListener();
-        
-        timedSaveme = new TimedListener(()->saveSystem(), LocalTime.now().plusSeconds(10), MILISEC_TO_SAVE);
-        
+
+        timedSaveme = new TimedListener(() -> saveSystem(), LocalTime.now().plusSeconds(10), MILISEC_TO_SAVE);
+
         if (initSavemeListener)
             timedSaveme.start();
-        
+
         return this;
     }
-    
+
     public boolean loadSystem() {
-        if (useCloudServer && loadSystemFromCloud())
+        if (loadSystemFromLocalDatabase())
             return true;
-        return loadSystemFromLocalDatabase();
+        return loadSystemFromCloud();
     }
-    
+
     public void saveSystem() {
         saveSystemToLocalDatabase();
-        if (useCloudServer)
-            saveSystemToCloud();
+        saveSystemToCloud();
     }
-    
+
     private void initFileSystemSavemeListener() {
         systemCore.getFileSystem().subscribe((path, data) -> saveSystem(), FileSystemEntries.SAVEME.buildPath());
     }
 
     private boolean loadSystemFromCloud() {
+        if (!useCloudServer)
+            return false;
+        
         try {
             final TimeCounter t = new TimeCounter();
             DataEntry d = databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
             if (d == null)
                 return false;
-            loadSystemFromJson(d.data);
+            json2system(d.data);
             log.info("Loaded system from the database cloud... Total time: " + t.getTimePassedMillis() + " [ms]");
             return true;
         } catch (Exception e) {
-            String err = "Cloud server problem";
-            log.error(err, e);
-            throw new RuntimeException(err, e);
+            log.error("Cloud server problem", e);
         }
+
+        return false;
     }
 
     private void saveSystemToCloud() {
+        if (!useCloudServer)
+            return;
         try {
             final TimeCounter t = new TimeCounter();
             databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
@@ -88,10 +104,13 @@ public class SystemSaver extends ChildCore {
     }
 
     private boolean loadSystemFromLocalDatabase() {
+        if (!useLocalDatabase)
+            return false;
+
         String data = LocalSaver.readData();
         if (data != null)
             try {
-                loadSystemFromJson(data);
+                json2system(data);
                 return true;
             } catch (Exception e) {
                 log.error("Couldn't load data from local database... system is unchanged", e);
@@ -100,21 +119,18 @@ public class SystemSaver extends ChildCore {
     }
 
     private void saveSystemToLocalDatabase() {
-        LocalSaver.saveData(system2json());
+        if (useLocalDatabase)
+            LocalSaver.saveData(system2json());
     }
 
-    private void loadSystemFromJson(String json) throws Exception {
-        System.out.println(fileSystem);
+    private void json2system(String json) throws Exception {
         systemCore.populate(json);
-        System.out.println(fileSystem);
-//        fileSystem.deleteFromPath(FileSystemEntries.SENSORS.buildPath());
-//        fileSystem.deleteFromPath(FileSystemEntries.SYSTEM.buildPath());
     }
-    
+
     private String system2json() {
         return systemCore.toJsonString();
     }
-    
+
     @Override
     public void close() {
         super.close();
