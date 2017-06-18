@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,11 @@ public class GenericSensor {
             	Map<String, Object> data = new HashMap<>();
                 ranges.keySet().forEach(path -> data.put(path, random(path)));
                 sendMessage(data);
+                try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					keepStreaming = false;
+				}
             }
 		}
 		
@@ -83,13 +89,27 @@ public class GenericSensor {
     private Boolean interactive=false, connected = false;
     private Long pollInterval = TimeUnit.SECONDS.toMillis(5);
     
-    private Map<String, List> LastReceivedRanges;
+    private Map<String, List> lastReceivedRanges;
     
     private InteractiveSensor sensor;
     
     private MsgStreamerThread msgStreamer;
     
     GenericSensor(){}
+    
+    GenericSensor(GenericSensor other){
+    	if(other.loggers != null)
+    		loggers = new HashMap<>(other.loggers);
+    	
+    	paths = new HashMap<>();
+    	Stream.of(PathType.values()).filter(t -> paths.containsKey(t))
+    								.forEach(t -> paths.put(t, new HashMap<>(other.paths.get(t))));
+    	interactive = other.interactive;
+    	connected = other.connected;
+    	pollInterval = other.pollInterval;
+    	if(lastReceivedRanges != null)
+    		lastReceivedRanges = new HashMap<>(other.lastReceivedRanges);
+    }
     
     private void connectIfNeeded(){
     	if(connected)
@@ -111,9 +131,9 @@ public class GenericSensor {
     }
     
     void addRange(String path, @SuppressWarnings("rawtypes") List values){
-    	if(LastReceivedRanges == null)
-    		LastReceivedRanges = new HashMap<>();
-    	LastReceivedRanges.put(path, values);
+    	if(lastReceivedRanges == null)
+    		lastReceivedRanges = new HashMap<>();
+    	lastReceivedRanges.put(path, values);
     }
 
     void addLogger(PathType t, Consumer<String> logger){
@@ -167,7 +187,7 @@ public class GenericSensor {
         if(!paths.containsKey(PathType.INFO_SENDING))
             return;
         
-        LastReceivedRanges = ranges;
+        lastReceivedRanges = ranges;
 
         if(msgStreamer != null){
         	msgStreamer.interrupt();
@@ -183,12 +203,12 @@ public class GenericSensor {
     }
     
     
-    /** streams with the ranges given throught the builder
+    /** streams with the ranges given through the builder
      * */
     void streamMessages(){
-    	if(LastReceivedRanges == null)
+    	if(lastReceivedRanges == null)
     		return;
-    	streamMessages(LastReceivedRanges);
+    	streamMessages(lastReceivedRanges);
     }
     
     //------------------------ public method -------------------------------
@@ -197,7 +217,7 @@ public class GenericSensor {
     	while(!sensor.operate());
     }
     
-    /**blocking mehtod*/
+    /**blocking method*/
     public GenericSensor connect(){
     	connectIfNeeded();
     	return this;

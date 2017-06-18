@@ -31,8 +31,8 @@ public class SensorsSimulator {
     private void callListeners(Action a, GenericSensor s){
     	Optional.ofNullable(listeners.get(a)).ifPresent(ls -> ls.forEach(l -> l.accept(s)));
     }
-    
-	
+
+  //------------------------- public API -----------------------------------------
 	public SensorsSimulator addSensor(GenericSensor s){
 		Stream.of(PathType.values()).forEach(type -> s.addLogger(type, loggers.get(type)));
 		sensors.add(s);

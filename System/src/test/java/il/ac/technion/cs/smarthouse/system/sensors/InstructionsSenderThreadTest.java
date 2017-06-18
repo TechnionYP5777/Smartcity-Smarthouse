@@ -54,7 +54,7 @@ public class InstructionsSenderThreadTest {
                         .setSensorId(Random.sensorId())
                         .setAlias("myAlias")
                         .setCommname(commname)
-                        .addPath(PathType.INSTRUCTION_RECEIVING, instPath, String.class)
+                        .addInstructionsReceiveingPath(instPath)
                         .setPollingInterval((long)10)
                         .setInstructionHandler((path, inst) -> {
                             if(inst.equals(true + ""))

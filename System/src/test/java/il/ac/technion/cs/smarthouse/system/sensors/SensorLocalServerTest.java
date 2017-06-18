@@ -45,7 +45,7 @@ public class SensorLocalServerTest {
     }
     
     @Test(timeout = timeout)  public void instructionSensorCanConnectTest(){
-        builder.addPath(PathType.INSTRUCTION_RECEIVING, "idk", String.class)
+        builder.addInstructionsReceiveingPath("idk")
                 .build().connect();
         assert true; //if you got to this line the sensor have connected
     }
