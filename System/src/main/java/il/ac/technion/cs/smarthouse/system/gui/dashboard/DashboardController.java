@@ -49,7 +49,7 @@ public class DashboardController extends SystemGuiController {
     private Tile addWidgetTile;
 
     @Override
-    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(final SystemCore model1, final T parent1,
+    protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model1, final T parent1,
                     final SystemMode extraData1, final URL location, final ResourceBundle b) {
         
         filesystem = model1.getFileSystem();

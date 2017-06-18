@@ -37,7 +37,7 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML Pane dummyPaneRight;
 
     @Override
-    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
+    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent,
                     SystemMode m, URL location, ResourceBundle b) {
         try {
             // home tab:

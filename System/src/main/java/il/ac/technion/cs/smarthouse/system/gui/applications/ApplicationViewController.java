@@ -45,7 +45,7 @@ public class ApplicationViewController extends SystemGuiController {
     private ApplicationsCore appsHandler;
 
     @Override
-    protected <T extends GuiController<SystemCore, SystemMode>> void initialize(SystemCore model, T parent,
+    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent,
                     SystemMode m, URL location, ResourceBundle b) {
         appsHandler = model.getSystemApplicationsHandler();
 

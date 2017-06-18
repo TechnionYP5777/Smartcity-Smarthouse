@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
+import il.ac.technion.cs.smarthouse.database.DatabaseManager.DataEntry;
+import il.ac.technion.cs.smarthouse.database.LocalSaver;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
@@ -18,6 +21,7 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorsLocalServer;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
+import il.ac.technion.cs.smarthouse.utils.TimeCounter;
 
 /**
  * Hold the databases of the smart house, and allow sensors and applications to
@@ -25,21 +29,25 @@ import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
  */
 public class SystemCore implements Savable {
     private static Logger log = LoggerFactory.getLogger(SystemCore.class);
+    
+    private SystemMode systemMode = SystemMode.USER_MODE;
 
     public final ServiceManager serviceManager = new ServiceManager(this);
 
     public final DatabaseManager databaseManager = new DatabaseManager();
-    private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
+    @Expose private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     @Expose private final FileSystemImpl fileSystem = new FileSystemImpl();
     public final SensorsLocalServer sensorsLocalServer = new SensorsLocalServer(fileSystem);
     private final DashboardCore dashboardCore = new DashboardCore(this);
     @Expose protected UserInformation user;
     private boolean userInitialized;
 
-    public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer, final boolean initRegularListeners) {
+    public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer,
+                    final boolean initRegularListeners) {
         log.info("Initializing system components...");
         if (useCloudServer)
-            loadSystemFromCloud();
+            if (!loadSystemFromLocalDatabase())
+                loadSystemFromCloud();
         if (initRegularListeners)
             initFileSystemListeners();
         if (useSensorsServer)
@@ -67,7 +75,7 @@ public class SystemCore implements Savable {
     public ApplicationsCore getSystemApplicationsHandler() {
         return applicationsHandler;
     }
-    
+
     public DashboardCore getSystemDashboardCore() {
         return dashboardCore;
     }
@@ -79,47 +87,86 @@ public class SystemCore implements Savable {
     public FileSystem getFileSystem() {
         return fileSystem;
     }
+    
+    public SystemMode getSystemMode() {
+        return systemMode;
+    }
+    
+    public void setSystemMode(SystemMode systemMode) {
+        this.systemMode = systemMode;
+    }
 
     public void initFileSystemListeners() {
         final BiConsumer<String, Object> databaseManagerEventHandler_saveSystem = (path, data) -> {
-            try {
-                final double startTime = System.nanoTime();
-                databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
-                databaseManager.addInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath(), this.toJsonString());
-                log.info("Saved system image to the cloud server... Total time: " + (System.nanoTime() - startTime) / 1000000 + " [ms]");
-            } catch (ParseException e) {
-                log.error("System image could not be saved on the cloud server", e);
-            }
+            saveSystemToLocalDatabase();
+            saveSystemToCloud();
         };
 
-        final BiConsumer<String, Object> databaseManagerEventHandler_addDataFromPath = (path, data) -> {
-            try {
-                final double startTime = System.nanoTime();
-                databaseManager.addInfo(path, data);
-                log.info("Saved data (from path: " + path + ")  to the cloud server... Total time: " + (System.nanoTime() - startTime) / 1000000
-                                + " [ms]");
-            } catch (final ParseException e) {
-                log.error("Data from (" + path + ") could not be saved on the cloud server", e);
-            }
-        };
+//        final BiConsumer<String, Object> databaseManagerEventHandler_addDataFromPath = (path, data) -> {
+//            try {
+//                final TimeCounter t = new TimeCounter();
+//                databaseManager.addInfo(path, data);
+//                log.info("Saved data (from path: " + path + ") to the cloud server... Total time: "
+//                                + t.getTimePassedMillis() + " [ms]");
+//            } catch (final ParseException e) {
+//                log.error("Data from (" + path + ") could not be saved on the cloud server", e);
+//            }
+//        };
 
         fileSystem.subscribe(databaseManagerEventHandler_saveSystem, FileSystemEntries.SAVEME.buildPath());
-        fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath, FileSystemEntries.SENSORS_DATA.buildPath());
-        fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath,
-                        FileSystemEntries.APPLICATIONS_DATA.buildPath());
+        // fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath,
+        // FileSystemEntries.SENSORS_DATA.buildPath());
+        // fileSystem.subscribe(databaseManagerEventHandler_addDataFromPath,
+        // FileSystemEntries.APPLICATIONS_DATA.buildPath());
     }
 
-    private void loadSystemFromCloud() {
+    private boolean loadSystemFromCloud() {
         try {
-            final double startTime = System.nanoTime();
-            this.populate(databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath()).data);
-            fileSystem.deleteFromPath(FileSystemEntries.SENSORS.buildPath());
-            fileSystem.deleteFromPath(FileSystemEntries.SYSTEM.buildPath());
-            log.info("Loaded system from the database cloud... Total time: " + (System.nanoTime() - startTime) / 1000000
-                            + " [ms]");
+            final TimeCounter t = new TimeCounter();
+            DataEntry d = databaseManager.getLastEntry(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+            if (d == null)
+                return false;
+            loadSystemFromJson(d.data);
+            log.info("Loaded system from the database cloud... Total time: " + t.getTimePassedMillis() + " [ms]");
+            return true;
         } catch (Exception e) {
-            log.error("Could not load data from the cloud server", e);
+            String err = "Cloud server problem";
+            log.error(err, e);
+            throw new RuntimeException(err, e);
         }
+    }
+
+    private void saveSystemToCloud() {
+        try {
+            final TimeCounter t = new TimeCounter();
+            databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
+            databaseManager.addInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath(), this.toJsonString());
+            log.info("Saved system image to the cloud server... Total time: " + t.getTimePassedMillis() + " [ms]");
+        } catch (ParseException e) {
+            log.error("System image could not be saved on the cloud server... system is unchanged", e);
+        }
+    }
+
+    private boolean loadSystemFromLocalDatabase() {
+        String data = LocalSaver.readData();
+        if (data != null)
+            try {
+                loadSystemFromJson(data);
+                return true;
+            } catch (Exception e) {
+                log.error("Couldn't load data from local database... system is unchanged", e);
+            }
+        return false;
+    }
+
+    private void saveSystemToLocalDatabase() {
+        LocalSaver.saveData(this.toJsonString());
+    }
+
+    private void loadSystemFromJson(String json) throws Exception {
+        this.populate(json);
+        fileSystem.deleteFromPath(FileSystemEntries.SENSORS.buildPath());
+        fileSystem.deleteFromPath(FileSystemEntries.SYSTEM.buildPath());
     }
 
 }

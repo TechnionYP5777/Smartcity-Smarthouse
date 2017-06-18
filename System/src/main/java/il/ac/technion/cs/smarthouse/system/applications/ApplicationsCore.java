@@ -30,7 +30,7 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  */
 public class ApplicationsCore extends ChildCore {
     private static Logger log = LoggerFactory.getLogger(ApplicationsCore.class);
-    
+
     @Expose private final List<ApplicationMetaData> apps = new ArrayList<>();
     private Runnable onAppsChange;
 
@@ -54,13 +54,11 @@ public class ApplicationsCore extends ChildCore {
     public ApplicationMetaData addApplication(final ApplicationPath appPath) {
         try {
             final ApplicationMetaData $ = new ApplicationMetaData(UuidGenerator.GenerateUniqueIDstring(), appPath);
-            initializeApplicationManager($);
             apps.add($);
-            Optional.ofNullable(onAppsChange).ifPresent(a -> a.run());
-            NotificationsCenter.sendNewAppInstalled($.getApplicationName());
+            initializeApplicationManager($);
             return $;
         } catch (final Exception $) {
-            log.warn("Aplication ("+appPath+") failed to install", $);
+            log.warn("Aplication (" + appPath + ") failed to install", $);
             NotificationsCenter.sendAppFailedToInstall($.getMessage());
         }
         return null;
@@ -85,6 +83,10 @@ public class ApplicationsCore extends ChildCore {
     // [start] Private functions
     private void initializeApplicationManager(final ApplicationMetaData $) throws Exception {
         $.initialize(systemCore);
+        log.info("\n\tApplicationsCore: initializing a new application\n\tAppliactions name: "
+                        + $.getApplicationName());
+        Optional.ofNullable(onAppsChange).ifPresent(a -> a.run());
+        NotificationsCenter.sendNewAppInstalled($.getApplicationName());
     }
     // [end]
 
