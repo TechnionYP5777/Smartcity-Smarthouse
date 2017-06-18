@@ -25,7 +25,7 @@ public class StringConverter {
 	public static Object convert(final Class<?> targetType, final String text) {
 		if (targetType.isPrimitive()) {
 			if (text == null)
-				return targetType.equals(Character.TYPE) ? '\0' : !targetType.equals(Boolean.TYPE) && 0;
+				return targetType.equals(Character.TYPE) ? '\0' : targetType.equals(Boolean.TYPE) ? false : 0;
 			if (targetType.equals(Character.TYPE))
 				return text.charAt(0);
 		}
