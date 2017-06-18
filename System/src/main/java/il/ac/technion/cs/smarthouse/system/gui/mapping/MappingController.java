@@ -16,6 +16,7 @@ import il.ac.technion.cs.smarthouse.mvp.system.SystemGuiController;
 import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.sensors.SensorLocation;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -60,14 +61,14 @@ public class MappingController extends SystemGuiController {
         canvas.setWidth(2000);
         canvas.setHeight(2000);
 
-        addRoom("UNDEFINED");
+        addRoom(SensorLocation.UNDIFINED);
 
         log.debug("subscribed to sensors root");
-        // this is somewhat whiteboxing. todo: reactor nicer.
+        // this is somewhat whiteboxing. todo: refactor nicer.
         model.getFileSystem().subscribe((p, l) -> {
             log.debug("map gui was notified on (path,val)=(" + p + "," + l + ")");
-            final String commname = p.split("\\.")[1];
-            final String id = p.split("\\.")[2];
+            final String commname = FileSystemEntries.COMMERCIAL_NAME.getPartFromPath(p);
+            final String id = FileSystemEntries.SENSOR_ID.getPartFromPath(p);
             if (l != null && allLocations.contains(l) && !sensors.containsKey(id))
                 Platform.runLater(() -> {
                     try {
@@ -78,7 +79,7 @@ public class MappingController extends SystemGuiController {
                     }
                 });
 
-        }, FileSystemEntries.SENSORS.buildPath(""));
+        }, FileSystemEntries.SENSORS.buildPath());
         log.debug("finished initialized the map gui");
 
     }
