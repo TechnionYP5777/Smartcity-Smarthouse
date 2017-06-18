@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.database;
+package il.ac.technion.cs.smarthouse.database;
 
 import java.time.LocalTime;
 import java.util.concurrent.TimeUnit;
@@ -7,8 +7,9 @@ import org.parse4j.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.database.DatabaseManager;
-import il.ac.technion.cs.smarthouse.database.DatabaseManager.DataEntry;
+import il.ac.technion.cs.smarthouse.database.cloud_server.DatabaseManager;
+import il.ac.technion.cs.smarthouse.database.cloud_server.DatabaseManager.DataEntry;
+import il.ac.technion.cs.smarthouse.database.local_cache.LocalSaver;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;

@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.annotations.Expose;
 
+import il.ac.technion.cs.smarthouse.database.SystemSaver;
 import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
-import il.ac.technion.cs.smarthouse.system.database.SystemSaver;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorsLocalServer;

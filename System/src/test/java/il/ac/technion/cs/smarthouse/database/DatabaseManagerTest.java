@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.parse4j.ParseException;
 
+import il.ac.technion.cs.smarthouse.database.cloud_server.DatabaseManager;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
 /**

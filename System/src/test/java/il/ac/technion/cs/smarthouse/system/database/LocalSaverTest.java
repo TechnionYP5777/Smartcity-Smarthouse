@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
+import il.ac.technion.cs.smarthouse.database.local_cache.LocalSaver;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 public class LocalSaverTest {
