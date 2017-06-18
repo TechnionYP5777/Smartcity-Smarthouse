@@ -9,8 +9,8 @@ import il.ac.technion.cs.smarthouse.utils.Communicate;
  * @since Jan 16, 2017
  */
 public class CommunicateTest {
-    @Test
-    public void sendEmailFromHouseTest() {
-        assert Communicate.throughEmailFromHere("smarthouse5777@gmail.com", "ya bishhhh #worksss") != null;
-    }
+	@Test
+	public void sendEmailFromHouseTest() {
+		assert Communicate.throughEmailFromHere("smarthouse5777@gmail.com", "ya bishhhh #worksss") != null;
+	}
 }
