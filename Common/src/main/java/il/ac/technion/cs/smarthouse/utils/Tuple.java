@@ -19,20 +19,22 @@ public class Tuple<L, R> {
 	}
 
 	@Override
-	public boolean equals(final Object ¢) {
-		return ¢ == this || ¢ != null && getClass() == ¢.getClass() && equals((Tuple<?, ?>) ¢);
+	public boolean equals(final Object $) {
+		return $ == this || $ != null && getClass() == $.getClass() && equals((Tuple<?, ?>) $);
 	}
 
-	public boolean equals(final Tuple<?, ?> ¢) {
+	public boolean equals(final Tuple<?, ?> $) {
+	    if ($ == null)
+	        return false;
 		if (left == null) {
-			if (¢.left != null)
+			if ($.left != null)
 				return false;
-		} else if (!left.equals(¢.left))
+		} else if (!left.equals($.left))
 			return false;
 		if (right == null) {
-			if (¢.right != null)
+			if ($.right != null)
 				return false;
-		} else if (!right.equals(¢.right))
+		} else if (!right.equals($.right))
 			return false;
 		return true;
 	}

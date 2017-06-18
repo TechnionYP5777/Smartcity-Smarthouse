@@ -49,6 +49,14 @@ public class TupleTest {
 		assert !rightNullTuple.equals(tupleStrInt);
 		assert !nullTuple.equals(leftNullTuple);
 		assert !rightNullTuple.equals(leftNullTuple);
+		
+		assert !newTuple.equals(null);
+		assert newTuple.equals(newTuple);
+		
+		assert !rightNullTuple.equals(leftNullTuple);
+		assert !rightNullTuple.equals((Object) leftNullTuple);
+		assert !rightNullTuple.equals((Object) null);
+		assert rightNullTuple.equals(new Tuple<>(rightNullTuple.left, null));
 	}
 
 	@Test
