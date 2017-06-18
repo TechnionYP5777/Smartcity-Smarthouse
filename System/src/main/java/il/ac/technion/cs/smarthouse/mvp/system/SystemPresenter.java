@@ -39,7 +39,6 @@ public class SystemPresenter {
     static final double APP_HEIGHT = 800;
 
     final SystemCore model;
-    SystemMode systemMode;
     MainSystemGuiController viewController;
     Stage viewPrimaryStage;
     final List<Runnable> viewOnCloseListeners = new ArrayList<>();
@@ -48,10 +47,10 @@ public class SystemPresenter {
                     final SystemMode defaultMode, final boolean enableFailureDetector,
                     final boolean enableNotifications) {
         model = new SystemCore();
-        systemMode = defaultMode;
+        model.setSystemMode(defaultMode);
 
         if (enableFailureDetector)
-            SystemFailureDetector.enable(systemMode); // initial FD
+            SystemFailureDetector.enable(model.getSystemMode()); // initial FD
 
         if (!createGui)
             return;
@@ -63,13 +62,13 @@ public class SystemPresenter {
         viewOnCloseListeners.add(() -> System.exit(0));
 
         if (!createPrimaryStage)
-            viewController = SystemGuiController.createRootController(APP_ROOT_FXML, model, systemMode);
+            viewController = SystemGuiController.createRootController(APP_ROOT_FXML, model);
         else {
             JavaFxHelper.startGui(new MainSystemGui(showModePopup));
 
             // in case of showModePopup changing the mode
             if (enableFailureDetector)
-                SystemFailureDetector.enable(systemMode);
+                SystemFailureDetector.enable(model.getSystemMode());
         }
     }
 
@@ -105,16 +104,16 @@ public class SystemPresenter {
         public void start(Stage primaryStage) throws Exception {
             getMode();
 
-            log.info("Initializing system ui in " + systemMode + "...");
+            log.info("Initializing system ui in " + model.getSystemMode() + "...");
 
-            viewController = SystemGuiController.createRootController(APP_ROOT_FXML, model, systemMode);
+            viewController = SystemGuiController.createRootController(APP_ROOT_FXML, model);
             viewPrimaryStage = primaryStage;
 
             final Scene scene = new Scene(viewController.getRootViewNode(), APP_WIDTH, APP_HEIGHT);
             primaryStage.setTitle(APP_NAME);
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(APP_LOGO)));
 
-            if (systemMode == SystemMode.DEVELOPER_MODE)
+            if (model.getSystemMode() == SystemMode.DEVELOPER_MODE)
                 scene.getStylesheets().add(getClass().getResource(DEV_CSS).toExternalForm());
 
             primaryStage.setScene(scene);
@@ -143,7 +142,7 @@ public class SystemPresenter {
 
             ButtonType response = alert.showAndWait().get();
             if (response != null)
-                systemMode = response != devType ? SystemMode.USER_MODE : SystemMode.DEVELOPER_MODE;
+                model.setSystemMode(response != devType ? SystemMode.USER_MODE : SystemMode.DEVELOPER_MODE);
         }
     }
 }

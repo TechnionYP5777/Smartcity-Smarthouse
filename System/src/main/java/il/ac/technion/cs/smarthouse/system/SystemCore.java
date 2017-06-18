@@ -11,6 +11,7 @@ import com.google.gson.annotations.Expose;
 import il.ac.technion.cs.smarthouse.database.DatabaseManager;
 import il.ac.technion.cs.smarthouse.database.DatabaseManager.DataEntry;
 import il.ac.technion.cs.smarthouse.database.LocalSaver;
+import il.ac.technion.cs.smarthouse.mvp.system.SystemMode;
 import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.applications.ApplicationsCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
@@ -28,6 +29,8 @@ import il.ac.technion.cs.smarthouse.utils.TimeCounter;
  */
 public class SystemCore implements Savable {
     private static Logger log = LoggerFactory.getLogger(SystemCore.class);
+    
+    private SystemMode systemMode = SystemMode.USER_MODE;
 
     public final ServiceManager serviceManager = new ServiceManager(this);
 
@@ -83,6 +86,14 @@ public class SystemCore implements Savable {
 
     public FileSystem getFileSystem() {
         return fileSystem;
+    }
+    
+    public SystemMode getSystemMode() {
+        return systemMode;
+    }
+    
+    public void setSystemMode(SystemMode systemMode) {
+        this.systemMode = systemMode;
     }
 
     public void initFileSystemListeners() {
