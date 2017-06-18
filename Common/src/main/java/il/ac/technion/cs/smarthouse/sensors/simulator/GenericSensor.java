@@ -102,7 +102,7 @@ public class GenericSensor {
     		loggers = new HashMap<>(other.loggers);
     	
     	paths = new HashMap<>();
-    	Stream.of(PathType.values()).filter(t -> paths.containsKey(t))
+    	Stream.of(PathType.values()).filter(t -> other.paths.containsKey(t))
     								.forEach(t -> paths.put(t, new HashMap<>(other.paths.get(t))));
     	interactive = other.interactive;
     	connected = other.connected;

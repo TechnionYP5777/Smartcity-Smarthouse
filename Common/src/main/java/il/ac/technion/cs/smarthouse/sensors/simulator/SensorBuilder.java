@@ -27,7 +27,7 @@ public class SensorBuilder {
 	public GenericSensor build(){
 		if(commname == null || alias == null)
 			return null;
-		GenericSensor newSensor =genericSensor;//new GenericSensor(genericSensor);
+		GenericSensor newSensor = new GenericSensor(genericSensor);
 		
 		newSensor.setSensor(new InteractiveSensor(commname, sensorId, alias, 
 													newSensor.getPaths(PathType.INFO_SENDING),
