@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import com.google.gson.annotations.Expose;
+
 import eu.hansolo.tilesfx.Tile;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
@@ -17,9 +19,9 @@ import javafx.scene.input.MouseButton;
 
 public class DashboardCore extends ChildCore {
     private class wInfo {
-        WidgetType type;
-        InfoCollector info;
-        Double size;
+        @Expose WidgetType type;
+        @Expose InfoCollector info;
+        @Expose Double size;
 
         public wInfo(final WidgetType type, final InfoCollector info, final Double size) {
             this.type = type;
@@ -81,7 +83,7 @@ public class DashboardCore extends ChildCore {
     }
 
     FileSystem fileSystem;
-    private final Map<String, wInfo> widgetsInfo = new HashMap<>();
+    @Expose private final Map<String, wInfo> widgetsInfo = new HashMap<>();
     private Boolean waitingToBePresented;
 
     // GUI helpers
@@ -96,15 +98,14 @@ public class DashboardCore extends ChildCore {
     @Override
     public void populate(final String jsonString) throws Exception {
         super.populate(jsonString);
-        waitingToBePresented = false;
+        waitingToBePresented = true;
     }
 
     public Widget createWidget(final WidgetType t, final InfoCollector pathsInfo, final Double size) {
         return new Widget(t, pathsInfo, size);
     }
 
-    // -------------------front-end
-    // setters---------------------------------------------
+    // -------------------front-end setters------------------------------------
     public void setWidgetPresenter(final Function<BasicWidget, String> presenter) {
         widgetPresenter = presenter;
         if(Boolean.TRUE.equals(waitingToBePresented)){
@@ -117,8 +118,7 @@ public class DashboardCore extends ChildCore {
         widgetRemover = remover;
     }
 
-    // -------------------"API" for the gui to inform on front end changes
-    // -------------
+    // -------------------"API" for the gui to inform on front end changes ----
     public void registerWidget(final String id, final BasicWidget w) {
         widgetsInfo.put(id, new wInfo(w));
     }
