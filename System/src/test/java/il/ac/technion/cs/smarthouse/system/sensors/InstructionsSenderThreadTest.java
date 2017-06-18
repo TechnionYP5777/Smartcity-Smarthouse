@@ -3,6 +3,7 @@ package il.ac.technion.cs.smarthouse.system.sensors;
 import java.util.Arrays;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,7 +69,7 @@ public class InstructionsSenderThreadTest {
     @After
     public void closeServerSocket() throws InterruptedException {
         server.closeSockets();
-        Thread.sleep(1000);
+        Thread.sleep(3000);
     }
 
     // ------------------------- private helpers ------------------------------
@@ -123,7 +124,7 @@ public class InstructionsSenderThreadTest {
             assert false;
         }
 
-        assert numOfReceivedInstructions() == times;
+        Assert.assertEquals(times, numOfReceivedInstructions());
     }
 
     @Test
