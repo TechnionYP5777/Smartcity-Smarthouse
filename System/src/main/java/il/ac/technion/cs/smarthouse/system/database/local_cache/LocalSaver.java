@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.database.local_cache;
+package il.ac.technion.cs.smarthouse.system.database.local_cache;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

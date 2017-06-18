@@ -5,8 +5,8 @@ import java.io.IOException;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.system.SystemCore;
+import il.ac.technion.cs.smarthouse.system.applications.installer.AppInstallerException;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
-import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;

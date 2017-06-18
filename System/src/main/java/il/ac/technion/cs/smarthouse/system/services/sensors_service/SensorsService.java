@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import il.ac.technion.cs.smarthouse.system.SystemCore;
-import il.ac.technion.cs.smarthouse.system.exceptions.SensorNotFoundException;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.services.Service;
 
@@ -31,12 +30,10 @@ public final class SensorsService extends Service {
      *            structure. Note that all sensors registered with the
      *            {@link SensorData} class given commercial names, should be
      *            able to interact with the same
-     * @param commercialNames
-     *            a list of possible commercial names
-     * @return a list of {@link SensorApiImpl} that are registered with one of
-     *         the given commercial names
-     * @throws SensorNotFoundException
-     *             if no sensor was found with the given commercial names
+     * @param commercialName
+     *            a commercial name
+     * @return a {@link SensorApiImpl} that are registered with 
+     *         the given commercial name and alias
      */
     public <T extends SensorData> SensorApi<T> getSensor(final String commercialName, final Class<T> sensorDataClass, final String sensorAlias) {
         return new SensorApiImpl<>(systemCore.getFileSystem(), commercialName, sensorDataClass, sensorAlias);

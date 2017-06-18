@@ -1,9 +1,9 @@
-package il.ac.technion.cs.smarthouse.database.cloud_server;
+package il.ac.technion.cs.smarthouse.system.database.cloud_server;
 
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 
-import il.ac.technion.cs.smarthouse.database.cloud_server.DatabaseManager.DataEntry;
+import il.ac.technion.cs.smarthouse.system.database.cloud_server.DatabaseManager.DataEntry;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
 /**

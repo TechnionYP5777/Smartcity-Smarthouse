@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.examples.MyTestClass1;
-import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 
 public class AppInstallHelperTest {
     private static String testClassesPathPrefix;

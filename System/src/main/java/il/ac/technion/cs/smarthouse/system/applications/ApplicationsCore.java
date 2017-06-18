@@ -14,10 +14,9 @@ import com.google.gson.annotations.Expose;
 import il.ac.technion.cs.smarthouse.developers_api.ApplicationMetaData;
 import il.ac.technion.cs.smarthouse.notification_center.NotificationsCenter;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
+import il.ac.technion.cs.smarthouse.system.applications.installer.AppInstallerException;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
-import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
-import il.ac.technion.cs.smarthouse.system.exceptions.ApplicationInitializationException;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**
@@ -49,7 +48,6 @@ public class ApplicationsCore extends ChildCore {
      * @throws IOException
      * @throws AppInstallerException
      * @throws Exception
-     * @throws ApplicationInitializationException
      */
     public ApplicationMetaData addApplication(final ApplicationPath appPath) {
         try {

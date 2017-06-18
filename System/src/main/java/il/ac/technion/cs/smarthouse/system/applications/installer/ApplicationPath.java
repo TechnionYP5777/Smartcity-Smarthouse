@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
-import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 
 /**
  * This class will store the path for the application's .jar file OR a list of

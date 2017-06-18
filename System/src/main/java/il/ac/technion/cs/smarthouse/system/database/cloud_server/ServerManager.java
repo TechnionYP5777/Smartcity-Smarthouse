@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.database.cloud_server;
+package il.ac.technion.cs.smarthouse.system.database.cloud_server;
 
 import java.util.HashMap;
 import java.util.Map;

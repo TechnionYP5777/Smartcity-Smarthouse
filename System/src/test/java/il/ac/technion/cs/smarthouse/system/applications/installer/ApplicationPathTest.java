@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
-import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 
 public class ApplicationPathTest {
     private static String APP1_CLASSPATH = ApplicationPathTest.class.getPackage().getName() + ".examples.MyTestClass1";

@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
-import il.ac.technion.cs.smarthouse.system.exceptions.AppInstallerException;
 
 /**
  * This class contains static functions that handle loading

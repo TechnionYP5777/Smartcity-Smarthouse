@@ -10,7 +10,7 @@ import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
 
-import il.ac.technion.cs.smarthouse.database.cloud_server.ServerManager;
+import il.ac.technion.cs.smarthouse.system.database.cloud_server.ServerManager;
 
 /**
  * @author Inbal Zukerman

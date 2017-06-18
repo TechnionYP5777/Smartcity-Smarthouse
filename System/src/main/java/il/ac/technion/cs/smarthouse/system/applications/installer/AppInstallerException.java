@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system.exceptions;
+package il.ac.technion.cs.smarthouse.system.applications.installer;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 
