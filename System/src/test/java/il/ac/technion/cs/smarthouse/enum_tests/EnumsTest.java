@@ -7,9 +7,9 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
-import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
+import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLevel;
 
 /**
  * Cheating on the enum coverage

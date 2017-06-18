@@ -5,9 +5,9 @@ import java.util.ResourceBundle;
 
 import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
-import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
+import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 import javafx.beans.property.SimpleStringProperty;

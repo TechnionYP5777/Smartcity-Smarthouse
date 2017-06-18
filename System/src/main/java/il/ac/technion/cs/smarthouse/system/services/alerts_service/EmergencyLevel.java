@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system;
+package il.ac.technion.cs.smarthouse.system.services.alerts_service;
 
 import java.util.List;
 import java.util.stream.Collectors;

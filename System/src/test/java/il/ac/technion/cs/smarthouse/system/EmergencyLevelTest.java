@@ -3,6 +3,8 @@ package il.ac.technion.cs.smarthouse.system;
 import org.junit.Assert;
 import org.junit.Test;
 
+import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLevel;
+
 /**
  * @author Inbal Zukerman
  * @since Jan 6, 2017

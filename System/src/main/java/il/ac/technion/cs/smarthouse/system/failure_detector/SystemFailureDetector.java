@@ -1,4 +1,4 @@
-package il.ac.technion.cs.smarthouse.system;
+package il.ac.technion.cs.smarthouse.system.failure_detector;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import il.ac.technion.cs.smarthouse.system.SystemMode;
 import il.ac.technion.cs.smarthouse.utils.Communicate;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.geometry.Insets;

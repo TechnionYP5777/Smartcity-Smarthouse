@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.google.gson.annotations.Expose;
 
-import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
+import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLevel;
 
 /**
  * This class saves all necessary information and implements the required API to

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.hansolo.enzo.notification.*;
-import il.ac.technion.cs.smarthouse.system.EmergencyLevel;
+import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLevel;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 
 public enum NotificationsCenter {
