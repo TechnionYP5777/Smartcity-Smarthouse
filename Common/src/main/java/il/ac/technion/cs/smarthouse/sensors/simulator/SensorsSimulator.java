@@ -2,9 +2,11 @@ package il.ac.technion.cs.smarthouse.sensors.simulator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -16,48 +18,63 @@ import il.ac.technion.cs.smarthouse.sensors.PathType;
  */
 public class SensorsSimulator {
 	public enum Action {
-		ADD, REMOVE
+		ADD, REMOVE, GET 
 	};
+	private Integer id = 0;
 
-	private Map<PathType, Consumer<String>> loggers = new HashMap<>();
-	private Map<Action, List<Consumer<GenericSensor>>> listeners;
-	private List<GenericSensor> sensors = new ArrayList<>();
+	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
+	private Map<Action, List<Consumer<GenericSensor>>> listeners = new HashMap<>();
+	private Map<String, GenericSensor> sensors = new HashMap<>();
 
-	private void setLogger(PathType t, Consumer<String> logger) {
-		loggers.put(t, logger);
+	private void addLogger(PathType t, Consumer<String> logger) {
+		if(!loggers.containsKey(t))
+			loggers.put(t, new HashSet<>());
+		loggers.get(t).add(logger);
+		sensors.values().forEach(s -> s.addLogger(t, logger));
 	}
 
 	private void callListeners(Action a, GenericSensor s) {
 		Optional.ofNullable(listeners.get(a)).ifPresent(ls -> ls.forEach(l -> l.accept(s)));
 	}
 
+	private String getNextId(){
+		return ""+ id++;
+	}
 	// ------------------------- public API -----------------------------------
-	public SensorsSimulator addSensor(GenericSensor s) {
-		Stream.of(PathType.values()).forEach(type -> s.addLogger(type, loggers.get(type)));
-		sensors.add(s);
+	public String addSensor(GenericSensor s) {
+		Stream.of(PathType.values())
+						.forEach(type -> loggers.get(type)
+						.forEach(logger -> s.addLogger(type, logger)));
+		String id = getNextId();
+		sensors.put(id, s);
 		callListeners(Action.ADD, s);
-		return this;
+		return id;
 	}
 
-	public SensorsSimulator removeSensor(GenericSensor s) {
-		sensors.remove(s);
-		callListeners(Action.REMOVE, s);
+	public SensorsSimulator removeSensor(String id) {
+		callListeners(Action.REMOVE, sensors.get(id));
+		sensors.remove(id);
 		return this;
+	}
+	
+	public GenericSensor getSensor(String id){
+		callListeners(Action.GET, sensors.get(id));
+		return sensors.get(id);
 	}
 
 	public SensorsSimulator startSendingMsgsInAllSensors() {
-		sensors.forEach(s -> new Thread(() -> s.streamMessages()).start());
+		sensors.values().forEach(s -> new Thread(() -> s.streamMessages()).start());
 		return this;
 	}
 
-	// ------------------------- access through listeners/loggers ----------
-	public SensorsSimulator setSentMsgLogger(Consumer<String> logger) {
-		loggers.put(PathType.INFO_SENDING, logger);
+	// ---------- access through listeners/loggers ----------
+	public SensorsSimulator addSentMsgLogger(Consumer<String> logger) {
+		addLogger(PathType.INFO_SENDING, logger);
 		return this;
 	}
 
-	public SensorsSimulator setInstructionReceivedLogger(Consumer<String> logger) {
-		loggers.put(PathType.INSTRUCTION_RECEIVING, logger);
+	public SensorsSimulator addInstructionReceivedLogger(Consumer<String> logger) {
+		addLogger(PathType.INSTRUCTION_RECEIVING, logger);
 		return this;
 	}
 
@@ -67,7 +84,7 @@ public class SensorsSimulator {
 		listeners.get(a).add(listener);
 
 		if (Action.ADD.equals(a))// notify on anyone who is already connected
-			sensors.forEach(s -> listener.accept(s));
+			sensors.values().forEach(s -> listener.accept(s));
 		return this;
 	}
 

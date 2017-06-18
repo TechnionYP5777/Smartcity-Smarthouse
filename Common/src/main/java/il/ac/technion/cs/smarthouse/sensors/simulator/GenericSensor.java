@@ -2,9 +2,11 @@ package il.ac.technion.cs.smarthouse.sensors.simulator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -79,7 +81,7 @@ public class GenericSensor {
 		}
 	}
 
-	private Map<PathType, List<Consumer<String>>> loggers = new HashMap<>();
+	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
 	private Map<PathType, Map<String, Class>> paths = new HashMap<>();
 	private Boolean interactive = false, connected = false;
 	private Long pollInterval = TimeUnit.SECONDS.toMillis(5), streamingInterval = 1000L;
@@ -130,7 +132,7 @@ public class GenericSensor {
 
 	void addLogger(PathType t, Consumer<String> logger) {
 		if (!loggers.containsKey(t))
-			loggers.put(t, new ArrayList<>());
+			loggers.put(t, new HashSet<>());
 		loggers.get(t).add(logger);
 	}
 
@@ -176,8 +178,7 @@ public class GenericSensor {
 	// ------------------------ public method -------------------------------
 	/** blocks until an instruction is sent */
 	public void waitForInstruction() {
-		while (!sensor.operate())
-			;
+		while (!sensor.operate());
 	}
 
 	/** blocking method */
