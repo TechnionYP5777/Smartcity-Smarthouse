@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="il.ac.technion.cs.smarthouse.system.gui.dashboard.DashboardController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.dashboard.DashboardController">
   <children>
     <ScrollPane layoutX="0.0" layoutY="0.0">
       <content>

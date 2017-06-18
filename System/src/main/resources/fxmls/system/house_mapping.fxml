@@ -14,7 +14,7 @@
 
 <SplitPane dividerPositions="0.7" prefHeight="400.0"
 	prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="il.ac.technion.cs.smarthouse.system.gui.mapping.MappingController">
+	fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.mapping.MappingController">
 	<items>
 		<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0"
 			prefWidth="100.0">

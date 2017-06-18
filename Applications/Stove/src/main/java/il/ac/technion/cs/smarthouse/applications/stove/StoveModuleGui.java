@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
 public class StoveModuleGui extends SmarthouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
     
-    private boolean alertCalled = false;
+    private boolean alertCalled;
     
     public static void main(String[] args) throws Exception {
         launch(StoveSensorSimulator.class);

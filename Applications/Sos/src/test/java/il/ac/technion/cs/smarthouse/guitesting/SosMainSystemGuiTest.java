@@ -9,8 +9,6 @@ import org.loadui.testfx.utils.FXTestUtils;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-import static org.loadui.testfx.Assertions.assertNodeExists;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
