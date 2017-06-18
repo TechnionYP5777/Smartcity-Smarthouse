@@ -148,7 +148,7 @@ public class GenericSensorTest {
 
         builder.setStreamInterval(10L).build().streamMessages();
 
-        Thread.sleep(10000);
+        Thread.sleep(5000);
 
         System.out.println("##### counters: " + counters);
         counters.values().forEach(cntr -> {
