@@ -10,6 +10,9 @@ coverage:
     - "System/**/system/notification_center/*"
     - "System/**/developers_api/*"
     - "System/**/Entry.java"
+    - "System/**/SystemSaver.java"
     - "SensorsSimulator/**"
     - "Common/**/utils/JavaFxHelper.java"
+    - "Common/**/gui_controller/*"
+    - "Common/**/sensors/*"
 

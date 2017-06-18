@@ -6,40 +6,56 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LocalSaver {
     private static Logger log = LoggerFactory.getLogger(LocalSaver.class);
 
-    private static final String DATA_FILE_PATH = "SmarthouseDb.data";
+    public static final String DATA_FILE_PATH = "SmarthouseDb.data";
 
-    private static File getFile() throws IOException {        
-        File db = new File(DATA_FILE_PATH);
+    private static File getFile(String path) {
+        File db = new File(Optional.ofNullable(path).orElse(DATA_FILE_PATH));
 
         if (!db.exists())
-            db.createNewFile();
+            try {
+                db.createNewFile();
+            } catch (IOException e) {
+                log.error("Couldn't create file " + db.getAbsolutePath(), e);
+            }
 
         return db;
     }
-
+    
     public static synchronized void saveData(String data) {
-        try (BufferedWriter o = new BufferedWriter(new FileWriter(getFile()))) {
-            o.write(data);
-            o.flush();
-            log.info("\n\tLocalSaver: Wrote data to file\n\tFile name: " + new File(DATA_FILE_PATH).getAbsolutePath() + "\n\tData: " + data);
-        } catch (NumberFormatException | IOException e) {
-            log.error("Can't write to file (" + DATA_FILE_PATH + ")", e);
-        }
+        saveData(data, null);
     }
     
     public static synchronized String readData() {
-        try (BufferedReader o = new BufferedReader(new FileReader(getFile()))) {
+        return readData(null);
+    }
+
+    public static synchronized void saveData(String data, String path) {
+        File f = getFile(path);
+        try (BufferedWriter o = new BufferedWriter(new FileWriter(f))) {
+            o.write(data);
+            o.flush();
+            log.info("\n\tLocalSaver: Wrote data to file\n\tFile name: " + f.getAbsolutePath() + "\n\tData: " + data);
+        } catch (NumberFormatException | IOException e) {
+            log.error("Can't write to file (" + f.getAbsolutePath() + ")", e);
+        }
+    }
+    
+    public static synchronized String readData(String path) {
+        File f = getFile(path);
+        try (BufferedReader o = new BufferedReader(new FileReader(f))) {
             String data = o.readLine();
-            log.info("\n\tLocalSaver: Read data from file\n\tFile name: " + new File(DATA_FILE_PATH).getAbsolutePath() + "\n\tData: " + data);
+            log.info("\n\tLocalSaver: Read data from file\n\tFile name: " + f.getAbsolutePath() + "\n\tData: " + data);
             return data;
         } catch (NumberFormatException | IOException e) {
-            log.error("Can't write to file (" + DATA_FILE_PATH + ")", e);
+            log.error("Can't write to file (" + f.getAbsolutePath() + ")", e);
         }
         
         return null;
