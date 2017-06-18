@@ -209,7 +209,8 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 
                 // set the sensor's ID
                 sensorId = sensorId1;
-                log.info("SID found: " + sensorId);
+                log.info("\n\tSensorApiImpl: SID found\n\tSensor ID found: " + sensorId + "\n\tCommercial name: "
+                                + commercialName);
 
                 // unsubscribe from the sensorIdListener
                 Optional.ofNullable(sensorIdListenerId).ifPresent(id -> fileSystem.unsubscribe(id));
