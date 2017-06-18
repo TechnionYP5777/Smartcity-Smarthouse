@@ -11,6 +11,12 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Saves system data to local file
+ * 
+ * @author RON
+ * @since 18-06-2017
+ */
 public class LocalSaver {
     private static Logger log = LoggerFactory.getLogger(LocalSaver.class);
 
@@ -28,11 +34,11 @@ public class LocalSaver {
 
         return db;
     }
-    
+
     public static synchronized void saveData(String data) {
         saveData(data, null);
     }
-    
+
     public static synchronized String readData() {
         return readData(null);
     }
@@ -47,7 +53,7 @@ public class LocalSaver {
             log.error("Can't write to file (" + f.getAbsolutePath() + ")", e);
         }
     }
-    
+
     public static synchronized String readData(String path) {
         File f = getFile(path);
         try (BufferedReader o = new BufferedReader(new FileReader(f))) {
@@ -57,7 +63,7 @@ public class LocalSaver {
         } catch (NumberFormatException | IOException e) {
             log.error("Can't write to file (" + f.getAbsolutePath() + ")", e);
         }
-        
+
         return null;
     }
 }
