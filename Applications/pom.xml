@@ -27,6 +27,5 @@
 		<module>Sos</module>
 		<module>Stove</module>
 		<module>Vitals</module>
-		<module>Shutter</module>
  	</modules>
 </project>

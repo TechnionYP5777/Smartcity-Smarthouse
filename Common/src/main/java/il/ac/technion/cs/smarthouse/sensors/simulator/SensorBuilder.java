@@ -1,5 +1,8 @@
 package il.ac.technion.cs.smarthouse.sensors.simulator;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import il.ac.technion.cs.smarthouse.sensors.InstructionHandler;
@@ -15,6 +18,8 @@ public class SensorBuilder {
 	private String sensorId = Random.sensorId();
 	private String commname, alias;
 	private InstructionHandler iHandler;
+	
+	private Map<String, List> ranges;
 
 	private final GenericSensor genericSensor = new GenericSensor();
 
@@ -27,6 +32,7 @@ public class SensorBuilder {
 			return null;
 		GenericSensor newSensor = new GenericSensor(genericSensor);
 
+		newSensor.setRanges(ranges);
 		newSensor.setSensor(new InteractiveSensor(commname, sensorId, alias, newSensor.getPaths(PathType.INFO_SENDING),
 				newSensor.getPaths(PathType.INSTRUCTION_RECEIVING)));
 		newSensor.getSensor().setInstructionHandler((path, inst) -> {
@@ -34,16 +40,6 @@ public class SensorBuilder {
 			return iHandler == null || iHandler.applyInstruction(path, inst);
 		});
 		return newSensor;
-	}
-
-	public SensorBuilder setInstructionHandler(InstructionHandler h) {
-		iHandler = h;
-		return this;
-	}
-
-	public SensorBuilder setCommname(String comm) {
-		commname = comm;
-		return this;
 	}
 
 	/**
@@ -54,8 +50,18 @@ public class SensorBuilder {
 		return this;
 	}
 
+	public SensorBuilder setCommname(String comm) {
+		commname = comm;
+		return this;
+	}
+
 	public SensorBuilder setAlias(String alias) {
 		this.alias = alias;
+		return this;
+	}
+
+	public SensorBuilder setInstructionHandler(InstructionHandler h) {
+		iHandler = h;
 		return this;
 	}
 
@@ -72,13 +78,26 @@ public class SensorBuilder {
 		return addPath(PathType.INSTRUCTION_RECEIVING, path, null);
 	}
 
+	public SensorBuilder addStreamingRange(String path, @SuppressWarnings("rawtypes") List values) {
+		if (ranges == null)
+			ranges = new HashMap<>();
+		ranges.put(path, values);
+		return this;
+	}
+	
+	public SensorBuilder setPollingInterval(Long milliseconds) {
+		genericSensor.setPollingInterval(milliseconds);
+		return this;
+	}
+	
+	public SensorBuilder setStreamInterval(Long milliseconds) {
+		genericSensor.setStreamInterval(milliseconds);
+		return this;
+	}
+
 	public SensorBuilder addLogger(PathType t, Consumer<String> logger) {
 		genericSensor.addLogger(t, logger);
 		return this;
 	}
 
-	public SensorBuilder setPollingInterval(Long milliseconds) {
-		genericSensor.setPollingInterval(milliseconds);
-		return this;
-	}
 }
