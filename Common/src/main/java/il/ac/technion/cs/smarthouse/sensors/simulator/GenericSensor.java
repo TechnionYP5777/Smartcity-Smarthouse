@@ -61,8 +61,7 @@ public class GenericSensor {
 			return paths.get(PathType.INFO_SENDING).keySet().stream().map(path -> {
 				Class c = paths.get(PathType.INFO_SENDING).get(path);
 				List vals = ranges.get(path);
-				Boolean sizeOk = Integer.class.isAssignableFrom(c) || Double.class.isAssignableFrom(c)
-						? vals.size() == 2 : true,
+				Boolean sizeOk = !Integer.class.isAssignableFrom(c) && !Double.class.isAssignableFrom(c) || vals.size() == 2,
 						valsOk = (Boolean) vals.stream().map(o -> c.isAssignableFrom(o.getClass()))
 								.reduce((x, y) -> (Boolean) x && (Boolean) x).orElse(true);
 				return sizeOk && valsOk;
@@ -72,18 +71,18 @@ public class GenericSensor {
 		private Object random(String path) {
 			Class c = paths.get(PathType.INFO_SENDING).get(path);
 			List vals = ranges.get(path);
-			if (Integer.class.isAssignableFrom(c))
-				return ThreadLocalRandom.current().nextInt((Integer) vals.get(0), (Integer) vals.get(1));
-			return Double.class.isAssignableFrom(c)
-					? ThreadLocalRandom.current().nextDouble((Double) vals.get(0), (Double) vals.get(1))
-					: vals.get(ThreadLocalRandom.current().nextInt(vals.size()));
+			return Integer.class.isAssignableFrom(c)
+					? ThreadLocalRandom.current().nextInt((Integer) vals.get(0), (Integer) vals.get(1))
+					: Double.class.isAssignableFrom(c)
+							? ThreadLocalRandom.current().nextDouble((Double) vals.get(0), (Double) vals.get(1))
+							: vals.get(ThreadLocalRandom.current().nextInt(vals.size()));
 		}
 	}
 
 	private Map<PathType, List<Consumer<String>>> loggers = new HashMap<>();
 	private Map<PathType, Map<String, Class>> paths = new HashMap<>();
 	private Boolean interactive = false, connected = false;
-	private Long pollInterval = TimeUnit.SECONDS.toMillis(5), streamingInterval = 1000*1L;
+	private Long pollInterval = TimeUnit.SECONDS.toMillis(5), streamingInterval = 1000L;
 
 	private Map<String, List> lastReceivedRanges;
 
