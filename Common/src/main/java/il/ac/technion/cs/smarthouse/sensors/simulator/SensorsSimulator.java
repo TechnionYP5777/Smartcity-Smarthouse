@@ -31,8 +31,7 @@ public class SensorsSimulator {
 		Optional.ofNullable(listeners.get(a)).ifPresent(ls -> ls.forEach(l -> l.accept(s)));
 	}
 
-	// ------------------------- public API
-	// -----------------------------------------
+	// ------------------------- public API -----------------------------------
 	public SensorsSimulator addSensor(GenericSensor s) {
 		Stream.of(PathType.values()).forEach(type -> s.addLogger(type, loggers.get(type)));
 		sensors.add(s);
@@ -51,6 +50,7 @@ public class SensorsSimulator {
 		return this;
 	}
 
+	// ------------------------- access through listeners/loggers ----------
 	public SensorsSimulator setSentMsgLogger(Consumer<String> logger) {
 		loggers.put(PathType.INFO_SENDING, logger);
 		return this;
@@ -61,8 +61,6 @@ public class SensorsSimulator {
 		return this;
 	}
 
-	// ------------------------- access through listener
-	// -------------------------
 	public SensorsSimulator addListenerWhen(Action a, Consumer<GenericSensor> listener) {
 		if (!listeners.containsKey(a))
 			listeners.put(a, new ArrayList<>());
