@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
@@ -14,7 +15,7 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-								<VBox alignment="TOP_CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+								<VBox alignment="TOP_CENTER" layoutX="-4.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
 									<children>
 										<Label layoutX="160.0" layoutY="24.0" text="User Information" underline="true" AnchorPane.bottomAnchor="440.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="30.0">
 											<font>
@@ -47,14 +48,35 @@
 												<TextField fx:id="userIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 												<TextField fx:id="userPhoneNumField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 												<TextField fx:id="userHomeAddressField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ImageView fx:id="nameStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </ImageView>
+                        <ImageView fx:id="idStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </ImageView>
+                        <ImageView fx:id="addressStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </ImageView>
+                        <ImageView fx:id="phoneStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </ImageView>
 											</children>
 											<columnConstraints>
-												<ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="109.0" />
-												<ColumnConstraints hgrow="SOMETIMES" prefWidth="189.0" />
+												<ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="128.0" />
+												<ColumnConstraints hgrow="SOMETIMES" maxWidth="606.0" minWidth="312.0" prefWidth="595.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0" prefWidth="27.0" />
 											</columnConstraints>
 											<rowConstraints>
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+												<RowConstraints vgrow="SOMETIMES" />
+												<RowConstraints vgrow="SOMETIMES" />
 												<RowConstraints />
 												<RowConstraints />
 											</rowConstraints>

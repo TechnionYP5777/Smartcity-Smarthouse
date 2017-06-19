@@ -11,6 +11,8 @@ import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLeve
 import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +25,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -32,6 +36,11 @@ public class UserInfoController extends SystemGuiController {
     @FXML public TextField userPhoneNumField;
     @FXML public TextField userHomeAddressField;
     @FXML public Button userSaveField;
+
+    @FXML public ImageView nameStatus;
+    @FXML public ImageView idStatus;
+    @FXML public ImageView phoneStatus;
+    @FXML public ImageView addressStatus;
 
     @FXML public TextField addNameField;
     @FXML public TextField addIDField;
@@ -144,9 +153,23 @@ public class UserInfoController extends SystemGuiController {
 
     private static boolean validateUserInput(final String name, final String id, final String phone,
                     final String address) {
-        return name != null && id != null && phone != null && address != null && !"".equals(name) && !"".equals(id)
-                        && !"".equals(phone) && !"".equals(address) && name.chars().allMatch(Character::isLetter)
-                        && id.chars().allMatch(Character::isDigit) && phone.chars().allMatch(Character::isDigit);
+        return validateName(name) && validateId(id) && validatePhone(phone) && validateAddress(address);
+    }
+
+    static boolean validateName(final String name) {
+        return name != null && !"".equals(name) && name.chars().allMatch(Character::isLetter);
+    }
+
+    static boolean validateId(final String id) {
+        return id != null && !"".equals(id) && id.chars().allMatch(Character::isDigit);
+    }
+
+    static boolean validatePhone(final String phone) {
+        return phone != null && !"".equals(phone) && phone.chars().allMatch(Character::isDigit);
+    }
+
+    static boolean validateAddress(final String address) {
+        return address != null && !"".equals(address);
     }
 
     private static void alertMessageUnvalidInput() {
@@ -172,10 +195,50 @@ public class UserInfoController extends SystemGuiController {
 
     }
 
+    void setStatus(ImageView statusImage, boolean valid) {
+        statusImage.setImage(new Image(
+                        getClass().getResourceAsStream("/icons/" + (valid ? "check" : "cross") + "-icon.png")));
+    }
+
+    private void setInputListeners() {
+        userNameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    setStatus(nameStatus, validateName(userNameField.getText()));
+            }
+        });
+
+        userIDField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    setStatus(idStatus, validateId(userIDField.getText()));
+            }
+        });
+
+        userPhoneNumField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    setStatus(phoneStatus, validatePhone(userPhoneNumField.getText()));
+            }
+        });
+
+        userHomeAddressField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    setStatus(addressStatus, validateAddress(userHomeAddressField.getText()));
+            }
+        });
+    }
+
     @Override
-    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent,
-                    SystemMode m, URL location, ResourceBundle b) {
+    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
+                    URL location, ResourceBundle b) {
         setButtons();
+        setInputListeners();
         setCellsFactories();
         costumizeContactsTab();
     }
