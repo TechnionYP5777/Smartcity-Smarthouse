@@ -42,12 +42,12 @@ public class GraphWidget extends BasicWidget {
     }
 
     @Override
-    public void update(final Double value, final String key) {
+    public synchronized void update(final Double value, final String key) {
         if (WidgetType.PROGRESS_LINE_GRAPH.equals(type))
             super.update(value, key);
         if (!dataSeries.containsKey(key))
             return;
-        final Integer maxDataSize = 7;
+        final Integer maxDataSize = 30;
         if (points > maxDataSize)
             dataSeries.get(key).getData().remove(0);
 
