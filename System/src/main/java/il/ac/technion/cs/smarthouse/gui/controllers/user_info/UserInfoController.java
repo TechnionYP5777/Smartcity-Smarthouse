@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -29,6 +30,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 
 public class UserInfoController extends SystemGuiController {
     @FXML public TextField userNameField;
@@ -41,6 +43,11 @@ public class UserInfoController extends SystemGuiController {
     @FXML public ImageView idStatus;
     @FXML public ImageView phoneStatus;
     @FXML public ImageView addressStatus;
+
+    @FXML public Label nameMessage;
+    @FXML public Label idMessage;
+    @FXML public Label phoneMessage;
+    @FXML public Label addressMessage;
 
     @FXML public TextField addNameField;
     @FXML public TextField addIDField;
@@ -195,9 +202,15 @@ public class UserInfoController extends SystemGuiController {
 
     }
 
-    void setStatus(ImageView statusImage, boolean valid) {
-        statusImage.setImage(new Image(
-                        getClass().getResourceAsStream("/icons/" + (valid ? "check" : "cross") + "-icon.png")));
+    void setStatus(ImageView statusImage, Label statusLabel, String message, boolean valid) {
+        if (valid) {
+            statusImage.setImage(new Image(getClass().getResourceAsStream("/icons/check-icon.png")));
+            statusLabel.setText("");
+        } else {
+            statusImage.setImage(new Image(getClass().getResourceAsStream("/icons/cross-icon.png")));
+            statusLabel.setText(message);
+            statusLabel.setTextFill(Color.RED);
+        }
     }
 
     private void setInputListeners() {
@@ -205,7 +218,8 @@ public class UserInfoController extends SystemGuiController {
             @Override
             public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
                 if (!newValue) // Focusing out
-                    setStatus(nameStatus, validateName(userNameField.getText()));
+                    setStatus(nameStatus, nameMessage, "Name can't be empty and must contain only letters",
+                                    validateName(userNameField.getText()));
             }
         });
 
@@ -213,7 +227,8 @@ public class UserInfoController extends SystemGuiController {
             @Override
             public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
                 if (!newValue) // Focusing out
-                    setStatus(idStatus, validateId(userIDField.getText()));
+                    setStatus(idStatus, idMessage, "ID can't be empty and must contain only digits",
+                                    validateId(userIDField.getText()));
             }
         });
 
@@ -221,7 +236,8 @@ public class UserInfoController extends SystemGuiController {
             @Override
             public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
                 if (!newValue) // Focusing out
-                    setStatus(phoneStatus, validatePhone(userPhoneNumField.getText()));
+                    setStatus(phoneStatus, phoneMessage, "Phone number can't be empty and must contain only digits",
+                                    validatePhone(userPhoneNumField.getText()));
             }
         });
 
@@ -229,7 +245,8 @@ public class UserInfoController extends SystemGuiController {
             @Override
             public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
                 if (!newValue) // Focusing out
-                    setStatus(addressStatus, validateAddress(userHomeAddressField.getText()));
+                    setStatus(addressStatus, addressMessage, "Home address can't be empty",
+                                    validateAddress(userHomeAddressField.getText()));
             }
         });
     }

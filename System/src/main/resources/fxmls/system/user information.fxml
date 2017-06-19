@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.5020080321285141" orientation="VERTICAL" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.user_info.UserInfoController">
+<SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.user_info.UserInfoController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
@@ -22,63 +22,71 @@
 												<Font name="System Bold" size="25.0" />
 											</font>
 										</Label>
-										<GridPane vgap="10">
+										<GridPane maxHeight="220.0" minHeight="220.0" prefHeight="220.0" vgap="10.0">
 											<children>
 												<Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0">
 													<font>
 														<Font size="18" />
 													</font>
 												</Label>
-												<Label text="Id:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+												<Label text="Id:" GridPane.rowIndex="2">
 													<font>
 														<Font size="18" />
 													</font>
 												</Label>
-												<Label text="Phone Number:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+												<Label text="Phone Number:" GridPane.columnIndex="0" GridPane.rowIndex="4">
 													<font>
 														<Font size="18" />
 													</font>
 												</Label>
-												<Label text="Home Address:" GridPane.columnIndex="0" GridPane.rowIndex="3">
+												<Label text="Home Address:" GridPane.columnIndex="0" GridPane.rowIndex="6">
 													<font>
 														<Font size="18" />
 													</font>
 												</Label>
 												<TextField fx:id="userNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-												<TextField fx:id="userIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-												<TextField fx:id="userPhoneNumField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-												<TextField fx:id="userHomeAddressField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+												<TextField fx:id="userIDField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+												<TextField fx:id="userPhoneNumField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+												<TextField fx:id="userHomeAddressField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <ImageView fx:id="nameStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets left="20.0" />
                            </GridPane.margin>
                         </ImageView>
-                        <ImageView fx:id="idStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <ImageView fx:id="idStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets left="20.0" />
                            </GridPane.margin>
                         </ImageView>
-                        <ImageView fx:id="addressStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                        <ImageView fx:id="addressStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="6">
                            <GridPane.margin>
                               <Insets left="20.0" />
                            </GridPane.margin>
                         </ImageView>
-                        <ImageView fx:id="phoneStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <ImageView fx:id="phoneStatus" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <GridPane.margin>
                               <Insets left="20.0" />
                            </GridPane.margin>
                         </ImageView>
+                        <Label fx:id="nameMessage" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="idMessage" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="phoneMessage" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="addressMessage" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 											</children>
 											<columnConstraints>
 												<ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="128.0" />
-												<ColumnConstraints hgrow="SOMETIMES" maxWidth="606.0" minWidth="312.0" prefWidth="595.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0" prefWidth="27.0" />
+												<ColumnConstraints hgrow="SOMETIMES" maxWidth="606.0" minWidth="312.0" prefWidth="586.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.0" minWidth="0.0" prefWidth="36.0" />
 											</columnConstraints>
 											<rowConstraints>
-												<RowConstraints vgrow="SOMETIMES" />
-												<RowConstraints vgrow="SOMETIMES" />
-												<RowConstraints />
-												<RowConstraints />
+												<RowConstraints maxHeight="30.0" />
+                        <RowConstraints maxHeight="5.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="30.0" />
+                        <RowConstraints maxHeight="5.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="30.0" />
+                        <RowConstraints maxHeight="5.0" />
+												<RowConstraints maxHeight="30.0" />
+                        <RowConstraints maxHeight="5.0" />
 											</rowConstraints>
 										</GridPane>
 										<Button fx:id="userSaveField" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Save" StackPane.alignment="CENTER_RIGHT" />
@@ -91,7 +99,7 @@
       </AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-								<VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+								<VBox alignment="TOP_CENTER" layoutX="-2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
 									<children>
 										<Label layoutX="195.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" text="Emergency Contacts" textAlignment="CENTER" underline="true" AnchorPane.bottomAnchor="440.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="30.0">
 											<font>
