@@ -8,9 +8,7 @@ import java.util.stream.Collectors;
 import eu.hansolo.tilesfx.Tile;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
-import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
 import javafx.scene.paint.Stop;
 
 /**
@@ -20,6 +18,7 @@ import javafx.scene.paint.Stop;
 public class GraphWidget extends BasicWidget {
     // path -> series
     private final Map<String, XYChart.Series<String, Number>> dataSeries = new HashMap<>();
+    private int points;
 
     @SuppressWarnings("unchecked")
     public GraphWidget(final WidgetType t, final Double tileSize, final InfoCollector data) {
@@ -49,13 +48,11 @@ public class GraphWidget extends BasicWidget {
         if (!dataSeries.containsKey(key))
             return;
         final Integer maxDataSize = 7;
-        final ObservableList<Data<String, Number>> keySerie = dataSeries.get(key).getData();
-        if (keySerie.size() > maxDataSize)
-            for (Integer i = 0; i < keySerie.size() - 1; ++i)
-                keySerie.get(i).setYValue(keySerie.get(i + 1).getYValue());
-        // keySerie.remove(keySesrie.size()-1);
+        if (points > maxDataSize)
+            dataSeries.get(key).getData().remove(0);
 
-        keySerie.add(new XYChart.Data<>(keySerie.size() + "", value));
+        dataSeries.get(key).getData().add(new XYChart.Data<>(points + "", value));
+        ++points;
     }
 
     public Set<String> getUpdateKeys() {
