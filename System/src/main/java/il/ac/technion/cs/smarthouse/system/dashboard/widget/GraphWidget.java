@@ -18,9 +18,8 @@ import javafx.scene.paint.Stop;
  * @since Jun 3, 2017
  */
 public class GraphWidget extends BasicWidget {
-    private final Map<String, XYChart.Series<String, Number>> dataSeries = new HashMap<>();// path
-                                                                                           // ->
-                                                                                           // series
+    // path -> series
+    private final Map<String, XYChart.Series<String, Number>> dataSeries = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public GraphWidget(final WidgetType t, final Double tileSize, final InfoCollector data) {
