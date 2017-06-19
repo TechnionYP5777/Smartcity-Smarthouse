@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse.system.failure_detector;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +35,19 @@ import javafx.stage.Stage;
 public enum SystemFailureDetector {
     ;
     static final Logger log = LoggerFactory.getLogger(SystemFailureDetector.class);
+    
+    private static String logException(Thread t, Throwable e) {
+        final String errTxt = "\n\tUncaught exception from thread [" + t.getName() + "]\n\tException: " + e.toString();
+        log.error(errTxt, e);
+        return errTxt;
+    }
 
     public static void enable(final SystemMode m) {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\n\nException:\n" + e.toString();
-            log.error(errTxt, e);
+            final String errTxt = logException(t, e);
+            if (Stream.of(e.getStackTrace()).filter(c -> SystemFailureDetector.class.getName().equals(c.getClassName())).count() > 0) 
+                System.exit(-1);
+            
             if (JavaFxHelper.isJavaFxThreadStarted())
                 JavaFxHelper.surroundConsumerWithFx(p -> {
                     ButtonType reportType = new ButtonType("Send Report", ButtonBar.ButtonData.LEFT);
