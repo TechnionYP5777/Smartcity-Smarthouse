@@ -89,19 +89,22 @@ public class UserInfoController extends SystemGuiController {
             final String name = userNameField.getText(), id = userIDField.getText(),
                             phoneNum = userPhoneNumField.getText(), address = userHomeAddressField.getText();
             if (!validateUserInput(name, id, phoneNum, address))
-                alertMessageUnvalidInput();
-            else if (getModel().isUserInitialized()) {
-                final UserInformation temp = getModel().getUser();
-                temp.setHomeAddress(address);
-                temp.setPhoneNumber(phoneNum);
-                openSuccessDialog("Successful Update", "Thanks for the update!",
-                                "Your information was updated successfully.");
-            } else {
-                getModel().initializeUser(name, id, phoneNum, address);
-                userNameField.setEditable(false);
-                userIDField.setEditable(false);
-                openSuccessDialog("Successful Registration", "Hello " + userNameField.getText() + "!",
-                                "You registered successfully.");
+                alertMessageUnvalidInput("Make sure to enter only valid names and phone numbers.");
+            else {
+                if (getModel().isUserInitialized()) {
+                    final UserInformation temp = getModel().getUser();
+                    temp.setHomeAddress(address);
+                    temp.setPhoneNumber(phoneNum);
+                    openSuccessDialog("Successful Update", "Thanks for the update!",
+                                    "Your information was updated successfully.");
+                } else {
+                    getModel().initializeUser(name, id, phoneNum, address);
+                    userNameField.setEditable(false);
+                    userIDField.setEditable(false);
+                    openSuccessDialog("Successful Registration", "Hello " + userNameField.getText() + "!",
+                                    "You registered successfully.");
+                }
+                clearAfterUserSave();
             }
         });
 
@@ -112,18 +115,16 @@ public class UserInfoController extends SystemGuiController {
                 alert.setHeaderText("User Not Registered");
                 alert.setContentText("Make sure to register the user before adding any contacts.");
                 alert.showAndWait();
-            } else if (!validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(),
+            } else if (!validateEmergencyLevel(addELevelField.getValue()))
+                alertMessageUnvalidInput("Please select an emergency level.");
+            else if (!validateContact(addNameField.getText(), addIDField.getText(), addPhoneField.getText(),
                             addEmailField.getText()))
-                alertMessageUnvalidInput();
+                alertMessageUnvalidInput("Make sure to enter only valid names and phone numbers.");
             else {
                 addContactToTable(event);
                 openSuccessDialog("Successful Update", addNameField.getText() + " is an emergency contact now.",
                                 "The emergency contact was added successfully.");
-                addNameField.clear();
-                addIDField.clear();
-                addPhoneField.clear();
-                addEmailField.clear();
-                addELevelField.setValue(null);
+                clearAfterContactSave();
             }
         });
     }
@@ -176,9 +177,13 @@ public class UserInfoController extends SystemGuiController {
 
     }
 
+    private static boolean validateContact(final String name, final String id, final String phone, final String email) {
+        return validateName(name) && validateId(id) && validatePhone(phone) && validateEmail(email);
+    }
+
     private static boolean validateUserInput(final String name, final String id, final String phone,
                     final String address) {
-        return validateName(name) && validateId(id) && validatePhone(phone) && validateNotEmpty(address);
+        return validateName(name) && validateId(id) && validatePhone(phone) && validateAddress(address);
     }
 
     static boolean validateName(final String name) {
@@ -193,15 +198,25 @@ public class UserInfoController extends SystemGuiController {
         return phone != null && !"".equals(phone) && phone.chars().allMatch(Character::isDigit);
     }
 
-    static boolean validateNotEmpty(final String s) {
-        return s != null && !"".equals(s);
+    static boolean validateAddress(final String address) {
+        // TODO: add more checks
+        return address != null && !"".equals(address);
     }
 
-    private static void alertMessageUnvalidInput() {
+    static boolean validateEmail(final String email) {
+        // TODO: add more checks
+        return email != null && !"".equals(email);
+    }
+
+    static boolean validateEmergencyLevel(final EmergencyLevel eLevel) {
+        return eLevel != null;
+    }
+
+    private static void alertMessageUnvalidInput(String message) {
         final Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("Bad Input");
-        alert.setContentText("Make sure to enter only valid names and phone numbers.");
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
@@ -215,6 +230,7 @@ public class UserInfoController extends SystemGuiController {
     }
 
     void setStatus(ImageView statusImage, Label statusLabel, String message, boolean valid) {
+        statusImage.setVisible(true);
         if (valid) {
             statusImage.setImage(new Image(getClass().getResourceAsStream("/icons/check-icon.png")));
             statusLabel.setText("");
@@ -258,9 +274,66 @@ public class UserInfoController extends SystemGuiController {
             public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
                 if (!newValue) // Focusing out
                     setStatus(addressStatus, addressMessage, "Home address can't be empty",
-                                    validateNotEmpty(userHomeAddressField.getText()));
+                                    validateAddress(userHomeAddressField.getText()));
             }
         });
+    }
+
+    private void setContactListeners() {
+        addNameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    addNameField.setStyle(
+                                    "-fx-border-color: " + (validateName(addNameField.getText()) ? "green" : "red"));
+            }
+        });
+
+        addIDField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    addIDField.setStyle("-fx-border-color: " + (validateId(addIDField.getText()) ? "green" : "red"));
+            }
+        });
+
+        addPhoneField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    addPhoneField.setStyle(
+                                    "-fx-border-color: " + (validatePhone(addPhoneField.getText()) ? "green" : "red"));
+            }
+        });
+
+        addEmailField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    addEmailField.setStyle(
+                                    "-fx-border-color: " + (validateEmail(addEmailField.getText()) ? "green" : "red"));
+            }
+        });
+    }
+
+    private void clearAfterUserSave() {
+        nameStatus.setVisible(false);
+        idStatus.setVisible(false);
+        phoneStatus.setVisible(false);
+        addressStatus.setVisible(false);
+    }
+
+    private void clearAfterContactSave() {
+        addNameField.clear();
+        addIDField.clear();
+        addPhoneField.clear();
+        addEmailField.clear();
+        addELevelField.setValue(null);
+
+        addNameField.setStyle(null);
+        addIDField.setStyle(null);
+        addPhoneField.setStyle(null);
+        addEmailField.setStyle(null);
     }
 
     @Override
@@ -268,6 +341,7 @@ public class UserInfoController extends SystemGuiController {
                     URL location, ResourceBundle b) {
         setButtons();
         setInputListeners();
+        setContactListeners();
         setCellsFactories();
         costumizeContactsTab();
     }
