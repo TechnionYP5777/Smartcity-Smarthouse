@@ -1,11 +1,14 @@
 package il.ac.technion.cs.smarthouse.applications.stove;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
+import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
@@ -20,14 +23,15 @@ import javafx.scene.paint.Color;
 public class StoveModuleGui extends SmarthouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
     
-    private boolean alertCalled;
+    private Boolean alertCalled = true;
+   
     
     public static void main(String[] args) throws Exception {
         launch(StoveSensorSimulator.class);
     }
 
     @Override public void onLoad() throws Exception {
-        final GuiBinderObject<Double> alertAfterSecs = new GuiBinderObject<>(30.0);
+        final GuiBinderObject<Double> alertAfterSecs = new GuiBinderObject<>(15.0);
         final GuiBinderObject<Integer> alertAboveDegs = new GuiBinderObject<>(120);
         final GuiBinderObject<Integer> temps = new GuiBinderObject<>(0);
         final GuiBinderObject<Boolean> isStoveOn = new GuiBinderObject<>(false);
@@ -49,12 +53,15 @@ public class StoveModuleGui extends SmarthouseApplication {
         });
         
         Runnable c = ()->{
-            if (timer.getData(0.0) <= alertAfterSecs.getData(0.0) || temps.getData(0) <= alertAboveDegs.getData(0))
-                alertCalled = false;
-            else if (!alertCalled) {
-                ((AlertsManager) getService(ServiceType.ALERTS_SERVICE)).sendAlert(getApplicationName(),
-                                "Stove is running too long", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-                alertCalled = true;
+            synchronized(alertCalled){
+                
+                if (timer.getData(0.0) <= alertAfterSecs.getData(0.0) || temps.getData(0) <= alertAboveDegs.getData(0))
+                    alertCalled = false;
+                else if (!alertCalled) {
+                    ((AlertsManager) getService(ServiceType.ALERTS_SERVICE)).sendAlert(getApplicationName(),
+                                    "Stove is running too long", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                    alertCalled = true;
+                }
             }
         };
         
@@ -64,7 +71,7 @@ public class StoveModuleGui extends SmarthouseApplication {
         getAppBuilder().getWidgetsRegionBuilder()
                         .addWidget(WidgetType.BASIC_DASHBOARD, 
                                    new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
-                        .addWidget(WidgetType.LINES_GRAPH, 
+                        .addWidget(WidgetType.PROGRESS_LINE_GRAPH, 
                                     new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
                         .addWidget(WidgetType.BASIC_DASHBOARD, 
                                         new InfoCollector().setUnit("Boolean").addInfoEntry("stove.is_on", "isOn"));
