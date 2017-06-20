@@ -22,8 +22,8 @@ import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLeve
  */
 public class EnumsTest {
 
-    final Class<?>[] enumClassesToTest = { FileSystemEntries.class, ServiceType.class,
-            MessageType.class, EmergencyLevel.class };
+    final Class<?>[] enumClassesToTest = { FileSystemEntries.class, ServiceType.class, MessageType.class,
+            EmergencyLevel.class };
 
     @Test
     public void generalEnumStupidToStringTest() {
@@ -32,10 +32,11 @@ public class EnumsTest {
         assert true;
     }
 
-    @SuppressWarnings("cast")
     @Test
+    @SuppressWarnings("cast")
     public void enumDeclaredFunctionsWithNoParamsStupidTest() {
-        Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of((Method[]) ((Class<?>) enumClass).getDeclaredMethods()))
+        Stream.of(enumClassesToTest)
+                        .flatMap(enumClass -> Stream.of((Method[]) ((Class<?>) enumClass).getDeclaredMethods()))
                         .filter(m -> ((Method) m).getParameterTypes().length == 0)
                         .forEach(m -> Stream.of(((Method) m).getDeclaringClass().getEnumConstants()).forEach(e -> {
                             try {

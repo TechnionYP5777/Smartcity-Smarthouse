@@ -18,8 +18,9 @@ import il.ac.technion.cs.smarthouse.sensors.PathType;
  */
 public class SensorsSimulator {
 	public enum Action {
-		ADD, REMOVE, GET 
+		ADD, REMOVE, GET
 	};
+
 	private Integer id = 0;
 
 	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
@@ -27,7 +28,7 @@ public class SensorsSimulator {
 	private Map<String, GenericSensor> sensors = new HashMap<>();
 
 	private void addLogger(PathType t, Consumer<String> logger) {
-		if(!loggers.containsKey(t))
+		if (!loggers.containsKey(t))
 			loggers.put(t, new HashSet<>());
 		loggers.get(t).add(logger);
 		sensors.values().forEach(s -> s.addLogger(t, logger));
@@ -37,14 +38,13 @@ public class SensorsSimulator {
 		Optional.ofNullable(listeners.get(a)).ifPresent(ls -> ls.forEach(l -> l.accept(s)));
 	}
 
-	private String getNextId(){
-		return ""+ id++;
+	private String getNextId() {
+		return id++ + "";
 	}
+
 	// ------------------------- public API -----------------------------------
 	public String addSensor(GenericSensor s) {
-		Stream.of(PathType.values())
-						.forEach(type -> loggers.get(type)
-						.forEach(logger -> s.addLogger(type, logger)));
+		Stream.of(PathType.values()).forEach(type -> loggers.get(type).forEach(logger -> s.addLogger(type, logger)));
 		String id = getNextId();
 		sensors.put(id, s);
 		callListeners(Action.ADD, s);
@@ -56,8 +56,8 @@ public class SensorsSimulator {
 		sensors.remove(id);
 		return this;
 	}
-	
-	public GenericSensor getSensor(String id){
+
+	public GenericSensor getSensor(String id) {
 		callListeners(Action.GET, sensors.get(id));
 		return sensors.get(id);
 	}

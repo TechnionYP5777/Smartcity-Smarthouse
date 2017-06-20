@@ -15,18 +15,18 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
  * @since 10.12.16
  */
 public class StoveSensor extends Sensor {
-    final static String onPath = "stove" + PathBuilder.DELIMITER + "is_on";
-    final static String temperPath = "stove" + PathBuilder.DELIMITER + "temperature";
+	static final String onPath = "stove" + PathBuilder.DELIMITER + "is_on";
+	static final String temperPath = "stove" + PathBuilder.DELIMITER + "temperature";
 
-    public StoveSensor(final String id, final String alias) {
-        super("iStoves", id, alias, Arrays.asList(onPath, temperPath));
-    }
+	public StoveSensor(final String id, final String alias) {
+		super("iStoves", id, alias, Arrays.asList(onPath, temperPath));
+	}
 
-    public void updateSystem(final boolean on, final int temperature) {
-        super.updateSystem(onPath, on);
+	public void updateSystem(final boolean on, final int temperature) {
+		super.updateSystem(onPath, on);
 
-        super.updateSystem(temperPath, temperature);
+		super.updateSystem(temperPath, temperature);
 
-    }
+	}
 
 }
