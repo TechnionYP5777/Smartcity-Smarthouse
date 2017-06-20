@@ -18,7 +18,7 @@ public class SensorBuilder {
 	private String sensorId;
 	private String commname, alias;
 	private InstructionHandler iHandler;
-	
+
 	private Map<String, List> ranges;
 
 	private final GenericSensor genericSensor = new GenericSensor();
@@ -30,9 +30,9 @@ public class SensorBuilder {
 	public GenericSensor build() {
 		if (commname == null || alias == null)
 			return null;
-		if(sensorId == null)
+		if (sensorId == null)
 			sensorId = Random.sensorId();
-		
+
 		GenericSensor newSensor = new GenericSensor(genericSensor);
 
 		newSensor.setRanges(ranges);
@@ -42,8 +42,9 @@ public class SensorBuilder {
 			newSensor.logInstruction(path, inst);
 			return iHandler == null || iHandler.applyInstruction(path, inst);
 		});
-		
-		sensorId = null; //to make the builder generate a new id next time the build method is called
+
+		// force the builder to generate new id when the build method is called
+		sensorId = null;
 		return newSensor;
 	}
 
@@ -89,12 +90,12 @@ public class SensorBuilder {
 		ranges.put(path, values);
 		return this;
 	}
-	
+
 	public SensorBuilder setPollingInterval(Long milliseconds) {
 		genericSensor.setPollingInterval(milliseconds);
 		return this;
 	}
-	
+
 	public SensorBuilder setStreamInterval(Long milliseconds) {
 		genericSensor.setStreamInterval(milliseconds);
 		return this;
@@ -104,7 +105,7 @@ public class SensorBuilder {
 		genericSensor.addLogger(t, logger);
 		return this;
 	}
-	
+
 	public SensorBuilder addInfoSendingLogger(Consumer<String> logger) {
 		return addLogger(PathType.INFO_SENDING, logger);
 	}
