@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
@@ -22,7 +19,7 @@ import javafx.scene.paint.Color;
  * @since Jun 3, 2017
  */
 public class ListWidget extends BasicWidget {
-    private static Logger log = LoggerFactory.getLogger(ListWidget.class);
+    
     private static final List<Color> colors = Arrays.asList(Tile.BLUE, Tile.GREEN, Tile.MAGENTA, Tile.ORANGE, Tile.RED,
                     Tile.YELLOW);
     private final Random rand = new Random();

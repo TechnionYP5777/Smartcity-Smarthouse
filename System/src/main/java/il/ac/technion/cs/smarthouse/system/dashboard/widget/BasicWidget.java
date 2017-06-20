@@ -1,8 +1,5 @@
 package il.ac.technion.cs.smarthouse.system.dashboard.widget;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
@@ -15,7 +12,7 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
  * @since Jun 2, 2017
  */
 public abstract class BasicWidget {
-    private static Logger log = LoggerFactory.getLogger(BasicWidget.class);
+
     protected final WidgetType type;
     protected final Double tileSize;
     protected InfoCollector data;

@@ -40,8 +40,16 @@ public enum WidgetType {
     LEAD_CHART(ListWidget.class, SkinType.LEADER_BOARD),
 
     PROGRESS_LINE_GRAPH(GraphWidget.class, SkinType.SPARK_LINE),
-    AREA_GRAPH(GraphWidget.class, SkinType.AREA_CHART),//todo: document, error-prone: recommanded for sensors with slow send rate
-    LINES_GRAPH(GraphWidget.class, SkinType.LINE_CHART);//todo: document, error-prone: recommanded for sensors with slow send rate
+    AREA_GRAPH(GraphWidget.class, SkinType.AREA_CHART), // todo: document,
+                                                        // error-prone:
+                                                        // recommanded for
+                                                        // sensors with slow
+                                                        // send rate
+    LINES_GRAPH(GraphWidget.class, SkinType.LINE_CHART);// todo: document,
+                                                        // error-prone:
+                                                        // recommanded for
+                                                        // sensors with slow
+                                                        // send rate
 
     private static Logger log = LoggerFactory.getLogger(WidgetType.class);
 
@@ -84,7 +92,7 @@ public enum WidgetType {
                 builder.graphic(createGauge(Gauge.SkinType.INDICATOR, TILE_SIZE));
                 break;
             default:
-                ;
+
         }
 
         return builder;

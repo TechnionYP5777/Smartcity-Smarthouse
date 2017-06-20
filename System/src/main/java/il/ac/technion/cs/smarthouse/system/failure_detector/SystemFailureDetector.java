@@ -35,7 +35,7 @@ import javafx.stage.Stage;
 public enum SystemFailureDetector {
     ;
     static final Logger log = LoggerFactory.getLogger(SystemFailureDetector.class);
-    
+
     private static String logException(Thread t, Throwable e) {
         final String errTxt = "\n\tUncaught exception from thread [" + t.getName() + "]\n\tException: " + e.toString();
         log.error(errTxt, e);
@@ -45,18 +45,22 @@ public enum SystemFailureDetector {
     public static void enable(final SystemMode m) {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             final String errTxt = logException(t, e);
-            if (Stream.of(e.getStackTrace()).filter(c -> SystemFailureDetector.class.getName().equals(c.getClassName())).count() > 0) 
+            if (Stream.of(e.getStackTrace()).filter(c -> SystemFailureDetector.class.getName().equals(c.getClassName()))
+                            .count() > 0)
                 System.exit(-1);
-            
+
             if (JavaFxHelper.isJavaFxThreadStarted())
                 JavaFxHelper.surroundConsumerWithFx(p -> {
                     ButtonType reportType = new ButtonType("Send Report", ButtonBar.ButtonData.LEFT);
-                    Alert a = new Alert(AlertType.ERROR, errTxt, reportType, ButtonType.CLOSE);
+                    ButtonType tryToRecover = new ButtonType("Try to Recover", ButtonBar.ButtonData.LEFT);
+                    Alert a = new Alert(AlertType.ERROR, errTxt, reportType, tryToRecover, ButtonType.CLOSE);
+                    a.getDialogPane().setPrefSize(420, 250);
                     a.setTitle("Uncaught exception");
                     a.showAndWait().ifPresent(response -> {
-                        if (response == reportType) {
+                        if (response == reportType || response == tryToRecover) {
                             Stage dialogStage = new Stage();
                             dialogStage.initModality(Modality.WINDOW_MODAL);
+                            dialogStage.setTitle("Error Report");
                             TextArea userInput = new TextArea();
                             Text text = new Text("Please describe what happened when the error occurred (optional):");
                             Button reportButton = new Button("Send");
@@ -87,8 +91,11 @@ public enum SystemFailureDetector {
 
                             dialogStage.setScene(new Scene(vbox));
                             dialogStage.showAndWait();
+
                         }
-                        System.exit(-1);
+                        if (response != tryToRecover)
+                            System.exit(-1);
+
                     });
                 }).accept(null);
         });
