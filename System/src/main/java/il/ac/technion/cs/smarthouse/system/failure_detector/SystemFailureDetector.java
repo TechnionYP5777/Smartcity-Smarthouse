@@ -60,6 +60,7 @@ public enum SystemFailureDetector {
                         if (response == reportType || response == tryToRecover) {
                             Stage dialogStage = new Stage();
                             dialogStage.initModality(Modality.WINDOW_MODAL);
+                            dialogStage.setTitle("Error Report");
                             TextArea userInput = new TextArea();
                             Text text = new Text("Please describe what happened when the error occurred (optional):");
                             Button reportButton = new Button("Send");

@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -75,6 +76,13 @@ public class UserInfoController extends SystemGuiController {
 
     }
 
+    private void openSuccessDialog(String title, String header, String content) {
+        Alert a = new Alert(AlertType.INFORMATION, content, ButtonType.OK);
+        a.setHeaderText(header);
+        a.setTitle(title);
+        a.showAndWait();
+    }
+
     private void setButtons() {
         userSaveField.setOnAction(event -> {
 
@@ -86,26 +94,36 @@ public class UserInfoController extends SystemGuiController {
                 final UserInformation temp = getModel().getUser();
                 temp.setHomeAddress(address);
                 temp.setPhoneNumber(phoneNum);
+                openSuccessDialog("Successful Update", "Thanks for the update!",
+                                "Your information was updated successfully.");
             } else {
                 getModel().initializeUser(name, id, phoneNum, address);
                 userNameField.setEditable(false);
                 userIDField.setEditable(false);
+                openSuccessDialog("Successful Registration", "Hello " + userNameField.getText() + "!",
+                                "You registered successfully.");
             }
         });
 
         saveButton.setOnAction(event -> {
-            if (getModel().isUserInitialized())
-                if (validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(),
-                                addEmailField.getText()))
-                    addContactToTable(event);
-                else
-                    alertMessageUnvalidInput();
-            else {
+            if (!getModel().isUserInitialized()) {
                 final Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error Dialog");
                 alert.setHeaderText("User Not Registered");
-                alert.setContentText("Make sure to register the user before adding any contacts");
+                alert.setContentText("Make sure to register the user before adding any contacts.");
                 alert.showAndWait();
+            } else if (!validateUserInput(addNameField.getText(), addIDField.getText(), addPhoneField.getText(),
+                            addEmailField.getText()))
+                alertMessageUnvalidInput();
+            else {
+                addContactToTable(event);
+                openSuccessDialog("Successful Update", addNameField.getText() + " is an emergency contact now.",
+                                "The emergency contact was added successfully.");
+                addNameField.clear();
+                addIDField.clear();
+                addPhoneField.clear();
+                addEmailField.clear();
+                addELevelField.setValue(null);
             }
         });
     }
@@ -160,7 +178,7 @@ public class UserInfoController extends SystemGuiController {
 
     private static boolean validateUserInput(final String name, final String id, final String phone,
                     final String address) {
-        return validateName(name) && validateId(id) && validatePhone(phone) && validateAddress(address);
+        return validateName(name) && validateId(id) && validatePhone(phone) && validateNotEmpty(address);
     }
 
     static boolean validateName(final String name) {
@@ -175,15 +193,15 @@ public class UserInfoController extends SystemGuiController {
         return phone != null && !"".equals(phone) && phone.chars().allMatch(Character::isDigit);
     }
 
-    static boolean validateAddress(final String address) {
-        return address != null && !"".equals(address);
+    static boolean validateNotEmpty(final String s) {
+        return s != null && !"".equals(s);
     }
 
     private static void alertMessageUnvalidInput() {
         final Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("Bad Input");
-        alert.setContentText("Make sure to enter only valid names and phone numbers");
+        alert.setContentText("Make sure to enter only valid names and phone numbers.");
         alert.showAndWait();
     }
 
@@ -192,13 +210,7 @@ public class UserInfoController extends SystemGuiController {
         final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(),
                         addEmailField.getText());
         getModel().getUser().addContact(contact, addELevelField.getValue());
-        final ContactGUI guiContact = new ContactGUI(contact, addELevelField.getValue());
-        addNameField.clear();
-        addIDField.clear();
-        addPhoneField.clear();
-        addEmailField.clear();
-        addELevelField.setValue(null);
-        contactsTable.getItems().add(guiContact);
+        contactsTable.getItems().add(new ContactGUI(contact, addELevelField.getValue()));
 
     }
 
@@ -246,7 +258,7 @@ public class UserInfoController extends SystemGuiController {
             public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
                 if (!newValue) // Focusing out
                     setStatus(addressStatus, addressMessage, "Home address can't be empty",
-                                    validateAddress(userHomeAddressField.getText()));
+                                    validateNotEmpty(userHomeAddressField.getText()));
             }
         });
     }
