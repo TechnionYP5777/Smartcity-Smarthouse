@@ -15,7 +15,7 @@ import il.ac.technion.cs.smarthouse.utils.Random;
  * @since Jun 17, 2017
  */
 public class SensorBuilder {
-	private String sensorId = Random.sensorId();
+	private String sensorId;
 	private String commname, alias;
 	private InstructionHandler iHandler;
 	
@@ -30,6 +30,9 @@ public class SensorBuilder {
 	public GenericSensor build() {
 		if (commname == null || alias == null)
 			return null;
+		if(sensorId == null)
+			sensorId = Random.sensorId();
+		
 		GenericSensor newSensor = new GenericSensor(genericSensor);
 
 		newSensor.setRanges(ranges);
@@ -39,6 +42,8 @@ public class SensorBuilder {
 			newSensor.logInstruction(path, inst);
 			return iHandler == null || iHandler.applyInstruction(path, inst);
 		});
+		
+		sensorId = null; //to make the builder generate a new id next time the build method is called
 		return newSensor;
 	}
 
