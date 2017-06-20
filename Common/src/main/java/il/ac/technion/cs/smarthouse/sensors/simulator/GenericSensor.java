@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.sensors.simulator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -84,7 +85,7 @@ public class GenericSensor {
 	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
 	private Map<PathType, Map<String, Class>> paths = new HashMap<>();
 	private Boolean interactive = false, connected = false;
-	private Long pollInterval = TimeUnit.SECONDS.toMillis(5), streamingInterval = 1000L;
+	private Long pollInterval = TimeUnit.SECONDS.toMillis(5), streamingInterval = 100L;
 
 	private Map<String, List> lastReceivedRanges;
 
@@ -112,14 +113,15 @@ public class GenericSensor {
 	private void connectIfNeeded() {
 		if (connected)
 			return;
-		while (!sensor.register())
-			;
+		log.debug("GenericSensor "+this+" trying connect sensor for sending");
+		while (!sensor.register());
 		if (interactive) {
-			while (!sensor.registerInstructions())
-				;
+			log.debug("GenericSensor "+this+" trying connect sensor for receiveing");
+			while (!sensor.registerInstructions());
 			sensor.pollInstructions(pollInterval);
 		}
 		connected = true;
+		log.debug("GenericSensor "+this+"  connected!");
 	}
 
 	// ------------------------ setters --------------------------------------
@@ -170,8 +172,8 @@ public class GenericSensor {
 		$.add("Sending following msg:\n");
 		data.keySet().forEach(path -> $.add("path:" + path + "\tvalue:" + data.get(path)));
 
-		$.stream().reduce((x, y) -> x + y)
-				.ifPresent(formatedData -> Optional.ofNullable(loggers.get(PathType.INSTRUCTION_RECEIVING))
+		$.stream().reduce((x, y) -> x +"\n"+ y)
+				.ifPresent(formatedData -> Optional.ofNullable(loggers.get(PathType.INFO_SENDING))
 						.ifPresent(ls -> ls.forEach(logger -> logger.accept(formatedData))));
 	}
 
@@ -243,7 +245,6 @@ public class GenericSensor {
 				log.warn("Simulator was interrupted will waiting for a msg streamer");
 			}
 		}
-
 		msgStreamer = new MsgStreamerThread(ranges);
 		msgStreamer.start();
 	}
@@ -252,6 +253,7 @@ public class GenericSensor {
 	 * streams with the ranges given through the builder
 	 */
 	public void streamMessages() {
+		
 		if (lastReceivedRanges == null)
 			return;
 		streamMessages(lastReceivedRanges);
