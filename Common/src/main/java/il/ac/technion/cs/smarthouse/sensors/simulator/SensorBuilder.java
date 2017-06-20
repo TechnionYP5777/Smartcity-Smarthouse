@@ -65,7 +65,7 @@ public class SensorBuilder {
 		return this;
 	}
 
-	private SensorBuilder addPath(PathType t, String path, Class pathClass) {
+	SensorBuilder addPath(PathType t, String path, Class pathClass) {
 		genericSensor.addPath(t, path, pathClass);
 		return this;
 	}
@@ -95,9 +95,17 @@ public class SensorBuilder {
 		return this;
 	}
 
-	public SensorBuilder addLogger(PathType t, Consumer<String> logger) {
+	SensorBuilder addLogger(PathType t, Consumer<String> logger) {
 		genericSensor.addLogger(t, logger);
 		return this;
+	}
+	
+	public SensorBuilder addInfoSendingLogger(Consumer<String> logger) {
+		return addLogger(PathType.INFO_SENDING, logger);
+	}
+
+	public SensorBuilder addInstructionsReceiveingLogger(Consumer<String> logger) {
+		return addLogger(PathType.INSTRUCTION_RECEIVING, logger);
 	}
 
 }
