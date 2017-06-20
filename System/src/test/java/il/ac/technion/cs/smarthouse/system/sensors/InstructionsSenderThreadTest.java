@@ -1,14 +1,10 @@
 package il.ac.technion.cs.smarthouse.system.sensors;
 
-import java.util.Arrays;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
-import il.ac.technion.cs.smarthouse.sensors.PathType;
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
