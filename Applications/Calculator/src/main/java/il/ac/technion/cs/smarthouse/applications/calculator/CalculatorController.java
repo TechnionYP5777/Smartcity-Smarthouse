@@ -10,6 +10,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+/**
+ * @author Inbal Zukerman
+ * @since 20-07-17
+ */
 public class CalculatorController implements Initializable {
 
 	private BigDecimal left;
@@ -43,8 +47,8 @@ public class CalculatorController implements Initializable {
 			left = new BigDecimal(display.getText());
 			selectedOperator = buttonText;
 			numberInputting = false;
-		} else if (buttonText.equals("=")) {
-			final BigDecimal right = numberInputting ? new BigDecimal(display.getText()) : left;
+		} else if ("=".equals(buttonText)) {
+			final BigDecimal right = !numberInputting ? left : new BigDecimal(display.getText());
 			left = calculate(selectedOperator, left, right);
 			display.setText(left.toString());
 			numberInputting = false;
@@ -69,8 +73,7 @@ public class CalculatorController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle b) {
-		// TODO Auto-generated method stub
-
+		// TODO ?
 	}
 
 }

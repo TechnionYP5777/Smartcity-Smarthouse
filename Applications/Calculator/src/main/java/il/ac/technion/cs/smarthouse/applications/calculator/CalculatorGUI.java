@@ -4,9 +4,8 @@ import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 
 /**
- * 
- * @author sinbalzu
- *
+ * @author Inbal Zukerman
+ * @since 20-07-17
  */
 public class CalculatorGUI extends SmarthouseApplication {
 
