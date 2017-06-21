@@ -88,8 +88,14 @@ public class UserInfoController extends SystemGuiController {
 
             final String name = userNameField.getText(), id = userIDField.getText(),
                             phoneNum = userPhoneNumField.getText(), address = userHomeAddressField.getText();
-            if (!validateUserInput(name, id, phoneNum, address))
-                alertMessageUnvalidInput("Make sure to enter only valid names and phone numbers.");
+            if (!validateName(name))
+                alertMessageUnvalidInput("name");
+            else if (!validateId(id))
+                alertMessageUnvalidInput("ID");
+            else if (!validatePhone(phoneNum))
+                alertMessageUnvalidInput("phone number");
+            else if (!validateAddress(address))
+                alertMessageUnvalidInput("home address");
             else {
                 if (getModel().isUserInitialized()) {
                     final UserInformation temp = getModel().getUser();
@@ -116,13 +122,18 @@ public class UserInfoController extends SystemGuiController {
                 alert.setContentText("Make sure to register the user before adding any contacts.");
                 alert.showAndWait();
             } else if (!validateEmergencyLevel(addELevelField.getValue()))
-                alertMessageUnvalidInput("Please select an emergency level.");
-            else if (!validateContact(addNameField.getText(), addIDField.getText(), addPhoneField.getText(),
-                            addEmailField.getText()))
-                alertMessageUnvalidInput("Make sure to enter only valid names and phone numbers.");
+                alertMessageUnvalidInput("elevel");
+            else if (!validateName(addNameField.getText()))
+                alertMessageUnvalidInput("name");
+            else if (!validateId(addIDField.getText()))
+                alertMessageUnvalidInput("ID");
+            else if (!validatePhone(addPhoneField.getText()))
+                alertMessageUnvalidInput("phone number");
+            else if (!validateEmail(addEmailField.getText()))
+                alertMessageUnvalidInput("email address");
             else {
                 addContactToTable(event);
-                openSuccessDialog("Successful Update", addNameField.getText() + " is an emergency contact now.",
+                openSuccessDialog("Successful Update", addNameField.getText() + " is an emergency contact now",
                                 "The emergency contact was added successfully.");
                 clearAfterContactSave();
             }
@@ -177,15 +188,6 @@ public class UserInfoController extends SystemGuiController {
 
     }
 
-    private static boolean validateContact(final String name, final String id, final String phone, final String email) {
-        return validateName(name) && validateId(id) && validatePhone(phone) && validateEmail(email);
-    }
-
-    private static boolean validateUserInput(final String name, final String id, final String phone,
-                    final String address) {
-        return validateName(name) && validateId(id) && validatePhone(phone) && validateAddress(address);
-    }
-
     static boolean validateName(final String name) {
         return name != null && !"".equals(name) && name.chars().allMatch(Character::isLetter);
     }
@@ -212,11 +214,12 @@ public class UserInfoController extends SystemGuiController {
         return eLevel != null;
     }
 
-    private static void alertMessageUnvalidInput(String message) {
+    private static void alertMessageUnvalidInput(String fieldType) {
         final Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("Bad Input");
-        alert.setContentText(message);
+        alert.setContentText(("elevel".equals(fieldType) ? "Please select an emergency level"
+                        : "Make sure the " + fieldType + " you typed is valid") + ".");
         alert.showAndWait();
     }
 
@@ -230,6 +233,11 @@ public class UserInfoController extends SystemGuiController {
     }
 
     void setStatus(ImageView statusImage, Label statusLabel, String message, boolean valid) {
+        if (getModel().isUserInitialized() && (statusImage == nameStatus || statusImage == idStatus)) {
+            statusImage.setVisible(false);
+            statusLabel.setText("");
+            return;
+        }
         statusImage.setVisible(true);
         if (valid) {
             statusImage.setImage(new Image(getClass().getResourceAsStream("/icons/check-icon.png")));
