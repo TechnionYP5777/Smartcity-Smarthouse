@@ -85,7 +85,7 @@ public class GenericSensor {
 	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
 	private Map<PathType, Map<String, Class>> paths = new HashMap<>();
 	private Boolean interactive = false, connected = false;
-	private Long pollInterval = TimeUnit.SECONDS.toMillis(5), streamingInterval = 100L;
+	private Long pollInterval = TimeUnit.SECONDS.toMillis(5), streamingInterval = 1000L;
 
 	private Map<String, List> lastReceivedRanges;
 
@@ -97,17 +97,15 @@ public class GenericSensor {
 	}
 
 	GenericSensor(GenericSensor other) {
-		if (other.loggers != null)
-			loggers = new HashMap<>(other.loggers);
-
-		paths = new HashMap<>();
+		Optional.ofNullable(other.loggers).ifPresent(otherloggers -> loggers = new HashMap<>(otherloggers));
 		Stream.of(PathType.values()).filter(t -> other.paths.containsKey(t))
-				.forEach(t -> paths.put(t, new HashMap<>(other.paths.get(t))));
+									.forEach(t -> paths.put(t, new HashMap<>(other.paths.get(t))));
 		interactive = other.interactive;
 		connected = other.connected;
 		pollInterval = other.pollInterval;
-		if (lastReceivedRanges != null)
-			lastReceivedRanges = new HashMap<>(other.lastReceivedRanges);
+		streamingInterval = other.streamingInterval;
+		
+		Optional.ofNullable(other.lastReceivedRanges).ifPresent(otherRanges -> lastReceivedRanges = new HashMap<>(otherRanges));
 	}
 
 	private void connectIfNeeded() {
