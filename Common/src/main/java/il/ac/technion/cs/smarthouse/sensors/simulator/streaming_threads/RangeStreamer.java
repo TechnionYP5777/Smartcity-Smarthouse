@@ -18,30 +18,14 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
  */
 
 @SuppressWarnings("rawtypes")
-public class RangeStreamer extends MsgStreamerThread<Map<String, List>> {
+public class RangeStreamer extends MsgStreamerThread {
 	private Map<String, List> ranges;
-	private Boolean checked = false;
 	
-	public RangeStreamer(GenericSensor sensor, Integer streamingInterval, final  Map<String, List> ranges){
+	public RangeStreamer(GenericSensor sensor, Long streamingInterval, final  Map<String, List> ranges){
 		super(sensor, streamingInterval);
 		this.ranges = ranges;
 	}
-	
-	@SuppressWarnings("unchecked")
-	private boolean legalRanges() {
-		final List<Boolean> $ = new ArrayList<>();
-		
-		sensor.getPathsWithClasses(PathType.INFO_SENDING).forEach((path,c) -> {
-			List vals = ranges.get(path);
-			Boolean sizeOk = !Integer.class.isAssignableFrom(c) && !Double.class.isAssignableFrom(c)
-					|| vals.size() == 2,
-					valsOk = (Boolean) vals.stream().map(o -> c.isAssignableFrom(o.getClass()))
-							.reduce((x, y) -> (Boolean) x && (Boolean) x).orElse(true);
-			$.add(sizeOk && valsOk);
-		});
-		
-		return $.stream().reduce((x, y) -> x && y).orElse(false);
-	}
+
 
 	private Object random(String path) {
 		Class c = sensor.getPathsWithClasses(PathType.INFO_SENDING).get(path);
@@ -58,14 +42,31 @@ public class RangeStreamer extends MsgStreamerThread<Map<String, List>> {
 	 */
 	@Override
 	void send() {
-		if (checked || !legalRanges())
-			return;
-		else
-			checked = true;
 		Map<String, Object> data = new HashMap<>();
 		ranges.keySet().stream().filter(p -> sensor.getPathsWithClasses(PathType.INFO_SENDING).containsKey(p))
 				.forEach(path -> data.put(path, random(path)));
 		sensor.sendMessage(data);
+	}
+
+	/* (non-Javadoc)
+	 * @see il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.MsgStreamerThread#canStartStreaming()
+	 */
+	/** checks that the ranges are legal
+	 * */
+	@Override @SuppressWarnings("unchecked")
+	Boolean canStartStreaming() {
+		final List<Boolean> $ = new ArrayList<>();
+		
+		sensor.getPathsWithClasses(PathType.INFO_SENDING).forEach((path,c) -> {
+			List vals = ranges.get(path);
+			Boolean sizeOk = !Integer.class.isAssignableFrom(c) && !Double.class.isAssignableFrom(c)
+					|| vals.size() == 2,
+					valsOk = (Boolean) vals.stream().map(o -> c.isAssignableFrom(o.getClass()))
+							.reduce((x, y) -> (Boolean) x && (Boolean) x).orElse(true);
+			$.add(sizeOk && valsOk);
+		});
+		
+		return $.stream().reduce((x, y) -> x && y).orElse(false);
 	}
 	
 }

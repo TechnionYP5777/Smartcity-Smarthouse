@@ -85,8 +85,6 @@ public class SensorBuilder {
 	}
 
 	//--------------------- interval setting -----------------------------
-	
-	//--------------------- interval setting -----------------------------
 	public SensorBuilder setPollingInterval(Long milliseconds) {
 		genericSensor.setPollingInterval(milliseconds);
 		return this;
@@ -98,8 +96,6 @@ public class SensorBuilder {
 		return this;
 	}
 
-	//--------------------- logger setting -------------------------------
-	
 	//--------------------- logging setting-------------------------------
 	public SensorBuilder addLogger(PathType t, Consumer<String> logger) {
 		genericSensor.addLogger(t, logger);
