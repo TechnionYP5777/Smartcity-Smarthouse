@@ -70,7 +70,7 @@ public enum SystemFailureDetector {
                                 PrintWriter pw = new PrintWriter(sw);
                                 e.printStackTrace(pw);
                                 Communicate.throughEmailFromHere("smarthouse5777@gmail.com",
-                                                "We got new report...\n\n" + errTxt + "\n\n"
+                                                "We got a new report...\n\n" + errTxt + "\n\n"
                                                                 + (input == null || "".equals(input)
                                                                                 ? "The user did not add a description of the error."
                                                                                 : "User Description:\n" + input)
@@ -81,8 +81,17 @@ public enum SystemFailureDetector {
                             Pane pane2 = new Pane();
                             HBox hbox1 = new HBox(text, pane1);
                             hbox1.setPadding(new Insets(0, 0, 5, 0));
-                            HBox hbox2 = new HBox(pane2, reportButton);
+                            HBox hbox2;
+                            if (response != tryToRecover)
+                                hbox2 = new HBox(pane2, reportButton);
+                            else {
+                                Button skipButton = new Button("Skip");
+                                skipButton.setOnMouseClicked(
+                                                event -> ((Stage) skipButton.getScene().getWindow()).close());
+                                hbox2 = new HBox(pane2, reportButton, skipButton);
+                            }
                             hbox2.setPadding(new Insets(5, 0, 0, 0));
+                            hbox2.setSpacing(5);
                             HBox.setHgrow(pane1, Priority.ALWAYS);
                             HBox.setHgrow(pane2, Priority.ALWAYS);
                             VBox vbox = new VBox(hbox1, userInput, hbox2);
