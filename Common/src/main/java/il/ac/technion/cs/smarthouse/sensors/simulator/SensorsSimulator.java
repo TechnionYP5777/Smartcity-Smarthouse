@@ -66,7 +66,11 @@ public class SensorsSimulator {
 		sensors.values().forEach(s -> new Thread(() -> s.streamMessages()).start());
 		return this;
 	}
-
+	
+	public SensorsSimulator stopSendingMsgsInAllSensors(){
+		sensors.values().forEach(s -> s.stopStreaming());
+		return this;
+	}
 	// ---------- access through listeners/loggers ----------
 	public SensorsSimulator addSentMsgLogger(Consumer<String> logger) {
 		addLogger(PathType.INFO_SENDING, logger);
