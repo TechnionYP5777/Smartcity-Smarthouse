@@ -28,9 +28,9 @@
                </HBox>
    			</content>
         </Tab>
-		<Tab fx:id="appsTab" text="Applications" />
-		<Tab fx:id="sensorsTab" text="Sensors" />
 		<Tab fx:id="userTab" text="User Information" />
+		<Tab fx:id="sensorsTab" text="Sensors" />
 		<Tab fx:id="dashboardTab" text="Dashboard" />
+		<Tab fx:id="appsTab" text="Applications" />
 	</tabs>
 </TabPane>
