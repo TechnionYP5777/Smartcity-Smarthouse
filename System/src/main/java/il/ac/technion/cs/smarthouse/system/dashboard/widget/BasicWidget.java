@@ -41,6 +41,7 @@ public abstract class BasicWidget {
             return Integer.valueOf(sdata) + 0.0;
         } catch (final NumberFormatException e) {}
         try {
+            System.out.println("/n/n/n converting boolean: " + sdata + "to: " + ( Boolean.valueOf(sdata) ? 1.0 : 0.0) + "/n/n/n");
             return Boolean.valueOf(sdata) ? 1.0 : 0.0;
         } catch (final NumberFormatException e) {}
         return null;
