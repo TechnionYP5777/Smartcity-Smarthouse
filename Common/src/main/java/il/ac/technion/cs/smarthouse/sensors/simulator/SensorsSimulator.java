@@ -44,7 +44,9 @@ public class SensorsSimulator {
 
 	// ------------------------- public API -----------------------------------
 	public String addSensor(GenericSensor s) {
-		Stream.of(PathType.values()).forEach(type -> loggers.get(type).forEach(logger -> s.addLogger(type, logger)));
+		Stream.of(PathType.values())
+				.forEach(type -> Optional.ofNullable(loggers.get(type))
+										.ifPresent(ls -> ls.forEach(logger -> s.addLogger(type, logger))));
 		String id = getNextId();
 		sensors.put(id, s);
 		callListeners(Action.ADD, s);
