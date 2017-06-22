@@ -14,6 +14,8 @@ import il.ac.technion.cs.smarthouse.utils.Random;
  * @author Elia Traore
  * @since Jun 17, 2017
  */
+
+@SuppressWarnings("rawtypes")
 public class SensorBuilder {
 	private String sensorId;
 	private String commname, alias;
@@ -84,7 +86,7 @@ public class SensorBuilder {
 		return addPath(PathType.INSTRUCTION_RECEIVING, path, null);
 	}
 
-	public SensorBuilder addStreamingRange(String path, @SuppressWarnings("rawtypes") List values) {
+	public SensorBuilder addStreamingRange(String path,  List values) {
 		if (ranges == null)
 			ranges = new HashMap<>();
 		ranges.put(path, values);

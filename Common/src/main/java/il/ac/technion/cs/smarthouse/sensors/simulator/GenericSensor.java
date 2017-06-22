@@ -22,10 +22,12 @@ import il.ac.technion.cs.smarthouse.sensors.PathType;
  * @author Elia Traore
  * @since Jun 17, 2017
  */
+
+@SuppressWarnings("rawtypes")
 public class GenericSensor {
 	private static Logger log = LoggerFactory.getLogger(GenericSensor.class);
 
-	@SuppressWarnings("rawtypes")
+	
 	private class MsgStreamerThread extends Thread {
 		private Map<String, List> ranges;
 		private Boolean keepStreaming = true;
