@@ -1,9 +1,11 @@
 package il.ac.technion.cs.smarthouse.sensors.stove.gui;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -26,13 +28,21 @@ public class StoveSensorSimulator extends Application {
 		launch(args);
 	}
 
+	GenericSensor stoveSensor;
 	private void startSensor(Consumer<String> logger) {
 		final String onPath = "stove" + "." + "is_on";
 		final String temperPath = "stove" + "." + "temperature";
-		new SensorBuilder().setCommname("iStoves").setAlias("Roy's awesome stove")
-				.addInfoSendingPath(onPath, Boolean.class).addInfoSendingPath(temperPath, Integer.class)
-				.addStreamingRange(onPath, Arrays.asList(true)).addStreamingRange(temperPath, Arrays.asList(0, 140))
-				.setStreamInterval(TimeUnit.SECONDS.toMillis(10)).addInfoSendingLogger(logger).build().streamMessages();
+		stoveSensor =new SensorBuilder()
+		        .setCommname("iStoves")
+		        .setAlias("Roy's awesome stove")
+				.addInfoSendingPath(onPath, Boolean.class)
+				.addInfoSendingPath(temperPath, Integer.class)
+				.addStreamingRange(onPath, Arrays.asList(true))
+				.addStreamingRange(temperPath, Arrays.asList(0, 140))
+				.setStreamInterval(TimeUnit.SECONDS.toMillis(1))
+				.addInfoSendingLogger(logger)
+				.build();
+		stoveSensor.streamMessages();
 	}
 
 	private Scene setFromSensorSimulator() {
@@ -63,6 +73,7 @@ public class StoveSensorSimulator extends Application {
 		// s.setScene(setFromController());
 		s.setScene(setFromSensorSimulator());
 		s.setTitle("Stove Sensor Simulator");
+		s.setOnCloseRequest(e -> Optional.ofNullable(stoveSensor).ifPresent(sensor -> sensor.stopStreaming()));
 		s.show();
 	}
 }

@@ -262,4 +262,7 @@ public class GenericSensor {
 		streamMessages(lastReceivedRanges);
 	}
 
+	public void stopStreaming(){
+		Optional.ofNullable(msgStreamer).ifPresent(t -> t.interrupt());
+	}
 }
