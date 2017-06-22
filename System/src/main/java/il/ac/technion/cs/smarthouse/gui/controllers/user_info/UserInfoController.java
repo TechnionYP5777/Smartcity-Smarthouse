@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse.gui.controllers.user_info;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
@@ -189,7 +190,7 @@ public class UserInfoController extends SystemGuiController {
     }
 
     static boolean validateName(final String name) {
-        return name != null && !"".equals(name) && name.chars().allMatch(Character::isLetter);
+        return name != null && !"".equals(name) && Pattern.compile("^[ A-Za-z]+$").matcher(name).matches();
     }
 
     static boolean validateId(final String id) {
