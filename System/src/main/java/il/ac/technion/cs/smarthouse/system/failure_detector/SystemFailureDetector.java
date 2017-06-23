@@ -57,19 +57,19 @@ public enum SystemFailureDetector {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             final String errTxt = logException(t, e);
 
-            if (JavaFxHelper.isJavaFxThreadStarted()) {
+            if (JavaFxHelper.isJavaFxThreadStarted())
                 if (!isExceptionFromHere(e))
                     JavaFxHelper.startGui(new ErrorPopupApp(t, e, errTxt, true), false);
                 else {
                     JavaFxHelper.closeAllOpenedStages();
                     JavaFxHelper.startGui(new ErrorPopupApp(t, e, errTxt, false), false);
                 }
-
-            }
         });
     }
 
     private static class ErrorPopupApp extends Application {
+        private static Alert oldAlert;
+
         @SuppressWarnings("unused") final Thread t;
         final Throwable e;
         final String errTxt;
@@ -84,9 +84,15 @@ public enum SystemFailureDetector {
 
         @Override
         public void start(Stage primaryStage) throws Exception {
+            if (oldAlert != null && oldAlert.isShowing()) {
+                oldAlert.close();
+                oldAlert = null;
+            }
+
             ButtonType reportType = new ButtonType("Send Report", ButtonBar.ButtonData.LEFT);
             ButtonType tryToRecover = new ButtonType("Try to Recover", ButtonBar.ButtonData.LEFT);
             Alert a = new Alert(AlertType.ERROR, errTxt, reportType, tryToRecover, ButtonType.CLOSE);
+            oldAlert = a;
             if (!enableTryToRecover)
                 a.getButtonTypes().remove(tryToRecover);
             a.getDialogPane().setPrefSize(420, 250);
