@@ -7,10 +7,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <TitledPane text="Calculator" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.applications.calculator.CalculatorController">
    <content>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="226.0" prefWidth="230.0" styleClass="background" stylesheets="@../java/main.css">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="226.0" prefWidth="230.0">
          <children>
             <Button layoutX="32.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="1" />
             <Button layoutX="67.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="2" />
@@ -28,11 +27,11 @@
             </TextField>
             <Button layoutX="32.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="C" />
             <Button layoutX="152.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="23.0" prefWidth="47.0" text="=" />
-            <Button layoutX="144.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="＋" />
+            <Button layoutX="142.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="＋" />
             <Button layoutX="67.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="0" />
             <Button layoutX="179.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="－" />
-            <Button layoutX="179.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="23.0" prefWidth="25.0" styleClass="background" text="×" />
-            <Button layoutX="144.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" styleClass="background" text="÷" />
+            <Button layoutX="179.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="27.0" prefWidth="32.0" styleClass="background" text="×" />
+            <Button layoutX="144.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="27.0" prefWidth="29.0" styleClass="background" text="÷" />
             <Button layoutX="104.0" layoutY="186.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="." />
          </children>
       </AnchorPane>
