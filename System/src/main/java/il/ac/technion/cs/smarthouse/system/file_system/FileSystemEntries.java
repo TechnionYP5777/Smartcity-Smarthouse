@@ -125,8 +125,7 @@ public enum FileSystemEntries {
      * @return
      */
     public String buildPath(final String... base) {
-        final List<String> baseSplited = PathBuilder.decomposePath(base);
-        final List<String> l = new ArrayList<>();
+        final List<String> baseSplited = PathBuilder.decomposePath(base), l = new ArrayList<>();
         final List<FileSystemEntries> branch = getBranch();
         
         int baseIdx = 0;

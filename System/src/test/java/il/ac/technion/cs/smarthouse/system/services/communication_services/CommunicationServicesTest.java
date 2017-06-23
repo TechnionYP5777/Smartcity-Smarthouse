@@ -17,8 +17,9 @@ public class CommunicationServicesTest {
     
     @Test
     public void testServices() {
-        Assert.assertNotNull(serviceManager.<EmailService>getService(ServiceType.EMAIL_SERVICE).sendMsg("smarthouse5777@gmail.com", "HI"));
-        Assert.assertNotNull(serviceManager.<PhoneService>getService(ServiceType.PHONE_SERVICE).makeCall("0501234"));
-        Assert.assertNotNull(serviceManager.<SmsService>getService(ServiceType.SMS_SERVICE).sendMsg("0501234", "HI"));
+        assert serviceManager.<EmailService>getService(ServiceType.EMAIL_SERVICE).sendMsg("smarthouse5777@gmail.com",
+				"HI") != null;
+        assert serviceManager.<PhoneService>getService(ServiceType.PHONE_SERVICE).makeCall("0501234") != null;
+        assert serviceManager.<SmsService>getService(ServiceType.SMS_SERVICE).sendMsg("0501234", "HI") != null;
     }
 }
