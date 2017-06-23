@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -29,11 +30,12 @@ public class Simulation extends Thread{
 	
 	private class DataContainer {
 		private final String id;
-		private Integer temperature;
+		private Integer temperature, defaultTemp;
 		private AcuAction action;
 		
-		public DataContainer(String id){
+		public DataContainer(String id,Integer defaultTemp){
 			this.id = id;
+			this.defaultTemp = defaultTemp;
 			this.temperature = defaultTemp +10*(ThreadLocalRandom.current().nextBoolean()? 1:-1);
 			this.action = AcuAction.STOP;
 		}
@@ -49,7 +51,7 @@ public class Simulation extends Thread{
 		
 		/** returns the old temperature
 		 * */
-		public synchronized Integer getTemperatureCloserTo(Integer defaultTemp){
+		public synchronized Integer getTemperatureCloserTo(){
 			Integer delta = temperature - defaultTemp;
 			delta = delta/Math.abs(delta);
 			
@@ -66,11 +68,14 @@ public class Simulation extends Thread{
 			return this.action;
 		}
 		
+		public synchronized void setDefaultTemperature(Integer temperature){
+			defaultTemp = temperature;
+		}
 	}
 	
-	String commname = "ACUnit";
-	String instsBase = "wanted", obsersBase ="current";
-	String tempSuffix = "temperature", stateSuffix = "state";
+	public final static String commname = "ACUnit";
+	public final static String instsBase = "wanted", obsersBase ="current";
+	public final static String tempSuffix = "temperature", stateSuffix = "state", defaultTempSuffix="defaultTemperature";
 
 	Integer defaultTemp;
 	final Map<String, DataContainer> sensors;
@@ -86,24 +91,19 @@ public class Simulation extends Thread{
 		builder.addInfoSendingPath(getPath(PathType.INFO_SENDING,tempSuffix), Integer.class);
 		builder.addInfoSendingPath(getPath(PathType.INFO_SENDING,stateSuffix), Boolean.class);
 		builder.addInstructionsReceiveingPath(getPath(PathType.INSTRUCTION_RECEIVING,stateSuffix));
-		
-		builder.setInstructionHandler((path,val)->{
-			try{
-//				state.put(, AcuAction.valueOf(val));
-			}catch(Exception e){
-				return false;
-			}
-			return true;
-		});
-		
+		builder.addInstructionsReceiveingPath(getPath(PathType.INSTRUCTION_RECEIVING,defaultTempSuffix));
 		
 	}
 	
-	String getPath(PathType type, String suffix){
+	public static String getPath(PathType type, String suffix){
 		return String.join(".", commname, 
 								(PathType.INFO_SENDING.equals(type)? obsersBase : instsBase), suffix);
 	}
 
+	
+	public Set<String> getAliases(){
+		return sensors.keySet();
+	}
 	
 	@Override
 	public void interrupt() {
@@ -123,7 +123,7 @@ public class Simulation extends Thread{
 						if(a.isOn())
 							newT = sensors.get(alias).updateTemperature(AcuAction.HOTTER.equals(a)? +1 : -1);
 						else if(ThreadLocalRandom.current().nextBoolean())
-							newT = sensors.get(alias).getTemperatureCloserTo(defaultTemp);
+							newT = sensors.get(alias).getTemperatureCloserTo();
 						
 						Map<String, Object> data = new HashMap<>();
 						data.put(getPath(PathType.INFO_SENDING,tempSuffix), newT);
@@ -132,7 +132,11 @@ public class Simulation extends Thread{
 					})
 					.setInstructionHandler((path,val)->{
 						try{
-							sensors.get(alias).setAction(AcuAction.valueOf(val));
+							if(getPath(PathType.INSTRUCTION_RECEIVING,stateSuffix).equals(path))
+								sensors.get(alias).setAction(AcuAction.valueOf(val));
+							if(getPath(PathType.INSTRUCTION_RECEIVING,defaultTempSuffix).equals(path))
+								sensors.get(alias).setDefaultTemperature(Integer.parseInt(val));
+								
 						}catch(Exception e){
 							return false;
 						}
@@ -140,7 +144,7 @@ public class Simulation extends Thread{
 					})
 					.build();
 			final String id = simulator.addSensor(s);
-			sensors.put(alias, new DataContainer(id));
+			sensors.put(alias, new DataContainer(id, defaultTemp));
 		});
 		
 		simulator.startSendingMsgsInAllSensors();
