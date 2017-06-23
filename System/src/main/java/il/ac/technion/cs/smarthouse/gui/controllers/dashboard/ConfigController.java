@@ -159,29 +159,29 @@ public class ConfigController extends SystemGuiController {
 		return allWidgets;
 	}
 
-	private void addWidgetTimer(final BasicWidget widget) {
-		final String key = widget.getTitle();
+	private void addWidgetTimer(final BasicWidget w) {
+		final String key = w.getTitle();
 		final List<AnimationTimer> where = timers.getOrDefault(key, new ArrayList<>());
 		where.add(new AnimationTimer() {
 
 			private long lastTimerCall;
 			final Random RND = new Random();
 			final Boolean isGraph = key.equals(
-					new GraphWidget(WidgetType.AREA_GRAPH, widget.getTileSize(), widget.getInitalInfo()).getTitle());
+					new GraphWidget(WidgetType.AREA_GRAPH, w.getTileSize(), w.getInitalInfo()).getTitle());
 			final Boolean isList = key.equals(
-					new ListWidget(WidgetType.BAR_CHART, widget.getTileSize(), widget.getInitalInfo()).getTitle());
+					new ListWidget(WidgetType.BAR_CHART, w.getTileSize(), w.getInitalInfo()).getTitle());
 
 			@Override
 			public void handle(final long now) {
 				if (now <= lastTimerCall + 500_000_000)
 					return;
 				if (isGraph) {
-					final GraphWidget realW = (GraphWidget) widget;
+					final GraphWidget realW = (GraphWidget) w;
 					realW.getUpdateKeys().forEach(updateKey -> realW.update(RND.nextInt(100) + 0.0, updateKey));
 				} else if (!isList)
-					widget.update(100 * RND.nextDouble(), null);
+					w.update(100 * RND.nextDouble(), null);
 				else {
-					final ListWidget realW = (ListWidget) widget;
+					final ListWidget realW = (ListWidget) w;
 					realW.getUpdateKeys().forEach(updateKey -> realW.update(RND.nextInt(100) + 0.0, updateKey));
 				}
 				lastTimerCall = now;
@@ -192,8 +192,8 @@ public class ConfigController extends SystemGuiController {
 		timers.put(key, where);
 	}
 
-	private void setWidgetColorListeners(final BasicWidget widget) {
-		final Tile t = widget.getTile();
+	private void setWidgetColorListeners(final BasicWidget w) {
+		final Tile t = w.getTile();
 		t.setOnMouseEntered(e -> {
 			if (!chosenColor.equals(t.getForegroundColor()))
 				t.setForegroundBaseColor(enteredTileColor);
@@ -203,8 +203,8 @@ public class ConfigController extends SystemGuiController {
 				t.setForegroundBaseColor(normalTileColor);
 		});
 		t.setOnMouseClicked(e -> {
-			chosenType = widget.getType();
-			widgets.get(widget.getTitle()).stream()
+			chosenType = w.getType();
+			widgets.get(w.getTitle()).stream()
 					.forEach(otherT -> otherT.getTile().setForegroundBaseColor(normalTileColor));
 			t.setForegroundBaseColor(chosenColor);
 		});
@@ -334,5 +334,5 @@ public class ConfigController extends SystemGuiController {
 }
 
 interface ConfigConsumer {
-	void create(WidgetType type, InfoCollector data);
+	void create(WidgetType t, InfoCollector data);
 }

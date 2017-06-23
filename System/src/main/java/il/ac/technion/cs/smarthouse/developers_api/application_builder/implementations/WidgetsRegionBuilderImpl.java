@@ -17,53 +17,52 @@ import javafx.scene.layout.HBox;
  * @since 10-06-2017
  */
 public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implements WidgetsRegionBuilder {
-    private HBox widgetsHbox;
-    private Double tileSize = 150.0;
-    private DashboardCore core;
-    
-    public WidgetsRegionBuilderImpl() {
-        super.setTitle("Widgets");
-    }
+	private HBox widgetsHbox;
+	private Double tileSize = 150.0;
+	private DashboardCore core;
 
-    @Override
-    public WidgetsRegionBuilderImpl setTitle(String title) {
-        super.setTitle(title);
-        return this;
-    }
+	public WidgetsRegionBuilderImpl() {
+		super.setTitle("Widgets");
+	}
 
-    private void initWidgetPane(){
-        widgetsHbox = new HBox();
-        widgetsHbox.setSpacing(5);
-        widgetsHbox.setPadding(new Insets(5));
-        
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(widgetsHbox);
-        scrollPane.setFitToWidth(true);
-        Double size = tileSize+30;
-        scrollPane.setMaxHeight(size);
-        scrollPane.setMinHeight(size);
-        scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
-        
-        addAppBuilderItem(new AppBuilderItem(null, scrollPane));
-    }
-    
-//    @Override
-    public WidgetsRegionBuilder setDashboardCore(DashboardCore core){
-        this.core = core;
-        return this;
-    }
-    
-    @Override
-    public WidgetsRegionBuilder addWidget(WidgetType type, InfoCollector info) {
-        if(core == null)
-            return this;
-        
-        if(widgetsHbox == null)
-            initWidgetPane();
-        
-        Widget w = core.createWidget(type, info, tileSize);
-        widgetsHbox.getChildren().add(w.get());
-        return this;
-    }
+	@Override
+	public WidgetsRegionBuilderImpl setTitle(String title) {
+		super.setTitle(title);
+		return this;
+	}
+
+	private void initWidgetPane() {
+		widgetsHbox = new HBox();
+		widgetsHbox.setSpacing(5);
+		widgetsHbox.setPadding(new Insets(5));
+
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setContent(widgetsHbox);
+		scrollPane.setFitToWidth(true);
+		Double size = tileSize + 30;
+		scrollPane.setMaxHeight(size);
+		scrollPane.setMinHeight(size);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+
+		addAppBuilderItem(new AppBuilderItem(null, scrollPane));
+	}
+
+	public WidgetsRegionBuilder setDashboardCore(DashboardCore c) {
+		this.core = c;
+		return this;
+	}
+
+	@Override
+	public WidgetsRegionBuilder addWidget(WidgetType t, InfoCollector c) {
+		if (core == null)
+			return this;
+
+		if (widgetsHbox == null)
+			initWidgetPane();
+
+		Widget w = core.createWidget(t, c, tileSize);
+		widgetsHbox.getChildren().add(w.get());
+		return this;
+	}
 
 }

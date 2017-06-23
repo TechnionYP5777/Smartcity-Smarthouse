@@ -48,7 +48,7 @@ public class InstructionsSenderThreadTest {
 
 		numOfInstructionReceived = 0;
 		builder = new SensorBuilder().setSensorId(Random.sensorId()).setAlias("myAlias").setCommname(commname)
-				.addInstructionsReceiveingPath(instPath).setPollingInterval((long) 10)
+				.addInstructionsReceiveingPath(instPath).setPollingInterval(1L * 10)
 				.setInstructionHandler((path, inst) -> {
 					if (inst.equals(true + ""))
 						incNumOfInstructions();
@@ -124,7 +124,7 @@ public class InstructionsSenderThreadTest {
 	public void GetsAlreadyWaitingInstructionTest() {
 		instructInc();
 
-		GenericSensor sensor = builder.setPollingInterval((long) 10000).build().connect();
+		GenericSensor sensor = builder.setPollingInterval(1L * 10000).build().connect();
 		if (!didGetInstruction())
 			sensor.waitForInstruction();
 

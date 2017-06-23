@@ -32,335 +32,341 @@ import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
  * @since 28-05-2017
  */
 public class FileSystemImpl implements FileSystem, Savable {
-    private static final Logger log = LoggerFactory.getLogger(FileSystemImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(FileSystemImpl.class);
 
-    @Expose private final FileNode root = new FileNode("<ROOT>");
-    private final Map<String, FileNode> listenersBuffer = new HashMap<>();
-    
-    // ---------------------------------------------------------------
-    // -------------------------- FileNodes --------------------------
-    // ---------------------------------------------------------------
+	@Expose
+	private final FileNode root = new FileNode("<ROOT>");
+	private final Map<String, FileNode> listenersBuffer = new HashMap<>();
 
-    /**
-     * a class to store a Node in the file system tree
-     * 
-     * @author RON
-     * @since 28-05-2017
-     */
-    static class FileNode implements Savable {
-        @Expose final String myName;
-        @Expose private Object data;
-        @Expose private Object mostRecentDataOnBranch;
-        private final Map<String, BiConsumer<String, Object>> eventHandlers = new HashMap<>();
-        @Expose Map<String, FileNode> children = new HashMap<>();
+	// ---------------------------------------------------------------
+	// -------------------------- FileNodes --------------------------
+	// ---------------------------------------------------------------
 
-        public FileNode(final String name) {
-            myName = name;
-        }
+	/**
+	 * a class to store a Node in the file system tree
+	 * 
+	 * @author RON
+	 * @since 28-05-2017
+	 */
+	static class FileNode implements Savable {
+		@Expose
+		final String myName;
+		@Expose
+		private Object data;
+		@Expose
+		private Object mostRecentDataOnBranch;
+		private final Map<String, BiConsumer<String, Object>> eventHandlers = new HashMap<>();
+		@Expose
+		Map<String, FileNode> children = new HashMap<>();
 
-        @SuppressWarnings("unchecked")
-        <T> T getData() {
-            return (T) data;
-        }
+		public FileNode(final String name) {
+			myName = name;
+		}
 
-        @SuppressWarnings("unchecked")
-        public <T> T getMostRecentDataOnBranch() {
-            return (T) mostRecentDataOnBranch;
-        }
+		@SuppressWarnings("unchecked")
+		<T> T getData() {
+			return (T) data;
+		}
 
-        public void setMostRecentDataOnBranch(final Object mostRecentDataOnBranch) {
-            this.mostRecentDataOnBranch = mostRecentDataOnBranch;
-        }
+		@SuppressWarnings("unchecked")
+		public <T> T getMostRecentDataOnBranch() {
+			return (T) mostRecentDataOnBranch;
+		}
 
-        public void setData(final Object data) {
-            this.data = data;
-        }
+		public void setMostRecentDataOnBranch(final Object mostRecentDataOnBranch) {
+			this.mostRecentDataOnBranch = mostRecentDataOnBranch;
+		}
 
-        public Collection<String> getChildrenNames() {
-            return children.keySet();
-        }
+		public void setData(final Object data) {
+			this.data = data;
+		}
 
-        public FileNode getChild(final String name, final boolean create) {
-            if (!children.containsKey(name) && create)
-                children.put(name, new FileNode(name));
-            return children.get(name);
-        }
+		public Collection<String> getChildrenNames() {
+			return children.keySet();
+		}
 
-        String addEventHandler(final BiConsumer<String, Object> eventHandler) {
-            final String id = UuidGenerator.GenerateUniqueIDstring();
-            eventHandlers.put(id, eventHandler);
-            return id;
-        }
+		public FileNode getChild(final String name, final boolean create) {
+			if (!children.containsKey(name) && create)
+				children.put(name, new FileNode(name));
+			return children.get(name);
+		}
 
-        void removeEventHandler(final String eventHandlerId) {
-            eventHandlers.remove(eventHandlerId);
-        }
+		String addEventHandler(final BiConsumer<String, Object> eventHandler) {
+			final String id = UuidGenerator.GenerateUniqueIDstring();
+			eventHandlers.put(id, eventHandler);
+			return id;
+		}
 
-        public Collection<BiConsumer<String, Object>> getEventHandlers() {
-            return eventHandlers.values();
-        }
+		void removeEventHandler(final String eventHandlerId) {
+			eventHandlers.remove(eventHandlerId);
+		}
 
-        private void print(final int depth, final PrintWriter w) {
-            for (int i = 0; i < depth; ++i)
-                w.print("\t");
-            w.println("[" + myName + ", " + data + ", " + eventHandlers.size() + "]");
-            for (final FileNode child : children.values())
-                child.print(depth + 1, w);
-        }
+		public Collection<BiConsumer<String, Object>> getEventHandlers() {
+			return eventHandlers.values();
+		}
 
-        @Override
-        public String toString() {
-            final StringWriter writer = new StringWriter();
-            print(0, new PrintWriter(writer));
-            return writer.toString();
-        }
+		private void print(final int depth, final PrintWriter w) {
+			for (int i = 0; i < depth; ++i)
+				w.print("\t");
+			w.println("[" + myName + ", " + data + ", " + eventHandlers.size() + "]");
+			for (final FileNode child : children.values())
+				child.print(depth + 1, w);
+		}
 
-        @Override
-        public void populate(final String jsonString) throws Exception {
-            for (final Entry<String, JsonElement> e : new JsonParser().parse(jsonString).getAsJsonObject().entrySet()) {
-                final Field f = getClass().getDeclaredField(e.getKey());
-                f.setAccessible(true);
+		@Override
+		public String toString() {
+			final StringWriter writer = new StringWriter();
+			print(0, new PrintWriter(writer));
+			return writer.toString();
+		}
 
-                if (!"children".equals(f.getName()))
-                    f.set(this, gsonBuilder.create().fromJson(e.getValue(), f.getGenericType()));
-                else
-                    for (final Entry<String, JsonElement> e2 : e.getValue().getAsJsonObject().entrySet())
-                        if (!FileSystemEntries.SENSORS.buildPath().equals(e2.getKey()) && !FileSystemEntries.SYSTEM.buildPath().equals(e2.getKey()))
-                            getChild(e2.getKey(), true).populate(e2.getValue().toString());
-            }
-        }
-    }
+		@Override
+		public void populate(final String jsonString) throws Exception {
+			for (final Entry<String, JsonElement> e : new JsonParser().parse(jsonString).getAsJsonObject().entrySet()) {
+				final Field f = getClass().getDeclaredField(e.getKey());
+				f.setAccessible(true);
 
-    /**
-     * a class to store the results of the
-     * {@link FileSystemImpl#fileSystemWalk(boolean, Object, String...)}
-     * 
-     * @author RON
-     * @since 28-05-2017
-     */
-    private static class FileSystemWalkResults {
-        FileNode fileNode;
-        List<BiConsumer<String, Object>> eventHandlersOnBranch;
+				if (!"children".equals(f.getName()))
+					f.set(this, gsonBuilder.create().fromJson(e.getValue(), f.getGenericType()));
+				else
+					for (final Entry<String, JsonElement> e2 : e.getValue().getAsJsonObject().entrySet())
+						if (!FileSystemEntries.SENSORS.buildPath().equals(e2.getKey())
+								&& !FileSystemEntries.SYSTEM.buildPath().equals(e2.getKey()))
+							getChild(e2.getKey(), true).populate(e2.getValue().toString());
+			}
+		}
+	}
 
-        FileSystemWalkResults(final FileNode fileNode, final List<BiConsumer<String, Object>> eventHandlersOnBranch) {
-            this.fileNode = fileNode;
-            this.eventHandlersOnBranch = eventHandlersOnBranch;
-        }
-    }
+	/**
+	 * a class to store the results of the
+	 * {@link FileSystemImpl#fileSystemWalk(boolean, Object, String...)}
+	 * 
+	 * @author RON
+	 * @since 28-05-2017
+	 */
+	private static class FileSystemWalkResults {
+		FileNode fileNode;
+		List<BiConsumer<String, Object>> eventHandlersOnBranch;
 
-    /**
-     * Performs a walk on the file system tree
-     * 
-     * @param create
-     *            If true, missing nodes from the path, will be created.<br>
-     *            If false, and a node on the path is missing, then null will be
-     *            returned as the result for the FileNode
-     * @param newDataToAdd
-     *            If not null, the new data will be added to the last node on
-     *            the path. <br>
-     *            Also, the mostRecentDataOnBranch will be updated. <br>
-     *            If null, nothing will happen to the nodes' data
-     * @param path
-     *            The path to walk on
-     * @return The results of the walk:<br>
-     *         The FileNode at the end of the walk, and all of the eventHandlers
-     *         on path (including the last node)
-     */
-    private FileSystemWalkResults fileSystemWalk(final boolean create, final Object newDataToAdd,
-                    final String... path) {
-        final List<BiConsumer<String, Object>> eventHandlersOnBranch = new ArrayList<>();
+		FileSystemWalkResults(final FileNode fileNode, final List<BiConsumer<String, Object>> eventHandlersOnBranch) {
+			this.fileNode = fileNode;
+			this.eventHandlersOnBranch = eventHandlersOnBranch;
+		}
+	}
 
-        FileNode node = root;
+	/**
+	 * Performs a walk on the file system tree
+	 * 
+	 * @param create
+	 *            If true, missing nodes from the path, will be created.<br>
+	 *            If false, and a node on the path is missing, then null will be
+	 *            returned as the result for the FileNode
+	 * @param newDataToAdd
+	 *            If not null, the new data will be added to the last node on
+	 *            the path. <br>
+	 *            Also, the mostRecentDataOnBranch will be updated. <br>
+	 *            If null, nothing will happen to the nodes' data
+	 * @param path
+	 *            The path to walk on
+	 * @return The results of the walk:<br>
+	 *         The FileNode at the end of the walk, and all of the eventHandlers
+	 *         on path (including the last node)
+	 */
+	private FileSystemWalkResults fileSystemWalk(final boolean create, final Object newDataToAdd,
+			final String... path) {
+		final List<BiConsumer<String, Object>> eventHandlersOnBranch = new ArrayList<>();
 
-        eventHandlersOnBranch.addAll(node.getEventHandlers());
+		FileNode node = root;
 
-        if (newDataToAdd != null)
-            node.setMostRecentDataOnBranch(newDataToAdd);
+		eventHandlersOnBranch.addAll(node.getEventHandlers());
 
-        for (final String pathNode : PathBuilder.decomposePath(path)) {
-            node = node.getChild(pathNode, create);
+		if (newDataToAdd != null)
+			node.setMostRecentDataOnBranch(newDataToAdd);
 
-            if (node == null)
-                return new FileSystemWalkResults(null, eventHandlersOnBranch);
+		for (final String pathNode : PathBuilder.decomposePath(path)) {
+			node = node.getChild(pathNode, create);
 
-            if (newDataToAdd != null)
-                node.setMostRecentDataOnBranch(newDataToAdd);
+			if (node == null)
+				return new FileSystemWalkResults(null, eventHandlersOnBranch);
 
-            eventHandlersOnBranch.addAll(node.getEventHandlers());
-        }
+			if (newDataToAdd != null)
+				node.setMostRecentDataOnBranch(newDataToAdd);
 
-        if (newDataToAdd != null)
-            node.setData(newDataToAdd);
+			eventHandlersOnBranch.addAll(node.getEventHandlers());
+		}
 
-        return new FileSystemWalkResults(node, eventHandlersOnBranch);
-    }
+		if (newDataToAdd != null)
+			node.setData(newDataToAdd);
 
-    // --------------------------------------------------------------------
-    // -------------------- Public interface functions --------------------
-    // --------------------------------------------------------------------
+		return new FileSystemWalkResults(node, eventHandlersOnBranch);
+	}
 
-    @Override
-    public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {
-        FileNode n = fileSystemWalk(true, null, path).fileNode;
-        String id = n.addEventHandler(eventHandler);
-        listenersBuffer.put(id, n);
-        log.info("\n\tFileSystem: Subscribing a new listener (event handler)\n\tSubscribed on path: "
-                        + PathBuilder.buildPath(path) + "\n\tSubscriber: " + getNameOfCaller());
-        return id;
-    }
+	// --------------------------------------------------------------------
+	// -------------------- Public interface functions --------------------
+	// --------------------------------------------------------------------
 
-    @Override
-    public <T> String subscribe(BiConsumer<String, T> eventHandler, Class<T> dataClass, String... path) {
-        return subscribe((path1, data) -> {
-            if (dataClass.isInstance(data))
-                eventHandler.accept(path1, dataClass.cast(data));
-        }, path);
-    }
+	@Override
+	public String subscribe(BiConsumer<String, Object> eventHandler, String... path) {
+		FileNode n = fileSystemWalk(true, null, path).fileNode;
+		String id = n.addEventHandler(eventHandler);
+		listenersBuffer.put(id, n);
+		log.info("\n\tFileSystem: Subscribing a new listener (event handler)\n\tSubscribed on path: "
+				+ PathBuilder.buildPath(path) + "\n\tSubscriber: " + getNameOfCaller());
+		return id;
+	}
 
-    @Override
-    public void unsubscribe(final String eventHandlerId) {
-        Optional.of(listenersBuffer.get(eventHandlerId)).ifPresent(n -> n.removeEventHandler(eventHandlerId));
-    }
+	@Override
+	public <T> String subscribe(BiConsumer<String, T> eventHandler, Class<T> dataClass, String... path) {
+		return subscribe((path1, data) -> {
+			if (dataClass.isInstance(data))
+				eventHandler.accept(path1, dataClass.cast(data));
+		}, path);
+	}
 
-    @Override
-    public void sendMessage(Object data, String... path) {
-        FileSystemWalkResults r = fileSystemWalk(true, data, path);
-        log.info("\n\tFileSystem: Sending message \n\tMessage on path: " + PathBuilder.buildPath(path) + "\n\tSender: "
-                        + getNameOfCaller() + "\n\tData: " + data + "\n\tFiring " + r.eventHandlersOnBranch.size()
-                        + " listeners (event handlers)");
-        for (BiConsumer<String, Object> eventHandler : r.eventHandlersOnBranch)
-            eventHandler.accept(PathBuilder.buildPath(path), data);
-    }
+	@Override
+	public void unsubscribe(final String eventHandlerId) {
+		Optional.of(listenersBuffer.get(eventHandlerId)).ifPresent(n -> n.removeEventHandler(eventHandlerId));
+	}
 
-    @Override
-    public <T> T getData(final String... path) {
-        final T data = fileSystemWalk(false, null, path).fileNode == null ? null
-                        : fileSystemWalk(false, null, path).fileNode.getData();
-        log.info("\n\tFileSystem: GetData\n\tThe data requester: " + getNameOfCaller() + "\n\tThe path: "
-                        + PathBuilder.buildPath(path) + "\n\tThe data: " + data);
-        return data;
-    }
+	@Override
+	public void sendMessage(Object data, String... path) {
+		FileSystemWalkResults r = fileSystemWalk(true, data, path);
+		log.info("\n\tFileSystem: Sending message \n\tMessage on path: " + PathBuilder.buildPath(path) + "\n\tSender: "
+				+ getNameOfCaller() + "\n\tData: " + data + "\n\tFiring " + r.eventHandlersOnBranch.size()
+				+ " listeners (event handlers)");
+		for (BiConsumer<String, Object> eventHandler : r.eventHandlersOnBranch)
+			eventHandler.accept(PathBuilder.buildPath(path), data);
+	}
 
-    @Override
-    public <T> T getMostRecentDataOnBranch(final String... path) {
-        return fileSystemWalk(false, null, path).fileNode == null ? null
-                        : fileSystemWalk(false, null, path).fileNode.getMostRecentDataOnBranch();
-    }
+	@Override
+	public <T> T getData(final String... path) {
+		final T data = fileSystemWalk(false, null, path).fileNode == null ? null
+				: fileSystemWalk(false, null, path).fileNode.getData();
+		log.info("\n\tFileSystem: GetData\n\tThe data requester: " + getNameOfCaller() + "\n\tThe path: "
+				+ PathBuilder.buildPath(path) + "\n\tThe data: " + data);
+		return data;
+	}
 
-    @Override
-    public Collection<String> getChildren(final String... path) {
-        return fileSystemWalk(false, null, path).fileNode == null ? Collections.emptyList()
-                        : fileSystemWalk(false, null, path).fileNode.getChildrenNames();
-    }
+	@Override
+	public <T> T getMostRecentDataOnBranch(final String... path) {
+		return fileSystemWalk(false, null, path).fileNode == null ? null
+				: fileSystemWalk(false, null, path).fileNode.getMostRecentDataOnBranch();
+	}
 
-    @Override
-    public boolean wasPathInitiated(final String... path) {
-        return fileSystemWalk(false, null, path).fileNode != null;
-    }
+	@Override
+	public Collection<String> getChildren(final String... path) {
+		return fileSystemWalk(false, null, path).fileNode == null ? Collections.emptyList()
+				: fileSystemWalk(false, null, path).fileNode.getChildrenNames();
+	}
 
-    // -----------------------------------------------------
-    // ---------------- To String functions ----------------
-    // -----------------------------------------------------
-    @Override
-    public String toString() {
-        return "Total number of listeners: " + listenersBuffer.size() + "\n" + root.toString();
-    }
+	@Override
+	public boolean wasPathInitiated(final String... path) {
+		return fileSystemWalk(false, null, path).fileNode != null;
+	}
 
-    public String toString(final String... pathToFirstNode) {
-        return Optional.ofNullable(fileSystemWalk(false, null, pathToFirstNode).fileNode).orElse(root).toString();
-    }
-    
-    // -----------------------------------------------------
-    // ----------- All paths to String functions -----------
-    // -----------------------------------------------------
-    public static class ReadOnlyFileNodeImpl implements ReadOnlyFileNode {
-        private final String name;
-        private final String fullPath;
-        private Map<String, ReadOnlyFileNodeImpl> children = new HashMap<>();
-        
-        ReadOnlyFileNodeImpl(final String name) {
-            this.name = name;
-            this.fullPath = name;
-        }
-        
-        ReadOnlyFileNodeImpl(final FileNode root) {
-            this(root.myName);
-            for (FileNode child : root.children.values())
-                this.children.put(child.myName, new ReadOnlyFileNodeImpl(child, fullPath));
-        }
-        
-        ReadOnlyFileNodeImpl(final FileNode root, final String parentPath) {
-            this.name = root.myName;
-            this.fullPath = PathBuilder.buildPath(parentPath, name);
-            for (FileNode child : root.children.values())
-                this.children.put(child.myName, new ReadOnlyFileNodeImpl(child, fullPath));
-        }
-        
-        @Override
-        public Collection<? extends ReadOnlyFileNode> getChildren() {
-            return children.values();
-        }
+	// -----------------------------------------------------
+	// ---------------- To String functions ----------------
+	// -----------------------------------------------------
+	@Override
+	public String toString() {
+		return "Total number of listeners: " + listenersBuffer.size() + "\n" + root.toString();
+	}
 
-        @Override
-        public ReadOnlyFileNode getChild(final String name1) {
-            return children.get(name1);
-        }
+	public String toString(final String... pathToFirstNode) {
+		return Optional.ofNullable(fileSystemWalk(false, null, pathToFirstNode).fileNode).orElse(root).toString();
+	}
 
-        private void print(final int depth, final PrintWriter w) {
-            for (int i = 0; i < depth; ++i)
-                w.print("\t");
-            w.println(fullPath);
-            for (final ReadOnlyFileNodeImpl child : children.values())
-                child.print(depth + 1, w);
-        }
+	// -----------------------------------------------------
+	// ----------- All paths to String functions -----------
+	// -----------------------------------------------------
+	public static class ReadOnlyFileNodeImpl implements ReadOnlyFileNode {
+		private final String name;
+		private final String fullPath;
+		private Map<String, ReadOnlyFileNodeImpl> children = new HashMap<>();
 
-        @Override
-        public String toString() {
-            final StringWriter writer = new StringWriter();
-            print(0, new PrintWriter(writer));
-            return writer.toString();
-        }
+		ReadOnlyFileNodeImpl(final String name) {
+			this.fullPath = this.name = name;
+		}
 
-        @Override
-        public String getName() {
-            return name;
-        }
+		ReadOnlyFileNodeImpl(final FileNode root) {
+			this(root.myName);
+			for (FileNode child : root.children.values())
+				this.children.put(child.myName, new ReadOnlyFileNodeImpl(child, fullPath));
+		}
 
-        @Override
-        public String getFullPath() {
-            return fullPath;
-        }
+		ReadOnlyFileNodeImpl(final FileNode root, final String parentPath) {
+			this.name = root.myName;
+			this.fullPath = PathBuilder.buildPath(parentPath, name);
+			for (FileNode child : root.children.values())
+				this.children.put(child.myName, new ReadOnlyFileNodeImpl(child, fullPath));
+		}
 
-        @Override
-        public boolean isLeaf() {
-            return children.isEmpty();
-        }
-    }
-    
-    @Override
-    public ReadOnlyFileNode getReadOnlyFileSystem(String... path) {
-        String name = "";
-        if (path.length > 0) {
-            List<String> l = PathBuilder.decomposePath(path);
-            name = l.get(l.size() - 1);
-        }
-        
-        return new ReadOnlyFileNodeImpl(Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).orElse(new FileNode(name)));
-    }
+		@Override
+		public Collection<? extends ReadOnlyFileNode> getChildren() {
+			return children.values();
+		}
 
-    // ------------------------------------------------
-    // ---------------- For the logger ----------------
-    // ------------------------------------------------
-    private String getNameOfCaller() {
-        final StackTraceElement t = new Throwable().getStackTrace()[2];
-        return t.getClassName() + "#" + t.getMethodName() + " (Line " + t.getLineNumber() + ")";
-    }
+		@Override
+		public ReadOnlyFileNode getChild(final String name1) {
+			return children.get(name1);
+		}
 
-    // --------------------------------------------------------------------
-    // -------- Public functions that aren't part of the interface --------
-    // --------------------------------------------------------------------
-    public void deleteFromPath(final String... path) {
-        Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).ifPresent(n -> n.children.clear());
-    }
+		private void print(final int depth, final PrintWriter w) {
+			for (int i = 0; i < depth; ++i)
+				w.print("\t");
+			w.println(fullPath);
+			for (final ReadOnlyFileNodeImpl child : children.values())
+				child.print(depth + 1, w);
+		}
+
+		@Override
+		public String toString() {
+			final StringWriter writer = new StringWriter();
+			print(0, new PrintWriter(writer));
+			return writer.toString();
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+
+		@Override
+		public String getFullPath() {
+			return fullPath;
+		}
+
+		@Override
+		public boolean isLeaf() {
+			return children.isEmpty();
+		}
+	}
+
+	@Override
+	public ReadOnlyFileNode getReadOnlyFileSystem(String... path) {
+		String name = "";
+		if (path.length <= 0)
+			return new ReadOnlyFileNodeImpl(
+					Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).orElse(new FileNode(name)));
+		List<String> l = PathBuilder.decomposePath(path);
+		name = l.get(l.size() - 1);
+		return new ReadOnlyFileNodeImpl(
+				Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).orElse(new FileNode(name)));
+	}
+
+	// ------------------------------------------------
+	// ---------------- For the logger ----------------
+	// ------------------------------------------------
+	private String getNameOfCaller() {
+		final StackTraceElement t = new Throwable().getStackTrace()[2];
+		return t.getClassName() + "#" + t.getMethodName() + " (Line " + t.getLineNumber() + ")";
+	}
+
+	// --------------------------------------------------------------------
+	// -------- Public functions that aren't part of the interface --------
+	// --------------------------------------------------------------------
+	public void deleteFromPath(final String... path) {
+		Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).ifPresent(n -> n.children.clear());
+	}
 
 }

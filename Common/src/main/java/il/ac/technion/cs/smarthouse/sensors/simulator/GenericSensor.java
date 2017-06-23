@@ -27,7 +27,6 @@ import il.ac.technion.cs.smarthouse.sensors.PathType;
 public class GenericSensor {
 	private static Logger log = LoggerFactory.getLogger(GenericSensor.class);
 
-	
 	private class MsgStreamerThread extends Thread {
 		private Map<String, List> ranges;
 		private Boolean keepStreaming = true;
@@ -45,19 +44,18 @@ public class GenericSensor {
 
 		@Override
 		public void run() {
-			if (!legalRanges())
-				return;
-			while (keepStreaming) {
-				Map<String, Object> data = new HashMap<>();
-				ranges.keySet().stream().filter(p -> paths.get(PathType.INFO_SENDING).containsKey(p))
-						.forEach(path -> data.put(path, random(path)));
-				sendMessage(data);
-				try {
-					Thread.sleep(streamingInterval);
-				} catch (InterruptedException e) {
-					keepStreaming = false;
+			if (legalRanges())
+				while (keepStreaming) {
+					Map<String, Object> data = new HashMap<>();
+					ranges.keySet().stream().filter(p -> paths.get(PathType.INFO_SENDING).containsKey(p))
+							.forEach(path -> data.put(path, random(path)));
+					sendMessage(data);
+					try {
+						Thread.sleep(streamingInterval);
+					} catch (InterruptedException e) {
+						keepStreaming = false;
+					}
 				}
-			}
 		}
 
 		@SuppressWarnings("unchecked")
@@ -261,9 +259,8 @@ public class GenericSensor {
 	 */
 	public void streamMessages() {
 
-		if (lastReceivedRanges == null)
-			return;
-		streamMessages(lastReceivedRanges);
+		if (lastReceivedRanges != null)
+			streamMessages(lastReceivedRanges);
 	}
 
 }

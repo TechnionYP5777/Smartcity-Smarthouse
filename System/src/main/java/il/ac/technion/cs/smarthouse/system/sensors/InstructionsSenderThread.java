@@ -20,41 +20,41 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
  * @since 30.3.17
  */
 public class InstructionsSenderThread extends SensorManagingThread {
-    private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);
-    private static String instructionSeperator = "##";
+	private static Logger log = LoggerFactory.getLogger(InstructionsSenderThread.class);
+	private static String instructionSeperator = "##";
 
-    public InstructionsSenderThread(final Socket client, final FileSystem fs) {
-        super(client, fs);
-    }
+	public InstructionsSenderThread(final Socket client, final FileSystem fs) {
+		super(client, fs);
+	}
 
-    private void notifySensor(final String path, final Object data) {
-        if (data == null)
-            return;
-        out.println(path + instructionSeperator + data);
-    }
+	private void notifySensor(final String path, final Object data) {
+		if (data != null)
+			out.println(path + instructionSeperator + data);
+	}
 
-    @Override
-    protected void handleSensorMessage(final SensorMessage msg) {
-        if (!MessageType.REGISTRATION.equals(msg.getType()))
-            log.error(getClass() + " shouldn't receive an update msg.");
-        else {
-            msg.getInstructionRecievingPaths().forEach(path -> {
-                final String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),
-                                msg.getSensorId(), path);
-                filesystem.subscribe((p, data) -> notifySensor(path, data), legalPath);
-            });
-            try {
-                new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
-            } catch (final IllegalMessageBaseExecption e) {}
-            msg.getInstructionRecievingPaths().forEach(path -> {
-                final String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),
-                                msg.getSensorId(), path);
-                notifySensor(path, filesystem.getData(legalPath));
-            });
-        }
-    }
+	@Override
+	protected void handleSensorMessage(final SensorMessage msg) {
+		if (!MessageType.REGISTRATION.equals(msg.getType()))
+			log.error(getClass() + " shouldn't receive an update msg.");
+		else {
+			msg.getInstructionRecievingPaths().forEach(path -> {
+				final String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),
+						msg.getSensorId(), path);
+				filesystem.subscribe((p, data) -> notifySensor(path, data), legalPath);
+			});
+			try {
+				new SensorMessage(MessageType.SUCCESS_ANSWER).send(out, null);
+			} catch (final IllegalMessageBaseExecption e) {
+			}
+			msg.getInstructionRecievingPaths().forEach(path -> {
+				final String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),
+						msg.getSensorId(), path);
+				notifySensor(path, filesystem.getData(legalPath));
+			});
+		}
+	}
 
-    public static String getInstructionSeperatorRegex() {
-        return instructionSeperator;
-    }
+	public static String getInstructionSeperatorRegex() {
+		return instructionSeperator;
+	}
 }
