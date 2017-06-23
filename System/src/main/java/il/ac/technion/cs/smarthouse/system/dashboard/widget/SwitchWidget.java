@@ -10,7 +10,7 @@ import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
  */
 public class SwitchWidget extends BasicWidget {
 
-    public SwitchWidget(WidgetType type, Double tileSize, InfoCollector data) {
+    public SwitchWidget(final WidgetType type, final Double tileSize, final InfoCollector data) {
         super(type, tileSize, data);
     }
 
