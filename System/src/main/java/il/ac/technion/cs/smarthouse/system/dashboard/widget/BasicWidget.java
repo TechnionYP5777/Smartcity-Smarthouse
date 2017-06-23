@@ -32,7 +32,7 @@ public abstract class BasicWidget {
         data.getInfoEntries().keySet().forEach(path -> updateAutomaticallyFrom(s, path));
     }
 
-    protected Double cast(final Object dataObj) {
+    public static Double cast(final Object dataObj) {
         final String sdata = (String) dataObj;
         try {
             return Double.valueOf(sdata);

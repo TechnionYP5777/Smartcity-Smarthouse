@@ -1,8 +1,14 @@
 package il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations;
 
+import java.util.Map;
+import java.util.function.Function;
+
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.WidgetsRegionBuilder;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
+import il.ac.technion.cs.smarthouse.system.dashboard.widget.BasicWidget;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
+import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore.Widget;
 import javafx.geometry.Insets;
@@ -53,17 +59,41 @@ public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implem
         return this;
     }
     
-    @Override
-    public WidgetsRegionBuilder addWidget(WidgetType type, InfoCollector info) {
+    private Boolean canAdd(){
         if(core == null)
-            return this;
+            return false;
         
         if(widgetsHbox == null)
             initWidgetPane();
+        return true;
+    }
+    
+    @Override
+    public WidgetsRegionBuilder addWidget(WidgetType type, InfoCollector info) {
+        if(canAdd()){
+            Widget w = core.createWidget(type, info, tileSize);
+            widgetsHbox.getChildren().add(w.get());
+        }
         
-        Widget w = core.createWidget(type, info, tileSize);
-        widgetsHbox.getChildren().add(w.get());
         return this;
     }
+
+    @Override
+    public <T extends SensorData> WidgetsRegionBuilder addWidget(WidgetType type, InfoCollector info,
+                    SensorApi<T> sensor, Function<T, Map<String, Object>> sensorProcessor) {
+        if(canAdd()){
+            BasicWidget bw = type.createWidget(tileSize, info);
+            sensor.subscribe(data -> sensorProcessor.apply(data).forEach((path,val)->bw.update(BasicWidget.cast(val), path)));
+            Widget w = core.createWidget(bw);
+            widgetsHbox.getChildren().add(w.get());
+        }
+         
+        return this;
+    }
+
+    
+
+    
+    
 
 }
