@@ -72,7 +72,7 @@ public class StoveModuleGui extends SmarthouseApplication {
         getAppBuilder().getWidgetsRegionBuilder()
                         .addWidget(WidgetType.BASIC_DASHBOARD,
                                         new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
-                        .addWidget(WidgetType.PROGRESS_LINE_GRAPH,
+                        .addWidget(WidgetType.LINES_GRAPH,
                                         new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
                         .addWidget(WidgetType.BASIC_DASHBOARD,
                                         new InfoCollector().setUnit("Boolean").addInfoEntry("stove.is_on", "isOn"));
