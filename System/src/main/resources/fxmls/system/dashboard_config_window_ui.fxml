@@ -18,14 +18,14 @@
           <String fx:value="Item 3" />
         </FXCollections>
       </items>
+         <tooltip>
+        <Tooltip maxWidth="200.0" text="Choose a widget type, then click on a widget's title to choose it. The chosen widget will turn blue" wrapText="true" x="19.0" y="67.0" />
+         </tooltip>
     </ComboBox>
     <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" prefHeight="172.0" prefWidth="381.00019999999495" vbarPolicy="NEVER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="64.0">
       <content>
         <HBox id="widgetsVbox" fx:id="widgetsHbox" prefHeight="158.0" prefWidth="384.0" />
       </content>
-      <tooltip>
-        <Tooltip maxHeight="100.0" maxWidth="100.0" text="Click on a widget to choose it. The chosen widget will turn blue" wrapText="true" x="19.0" y="67.0" />
-      </tooltip>
     </ScrollPane>
     <Label layoutY="259.0" prefWidth="60.0" text="Paths:" AnchorPane.leftAnchor="16.0" />
     <TableView fx:id="table" prefHeight="161.0" prefWidth="388.00019999999495" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="277.0">
@@ -46,7 +46,10 @@
       </items>
     </ComboBox>
     <Label layoutX="26.0" layoutY="499.0" text="Unit of data:" />
-    <TextField fx:id="unitField" layoutX="120.0" layoutY="493.0" prefHeight="30.0" prefWidth="81.0" text="(optional)" />
+    <TextField fx:id="unitField" layoutX="120.0" layoutY="493.0" prefHeight="30.0" prefWidth="81.0" text="(optional)">
+         <tooltip>
+            <Tooltip maxWidth="200.0" text="Unit is a property of the widget and applies to all paths " wrapText="true" />
+         </tooltip></TextField>
     <Button fx:id="addPathBtn" mnemonicParsing="false" prefHeight="21.0" prefWidth="56.00019999999495" text="Add" visible="false" AnchorPane.bottomAnchor="86.0" AnchorPane.rightAnchor="15.0">
          <tooltip>
             <Tooltip text="Click to add the chosen path" wrapText="true" />
