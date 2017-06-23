@@ -39,6 +39,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -58,6 +59,9 @@ public class ConfigController extends SystemGuiController {
 		ButtonCell() {
 			final Font oldFont = cellButton.getFont();
 			cellButton.setFont(Font.font(oldFont.getFamily(), FontWeight.BOLD, oldFont.getSize()));
+			Tooltip removeTooltip = new Tooltip("Click to remove this path");
+            removeTooltip.setStyle("-fx-font: System 12");
+            cellButton.setTooltip(removeTooltip);
 			cellButton.setOnAction(e -> {
 				final NamedPath path = ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
 				data.remove(path);

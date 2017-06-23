@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-1.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" prefWidth="418.0002999999924" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.dashboard.ConfigController">
+<AnchorPane id="AnchorPane" maxHeight="-1.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" prefWidth="418.0002999999924" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.dashboard.ConfigController">
   <children>
     <Label prefWidth="116.99999482421117" text="Widget Type:" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="284.0" AnchorPane.topAnchor="27.0" />
     <ComboBox fx:id="typesComboBox" prefHeight="30.0" prefWidth="267.99999482421117" AnchorPane.leftAnchor="134.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="20.0">
@@ -30,9 +30,9 @@
     <Label layoutY="259.0" prefWidth="60.0" text="Paths:" AnchorPane.leftAnchor="16.0" />
     <TableView fx:id="table" prefHeight="161.0" prefWidth="388.00019999999495" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="277.0">
       <columns>
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="146.0" text="Name" fx:id="nameCol" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="207.0" text="Path" fx:id="pathCol" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="34.0" text="" fx:id="cancelCol" />
+        <TableColumn fx:id="nameCol" maxWidth="5000.0" minWidth="10.0" prefWidth="146.0" text="Name" />
+        <TableColumn fx:id="pathCol" maxWidth="5000.0" minWidth="10.0" prefWidth="207.0" text="Path" />
+        <TableColumn fx:id="cancelCol" maxWidth="5000.0" minWidth="10.0" prefWidth="34.0" text="" />
       </columns>
     </TableView>
     <TextField fx:id="nameField" prefHeight="30.0" prefWidth="138.00019999999495" text="&lt;name&gt;" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="452.0" />
@@ -47,7 +47,10 @@
     </ComboBox>
     <Label layoutX="26.0" layoutY="499.0" text="Unit of data:" />
     <TextField fx:id="unitField" layoutX="120.0" layoutY="493.0" prefHeight="30.0" prefWidth="81.0" text="(optional)" />
-    <Button fx:id="addPathBtn" mnemonicParsing="false" prefHeight="21.0" prefWidth="56.00019999999495" text="Add" visible="false" AnchorPane.bottomAnchor="86.0" AnchorPane.rightAnchor="15.0" />
+    <Button fx:id="addPathBtn" mnemonicParsing="false" prefHeight="21.0" prefWidth="56.00019999999495" text="Add" visible="false" AnchorPane.bottomAnchor="86.0" AnchorPane.rightAnchor="15.0">
+         <tooltip>
+            <Tooltip text="Click to add the chosen path" wrapText="true" />
+         </tooltip></Button>
     <Button fx:id="okBtn" mnemonicParsing="false" text="Ok" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="17.0" />
     <Button fx:id="cancelBtn" mnemonicParsing="false" text="Cancel" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="70.0" />
   </children>

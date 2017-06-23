@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -69,6 +70,9 @@ public class DashboardController extends SystemGuiController {
 		addWidgetTile = TileBuilder.create().prefSize(TILE_SIZE, TILE_SIZE).skinType(SkinType.CUSTOM).graphic(plus)
 				// .roundedCorners(false)
 				.build();
+		Tooltip addTooltip = new Tooltip("Click to add a widget");
+		addTooltip.setStyle("-fx-font: System 12");
+		addWidgetTile.setTooltip(addTooltip);
 		addWidgetTile.setOnMouseClicked(e -> openConfigWindow());
 
 		pane.setBackground(new Background(new BackgroundFill(Tile.BACKGROUND.darker(), null, null)));
