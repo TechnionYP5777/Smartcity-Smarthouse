@@ -15,6 +15,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 
 /**
  * Implementation of {@link WidgetsRegionBuilder}
@@ -44,10 +45,12 @@ public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implem
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(widgetsHbox);
         scrollPane.setFitToWidth(true);
-        Double size = tileSize+30;
-        scrollPane.setMaxHeight(size);
+        Double size = tileSize*1.2;
+//        scrollPane.setMaxHeight(size);
         scrollPane.setMinHeight(size);
         scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+//        scrollPane.setFitToHeight(true);
+        
         
         addAppBuilderItem(new AppBuilderItem(null, scrollPane));
     }
