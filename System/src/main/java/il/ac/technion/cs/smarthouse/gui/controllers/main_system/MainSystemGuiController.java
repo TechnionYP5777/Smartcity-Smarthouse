@@ -3,8 +3,11 @@ package il.ac.technion.cs.smarthouse.gui.controllers.main_system;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
+
 import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
 import il.ac.technion.cs.smarthouse.gui.controllers.applications.ApplicationViewController;
+import il.ac.technion.cs.smarthouse.gui.javafx_elements.LogConsole;
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
@@ -14,6 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -35,6 +39,7 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML VBox homeVBox;
     @FXML Pane dummyPaneLeft;
     @FXML Pane dummyPaneRight;
+    @FXML TextArea loggerView;
 
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent,
@@ -80,8 +85,12 @@ public class MainSystemGuiController extends SystemGuiController {
                                 "- View specific data collected from the sensors in your Smarthouse, using widgets (\"Dashboard\" tab).");
             }
 
-            if (m == SystemMode.DEVELOPER_MODE)
+            if (m == SystemMode.DEVELOPER_MODE){
                 tabs.getTabs().removeAll(userTab, sensorsTab);
+                setupLoggerView();
+                LogConsole.setLogConsole(loggerView);
+                ///TODO inbal Logger.getRootLogger().addAppender(LogConsole);
+            }
 
         } catch (final Exception ¢) {
             ¢.printStackTrace();
@@ -97,5 +106,11 @@ public class MainSystemGuiController extends SystemGuiController {
         Label label = new Label(description);
         label.setStyle("-fx-font: 20 System");
         homeVBox.getChildren().add(label);
+    }
+    
+    private void setupLoggerView(){
+        loggerView.setWrapText(true);
+        loggerView.appendText("Your Log will show here");
+        loggerView.setEditable(false);
     }
 }
