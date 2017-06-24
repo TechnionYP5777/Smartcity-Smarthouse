@@ -16,6 +16,8 @@ import il.ac.technion.cs.smarthouse.utils.Random;
  * @author Elia Traore
  * @since Jun 17, 2017
  */
+
+@SuppressWarnings("rawtypes")
 public class SensorBuilder {
 	private String sensorId;
 	private String commname, alias;
@@ -84,6 +86,7 @@ public class SensorBuilder {
 		return addPath(PathType.INSTRUCTION_RECEIVING, path, null);
 	}
 
+
 	//--------------------- interval setting -----------------------------
 	public SensorBuilder setPollingInterval(Long milliseconds) {
 		genericSensor.setPollingInterval(milliseconds);
@@ -111,7 +114,6 @@ public class SensorBuilder {
 	public SensorBuilder addInstructionsReceiveingLogger(Consumer<String> logger) {
 		return addLogger(PathType.INSTRUCTION_RECEIVING, logger);
 	}
-
 	
 	//--------------------- additional settings --------------------------
 	public SensorBuilder setInstructionHandler(InstructionHandler h) {

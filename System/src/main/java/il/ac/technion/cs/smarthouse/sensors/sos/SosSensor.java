@@ -20,6 +20,7 @@ public class SosSensor extends Sensor {
     }
 
     public void updateSystem() {
+
         super.updateSystem("sos" + PathBuilder.DELIMITER + "pressed", true);
     }
 

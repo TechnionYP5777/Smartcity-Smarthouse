@@ -136,4 +136,7 @@
          </children>
       </AnchorPane>
   </items>
+   <tooltip>
+      <Tooltip maxHeight="200.0" maxWidth="200.0" text="Fill personal details to register. Afterwards you can update phone number and home address and add emergency contacts" wrapText="true" />
+   </tooltip>
 </SplitPane>

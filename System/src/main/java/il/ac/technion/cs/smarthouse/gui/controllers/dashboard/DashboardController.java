@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -59,16 +60,14 @@ public class DashboardController extends SystemGuiController {
 		core.setWidgetRemover(this::removeWidget);
 
 		final Label plus = new Label("+");
-		plus.setFont(Font.font("Arial Black", FontWeight.EXTRA_BOLD, 70)); // font
-																			// fam:
-																			// Alegreya*
-																			// are
-																			// cute
-																			// too
+		plus.setFont(Font.font("Arial Black", FontWeight.EXTRA_BOLD, 70));
 		plus.setTextFill(Color.ANTIQUEWHITE);
 		addWidgetTile = TileBuilder.create().prefSize(TILE_SIZE, TILE_SIZE).skinType(SkinType.CUSTOM).graphic(plus)
 				// .roundedCorners(false)
 				.build();
+		Tooltip addTooltip = new Tooltip("Click to add a widget");
+		addTooltip.setStyle("-fx-font: System 12");
+		addWidgetTile.setTooltip(addTooltip);
 		addWidgetTile.setOnMouseClicked(e -> openConfigWindow());
 
 		pane.setBackground(new Background(new BackgroundFill(Tile.BACKGROUND.darker(), null, null)));
@@ -103,23 +102,23 @@ public class DashboardController extends SystemGuiController {
 		return id++ + "";
 	}
 
-	private String addWidget(final BasicWidget widget) {
+	private String addWidget(final BasicWidget w) {
 		final String wid = getId();
-		widget.getTile().setOnMouseClicked(e -> {
+		w.getTile().setOnMouseClicked(e -> {
 			if (e.getButton().equals(MouseButton.SECONDARY)) {
 				final MenuItem deleteOption = new MenuItem("Delete");
 				deleteOption.setOnAction(e1 -> removeWidget(wid));
 				final ContextMenu popup = new ContextMenu();
 				popup.getItems().add(deleteOption);
-				popup.show(widget.getTile(), e.getScreenX(), e.getScreenY());
+				popup.show(w.getTile(), e.getScreenX(), e.getScreenY());
 			}
 		});
-		widget.updateAutomaticallyFrom(filesystem);
-		widget.setSize(TILE_SIZE);
+		w.updateAutomaticallyFrom(filesystem);
+		w.setSize(TILE_SIZE);
 
-		currentWidgets.put(wid, widget);
-		pane.getChildren().add(pane.getChildren().indexOf(addWidgetTile), widget.getTile());
-		core.registerWidget(wid, widget);
+		currentWidgets.put(wid, w);
+		pane.getChildren().add(pane.getChildren().indexOf(addWidgetTile), w.getTile());
+		core.registerWidget(wid, w);
 
 		return incId();
 	}

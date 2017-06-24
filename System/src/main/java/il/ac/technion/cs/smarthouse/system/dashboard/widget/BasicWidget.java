@@ -11,6 +11,7 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
  * @author Elia Traore
  * @since Jun 2, 2017
  */
+@SuppressWarnings("rawtypes")
 public abstract class BasicWidget {
 
     protected final WidgetType type;

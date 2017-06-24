@@ -18,8 +18,8 @@ abstract class AbstractRegionBuilder {
         String fieldTitle;
         Node node;
 
-        AppBuilderItem(final String title, final Node node) {
-            this.fieldTitle = title;
+        AppBuilderItem(final String fieldTitle, final Node node) {
+            this.fieldTitle = fieldTitle;
             this.node = node;
         }
     }

@@ -27,6 +27,8 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.Supplier
  * @author Elia Traore
  * @since Jun 17, 2017
  */
+
+@SuppressWarnings("rawtypes")
 public class GenericSensor {
 	private static Logger log = LoggerFactory.getLogger(GenericSensor.class);
 

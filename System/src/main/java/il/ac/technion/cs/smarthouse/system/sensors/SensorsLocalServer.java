@@ -77,15 +77,15 @@ public class SensorsLocalServer implements Runnable {
             serverSockets.add(server);
 
             final byte[] buf = new byte[8];
-            for (final DatagramPacket packet = new DatagramPacket(buf, buf.length); true;)
-                try {
-                    server.receive(packet);
-                    server.send(new DatagramPacket(buf, buf.length, packet.getAddress(), packet.getPort()));
-                } catch (final SocketException e) {
-                    log.info("Server socket closed, Sensors' server at port " + port + " (UDP) is shutting down");
-                    return; // if we closed the sockets we want to shut off the
-                            // server
-                } catch (final IOException e) {}
+            for (final DatagramPacket packet = new DatagramPacket(buf, buf.length);;)
+				try {
+					server.receive(packet);
+					server.send(new DatagramPacket(buf, buf.length, packet.getAddress(), packet.getPort()));
+				} catch (final SocketException e) {
+					log.info("Server socket closed, Sensors' server at port " + port + " (UDP) is shutting down");
+					return;
+				} catch (final IOException e) {
+				}
         } catch (final SocketException e1) {
             log.warn("I/O error occurred when the socket was opened", e1);
         }

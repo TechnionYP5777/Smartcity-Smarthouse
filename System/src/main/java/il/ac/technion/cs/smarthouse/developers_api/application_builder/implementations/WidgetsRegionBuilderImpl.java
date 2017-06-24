@@ -23,20 +23,19 @@ import javafx.scene.layout.HBox;
  * @since 10-06-2017
  */
 public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implements WidgetsRegionBuilder {
-    private HBox widgetsHbox;
-    private Double tileSize = 150.0;
-    private DashboardCore core;
-    
-    public WidgetsRegionBuilderImpl() {
-        super.setTitle("Widgets");
-    }
+	private HBox widgetsHbox;
+	private Double tileSize = 150.0;
+	private DashboardCore core;
 
-    @Override
-    public WidgetsRegionBuilderImpl setTitle(String title) {
-        super.setTitle(title);
+	public WidgetsRegionBuilderImpl() {
+		super.setTitle("Widgets");
+	}
+	
+	public WidgetsRegionBuilderImpl setTitle(String title){
+    	super.setTitle(title);
         return this;
-    }
-
+	}
+	
     private void initWidgetPane(){
         widgetsHbox = new HBox();
         widgetsHbox.setSpacing(5);

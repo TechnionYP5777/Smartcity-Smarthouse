@@ -37,9 +37,9 @@ public class StoveSensorSimulator extends Application {
 		        .setAlias("Roy's awesome stove")
 				.addInfoSendingPath(onPath, Boolean.class)
 				.addInfoSendingPath(temperPath, Integer.class)
-				.addStreamingRange(onPath, Arrays.asList(true))
+				.addStreamingRange(onPath, Arrays.asList(true, false))
 				.addStreamingRange(temperPath, Arrays.asList(0, 140))
-				.setStreamInterval(TimeUnit.SECONDS.toMillis(1))
+				.setStreamInterval(1000L)//TimeUnit.SECONDS.toMillis(1))
 				.addInfoSendingLogger(logger)
 				.build();
 		stoveSensor.streamMessages();
@@ -51,13 +51,11 @@ public class StoveSensorSimulator extends Application {
 		box.setPadding(new Insets(20));
 		box.setSpacing(20.0);
 
-		startSensor(msg -> {
-			Platform.runLater(() -> {
-				box.getChildren().add(new Label(msg));
-				if (box.getChildren().size() > 50)
-					box.getChildren().remove(0);
-			});
-		});
+		startSensor(msg -> Platform.runLater(() -> {
+			box.getChildren().add(new Label(msg));
+			if (box.getChildren().size() > 50)
+				box.getChildren().remove(0);
+		}));
 
 		ScrollPane pane = new ScrollPane();
 		pane.setPrefSize(500, 500);
