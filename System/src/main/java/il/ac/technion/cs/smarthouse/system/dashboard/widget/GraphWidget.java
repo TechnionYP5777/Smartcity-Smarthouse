@@ -32,9 +32,12 @@ public class GraphWidget extends BasicWidget {
 
         builder.series(dataSeries.values().stream().map(s -> (XYChart.Series) s).collect(Collectors.toList()));
 
-        if (WidgetType.PROGRESS_LINE_GRAPH.equals(type))
-            builder.gradientStops(new Stop(0, Tile.GREEN), new Stop(0.5, Tile.YELLOW), new Stop(1.0, Tile.RED))
-                            .strokeWithGradient(true).unit(data.getUnit());
+        if (!WidgetType.PROGRESS_LINE_GRAPH.equals(type))
+            return;
+        builder.gradientStops(new Stop(0, Tile.GREEN), new Stop(0.5, Tile.YELLOW), new Stop(1.0, Tile.RED))
+                        .strokeWithGradient(true);
+        if (data.getUnit() != null)
+            builder.unit(data.getUnit());
     }
 
     @Override
