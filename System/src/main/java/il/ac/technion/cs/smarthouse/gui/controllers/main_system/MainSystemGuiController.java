@@ -42,8 +42,8 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML TextArea loggerView;
 
     @Override
-    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent,
-                    SystemMode m, URL location, ResourceBundle b) {
+    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
+                    URL location, ResourceBundle b) {
         try {
             // home tab:
             homeTab.setContent(homeTabHBox);
@@ -85,11 +85,10 @@ public class MainSystemGuiController extends SystemGuiController {
                                 "- View specific data collected from the sensors in your Smarthouse, using widgets (\"Dashboard\" tab).");
             }
 
-            if (m == SystemMode.DEVELOPER_MODE){
+            if (m == SystemMode.DEVELOPER_MODE) {
                 tabs.getTabs().removeAll(userTab, sensorsTab);
                 setupLoggerView();
                 LogConsole.setLogConsole(loggerView);
-                ///TODO inbal Logger.getRootLogger().addAppender(LogConsole);
             }
 
         } catch (final Exception ¢) {
@@ -107,8 +106,8 @@ public class MainSystemGuiController extends SystemGuiController {
         label.setStyle("-fx-font: 20 System");
         homeVBox.getChildren().add(label);
     }
-    
-    private void setupLoggerView(){
+
+    private void setupLoggerView() {
         loggerView.setWrapText(true);
         loggerView.appendText("Your Log will show here");
         loggerView.setEditable(false);

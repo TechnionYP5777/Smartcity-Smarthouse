@@ -73,7 +73,6 @@ public class CalculatorController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle b) {
-		// TODO ?
 	}
 
 }
