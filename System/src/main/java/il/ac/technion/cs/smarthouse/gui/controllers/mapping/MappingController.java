@@ -16,6 +16,7 @@ import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.mapping_information.MappingInformation;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorLocation;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -28,36 +29,27 @@ import javafx.scene.text.Font;
 
 public class MappingController extends SystemGuiController {
     private static Logger log = LoggerFactory.getLogger(MappingController.class);
-    private static final int ROOM_IN_ROW = 4;
-    private static final int MARGIN = 20;
-    private static final int HEIGHT = 150;
-    private static final int WIDTH = 160;
-    private List<String> allLocations = new ArrayList<>();
     private final Map<String, SensorInfoController> sensors = new HashMap<>();
     private final Map<String, List<String>> locationsContents = new HashMap<>();
     private final Map<String, String> sensorsLocations = new HashMap<>();
-    private final House house = new House();
-    private int roomNumbers;
-    int xPlusRoom;
-    int yPlusRoom;
 
+    MappingInformation mappingInformaton;
     @FXML private VBox sensorsPaneList;
     @FXML private Canvas canvas;
 
     void addRoom(String roomName) {
-        allLocations.add(roomName);
-        house.addRoom(new Room(MARGIN + (roomNumbers % ROOM_IN_ROW) * WIDTH,
-                        MARGIN + (roomNumbers / ROOM_IN_ROW) * HEIGHT, WIDTH, HEIGHT, roomName));
-        ++roomNumbers;
-        sensors.values().forEach(e->e.updateRooms());
+        mappingInformaton.addRoom(roomName);
+        sensors.values().forEach(e -> e.updateRooms());
         drawMapping();
     }
 
     @Override
-    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent,
-                    SystemMode m, URL location, ResourceBundle b) {
+    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
+                    URL location, ResourceBundle b) {
         log.debug("initialized the map gui");
-
+        
+        this.mappingInformaton = model.getHouse();
+        
         canvas.setWidth(2000);
         canvas.setHeight(2000);
 
@@ -69,7 +61,7 @@ public class MappingController extends SystemGuiController {
             log.debug("map gui was notified on (path,val)=(" + p + "," + l + ")");
             final String commname = FileSystemEntries.COMMERCIAL_NAME.getPartFromPath(p);
             final String id = FileSystemEntries.SENSOR_ID.getPartFromPath(p);
-            if (l != null && allLocations.contains(l) && !sensors.containsKey(id))
+            if (l != null && mappingInformaton.getAllLocations().contains(l) && !sensors.containsKey(id))
                 Platform.runLater(() -> {
                     try {
                         addSensor(id, commname);
@@ -110,7 +102,7 @@ public class MappingController extends SystemGuiController {
     }
 
     public List<String> getAlllocations() {
-        return allLocations;
+        return mappingInformaton.getAllLocations();
     }
 
     private void drawMapping() {
@@ -120,7 +112,7 @@ public class MappingController extends SystemGuiController {
         g.setFont(new Font(14.0));
         g.setStroke(Color.BLACK);
 
-        for (final Room room : house.getRooms()) {
+        for (final Room room : mappingInformaton.getHouse().getRooms()) {
             g.strokeRect(room.x, room.y, room.width, room.height);
             g.strokeLine(room.x, room.y + 20, room.x + room.width, room.y + 20);
             g.setFill(Color.BLACK);
@@ -135,18 +127,19 @@ public class MappingController extends SystemGuiController {
             }
         }
 
-        xPlusRoom = MARGIN + (roomNumbers % ROOM_IN_ROW) * WIDTH;
-        yPlusRoom = MARGIN + (roomNumbers / ROOM_IN_ROW) * HEIGHT;
-        g.strokeRect(xPlusRoom, yPlusRoom, WIDTH, HEIGHT);
+        int xPlusRoom = mappingInformaton.calcxPlusRoom();
+        int yPlusRoom = mappingInformaton.calcyPlusRoom();
+        g.strokeRect(xPlusRoom, yPlusRoom, MappingInformation.getWidth(), MappingInformation.getHeight());
         g.setFont(new Font(45.0));
-        g.fillText("+", xPlusRoom + 70, yPlusRoom + 75);
+        g.fillText("+", xPlusRoom + 65, yPlusRoom + 85);
         g.setFill(Color.BLUE);
-        g.setFont(new Font(14.0));
+        g.setFont(new Font(84.0));
         canvas.setOnMouseClicked(mouseEvent -> {
             double x = mouseEvent.getX();
             double y = mouseEvent.getY();
-            if (x > xPlusRoom && x < xPlusRoom + WIDTH && y > yPlusRoom && y < yPlusRoom + HEIGHT) {
-                final TextInputDialog dialog = new TextInputDialog("sensor name");
+            if (x > xPlusRoom && x < xPlusRoom + MappingInformation.getWidth() && y > yPlusRoom
+                            && y < yPlusRoom + MappingInformation.getHeight()) {
+                final TextInputDialog dialog = new TextInputDialog("rooms name");
                 dialog.setTitle("Create Room");
                 dialog.setHeaderText("Config your smarthouse");
                 dialog.setContentText("Please enter room name:");

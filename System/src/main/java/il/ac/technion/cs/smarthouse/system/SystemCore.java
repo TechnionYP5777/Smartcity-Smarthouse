@@ -11,6 +11,7 @@ import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
 import il.ac.technion.cs.smarthouse.system.database.SystemSaver;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
+import il.ac.technion.cs.smarthouse.system.mapping_information.MappingInformation;
 import il.ac.technion.cs.smarthouse.system.sensors.SensorsLocalServer;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
@@ -32,6 +33,7 @@ public class SystemCore implements Savable {
     public final SensorsLocalServer sensorsLocalServer = new SensorsLocalServer(fileSystem);
     private final DashboardCore dashboardCore = new DashboardCore(this);
     @Expose protected UserInformation user;
+    @Expose protected MappingInformation house = new MappingInformation();
     private boolean userInitialized;
 
     public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer, final boolean useLocalDatabase,
@@ -49,6 +51,10 @@ public class SystemCore implements Savable {
 
     public UserInformation getUser() {
         return user;
+    }
+    
+    public MappingInformation getHouse() {
+        return house;
     }
 
     public void initializeUser(final String name, final String id, final String phoneNumber, final String homeAddress) {
