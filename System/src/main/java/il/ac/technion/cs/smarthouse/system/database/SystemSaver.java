@@ -80,10 +80,10 @@ public class SystemSaver extends ChildCore {
 			if (d == null)
 				return false;
 			json2system(d.data);
-			log.info("Loaded system from the database cloud... Total time: " + t.getTimePassedMillis() + " [ms]");
+			log.info("\n\tLoaded system from the database cloud... Total time: " + t.getTimePassedMillis() + " [ms]");
 			return true;
 		} catch (Exception e) {
-			log.error("Cloud server problem", e);
+			log.error("\n\tCloud server problem", e);
 		}
 
 		return false;
@@ -95,9 +95,9 @@ public class SystemSaver extends ChildCore {
 				final TimeCounter t = new TimeCounter();
 				databaseManager.deleteInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath());
 				databaseManager.addInfo(FileSystemEntries.SYSTEM_DATA_IMAGE.buildPath(), system2json());
-				log.info("Saved system image to the cloud server... Total time: " + t.getTimePassedMillis() + " [ms]");
+				log.info("\n\tSaved system image to the cloud server... Total time: " + t.getTimePassedMillis() + " [ms]");
 			} catch (ParseException e) {
-				log.error("System image could not be saved on the cloud server... system is unchanged", e);
+				log.error("\n\tSystem image could not be saved on the cloud server... system is unchanged", e);
 			}
 	}
 
@@ -111,7 +111,7 @@ public class SystemSaver extends ChildCore {
 				json2system(data);
 				return true;
 			} catch (Exception e) {
-				log.error("Couldn't load data from local database... system is unchanged", e);
+				log.error("\n\tCouldn't load data from local database... system is unchanged", e);
 			}
 		return false;
 	}

@@ -47,7 +47,7 @@ public enum SystemFailureDetector {
         while (cause.getCause() != null)
             cause = cause.getCause();
 
-        final String errTxt = "Uncaught exception from thread [" + t.getName() + "]\nException: " + e.toString()
+        final String errTxt = "\n\tUncaught exception from thread [" + t.getName() + "]\nException: " + e.toString()
                         + "\nCause: " + cause.toString();
         log.error(errTxt, e);
         return errTxt;

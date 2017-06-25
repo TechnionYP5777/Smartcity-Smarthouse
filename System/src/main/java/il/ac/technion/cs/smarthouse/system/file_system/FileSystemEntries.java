@@ -135,7 +135,7 @@ public enum FileSystemEntries {
             else {
                 if (baseIdx >= baseSplited.size()) {
                     final RuntimeException r = new RuntimeException("Path (" + baseSplited + ") was not long enough");
-                    log.error("Error while building the path", r);
+                    log.error("\n\tError while building the path", r);
                     throw r;
                 }
                 l.add(baseSplited.get(baseIdx++));
@@ -148,10 +148,10 @@ public enum FileSystemEntries {
             
             switch (pathType) {
                 case SOFT_SUFFIX:
-                    log.warn("Warning while building the path", r);
+                    log.warn("\n\tWarning while building the path", r);
                     break;
                 case HARD_SUFFIX:
-                    log.error("Error while building the path", r);
+                    log.error("\n\tError while building the path", r);
                     throw r;
                 default:
                     break;

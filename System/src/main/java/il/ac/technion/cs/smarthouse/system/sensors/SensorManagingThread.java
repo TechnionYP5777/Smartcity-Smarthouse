@@ -37,7 +37,7 @@ public abstract class SensorManagingThread extends Thread {
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
         } catch (IOException | NullPointerException e) {
-            log.error("I/O error occurred during managing thread initializing", e);
+            log.error("\n\tI/O error occurred during managing thread initializing", e);
         }
         resources = Arrays.asList(in, out, client);
     }
@@ -69,7 +69,7 @@ public abstract class SensorManagingThread extends Thread {
                     } catch (final IllegalMessageBaseExecption e1) {}
                     continue;
                 }
-                // log.info("Received message: " + message + "\n");
+               
                 handleSensorMessage(message);
             }
         } catch (final IOException e) {} finally {

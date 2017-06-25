@@ -117,7 +117,7 @@ public class SystemPresenterFactory {
                 p.getSystemModel().getSystemApplicationsHandler()
                                 .addApplication(new ApplicationPath(PathType.CLASS_NAME, clsName));
             } catch (Exception e) {
-                log.error("Can't install the application " + clsName + " on the system", e);
+                log.error("\n\tCan't install the application " + clsName + " on the system", e);
             }
         });
 

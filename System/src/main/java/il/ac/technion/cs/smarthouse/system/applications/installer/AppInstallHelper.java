@@ -78,10 +78,10 @@ public class AppInstallHelper {
         try {
             return (SmarthouseApplication) $.get(0).newInstance();
         } catch (final InstantiationException ¢) {
-            log.error("Instantiation error occured", ¢);
+            log.error("\n\tInstantiation error occured", ¢);
             throw new AppInstallerException(AppInstallerException.ErrorCode.INSTANTIATION_ERROR, ¢.getMessage());
         } catch (final IllegalAccessException ¢) {
-            log.error("Illegal access occured", ¢);
+            log.error("\n\tIllegal access occured", ¢);
             throw new AppInstallerException(AppInstallerException.ErrorCode.ILLEGAL_ACCESS_ERROR, ¢.getMessage());
         }
     }
@@ -114,7 +114,7 @@ public class AppInstallHelper {
             try {
                 $.add(l.loadClass(className));
             } catch (final ClassNotFoundException e1) {
-                log.error("Class was not found", e1);
+                log.error("\n\tClass was not found", e1);
             }
         return $;
     }

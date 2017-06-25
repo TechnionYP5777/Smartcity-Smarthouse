@@ -64,7 +64,7 @@ public class DatabaseManager implements DatabaseAPI {
                 serverManager.deleteById(parseClass, iterator.getObjectId());
 
         } catch (final ParseException e) {
-            log.error("No matching object was found on the server", e);
+            log.error("\n\tNo matching object was found on the server", e);
         }
 
     }
@@ -83,7 +83,7 @@ public class DatabaseManager implements DatabaseAPI {
                 serverManager.deleteById(parseClass, iterator.getObjectId());
 
         } catch (final ParseException e) {
-            log.error("No matching object was found on the server", e);
+            log.error("\n\tNo matching object was found on the server", e);
         }
 
     }
@@ -103,7 +103,7 @@ public class DatabaseManager implements DatabaseAPI {
 
             }
         } catch (final ParseException e) {
-            log.error("A Parse exception has occured", e);
+            log.error("\n\tA Parse exception has occured", e);
         }
         return new DataEntry("", null);
 

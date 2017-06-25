@@ -106,7 +106,7 @@ public class SystemPresenter {
         public void start(Stage primaryStage) throws Exception {
             getMode();
 
-            log.info("Initializing system ui in " + model.getSystemMode() + "...");
+            log.info("\n\tInitializing system ui in " + model.getSystemMode() + "...");
 
             viewController = SystemGuiController.createRootController(APP_ROOT_FXML, model);
             viewPrimaryStage = primaryStage;
@@ -121,7 +121,7 @@ public class SystemPresenter {
             primaryStage.setScene(scene);
 
             primaryStage.setOnCloseRequest(e -> {
-                log.info("System ui closing...");
+                log.info("\n\tSystem ui closing...");
                 viewOnCloseListeners.forEach(a -> a.run());
             });
 
@@ -132,7 +132,7 @@ public class SystemPresenter {
             if (!showModePopup)
                 return;
 
-            log.info("Asking for mode...");
+            log.info("\n\tAsking for mode...");
 
             ButtonType userType = new ButtonType("User Mode"), devType = new ButtonType("Developer Mode");
             Alert alert = new Alert(AlertType.INFORMATION, "Please select a mode:", userType, devType);

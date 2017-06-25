@@ -163,7 +163,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 				}
 		} catch (InstantiationException | IllegalArgumentException | IllegalAccessException | SecurityException
 				| InvocationTargetException | NoSuchMethodException e) {
-			log.error("SensorApi's OnSensorMsgRecived subscriber has failed! - commercialName: \"" + getCommercialName()
+			log.error("\n\tSensorApi's OnSensorMsgRecived subscriber has failed! - commercialName: \"" + getCommercialName()
 					+ "\" | sensorId: \"" + sensorId + "\"", e);
 			return null;
 		}
@@ -348,7 +348,7 @@ final class SensorApiImpl<T extends SensorData> implements SensorApi<T> {
 	public void reselectSensorByAlias(String alias) {
 		if (alias == null)
 			return;
-		log.info("SensorApi: reselectSensorByAlias: " + alias);
+		log.info("\n\tSensorApi: reselectSensorByAlias: " + alias);
 		functionsToRunOnTime.values().forEach(TimedListener::kill);
 		disconnectSensor();
 		searchForSensorId(alias);

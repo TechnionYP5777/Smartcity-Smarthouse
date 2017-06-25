@@ -36,7 +36,7 @@ public class SystemCore implements Savable {
 
     public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer,
                     final boolean useLocalDatabase, final boolean initRegularListeners) {
-        log.info("Initializing system components...");
+        log.info("\n\tInitializing system components...");
 
         systemSaver.init(useCloudServer, useLocalDatabase, true);
         systemSaver.loadSystem();

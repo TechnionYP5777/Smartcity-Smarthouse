@@ -74,7 +74,7 @@ public class MappingController extends SystemGuiController {
                     try {
                         addSensor(id, commname);
                     } catch (final Exception e) {
-                        log.warn("failed to add sensor: " + id + " (received path " + p
+                        log.warn("\n\tfailed to add sensor: " + id + " (received path " + p
                                         + ") to GuiMapping.\nGot execption" + e);
                     }
                 });
