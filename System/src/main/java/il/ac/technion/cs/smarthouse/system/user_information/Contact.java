@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.user_information;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * This class saves information about a contact and implements the required API
  * for the system
@@ -10,10 +12,10 @@ package il.ac.technion.cs.smarthouse.system.user_information;
 
 public class Contact {
 
-    private final String id;
-    private final String name;
-    private String phoneNumber;
-    private String emailAddress;
+    @Expose private final String id;
+    @Expose private final String name;
+    @Expose private String phoneNumber;
+    @Expose private String emailAddress;
 
     public Contact(final String id, final String name, final String phoneNumber, final String emailAddress) {
         this.id = id;

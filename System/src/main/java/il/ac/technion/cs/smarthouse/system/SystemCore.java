@@ -1,5 +1,9 @@
 package il.ac.technion.cs.smarthouse.system;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +37,10 @@ public class SystemCore implements Savable {
     public final SensorsLocalServer sensorsLocalServer = new SensorsLocalServer(fileSystem);
     private final DashboardCore dashboardCore = new DashboardCore(this);
     @Expose protected UserInformation user;
-    @Expose protected MappingInformation house = new MappingInformation();
-    private boolean userInitialized;
+    @Expose protected MappingInformation house;
+    private List<Consumer<UserInformation>> userInformationSubs = new ArrayList<>();
+    private List<Consumer<MappingInformation>> mappingInformationSubs = new ArrayList<>();
+    @Expose private boolean userInitialized;
 
     public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer,
                     final boolean useLocalDatabase, final boolean initRegularListeners) {
@@ -48,15 +54,27 @@ public class SystemCore implements Savable {
         if (useSensorsServer)
             new Thread(sensorsLocalServer).start();
     }
-
+    
     public UserInformation getUser() {
         return user;
     }
     
     public MappingInformation getHouse() {
+        if(house == null)
+            house = new MappingInformation();
         return house;
     }
-
+    
+    public SystemCore subscribeToUserInformation(Consumer<UserInformation> c){
+        this.userInformationSubs.add(c);
+        return this;
+    }
+    
+    public SystemCore subscribeToMappingInformation(Consumer<MappingInformation> c){
+        this.mappingInformationSubs.add(c);
+        return this;
+    }
+    
     public void initializeUser(final String name, final String id, final String phoneNumber, final String homeAddress) {
         user = new UserInformation(name, id, phoneNumber, homeAddress);
         userInitialized = true;
@@ -99,5 +117,14 @@ public class SystemCore implements Savable {
 
     public void initFileSystemListeners() {
         // TODO: add some listeners here
+    }
+    
+    @Override
+    public void populate(String jsonString) throws Exception {
+        // TODO Auto-generated method stub
+        Savable.super.populate(jsonString);
+        if(userInitialized)
+            userInformationSubs.forEach(c -> c.accept(user));
+        mappingInformationSubs.forEach(c -> c.accept(house));
     }
 }

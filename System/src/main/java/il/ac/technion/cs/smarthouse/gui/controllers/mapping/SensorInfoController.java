@@ -46,6 +46,11 @@ public class SensorInfoController extends SystemGuiController {
         return this;
     }
     
+    public SensorInfoController setLocation(final String r) {
+        room.getSelectionModel().select(r);
+        return this;
+    }
+    
     public SensorInfoController setMapController(final MappingController controller){
         mapController = controller;
         room.getItems().setAll(mapController.getAlllocations());

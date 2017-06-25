@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,6 @@ import javafx.scene.text.Font;
 public class MappingController extends SystemGuiController {
     private static Logger log = LoggerFactory.getLogger(MappingController.class);
     private final Map<String, SensorInfoController> sensors = new HashMap<>();
-    private final Map<String, List<String>> locationsContents = new HashMap<>();
-    private final Map<String, String> sensorsLocations = new HashMap<>();
 
     MappingInformation mappingInformaton;
     @FXML private VBox sensorsPaneList;
@@ -48,6 +47,11 @@ public class MappingController extends SystemGuiController {
                     URL location, ResourceBundle b) {
         log.debug("initialized the map gui");
         
+        Consumer<MappingInformation> c = x -> {
+            this.mappingInformaton = x;
+            drawMapping();
+        };
+        model.subscribeToMappingInformation(c);
         this.mappingInformaton = model.getHouse();
         
         canvas.setWidth(2000);
@@ -81,21 +85,24 @@ public class MappingController extends SystemGuiController {
             return;
         final SensorInfoController controller = createChildController("sensor_info.fxml");
         sensorsPaneList.getChildren().add(controller.getRootViewNode());
+        
+        if(mappingInformaton.getSensorsLocations().containsKey(id))
+            controller.setLocation(mappingInformaton.getSensorsLocations().get(id));
 
         controller.setId(id).setName(commName).setMapController(this);
         sensors.put(id, controller);
     }
 
     public void updateSensorLocation(final String id, final String l) {
-        if (sensorsLocations.containsKey(id) && locationsContents.containsKey(sensorsLocations.get(id)))
-            locationsContents.get(sensorsLocations.get(id)).remove(id);
+        if (mappingInformaton.getSensorsLocations().containsKey(id) && mappingInformaton.getLocationsContents().containsKey(mappingInformaton.getSensorsLocations().get(id)))
+            mappingInformaton.getLocationsContents().get(mappingInformaton.getSensorsLocations().get(id)).remove(id);
 
-        sensorsLocations.put(id, l);
+        mappingInformaton.getSensorsLocations().put(id, l);
 
-        if (!locationsContents.containsKey(l))
-            locationsContents.put(l, new ArrayList<>());
+        if (!mappingInformaton.getLocationsContents().containsKey(l))
+            mappingInformaton.getLocationsContents().put(l, new ArrayList<>());
 
-        locationsContents.get(l).add(id);
+        mappingInformaton.getLocationsContents().get(l).add(id);
 
         drawMapping();
 
@@ -117,10 +124,10 @@ public class MappingController extends SystemGuiController {
             g.strokeLine(room.x, room.y + 20, room.x + room.width, room.y + 20);
             g.setFill(Color.BLACK);
             g.fillText(room.location, room.x + 4, room.y + 15);
-            if (locationsContents.containsKey(room.location)) {
+            if (mappingInformaton.getLocationsContents().containsKey(room.location)) {
                 int dy = 20;
 
-                for (final String id : locationsContents.get(room.location)) {
+                for (final String id : mappingInformaton.getLocationsContents().get(room.location)) {
                     g.fillText(" (" + id + ")", room.x + 10, room.y + dy + 20);
                     dy += 20;
                 }

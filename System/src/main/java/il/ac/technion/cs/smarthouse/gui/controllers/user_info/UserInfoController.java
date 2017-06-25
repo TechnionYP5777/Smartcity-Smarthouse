@@ -1,7 +1,9 @@
 package il.ac.technion.cs.smarthouse.gui.controllers.user_info;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
@@ -377,6 +379,19 @@ public class UserInfoController extends SystemGuiController {
 		setContactListeners();
 		setCellsFactories();
 		costumizeContactsTab();
+		
+		Consumer<UserInformation> c = x ->{
+		    userNameField.setText(x.getName());
+            userIDField.setText(x.getId());
+		    userPhoneNumField.setText(x.getPhoneNumber());
+            userHomeAddressField.setText(x.getHomeAddress());
+		    userNameField.setEditable(false);
+            userIDField.setEditable(false);
+            Map<Contact,EmergencyLevel> contacts = x.getContactsWithElevel();
+            contacts.keySet().forEach(y->contactsTable.getItems().add(new ContactGUI(y, contacts.get(y))));
+		};
+		
+		model.subscribeToUserInformation(c);
 	}
 
 }
