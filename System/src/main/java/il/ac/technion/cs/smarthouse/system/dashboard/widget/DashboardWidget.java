@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.dashboard.widget;
 
+import java.util.Optional;
+
 import eu.hansolo.medusa.Gauge;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
@@ -13,10 +15,12 @@ public class DashboardWidget extends BasicWidget {
     public DashboardWidget(final WidgetType t, final Double tileSize, final InfoCollector data) {
         super(t, tileSize, data);
 
-        if (WidgetType.BASIC_DASHBOARD.equals(type))
-            builder.unit(data.getUnit());// .threshold(75.0);
-        if (WidgetType.NEEDLE_DASHBOARD.equals(type))
-            ((Gauge) getTile().getGraphic()).setUnit(data.getUnit());
+        Optional.ofNullable(data.getUnit()).ifPresent(u -> {
+            if (WidgetType.BASIC_DASHBOARD.equals(type))
+                builder.unit(u);// .threshold(75.0);
+            if (WidgetType.NEEDLE_DASHBOARD.equals(type))
+                ((Gauge) getTile().getGraphic()).setUnit(u);
+        });
     }
 
     @Override
