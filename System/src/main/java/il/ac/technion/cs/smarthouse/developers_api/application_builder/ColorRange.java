@@ -20,26 +20,24 @@ public class ColorRange<T extends Comparable<T>> {
         private final GuiBinderObject<T> dataObject;
         final Color color;
 
-        ColorAndValue(final GuiBinderObject<T> dataObject, final Color c) {
+        ColorAndValue(final GuiBinderObject<T> dataObject, final Color color) {
             assert dataObject != null;
             this.isRegularValue = false;
             this.value = null;
             this.dataObject = dataObject;
-            this.color = c;
+            this.color = color;
         }
 
-        ColorAndValue(final T value, final Color c) {
+        ColorAndValue(final T value, final Color color) {
             this.isRegularValue = true;
             this.value = value;
             this.dataObject = null;
-            this.color = c;
+            this.color = color;
         }
 
         T getValue() {
-            if (isRegularValue)
-                return value;
-            return dataObject.getData();
-        }
+			return isRegularValue ? value : dataObject.getData();
+		}
     }
 
     Color defaultColor = Color.BLACK;
@@ -78,20 +76,16 @@ public class ColorRange<T extends Comparable<T>> {
     }
 
     public Color getColorOfValue(T value) {
-        if (value == null)
-            return defaultColor;
-
-        for (ColorAndValue colorAndValue : ifEqualsList)
-            if (value.equals(colorAndValue.getValue()))
-                return colorAndValue.color;
-
-        ColorAndValue choosenCv = null;
-        for (ColorAndValue colorAndValue : rangeList)
-            if (value.compareTo(colorAndValue.getValue()) >= 0 && (choosenCv == null || choosenCv.getValue().compareTo(colorAndValue.getValue()) < 0))
-                choosenCv = colorAndValue;
-        
-        if (choosenCv != null)
-            return choosenCv.color;
-        return defaultColor;
-    }
+		if (value == null)
+			return defaultColor;
+		for (ColorAndValue colorAndValue : ifEqualsList)
+			if (value.equals(colorAndValue.getValue()))
+				return colorAndValue.color;
+		ColorAndValue choosenCv = null;
+		for (ColorAndValue colorAndValue : rangeList)
+			if (value.compareTo(colorAndValue.getValue()) >= 0
+					&& (choosenCv == null || choosenCv.getValue().compareTo(colorAndValue.getValue()) < 0))
+				choosenCv = colorAndValue;
+		return choosenCv == null ? defaultColor : choosenCv.color;
+	}
 }

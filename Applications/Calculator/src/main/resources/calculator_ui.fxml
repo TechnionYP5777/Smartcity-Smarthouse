@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<TitledPane text="Calculator" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.applications.calculator.CalculatorController">
+   <content>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="226.0" prefWidth="230.0">
+         <children>
+            <Button layoutX="32.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="1" />
+            <Button layoutX="67.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="2" />
+            <Button layoutX="101.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="3" />
+            <Button layoutX="32.0" layoutY="114.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="4" />
+            <Button layoutX="67.0" layoutY="114.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="5" />
+            <Button layoutX="101.0" layoutY="114.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="6" />
+            <Button layoutX="32.0" layoutY="77.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="7" />
+            <Button layoutX="67.0" layoutY="77.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="8" />
+            <Button layoutX="101.0" layoutY="77.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="9" />
+            <TextField fx:id="display" alignment="BOTTOM_RIGHT" editable="false" layoutX="27.0" layoutY="23.0" prefHeight="35.0" prefWidth="178.0" styleClass="display" text="0">
+               <font>
+                  <Font name="Lucida Console" size="20.0" />
+               </font>
+            </TextField>
+            <Button layoutX="32.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="C" />
+            <Button layoutX="152.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="23.0" prefWidth="47.0" text="=" />
+            <Button layoutX="142.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="＋" />
+            <Button layoutX="67.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="0" />
+            <Button layoutX="179.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="－" />
+            <Button layoutX="179.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="27.0" prefWidth="32.0" styleClass="background" text="×" />
+            <Button layoutX="144.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="27.0" prefWidth="29.0" styleClass="background" text="÷" />
+            <Button layoutX="104.0" layoutY="186.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="." />
+         </children>
+      </AnchorPane>
+   </content>
+   <font>
+      <Font size="14.0" />
+   </font>
+</TitledPane>

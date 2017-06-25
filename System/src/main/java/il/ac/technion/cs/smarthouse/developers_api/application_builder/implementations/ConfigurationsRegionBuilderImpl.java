@@ -94,10 +94,7 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
             cBox.getItems().clear();
             cBox.getItems().addAll(sensorApiObject.getAllAliases());
             if (!cBox.getItems().isEmpty())
-                if (cBox.getItems().contains(currValue))
-                    cBox.setValue(currValue);
-                else
-                    cBox.setValue(cBox.getItems().get(0));
+				cBox.setValue(cBox.getItems().contains(currValue) ? currValue : cBox.getItems().get(0));
         });
         return this;
     }

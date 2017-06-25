@@ -48,8 +48,8 @@ public class DashboardCore extends ChildCore {
 
             widget.getTile().setOnMouseClicked(e -> {
                 if (e.getButton().equals(MouseButton.SECONDARY)) {
-                    final MenuItem addOpt = new MenuItem("Add to Dashboard");
-                    final MenuItem removeOpt = new MenuItem("Remove from Dashboard");
+                    final MenuItem addOpt = new MenuItem("Add to Dashboard"),
+							removeOpt = new MenuItem("Remove from Dashboard");
                     addOpt.setOnAction(e1 -> addToDashboard());
                     removeOpt.setOnAction(e1 -> removeFromDashboard());
                     final ContextMenu popup = new ContextMenu();
@@ -108,10 +108,10 @@ public class DashboardCore extends ChildCore {
     // -------------------front-end setters------------------------------------
     public void setWidgetPresenter(final Function<BasicWidget, String> presenter) {
         widgetPresenter = presenter;
-        if(Boolean.TRUE.equals(waitingToBePresented)){
-            widgetsInfo.values().forEach(winfo -> winfo.getRepresentedWidget().addToDashboard());
-            waitingToBePresented = false;
-        }
+        if (!Boolean.TRUE.equals(waitingToBePresented))
+			return;
+		widgetsInfo.values().forEach(winfo -> winfo.getRepresentedWidget().addToDashboard());
+		waitingToBePresented = false;
     }
 
     public void setWidgetRemover(final Consumer<String> remover) {

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import eu.hansolo.tilesfx.Tile;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
+import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Stop;
 
@@ -20,7 +21,7 @@ public class GraphWidget extends BasicWidget {
     private final Map<String, XYChart.Series<String, Number>> dataSeries = new HashMap<>();
     private int points;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public GraphWidget(final WidgetType t, final Double tileSize, final InfoCollector data) {
         super(t, tileSize, data);
 
@@ -31,9 +32,12 @@ public class GraphWidget extends BasicWidget {
 
         builder.series(dataSeries.values().stream().map(s -> (XYChart.Series) s).collect(Collectors.toList()));
 
-        if (WidgetType.PROGRESS_LINE_GRAPH.equals(type))
-            builder.gradientStops(new Stop(0, Tile.GREEN), new Stop(0.5, Tile.YELLOW), new Stop(1.0, Tile.RED))
-                            .strokeWithGradient(true).unit(data.getUnit());
+        if (!WidgetType.PROGRESS_LINE_GRAPH.equals(type))
+            return;
+        builder.gradientStops(new Stop(0, Tile.GREEN), new Stop(0.5, Tile.YELLOW), new Stop(1.0, Tile.RED))
+                        .strokeWithGradient(true);
+        if (data.getUnit() != null)
+            builder.unit(data.getUnit());
     }
 
     @Override
@@ -47,12 +51,14 @@ public class GraphWidget extends BasicWidget {
             super.update(value, key);
         if (!dataSeries.containsKey(key))
             return;
-        final Integer maxDataSize = 30;
-        if (points > maxDataSize)
-            dataSeries.get(key).getData().remove(0);
+        Platform.runLater(() -> {
+            final Integer maxDataSize = 30;
+            if (points > maxDataSize)
+                dataSeries.get(key).getData().remove(0);
 
-        dataSeries.get(key).getData().add(new XYChart.Data<>(points + "", value));
-        ++points;
+            dataSeries.get(key).getData().add(new XYChart.Data<>(points + "", value));
+            ++points;
+        });
     }
 
     public Set<String> getUpdateKeys() {

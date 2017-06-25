@@ -21,6 +21,8 @@ import il.ac.technion.cs.smarthouse.system.dashboard.widget.DashboardWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.GraphWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.ListWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.PrecenetageWidget;
+import il.ac.technion.cs.smarthouse.system.dashboard.widget.SwitchWidget;
+import il.ac.technion.cs.smarthouse.system.dashboard.widget.TextWidget;
 
 /**
  * @author Elia Traore
@@ -40,16 +42,15 @@ public enum WidgetType {
     LEAD_CHART(ListWidget.class, SkinType.LEADER_BOARD),
 
     PROGRESS_LINE_GRAPH(GraphWidget.class, SkinType.SPARK_LINE),
-    AREA_GRAPH(GraphWidget.class, SkinType.AREA_CHART), // todo: document,
-                                                        // error-prone:
-                                                        // recommanded for
-                                                        // sensors with slow
-                                                        // send rate
-    LINES_GRAPH(GraphWidget.class, SkinType.LINE_CHART);// todo: document,
-                                                        // error-prone:
-                                                        // recommanded for
-                                                        // sensors with slow
-                                                        // send rate
+
+    // TODO: document, error-prone: recommended for sensors with slow send rate
+    AREA_GRAPH(GraphWidget.class, SkinType.AREA_CHART),
+
+    // TODO: document, error-prone: recommended for sensors with slow send rate
+    LINES_GRAPH(GraphWidget.class, SkinType.LINE_CHART),
+
+    SWITCH(SwitchWidget.class, SkinType.SWITCH),
+    TEXT(TextWidget.class, SkinType.CUSTOM);
 
     private static Logger log = LoggerFactory.getLogger(WidgetType.class);
 
@@ -90,6 +91,9 @@ public enum WidgetType {
                 break;
             case NEEDLE_DASHBOARD:
                 builder.graphic(createGauge(Gauge.SkinType.INDICATOR, TILE_SIZE));
+                break;
+            case TEXT:
+                builder.text("path");
                 break;
             default:
 

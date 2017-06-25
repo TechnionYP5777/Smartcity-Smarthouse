@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
  * @author Elia Traore
  * @since Jun 3, 2017
  */
+@SuppressWarnings("rawtypes")
 public class ListWidget extends BasicWidget {
     
     private static final List<Color> colors = Arrays.asList(Tile.BLUE, Tile.GREEN, Tile.MAGENTA, Tile.ORANGE, Tile.RED,

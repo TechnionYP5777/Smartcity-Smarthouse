@@ -11,35 +11,38 @@ import com.google.gson.annotations.Expose;
  */
 public class InfoCollector {
 
-    private @Expose String unit, title;
-    private @Expose Map<String, String> entries = new HashMap<>();
+	@Expose
+	private String unit, title;
+	@Expose
+	private Map<String, String> entries = new HashMap<>();
 
-    public InfoCollector addInfoEntry(final String path, final String name) {
-        entries.put(path, name);
-        return this;
-    }
+	public InfoCollector addInfoEntry(final String path, final String name) {
+		entries.put(path, name);
+		return this;
+	}
 
-    public InfoCollector setUnit(final String u) {
-        unit = u;
-        return this;
-    }
+	public InfoCollector setUnit(final String u) {
+		unit = u;
+		return this;
+	}
 
-    public InfoCollector setTitle(final String title){
-        this.title = title;
-        return this;
-    }
-    /**
-     * @return a map where the key is a given path and the values are names
-     */
-    public Map<String, String> getInfoEntries() {
-        return new HashMap<>(entries);
-    }
+	public InfoCollector setTitle(final String title) {
+		this.title = title;
+		return this;
+	}
 
-    public String getUnit() {
-        return unit;
-    }
+	/**
+	 * @return a map where the key is a given path and the values are names
+	 */
+	public Map<String, String> getInfoEntries() {
+		return new HashMap<>(entries);
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getUnit() {
+		return unit;
+	}
+
+	public String getTitle() {
+		return title;
+	}
 }

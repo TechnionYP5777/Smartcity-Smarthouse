@@ -12,46 +12,37 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.7" prefHeight="400.0"
-	prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.mapping.MappingController">
+<SplitPane dividerPositions="0.7" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.mapping.MappingController">
 	<items>
-		<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0"
-			prefWidth="100.0">
+		<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
 			<children>
-				<TitledPane collapsible="false" prefHeight="200.0"
-					prefWidth="200.0" text="House Mapping" AnchorPane.bottomAnchor="0.0"
-					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-					AnchorPane.topAnchor="0.0">
+				<TitledPane collapsible="false" prefHeight="200.0" prefWidth="200.0" text="House Mapping" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<content>
 						<Pane>
 							<children>
-								<Canvas fx:id="canvas" AnchorPane.bottomAnchor="0.0"
-									AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0"
-									AnchorPane.topAnchor="0.0" />
+								<Canvas fx:id="canvas" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0" />
 							</children>
 						</Pane>
 					</content>
+               <tooltip>
+                  <Tooltip text="Click the + to add a new room" wrapText="true" />
+               </tooltip>
 				</TitledPane>
 			</children>
 		</AnchorPane>
-		<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0"
-			prefWidth="100.0" SplitPane.resizableWithParent="false">
+		<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
 			<children>
-				<TitledPane collapsible="false" prefHeight="200.0"
-					prefWidth="200.0" text="Sensors" AnchorPane.bottomAnchor="0.0"
-					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-					AnchorPane.topAnchor="0.0">
+				<TitledPane collapsible="false" prefHeight="200.0" prefWidth="200.0" text="Sensors" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<content>
-						<ScrollPane fitToWidth="true" prefHeight="200.0"
-							prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-							AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-							AnchorPane.topAnchor="0.0">
+						<ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 							<content>
 								<VBox fx:id="sensorsPaneList" />
 							</content>
 						</ScrollPane>
 					</content>
+               <tooltip>
+                  <Tooltip maxHeight="100.0" maxWidth="200.0" text="You can add a sensor to an existing room by changing its location" wrapText="true" />
+               </tooltip>
 				</TitledPane>
 			</children>
 		</AnchorPane>

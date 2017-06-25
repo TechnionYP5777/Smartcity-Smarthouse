@@ -19,39 +19,43 @@ import javafx.scene.paint.Color;
 
 public class StoveModuleGui extends SmarthouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
-    
+
     private Boolean alertCalled = true;
-   
-    
+
     public static void main(String[] args) throws Exception {
         launch(StoveSensorSimulator.class);
     }
 
-    @Override public void onLoad() throws Exception {
+    @Override
+    public void onLoad() throws Exception {
         final GuiBinderObject<Double> alertAfterSecs = new GuiBinderObject<>(15.0);
         final GuiBinderObject<Integer> alertAboveDegs = new GuiBinderObject<>(120);
         final GuiBinderObject<Integer> temps = new GuiBinderObject<>(0);
         final GuiBinderObject<Boolean> isStoveOn = new GuiBinderObject<>(false);
         final GuiBinderObject<Double> timer = new GuiBinderObject<>();
-        
-        getAppBuilder().getConfigurationsRegionBuilder()
-            .addDoubleInputField("Alert after (seconds):", alertAfterSecs)
-            .addIntegerInputField("Alert at (degrees celsius):", alertAboveDegs);
-        
-        getAppBuilder().getStatusRegionBuilder()
-            .addStatusField("Current tempeture:", temps, new ColorRange<Integer>().addRange(alertAboveDegs, Color.RED))
-            .addTimerStatusField("Stove running timer:", isStoveOn, timer, new ColorRange<Double>().addRange(alertAfterSecs, Color.RED));
 
-        super.<SensorsService>getService(ServiceType.SENSORS_SERVICE).getSensor("iStoves", StoveSensor.class).subscribe(stove -> {
-            final String t = "Stove is " + (stove.isOn() ? "" : "Not ") + "On at " + stove.getTemperture() + " degrees";
-            isStoveOn.setData(stove.isOn());
-            temps.setData(!stove.isOn() ? 0 : stove.getTemperture());
-            log.debug("App msg (from function subscibed to stove sensor): " + t + " | Sensor is located at: " + stove.getSensorLocation());
-        });
-        
-        Runnable c = ()->{
-            synchronized(alertCalled){
-                
+        getAppBuilder().getConfigurationsRegionBuilder().addDoubleInputField("Alert after (seconds):", alertAfterSecs)
+                        .addIntegerInputField("Alert at (degrees celsius):", alertAboveDegs);
+
+        getAppBuilder().getStatusRegionBuilder()
+                        .addStatusField("Current temperature:", temps,
+                                        new ColorRange<Integer>().addRange(alertAboveDegs, Color.RED))
+                        .addTimerStatusField("Stove running timer:", isStoveOn, timer,
+                                        new ColorRange<Double>().addRange(alertAfterSecs, Color.RED));
+
+        super.<SensorsService>getService(ServiceType.SENSORS_SERVICE).getSensor("iStoves", StoveSensor.class)
+                        .subscribe(stove -> {
+                            final String t = "Stove is " + (stove.isOn() ? "" : "Not ") + "On at "
+                                            + stove.getTemperture() + " degrees";
+                            isStoveOn.setData(stove.isOn());
+                            temps.setData(!stove.isOn() ? 0 : stove.getTemperture());
+                            log.debug("App msg (from function subscibed to stove sensor): " + t
+                                            + " | Sensor is located at: " + stove.getSensorLocation());
+                        });
+
+        Runnable c = () -> {
+            synchronized (alertCalled) {
+
                 if (timer.getData(0.0) <= alertAfterSecs.getData(0.0) || temps.getData(0) <= alertAboveDegs.getData(0))
                     alertCalled = false;
                 else if (!alertCalled) {
@@ -61,28 +65,29 @@ public class StoveModuleGui extends SmarthouseApplication {
                 }
             }
         };
-        
+
         timer.addOnDataChangedListener(c);
         temps.addOnDataChangedListener(c);
-        
+
         getAppBuilder().getWidgetsRegionBuilder()
-                        .addWidget(WidgetType.BASIC_DASHBOARD, 
-                                   new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
-                        .addWidget(WidgetType.PROGRESS_LINE_GRAPH, 
-                                    new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
-                        .addWidget(WidgetType.BASIC_DASHBOARD, 
+                        .addWidget(WidgetType.BASIC_DASHBOARD,
+                                        new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
+                        .addWidget(WidgetType.LINES_GRAPH,
+                                        new InfoCollector().setUnit("C").addInfoEntry("stove.temperature", "temper"))
+                        .addWidget(WidgetType.BASIC_DASHBOARD,
                                         new InfoCollector().setUnit("Boolean").addInfoEntry("stove.is_on", "isOn"));
 
     }
 
-    @Override public String getApplicationName() {
+    @Override
+    public String getApplicationName() {
         return "Stove Application";
     }
-    
+
     public static class StoveSensor extends SensorData {
         @SystemPath("stove.is_on")
         private boolean on;
-        
+
         @SystemPath("stove.temperature")
         private int temperature;
 
@@ -95,4 +100,3 @@ public class StoveModuleGui extends SmarthouseApplication {
         }
     }
 }
-

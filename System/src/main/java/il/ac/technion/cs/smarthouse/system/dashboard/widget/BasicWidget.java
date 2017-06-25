@@ -11,6 +11,7 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
  * @author Elia Traore
  * @since Jun 2, 2017
  */
+@SuppressWarnings("rawtypes")
 public abstract class BasicWidget {
 
     protected final WidgetType type;
@@ -32,8 +33,8 @@ public abstract class BasicWidget {
         data.getInfoEntries().keySet().forEach(path -> updateAutomaticallyFrom(s, path));
     }
 
-    protected Double cast(final Object data) {
-        final String sdata = (String) data;
+    protected Double cast(final Object dataObj) {
+        final String sdata = (String) dataObj;
         try {
             return Double.valueOf(sdata);
         } catch (NumberFormatException | ClassCastException e) {}
@@ -48,7 +49,7 @@ public abstract class BasicWidget {
     }
 
     protected void updateAutomaticallyFrom(final FileSystem s, final String path) {
-        s.subscribe((rPath, data) -> update(cast(data), path), FileSystemEntries.SENSORS_DATA.buildPath(path));
+        s.subscribe((rPath, sData) -> update(cast(sData), path), FileSystemEntries.SENSORS_DATA.buildPath(path));
     }
 
     public void update(final Double value, final String key) {

@@ -14,11 +14,13 @@ import il.ac.technion.cs.smarthouse.utils.Random;
  * @author Elia Traore
  * @since Jun 17, 2017
  */
+
+@SuppressWarnings("rawtypes")
 public class SensorBuilder {
-	private String sensorId = Random.sensorId();
+	private String sensorId;
 	private String commname, alias;
 	private InstructionHandler iHandler;
-	
+
 	private Map<String, List> ranges;
 
 	private final GenericSensor genericSensor = new GenericSensor();
@@ -30,6 +32,9 @@ public class SensorBuilder {
 	public GenericSensor build() {
 		if (commname == null || alias == null)
 			return null;
+		if (sensorId == null)
+			sensorId = Random.sensorId();
+
 		GenericSensor newSensor = new GenericSensor(genericSensor);
 
 		newSensor.setRanges(ranges);
@@ -39,6 +44,9 @@ public class SensorBuilder {
 			newSensor.logInstruction(path, inst);
 			return iHandler == null || iHandler.applyInstruction(path, inst);
 		});
+
+		// force the builder to generate new id when the build method is called
+		sensorId = null;
 		return newSensor;
 	}
 
@@ -78,18 +86,18 @@ public class SensorBuilder {
 		return addPath(PathType.INSTRUCTION_RECEIVING, path, null);
 	}
 
-	public SensorBuilder addStreamingRange(String path, @SuppressWarnings("rawtypes") List values) {
+	public SensorBuilder addStreamingRange(String path,  List values) {
 		if (ranges == null)
 			ranges = new HashMap<>();
 		ranges.put(path, values);
 		return this;
 	}
-	
+
 	public SensorBuilder setPollingInterval(Long milliseconds) {
 		genericSensor.setPollingInterval(milliseconds);
 		return this;
 	}
-	
+
 	public SensorBuilder setStreamInterval(Long milliseconds) {
 		genericSensor.setStreamInterval(milliseconds);
 		return this;
@@ -99,7 +107,7 @@ public class SensorBuilder {
 		genericSensor.addLogger(t, logger);
 		return this;
 	}
-	
+
 	public SensorBuilder addInfoSendingLogger(Consumer<String> logger) {
 		return addLogger(PathType.INFO_SENDING, logger);
 	}

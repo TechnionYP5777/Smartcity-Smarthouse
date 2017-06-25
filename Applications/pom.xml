@@ -27,5 +27,6 @@
 		<module>Sos</module>
 		<module>Stove</module>
 		<module>Vitals</module>
- 	</modules>
+		<module>Calculator</module>
+	</modules>
 </project>

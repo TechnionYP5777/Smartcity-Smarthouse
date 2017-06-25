@@ -46,19 +46,18 @@ public class GenericSensor {
 
 		@Override
 		public void run() {
-			if (!legalRanges())
-				return;
-			while (keepStreaming) {
-				Map<String, Object> data = new HashMap<>();
-				ranges.keySet().stream().filter(p -> paths.get(PathType.INFO_SENDING).containsKey(p))
-										.forEach(path -> data.put(path, random(path)));
-				sendMessage(data);
-				try {
-					Thread.sleep(streamingInterval);
-				} catch (InterruptedException e) {
-					keepStreaming = false;
+			if (legalRanges())
+				while (keepStreaming) {
+					Map<String, Object> data = new HashMap<>();
+					ranges.keySet().stream().filter(p -> paths.get(PathType.INFO_SENDING).containsKey(p))
+							.forEach(path -> data.put(path, random(path)));
+					sendMessage(data);
+					try {
+						Thread.sleep(streamingInterval);
+					} catch (InterruptedException e) {
+						keepStreaming = false;
+					}
 				}
-			}
 		}
 
 		@SuppressWarnings("unchecked")
@@ -66,7 +65,8 @@ public class GenericSensor {
 			return paths.get(PathType.INFO_SENDING).keySet().stream().map(path -> {
 				Class c = paths.get(PathType.INFO_SENDING).get(path);
 				List vals = ranges.get(path);
-				Boolean sizeOk = !Integer.class.isAssignableFrom(c) && !Double.class.isAssignableFrom(c) || vals.size() == 2,
+				Boolean sizeOk = !Integer.class.isAssignableFrom(c) && !Double.class.isAssignableFrom(c)
+						|| vals.size() == 2,
 						valsOk = (Boolean) vals.stream().map(o -> c.isAssignableFrom(o.getClass()))
 								.reduce((x, y) -> (Boolean) x && (Boolean) x).orElse(true);
 				return sizeOk && valsOk;
@@ -115,15 +115,17 @@ public class GenericSensor {
 	private void connectIfNeeded() {
 		if (connected)
 			return;
-		log.debug("GenericSensor "+this+" trying connect sensor for sending");
-		while (!sensor.register());
+		log.debug("GenericSensor " + this + " trying connect sensor for sending");
+		while (!sensor.register())
+			;
 		if (interactive) {
-			log.debug("GenericSensor "+this+" trying connect sensor for receiveing");
-			while (!sensor.registerInstructions());
+			log.debug("GenericSensor " + this + " trying connect sensor for receiveing");
+			while (!sensor.registerInstructions())
+				;
 			sensor.pollInstructions(pollInterval);
 		}
 		connected = true;
-		log.debug("GenericSensor "+this+"  connected!");
+		log.debug("GenericSensor " + this + "  connected!");
 	}
 
 	// ------------------------ setters --------------------------------------
@@ -144,9 +146,10 @@ public class GenericSensor {
 		pollInterval = milliseconds;
 	}
 
-	void setStreamInterval(Long milliseconds){
+	void setStreamInterval(Long milliseconds) {
 		streamingInterval = milliseconds;
 	}
+
 	void setSensor(InteractiveSensor s) {
 		sensor = s;
 	}
@@ -154,6 +157,7 @@ public class GenericSensor {
 	void setRanges(Map<String, List> ranges) {
 		lastReceivedRanges = ranges;
 	}
+
 	// ------------------------ getters --------------------------------------
 	List<String> getPaths(PathType t) {
 		return Optional.ofNullable(paths.get(t)).map(ps -> new ArrayList<>(ps.keySet())).orElse(new ArrayList<>());
@@ -174,7 +178,7 @@ public class GenericSensor {
 		$.add("Sending following msg:\n");
 		data.keySet().forEach(path -> $.add("path:" + path + "\tvalue:" + data.get(path)));
 
-		$.stream().reduce((x, y) -> x +"\n"+ y)
+		$.stream().reduce((x, y) -> x + "\n" + y)
 				.ifPresent(formatedData -> Optional.ofNullable(loggers.get(PathType.INFO_SENDING))
 						.ifPresent(ls -> ls.forEach(logger -> logger.accept(formatedData))));
 	}
@@ -182,7 +186,8 @@ public class GenericSensor {
 	// ------------------------ public method -------------------------------
 	/** blocks until an instruction is sent */
 	public void waitForInstruction() {
-		while (!sensor.operate());
+		while (!sensor.operate())
+			;
 	}
 
 	/** blocking method */
@@ -223,7 +228,7 @@ public class GenericSensor {
 		return o instanceof GenericSensor && this.getId().equals(((GenericSensor) o).getId());
 	}
 
-	// ----------- Data sending methods ----------- 
+	// ----------- Data sending methods -----------
 	/**
 	 * will also connect if sensor not connected yet
 	 */
@@ -267,10 +272,9 @@ public class GenericSensor {
 	 * streams with the ranges given through the builder
 	 */
 	public void streamMessages() {
-		
-		if (lastReceivedRanges == null)
-			return;
-		streamMessages(lastReceivedRanges);
+
+		if (lastReceivedRanges != null)
+			streamMessages(lastReceivedRanges);
 	}
 
 }
