@@ -108,7 +108,7 @@ public enum WidgetType {
                             .newInstance(this, tileSize, data);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
                         | NoSuchMethodException | SecurityException e) {
-            log.error("Failed to instantiate new widget tile from:" + this + ". Got error:" + e);
+            log.error("\n\tFailed to instantiate new widget tile from:" + this + ". Got error:" + e);
             return null;
         }
     }

@@ -22,11 +22,11 @@ import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
  */
 public class SystemCore implements Savable {
     private static Logger log = LoggerFactory.getLogger(SystemCore.class);
-    
+
     private SystemMode systemMode = SystemMode.USER_MODE;
 
     public final ServiceManager serviceManager = new ServiceManager(this);
-    
+
     @Expose private final ApplicationsCore applicationsHandler = new ApplicationsCore(this);
     @Expose private final FileSystemImpl fileSystem = new FileSystemImpl();
     private SystemSaver systemSaver = new SystemSaver(this, fileSystem);
@@ -36,13 +36,13 @@ public class SystemCore implements Savable {
     @Expose protected MappingInformation house = new MappingInformation();
     private boolean userInitialized;
 
-    public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer, final boolean useLocalDatabase,
-                    final boolean initRegularListeners) {
-        log.info("Initializing system components...");
-        
+    public void initializeSystemComponents(final boolean useSensorsServer, final boolean useCloudServer,
+                    final boolean useLocalDatabase, final boolean initRegularListeners) {
+        log.info("\n\tInitializing system components...");
+
         systemSaver.init(useCloudServer, useLocalDatabase, true);
         systemSaver.loadSystem();
-        
+
         if (initRegularListeners)
             initFileSystemListeners();
         if (useSensorsServer)
@@ -88,16 +88,16 @@ public class SystemCore implements Savable {
     public FileSystem getFileSystem() {
         return fileSystem;
     }
-    
+
     public SystemMode getSystemMode() {
         return systemMode;
     }
-    
+
     public void setSystemMode(SystemMode m) {
         this.systemMode = m;
     }
 
     public void initFileSystemListeners() {
-        //TODO: add some listeners here
+        // TODO: add some listeners here
     }
 }

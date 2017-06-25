@@ -88,7 +88,7 @@ public class DashboardController extends SystemGuiController {
 			stage.setScene(new Scene(configController.getRootViewNode()));
 			stage.show();
 		} catch (final Exception $) {
-			log.error("Failed to open widget configuration window, as a result of:\n\t" + $);
+			log.error("\n\tFailed to open widget configuration window, as a result of:\n\t" + $);
 			throw new RuntimeException();
 		}
 	}

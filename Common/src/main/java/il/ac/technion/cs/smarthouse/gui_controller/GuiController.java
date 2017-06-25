@@ -61,7 +61,7 @@ public abstract class GuiController<M> implements Initializable {
     public final void waitUntilInitFinishes() {
         final TimeCounter t = new TimeCounter().start();
         startedLatch.blockUntilTrue();
-        log.info("GuiController: Waited " + t.getTimePassedMillis() + " [ms] for controller to load");
+        log.info("\n\tGuiController: Waited " + t.getTimePassedMillis() + " [ms] for controller to load");
     }
 
     private final void notifyOnLoaded() {

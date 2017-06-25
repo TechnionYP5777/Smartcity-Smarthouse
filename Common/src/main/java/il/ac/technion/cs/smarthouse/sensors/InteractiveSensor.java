@@ -55,7 +55,7 @@ public class InteractiveSensor extends Sensor {
 			instOut = new PrintWriter(instSocket.getOutputStream(), true);
 			instIn = new BufferedReader(new InputStreamReader(instSocket.getInputStream()));
 		} catch (final IOException e) {
-			log.error("I/O error occurred when the sensor's instructions socket was created", e);
+			log.error("\n\tI/O error occurred when the sensor's instructions socket was created", e);
 		}
 
 		try {
@@ -89,7 +89,7 @@ public class InteractiveSensor extends Sensor {
 			final String[] inst = instIn.readLine().split("##");
 			return handler.applyInstruction(inst[0], inst[1]);
 		} catch (final IOException e) {
-			log.error("I/O error occurred", e);
+			log.error("\n\tI/O error occurred", e);
 			return false;
 		}
 	}

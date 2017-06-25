@@ -86,7 +86,7 @@ public class SensorDataRecevierThread extends SensorManagingThread {
         final Boolean bufferIsReady = dataBuffer.size() == legalSystemPaths.size();
 
         if (oldData != null && bufferIsReady)
-            log.error("The dataBuffer invariant isn't preserved:(path,olddata)=(" + path + "," + data
+            log.error("\n\tThe dataBuffer invariant isn't preserved:(path,olddata)=(" + path + "," + data
                             + "), dataBuffer=" + data + " .\nSome data update might be lost.");
 
         if (oldData == null && !bufferIsReady)

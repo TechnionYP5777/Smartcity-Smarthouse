@@ -35,7 +35,7 @@ public class InstructionsSenderThread extends SensorManagingThread {
 	@Override
 	protected void handleSensorMessage(final SensorMessage msg) {
 		if (!MessageType.REGISTRATION.equals(msg.getType()))
-			log.error(getClass() + " shouldn't receive an update msg.");
+			log.error("\n\t" + getClass() + " shouldn't receive an update msg.");
 		else {
 			msg.getInstructionRecievingPaths().forEach(path -> {
 				final String legalPath = FileSystemEntries.LISTENERS_OF_SENSOR.buildPath(msg.getSensorCommName(),

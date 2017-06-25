@@ -261,7 +261,7 @@ public class GenericSensor {
 			try {
 				msgStreamer.join();
 			} catch (InterruptedException e) {
-				log.warn("Simulator was interrupted will waiting for a msg streamer");
+				log.warn("\n\tSimulator was interrupted will waiting for a msg streamer");
 			}
 		}
 		msgStreamer = new MsgStreamerThread(ranges);

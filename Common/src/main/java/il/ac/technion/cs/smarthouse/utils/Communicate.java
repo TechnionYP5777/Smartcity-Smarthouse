@@ -73,7 +73,7 @@ public class Communicate {
 			Transport.send(message);
 
 		} catch (final MessagingException mex) {
-			log.error("A messaging error occurred", mex);
+			log.error("\n\tA messaging error occurred", mex);
 			return null;
 		}
 		return "The e-mail was sent to:" + $;

@@ -35,7 +35,7 @@ public class ServerManager {
 
         if (init)
             return;
-        log.info("Initializing Database");
+        log.info("\n\tInitializing Database");
         Parse.initialize(appId, restAPIKey, serverUrl);
         init = true;
     }
@@ -84,7 +84,7 @@ public class ServerManager {
         try {
             obj.delete();
         } catch (final ParseException ¢) {
-            log.error("A parse exception has happened", ¢);
+            log.error("\n\tA parse exception has happened", ¢);
         }
     }
 
@@ -101,7 +101,7 @@ public class ServerManager {
         try {
             return ParseQuery.getQuery(objectClass).get(id);
         } catch (final ParseException ¢) {
-            log.error("A parse exception has happened", ¢);
+            log.error("\n\tA parse exception has happened", ¢);
         }
         return null;
     }
@@ -128,7 +128,7 @@ public class ServerManager {
             res.save();
 
         } catch (final ParseException e) {
-            log.error("A parse exception has happened", e);
+            log.error("\n\tA parse exception has happened", e);
         }
 
     }
@@ -152,7 +152,7 @@ public class ServerManager {
                 return query.find().get(0);
 
         } catch (final ParseException e) {
-            log.error("A parse exception has happened", e);
+            log.error("\n\tA parse exception has happened", e);
 
         }
         return null;

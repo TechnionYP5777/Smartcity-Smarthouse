@@ -13,7 +13,7 @@ public class BoolLatch {
 			try {
 				wait();
 			} catch (final InterruptedException e) {
-				log.error("wait was interrupted", e);
+				log.error("\n\tWait was interrupted", e);
 			}
 	}
 

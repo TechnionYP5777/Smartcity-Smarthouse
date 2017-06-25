@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -38,13 +39,15 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML VBox homeVBox;
     @FXML Pane dummyPaneLeft;
     @FXML Pane dummyPaneRight;
-    TextArea loggerView = new TextArea();
     @FXML AnchorPane mainAnchorPane;
     @FXML VBox mainVBox;
+    
+    TextArea loggerView = new TextArea();
+    TitledPane consolePane = new TitledPane("Console", loggerView);
 
     @Override
-    protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model, final T parent, final SystemMode m,
-                    final URL location, final ResourceBundle b) {
+    protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model, final T parent,
+                    final SystemMode m, final URL location, final ResourceBundle b) {
         try {
             // home tab:
             homeTab.setContent(homeTabHBox);
@@ -86,16 +89,17 @@ public class MainSystemGuiController extends SystemGuiController {
                 addDescriptionLine(
                                 "- View specific data collected from the sensors in your Smarthouse, using widgets (\"Dashboard\" tab).");
 
-                mainVBox.prefHeight(mainAnchorPane.getPrefHeight());
-
             }
 
             if (m == SystemMode.DEVELOPER_MODE) {
                 tabs.getTabs().removeAll(userTab, sensorsTab);
-                mainVBox.getChildren().add(loggerView);
-                LogConsole.setLogConsole(loggerView);
-                loggerView.autosize();
                 
+                mainVBox.getChildren().add(consolePane);
+                consolePane.autosize();
+                
+                LogConsole.setLogConsole(loggerView);
+                loggerView.setEditable(false);
+
             }
 
         } catch (final Exception ¢) {

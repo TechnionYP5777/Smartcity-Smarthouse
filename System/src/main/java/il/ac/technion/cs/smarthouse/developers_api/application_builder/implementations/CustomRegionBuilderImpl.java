@@ -50,7 +50,7 @@ public class CustomRegionBuilderImpl extends AbstractRegionBuilder implements Cu
             if (outController != null)
                 outController.setData(fxmlLoader.getController());
         } catch (final Exception e) {
-            log.error("Couldn't load the fxml: " + fxmlFileName, e);
+            log.error("\n\tCouldn't load the fxml: " + fxmlFileName, e);
             throw new RuntimeException("Couldn't load the fxml: " + fxmlFileName + "\n" + e.getClass().getSimpleName());
         }
         
