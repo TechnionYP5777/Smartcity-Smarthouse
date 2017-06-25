@@ -24,7 +24,8 @@ public abstract class BasicWidget {
         this.type = type;
         this.tileSize = tileSize;
         this.data = data;
-        builder = type.createTileBuilder(tileSize).title(getTitle());
+        builder = type.createTileBuilder(tileSize)
+                        .title(data.getTitle() != null? data.getTitle(): getTitle());
     }
 
     public abstract String getTitle();
@@ -33,7 +34,7 @@ public abstract class BasicWidget {
         data.getInfoEntries().keySet().forEach(path -> updateAutomaticallyFrom(s, path));
     }
 
-    public static Double cast(final Object dataObj) {
+    protected static Double cast(final Object dataObj) {
         final String sdata = (String) dataObj;
         try {
             return Double.valueOf(sdata);
@@ -52,6 +53,10 @@ public abstract class BasicWidget {
         s.subscribe((rPath, sData) -> update(cast(sData), path), FileSystemEntries.SENSORS_DATA.buildPath(path));
     }
 
+    public void update(final Object value, final String key) {
+        update(cast(value), key);
+    }
+    
     public void update(final Double value, final String key) {
         getTile().setValue(value);
     }
