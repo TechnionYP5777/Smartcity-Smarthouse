@@ -6,7 +6,7 @@
 <?import javafx.scene.text.TextFlow?>
 
 <SplitPane dividerPositions="0.6809045226130653"
-	orientation="VERTICAL" prefHeight="550" prefWidth="350"
+	orientation="VERTICAL" prefHeight="650" prefWidth="450"
 	xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorController">
 	<items>
