@@ -12,7 +12,7 @@
 
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="il.ac.technion.cs.smarthouse.simulator.view.SensorConfigurationController">
+	fx:controller="il.ac.technion.cs.smarthouse.DeveloperSimulator.ConfigurationWindowController">
 	<children>
 		<VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
 			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -28,7 +28,7 @@
 								<Font name="System Bold" size="25.0" />
 							</font>
 						</Label>
-						<Label nodeOrientation="LEFT_TO_RIGHT" text="Sensor Configuration"
+						<Label nodeOrientation="LEFT_TO_RIGHT"
 							textAlignment="CENTER" fx:id="sensorNameLabel">
 							<font>
 								<Font name="System Bold" size="15.0" />
@@ -49,20 +49,18 @@
 							<children>
 								<TextField fx:id="addNameField" promptText="Name" />
 								<ComboBox fx:id="addTypeField" />
-								<Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
+								<Button fx:id="addButton" mnemonicParsing="false" text="add" />
 							</children>
 						</HBox>
 					</children>
 					<padding>
-						<Insets bottom="20.0" left="20.0" right="20.0" />
+						<Insets bottom="10.0" left="20.0" right="20.0" />
 					</padding>
 				</VBox>
 				<HBox>
 					<children>
-						<Button fx:id="deleteButton" mnemonicParsing="false"
-							text="Delete Sensor" />
-						<Button fx:id="messageButton" mnemonicParsing="false"
-							text="Send Message" />
+						<Button fx:id="saveButton" mnemonicParsing="false"
+							text="Save" />
 					</children>
 					<padding>
 						<Insets left="20.0" right="20.0" />

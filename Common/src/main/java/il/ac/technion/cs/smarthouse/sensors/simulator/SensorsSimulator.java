@@ -25,6 +25,7 @@ public class SensorsSimulator {
 	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
 	private Map<Action, List<Consumer<GenericSensor>>> listeners = new HashMap<>();
 	private Map<String, GenericSensor> sensors = new HashMap<>();
+	private String selectedSensor;
 
 	private void addLogger(PathType t, Consumer<String> logger) {
 		if(!loggers.containsKey(t))
@@ -43,8 +44,8 @@ public class SensorsSimulator {
 	// ------------------------- public API -----------------------------------
 	public String addSensor(GenericSensor s) {
 		Stream.of(PathType.values())
-						.forEach(type -> loggers.get(type)
-						.forEach(logger -> s.addLogger(type, logger)));
+						.forEach(type -> Optional.ofNullable(loggers.get(type))
+						.ifPresent(ls->ls.forEach(logger -> s.addLogger(type, logger))));
 		String id = getNextId();
 		sensors.put(id, s);
 		callListeners(Action.ADD, s);
@@ -61,12 +62,33 @@ public class SensorsSimulator {
 		callListeners(Action.GET, sensors.get(id));
 		return sensors.get(id);
 	}
-
+	
+	public SensorsSimulator updateSensor(String id,GenericSensor s){
+		sensors.put(id,s);
+		return this;
+	}
+	
 	public SensorsSimulator startSendingMsgsInAllSensors() {
 		sensors.values().forEach(s -> new Thread(() -> s.streamMessages()).start());
 		return this;
 	}
-
+	
+	public String getSensorId(GenericSensor s){
+		for(String id:sensors.keySet())
+			if (sensors.get(id).equals(s))
+				return id;
+		return null;
+	}
+	
+	public SensorsSimulator setSelectedSensor(String id) {
+		this.selectedSensor = id;
+		return this;
+	}
+	
+	public String getSelectedSensor() {
+		return selectedSensor;
+	}
+	
 	// ---------- access through listeners/loggers ----------
 	public SensorsSimulator addSentMsgLogger(Consumer<String> logger) {
 		addLogger(PathType.INFO_SENDING, logger);
