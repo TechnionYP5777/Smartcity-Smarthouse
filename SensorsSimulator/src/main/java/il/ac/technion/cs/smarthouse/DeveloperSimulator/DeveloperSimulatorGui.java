@@ -9,7 +9,7 @@ public class DeveloperSimulatorGui extends Application{
 
 	@Override
 	public void start(Stage s) throws Exception {
-		final Scene scene = new Scene(DeveloperSimulatorController.createRootController(getClass().getResource("/main_window.fxml"), new SensorsSimulator()).getRootViewNode(), 400, 460);
+		final Scene scene = new Scene(DeveloperSimulatorController.createRootController(getClass().getResource("/main_window.fxml"), new SensorsSimulator()).getRootViewNode());
         s.setTitle("Sensor Simulator");
         s.setScene(scene);
         s.setResizable(false);

@@ -12,11 +12,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class DeveloperSimulatorController extends GuiController<SensorsSimulator>{
 	
 	@FXML AnchorPane mainPane;
+    @FXML public TextFlow console;
 	MainSensroListController listController;
 	ConfigurationWindowController configController;
 	SendMessageController messageController;
@@ -25,8 +28,10 @@ public class DeveloperSimulatorController extends GuiController<SensorsSimulator
 			URL location, ResourceBundle b) {
 		this.listController = createChildController(getClass().getResource("/sensor_config_list_ui.fxml"));
 		this.configController = createChildController(getClass().getResource("/sensor_configuration_ui.fxml"));
-		Consumer<String> s = x -> System.out.println(x);
+		console.getChildren().add(new Text("Welcome to the Sensor developer simulator\n"));
+		Consumer<String> s = x -> console.getChildren().add(new Text(x+"\n"));
 		model1.addSentMsgLogger(s);
+		model1.addInstructionReceivedLogger(s);
 		JavaFxHelper.placeNodeInPane(listController.getRootViewNode(),mainPane);
 	}
 	
