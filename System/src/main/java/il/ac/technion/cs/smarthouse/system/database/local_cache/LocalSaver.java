@@ -48,7 +48,8 @@ public class LocalSaver {
         try (BufferedWriter o = new BufferedWriter(new FileWriter(f))) {
             o.write(data);
             o.flush();
-            log.info("\n\tLocalSaver: Wrote data to file\n\tFile name: " + f.getAbsolutePath() + "\n\tData: " + data);
+            log.trace("\n\tLocalSaver: Wrote data to file\n\tFile name: " + f.getAbsolutePath() + "\n\tData: " + data);
+            log.info("\n\tLocalSaver: Wrote data to file\n\tFile name: " + f.getAbsolutePath() );
         } catch (NumberFormatException | IOException e) {
             log.error("Can't write to file (" + f.getAbsolutePath() + ")", e);
         }
@@ -58,7 +59,8 @@ public class LocalSaver {
         File f = getFile(path);
         try (BufferedReader o = new BufferedReader(new FileReader(f))) {
             String data = o.readLine();
-            log.info("\n\tLocalSaver: Read data from file\n\tFile name: " + f.getAbsolutePath() + "\n\tData: " + data);
+            log.trace("\n\tLocalSaver: Read data from file\n\tFile name: " + f.getAbsolutePath() + "\n\tData: " + data);
+            log.info("\n\tLocalSaver: Read data from file\n\tFile name: " + f.getAbsolutePath());
             return data;
         } catch (NumberFormatException | IOException e) {
             log.error("Can't write to file (" + f.getAbsolutePath() + ")", e);

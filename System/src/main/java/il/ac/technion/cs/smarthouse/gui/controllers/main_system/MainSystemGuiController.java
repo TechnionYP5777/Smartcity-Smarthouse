@@ -43,8 +43,8 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML VBox mainVBox;
 
     @Override
-    protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model, final T parent, final SystemMode m,
-                    final URL location, final ResourceBundle b) {
+    protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model, final T parent,
+                    final SystemMode m, final URL location, final ResourceBundle b) {
         try {
             // home tab:
             homeTab.setContent(homeTabHBox);
@@ -86,8 +86,6 @@ public class MainSystemGuiController extends SystemGuiController {
                 addDescriptionLine(
                                 "- View specific data collected from the sensors in your Smarthouse, using widgets (\"Dashboard\" tab).");
 
-                mainVBox.prefHeight(mainAnchorPane.getPrefHeight());
-
             }
 
             if (m == SystemMode.DEVELOPER_MODE) {
@@ -95,7 +93,7 @@ public class MainSystemGuiController extends SystemGuiController {
                 mainVBox.getChildren().add(loggerView);
                 LogConsole.setLogConsole(loggerView);
                 loggerView.autosize();
-                
+
             }
 
         } catch (final Exception ¢) {
