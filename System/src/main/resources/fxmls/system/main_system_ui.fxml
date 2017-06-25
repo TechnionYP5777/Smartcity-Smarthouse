@@ -2,19 +2,17 @@
 
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="460.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.main_system.MainSystemGuiController">
+<AnchorPane fx:id="MainAnchorPane" prefHeight="460.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.main_system.MainSystemGuiController">
    <children>
-      <VBox prefHeight="460.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="mainVBox" alignment="CENTER" prefHeight="529.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TabPane fx:id="tabs" prefHeight="529.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabs" prefHeight="529.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
             	<tabs>
             		<Tab fx:id="homeTab" text="Home">
                			<content>
@@ -41,7 +39,6 @@
             		<Tab fx:id="dashboardTab" text="Dashboard" />
             	</tabs>
             </TabPane>
-            <TextArea fx:id="loggerView" prefHeight="209.0" prefWidth="600.0" />
          </children>
       </VBox>
    </children>
