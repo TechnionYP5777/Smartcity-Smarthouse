@@ -9,9 +9,9 @@ import java.util.ResourceBundle;
 
 import org.controlsfx.control.ToggleSwitch;
 
+import il.ac.technion.cs.smarthouse.DeveloperSimulator.Types;
 import il.ac.technion.cs.smarthouse.simulator.model.SensorData;
 import il.ac.technion.cs.smarthouse.simulator.model.SensorField;
-import il.ac.technion.cs.smarthouse.simulator.model.Types;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

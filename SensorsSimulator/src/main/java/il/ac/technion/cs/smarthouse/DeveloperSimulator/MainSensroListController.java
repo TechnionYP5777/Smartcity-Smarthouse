@@ -19,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,6 +27,8 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class MainSensroListController extends GuiController<SensorsSimulator>{
 	
@@ -95,8 +98,15 @@ public class MainSensroListController extends GuiController<SensorsSimulator>{
 				@Override
 				public void handle(ActionEvent e) {
 					// TODO add are you sure alert
-					final Pair<String, String> currentSensor = $.getTableView().getItems()
-                            .get($.getIndex());
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					alert.setTitle("Confirmation Dialog");
+					alert.setHeaderText("Are you sure?");
+					alert.setContentText("The sensor will be deleted forever!");
+
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.get() != ButtonType.OK)
+						return;
+					final Pair<String, String> currentSensor = $.getTableView().getItems().get($.getIndex());
 					model1.removeSensor(currentSensor.getKey());
 					MainSensroListController.this.sensors.remove(currentSensor);
 				}

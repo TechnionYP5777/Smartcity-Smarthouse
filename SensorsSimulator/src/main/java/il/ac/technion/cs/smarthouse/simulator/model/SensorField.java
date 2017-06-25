@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.simulator.model;
 
+import il.ac.technion.cs.smarthouse.DeveloperSimulator.Types;
+
 public class SensorField {
     private final String name;
     private final Types type;

@@ -14,6 +14,8 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -30,10 +33,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 @SuppressWarnings("rawtypes")
@@ -46,7 +51,9 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 	private boolean encounterdIssue;
 	private GenericSensor currentSensor;
 	private ObservableList<Pair<String, Class>> typesList;
-
+	private List<String> issues;
+	private String errorMessage;
+	
 	@Override
 	protected <T extends GuiController<SensorsSimulator>> void initialize(SensorsSimulator model1, T parent1,
 			URL location, ResourceBundle b) {
@@ -74,13 +81,22 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 		Button saveButton = new Button("Send");
 		saveButton.setOnAction(__1 -> {
 			ranges = new HashMap<>();
+			issues = new ArrayList<>();
 			consumers.forEach(c -> c.accept(ranges));
 			if(encounterdIssue){
-				//TODO allert issue in inputes
+				errorMessage="";
+				issues.forEach(s -> errorMessage+=s+"\n");
 				encounterdIssue = false;
+				final Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error Dialog");
+				alert.setHeaderText("Invalid Field Ranges!");
+				alert.setContentText(errorMessage);
+				alert.showAndWait();
 				return;
 			}
 			currentSensor.streamMessages(ranges);
+			Stage stage = (Stage) saveButton.getScene().getWindow();
+		    stage.close();
 		});
 		mainPane.getChildren().add(saveButton);
 	}
@@ -126,10 +142,44 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 			l.put(fieldName, input);
 		});
 	}
+	
+	static boolean validateInteger(String s){
+		try {
+			Integer.parseInt(s);
+		} catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+	
+	static boolean validateDouble(String s){
+		try {
+			Double.parseDouble(s);
+		} catch(Exception e){
+			return false;
+		}
+		return true;
+	}
 
 	private void addIntegerField(String fieldName) {
 		Label label = new Label(fieldName + ":");
 		TextField lowerRange = new TextField("From"), topRange = new TextField("To");
+		lowerRange.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+				if (!newValue) // Focusing out
+					lowerRange
+							.setStyle("-fx-border-color: " + (!validateInteger(lowerRange.getText()) ? "red" : "green"));
+			}
+		});
+		topRange.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+				if (!newValue) // Focusing out
+					topRange
+							.setStyle("-fx-border-color: " + (!validateInteger(topRange.getText()) ? "red" : "green"));
+			}
+		});
 		HBox hb = new HBox(label, lowerRange, topRange);
 		hb.setSpacing(3);
 
@@ -142,11 +192,18 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 		consumers.add(l -> {
 			List<Integer> input = new ArrayList<>();
 			try {
-				input.add(Integer.parseInt(lowerRange.getText()));
-				input.add(Integer.parseInt(lowerRange.getText()));
-				l.put(fieldName, input);
+				int lower = Integer.parseInt(lowerRange.getText()), top = Integer.parseInt(lowerRange.getText());
+				if (lower > top) {
+					this.encounterdIssue = true;
+					issues.add("in " + fieldName + " From must be less or equal to To");
+				} else {
+					input.add(lower);
+					input.add(top);
+					l.put(fieldName, input);
+				}
 			} catch (final Exception e) {
 				this.encounterdIssue = true;
+				issues.add("in "+fieldName+" Values must be Integers!");
 			}
 		});
 	}
@@ -156,6 +213,23 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 		TextField lowerRange = new TextField("From"), topRange = new TextField("To");
 		HBox hb = new HBox(label, lowerRange, topRange);
 		hb.setSpacing(3);
+		
+		lowerRange.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+				if (!newValue) // Focusing out
+					lowerRange
+							.setStyle("-fx-border-color: " + (!validateInteger(lowerRange.getText()) ? "red" : "green"));
+			}
+		});
+		topRange.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+				if (!newValue) // Focusing out
+					topRange
+							.setStyle("-fx-border-color: " + (!validateInteger(topRange.getText()) ? "red" : "green"));
+			}
+		});
 
 		VBox vbox = new VBox(label, hb);
 		vbox.setSpacing(5);
@@ -166,11 +240,18 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 		consumers.add(l -> {
 			List<Double> input = new ArrayList<>();
 			try {
-				input.add(Double.parseDouble(lowerRange.getText()));
-				input.add(Double.parseDouble(lowerRange.getText()));
-				l.put(fieldName, input);
+				double lower = Double.parseDouble(lowerRange.getText()), top = Double.parseDouble(lowerRange.getText());
+				if (lower > top) {
+					this.encounterdIssue = true;
+					issues.add("in " + fieldName + " From must be less or equal to To");
+				} else {
+					input.add(lower);
+					input.add(top);
+					l.put(fieldName, input);
+				}
 			} catch (final Exception e) {
 				this.encounterdIssue = true;
+				issues.add("in "+fieldName+" Values must be Double!");
 			}
 		});
 	}
@@ -214,8 +295,10 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 		consumers.add(l -> {
 			if (!s.isEmpty())
 				l.put(fieldName, s);
-			else
+			else {
 				this.encounterdIssue = true;
+				issues.add("in "+fieldName+" must contain at least one String");
+			}
 		});
 	}
 

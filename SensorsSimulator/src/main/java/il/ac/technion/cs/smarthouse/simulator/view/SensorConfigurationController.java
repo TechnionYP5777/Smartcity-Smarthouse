@@ -3,9 +3,9 @@ package il.ac.technion.cs.smarthouse.simulator.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import il.ac.technion.cs.smarthouse.DeveloperSimulator.Types;
 import il.ac.technion.cs.smarthouse.simulator.model.SensorData;
 import il.ac.technion.cs.smarthouse.simulator.model.SensorField;
-import il.ac.technion.cs.smarthouse.simulator.model.Types;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -55,7 +55,7 @@ public class SensorConfigurationController implements Initializable {
             $.setAlignment(Pos.CENTER);
             return $;
         });
-        backButton.setOnAction(__1 -> mainController.loadSensorList());
+		backButton.setOnAction(__1 -> mainController.loadSensorList());
         HBox.setHgrow(addNameField, Priority.ALWAYS);
         HBox.setHgrow(addTypeField, Priority.ALWAYS);
         HBox.setHgrow(saveButton, Priority.ALWAYS);

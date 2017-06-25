@@ -13,8 +13,8 @@ public class SimulatorGui extends Application {
 
     @Override
     public void start(final Stage s) throws Exception {
-        final Parent root = FXMLLoader.load(getClass().getResource("/main_simulator_window.fxml"));
-        final Scene scene = new Scene(root, 1250, 580);
+        final Parent root = FXMLLoader.load(getClass().getResource("/message_ui.fxml"));
+        final Scene scene = new Scene(root, 400, 450);
         s.setTitle("Sensor Simulator");
         s.setScene(scene);
         s.setResizable(false);

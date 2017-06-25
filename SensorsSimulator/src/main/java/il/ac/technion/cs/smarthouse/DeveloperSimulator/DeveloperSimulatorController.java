@@ -9,6 +9,8 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -38,6 +40,15 @@ public class DeveloperSimulatorController extends GuiController<SensorsSimulator
 	}
 	
 	public void openMessageWindow(){
+		if(this.getModel().getSensor(this.getModel().getSelectedSensor()).getObservablePaths().isEmpty()){
+			final Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("Sensor has no fields");
+			alert.setContentText("Make sure to configure the sensor before starting to stream.");
+			alert.showAndWait();
+			return;
+		}
+			
 		this.messageController = createChildController(getClass().getResource("/message_ui.fxml"));
 		messageController.loadFields();
 		final Stage stage = new Stage();
