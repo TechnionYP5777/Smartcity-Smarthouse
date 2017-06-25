@@ -93,6 +93,7 @@ public class MainSystemGuiController extends SystemGuiController {
                 mainVBox.getChildren().add(loggerView);
                 LogConsole.setLogConsole(loggerView);
                 loggerView.autosize();
+                loggerView.setEditable(false);
 
             }
 
