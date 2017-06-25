@@ -94,6 +94,8 @@ public class MainSystemGuiController extends SystemGuiController {
                 tabs.getTabs().removeAll(userTab, sensorsTab);
                 mainVBox.getChildren().add(loggerView);
                 LogConsole.setLogConsole(loggerView);
+                loggerView.autosize();
+                
             }
 
         } catch (final Exception ¢) {
