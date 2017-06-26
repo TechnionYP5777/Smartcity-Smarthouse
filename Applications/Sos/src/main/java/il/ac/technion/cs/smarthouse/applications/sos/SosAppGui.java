@@ -1,11 +1,18 @@
 package il.ac.technion.cs.smarthouse.applications.sos;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
+import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
+import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
+import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
@@ -21,8 +28,32 @@ public class SosAppGui extends SmarthouseApplication {
 
     public boolean shouldAlert = true;
     
+    static SensorsSimulator simulator = initSimulator();
     public static void main(String[] args) throws Exception {
-        launch(SosSensorSimulator.class);
+        launch(simulator,true);
+    }
+
+    /**
+     * @return
+     */
+    private static SensorsSimulator initSimulator() {
+        final String path = "sos" + "." + "pressed";
+        SensorsSimulator s = new SensorsSimulator();
+        s.addSensor(new SensorBuilder()
+                .setCommname("iSOS")
+                .setAlias("Elia's sos sensor")
+                .addInfoSendingPath(path, Boolean.class)
+                .addStreamingRange(path, Arrays.asList(true))
+                .setStreamInterval(TimeUnit.MINUTES.toMillis(3))
+                .build()
+                );
+        return s;
+    }
+    
+
+    @Override
+    public Collection<GenericSensor> getSimulatedSensors() {
+        return simulator.getAllSensors();
     }
 
     @Override public void onLoad() throws Exception {
