@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.sensors.simulator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +54,10 @@ public class SensorsSimulator {
 		return id;
 	}
 
+	public SensorsSimulator addAllSensor(Collection<GenericSensor> sensors){
+		Optional.ofNullable(sensors).ifPresent(ss -> ss.forEach(s -> addSensor(s)));
+		return this;
+	}
 	public SensorsSimulator removeSensor(String id) {
 		callListeners(Action.REMOVE, sensors.get(id));
 		sensors.remove(id);
@@ -64,6 +69,9 @@ public class SensorsSimulator {
 		return sensors.get(id);
 	}
 	
+	public Collection<GenericSensor> getAllSensors(){
+		return sensors.values();
+	}
 	/** The usage of this method is discouraged and it remains solely for legacy purposes.<br>
 	 *  The simulator is <mark><b>not</b></mark> intended to hold half-defined sensors and might
 	 *  result in unexpected behaviour.

@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.developers_api;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorController;
@@ -7,6 +9,7 @@ import il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorGui;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.AppBuilder;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.AppBuilderImpl;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.WidgetsRegionBuilderImpl;
+import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
@@ -39,7 +42,7 @@ public abstract class SmarthouseApplication {
     public SmarthouseApplication() {}
 
     public static void launch(final SensorsSimulator simluator,
-                        final Boolean showGui) throws Exception {
+                        final Boolean showSimulatorGui) throws Exception {
         final SystemPresenter p = new SystemPresenterFactory()
                         .setUseCloudServer(false)
                         .setRegularFileSystemListeners(false)
@@ -60,7 +63,7 @@ public abstract class SmarthouseApplication {
             @Override
             public void run() {
                 s.startSendingMsgsInAllSensors();
-                if(showGui)
+                if(showSimulatorGui)
                     JavaFxHelper.startGui(new DeveloperSimulatorGui().setSimulator(s));
                 super.run();
             }
@@ -139,5 +142,11 @@ public abstract class SmarthouseApplication {
     public abstract void onLoad() throws Exception;
 
     public abstract String getApplicationName();
+    
+    /** Override in order to have simulated sensors loaded in case of simulated run of the house
+     * */
+    public Collection<GenericSensor> getSimulatedSensors(){
+        return new ArrayList<>();
+    }
     // [end]
 }
