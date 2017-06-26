@@ -1,11 +1,17 @@
 package il.ac.technion.cs.smarthouse.applications.stove;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
+import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
+import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
+import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.sensors.stove.gui.StoveSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
@@ -21,10 +27,36 @@ public class StoveModuleGui extends SmarthouseApplication {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
 
     private Boolean alertCalled = true;
+    private static SensorsSimulator simulator = initSimulator();
 
     public static void main(String[] args) throws Exception {
-//        launch(StoveSensorSimulator.class);
-        launch(null,false);
+        launch(simulator,true);
+    }
+
+    /**
+     * @return
+     */
+    private static SensorsSimulator initSimulator() {
+        final String onPath = "stove" + "." + "is_on";
+        final String temperPath = "stove" + "." + "temperature";
+        SensorsSimulator s = new SensorsSimulator();
+        s.addSensor(new SensorBuilder()
+                .setCommname("iStoves")
+                .setAlias("Roy's awesome stove")
+                .addInfoSendingPath(onPath, Boolean.class)
+                .addInfoSendingPath(temperPath, Integer.class)
+                .addStreamingRange(onPath, Arrays.asList(true, false))
+                .addStreamingRange(temperPath, Arrays.asList(0, 140))
+                .setStreamInterval(1000L)//TimeUnit.SECONDS.toMillis(1))
+                .build()
+                );
+        return s;
+    }
+    
+
+    @Override
+    public Collection<GenericSensor> getSimulatedSensors() {
+        return simulator.getAllSensors();
     }
 
     @Override
