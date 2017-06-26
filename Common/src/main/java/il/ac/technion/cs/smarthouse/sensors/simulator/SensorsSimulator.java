@@ -65,7 +65,7 @@ public class SensorsSimulator {
 	}
 
 	public SensorsSimulator startSendingMsgsInAllSensors() {
-		sensors.values().forEach(s -> new Thread(() -> s.streamMessages()).start());
+		sensors.values().forEach(s -> s.streamMessages());
 		return this;
 	}
 	

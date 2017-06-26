@@ -23,6 +23,7 @@ import il.ac.technion.cs.smarthouse.system.dashboard.widget.ListWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.PrecenetageWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.SwitchWidget;
 import il.ac.technion.cs.smarthouse.system.dashboard.widget.TextWidget;
+import javafx.scene.paint.Stop;
 
 /**
  * @author Elia Traore
@@ -95,6 +96,11 @@ public enum WidgetType {
             case TEXT:
                 builder.text("path");
                 break;
+            case PROGRESS_LINE_GRAPH:
+                builder.gradientStops(new Stop(0, Tile.GREEN), 
+                                        new Stop(0.5, Tile.YELLOW), 
+                                        new Stop(1.0, Tile.RED))
+                        .strokeWithGradient(true);
             default:
 
         }

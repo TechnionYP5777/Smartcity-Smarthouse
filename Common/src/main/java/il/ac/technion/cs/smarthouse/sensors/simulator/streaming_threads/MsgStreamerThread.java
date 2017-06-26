@@ -36,7 +36,7 @@ public abstract class MsgStreamerThread extends Thread {
 	public void run() {
 		if(!canStartStreaming())
 			return;
-		
+		log.info("streamer initialized.");
 		while (keepStreaming) {
 			send();
 			try {

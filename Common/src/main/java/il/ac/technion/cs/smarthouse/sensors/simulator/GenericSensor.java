@@ -36,7 +36,7 @@ public class GenericSensor {
 	private Map<PathType, Map<String, Class>> paths = new HashMap<>();
 	private Boolean interactive = false, connected = false;
 	private Long pollInterval = TimeUnit.SECONDS.toMillis(1), 
-			streamingInterval = TimeUnit.SECONDS.toMillis(1);
+			streamingInterval = TimeUnit.SECONDS.toMillis(20);
 
 	private Map<String, List> lastReceivedRanges;
 	private Supplier<Map<String, Object>> msgsGenerator;
@@ -58,22 +58,23 @@ public class GenericSensor {
 		streamingInterval = other.streamingInterval;
 		
 		Optional.ofNullable(other.lastReceivedRanges).ifPresent(otherRanges -> lastReceivedRanges = new HashMap<>(otherRanges));
+		msgsGenerator = other.msgsGenerator;
 	}
 
 	private void connectIfNeeded() {
 		if (connected)
 			return;
-		log.debug("GenericSensor " + this + " trying connect sensor for sending");
+		log.info("GenericSensor " + this + " trying connect sensor for sending");
 		while (!sensor.register())
 			;
 		if (interactive) {
-			log.debug("GenericSensor " + this + " trying connect sensor for receiveing");
+			log.info("GenericSensor " + this + " trying connect sensor for receiveing");
 			while (!sensor.registerInstructions())
 				;
 			sensor.pollInstructions(pollInterval);
 		}
 		connected = true;
-		log.debug("GenericSensor " + this + "  connected!");
+		log.info("GenericSensor " + this + "  connected!");
 	}
 
 	// ------------------------ setters --------------------------------------
@@ -137,8 +138,7 @@ public class GenericSensor {
 	// ------------------------ public method -------------------------------
 	/** blocks until an instruction is sent */
 	public void waitForInstruction() {
-		while (!sensor.operate())
-			;
+		while (!sensor.operate());
 	}
 
 	/** blocking method */

@@ -23,7 +23,8 @@ public class StoveModuleGui extends SmarthouseApplication {
     private Boolean alertCalled = true;
 
     public static void main(String[] args) throws Exception {
-        launch(StoveSensorSimulator.class);
+//        launch(StoveSensorSimulator.class);
+        launch(null,false);
     }
 
     @Override
