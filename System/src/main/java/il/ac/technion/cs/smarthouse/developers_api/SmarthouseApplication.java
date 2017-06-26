@@ -2,6 +2,8 @@ package il.ac.technion.cs.smarthouse.developers_api;
 
 import java.util.Optional;
 
+import il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorController;
+import il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorGui;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.AppBuilder;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.AppBuilderImpl;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.WidgetsRegionBuilderImpl;
@@ -36,7 +38,8 @@ public abstract class SmarthouseApplication {
 
     public SmarthouseApplication() {}
 
-    public static void launch(final SensorsSimulator simluator, final Boolean showGui) throws Exception {
+    public static void launch(final SensorsSimulator simluator,
+                        final Boolean showGui) throws Exception {
         final SystemPresenter p = new SystemPresenterFactory()
                         .setUseCloudServer(false)
                         .setRegularFileSystemListeners(false)
@@ -57,6 +60,8 @@ public abstract class SmarthouseApplication {
             @Override
             public void run() {
                 s.startSendingMsgsInAllSensors();
+                if(showGui)
+                    JavaFxHelper.startGui(new DeveloperSimulatorGui().setSimulator(s));
                 super.run();
             }
             
