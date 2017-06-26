@@ -20,7 +20,7 @@ public class DeveloperSimulatorController extends GuiController<SensorsSimulator
 	
 	@FXML AnchorPane mainPane;
     @FXML public TextFlow console;
-	MainSensroListController listController;
+	MainSensorListController listController;
 	ConfigurationWindowController configController;
 	SendMessageController messageController;
 	@Override
