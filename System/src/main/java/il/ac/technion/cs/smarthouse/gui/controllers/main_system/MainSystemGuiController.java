@@ -1,6 +1,9 @@
 package il.ac.technion.cs.smarthouse.gui.controllers.main_system;
 
+import java.io.PrintWriter;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
@@ -9,14 +12,25 @@ import il.ac.technion.cs.smarthouse.gui.javafx_elements.LogConsole;
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystem.ReadOnlyFileNode;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl.ReadOnlyFileNodeImpl;
+import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableColumn.CellDataFeatures;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -41,9 +55,11 @@ public class MainSystemGuiController extends SystemGuiController {
     @FXML Pane dummyPaneRight;
     @FXML AnchorPane mainAnchorPane;
     @FXML VBox mainVBox;
-    
+    @FXML SplitPane mainSplitPane;
+
     TextArea loggerView = new TextArea();
     TitledPane consolePane = new TitledPane("Console", loggerView);
+    TreeTableView<String> fsTreeView = new TreeTableView<>();
 
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model, final T parent,
@@ -93,12 +109,29 @@ public class MainSystemGuiController extends SystemGuiController {
 
             if (m == SystemMode.DEVELOPER_MODE) {
                 tabs.getTabs().removeAll(userTab, sensorsTab);
-                
+
                 mainVBox.getChildren().add(consolePane);
                 consolePane.autosize();
-                
+
                 LogConsole.setLogConsole(loggerView);
                 loggerView.setEditable(false);
+
+                mainSplitPane.getItems().add(fsTreeView);
+                setupFSTreeView(model);
+                mainSplitPane.getDividers().get(0).setPosition(0.7);
+                
+                
+                model.getFileSystem().subscribe((path, data) -> {
+                    fsTreeView = new TreeTableView<>();
+                    setupFSTreeView(model);
+                    Platform.runLater(() -> {
+                        mainSplitPane.getItems().remove(1);
+                        mainSplitPane.getItems().add(fsTreeView);
+                        mainSplitPane.getDividers().get(0).setPosition(0.7);
+
+                    });
+
+                }, FileSystemEntries.SENSORS.buildPath());
 
             }
 
@@ -118,4 +151,33 @@ public class MainSystemGuiController extends SystemGuiController {
         homeVBox.getChildren().add(label);
     }
 
+    public void setupFSTreeView(SystemCore model) {
+
+        TreeItem<String> rootElement = new TreeItem<>("File System View");
+
+        createTree(model.getFileSystem().getReadOnlyFileSystem(), rootElement);
+        TreeTableColumn<String, String> fsViewCol = new TreeTableColumn<>();
+        fsViewCol.prefWidthProperty().bind(fsTreeView.widthProperty());
+
+        fsViewCol.setCellValueFactory(
+                        (CellDataFeatures<String, String> p) -> new ReadOnlyStringWrapper(p.getValue().getValue()));
+
+        fsTreeView.setRoot(rootElement);
+        fsTreeView.getColumns().add(fsViewCol);
+
+      
+
+    }
+
+    private void createTree(ReadOnlyFileNode currNode, TreeItem<String> currTreeNode) {
+
+        TreeItem<String> newTreeNode = new TreeItem<>(currNode.getName());
+        if (!currNode.isLeaf()) {
+            for (ReadOnlyFileNode child : currNode.getChildren())
+                createTree(child, newTreeNode);
+            newTreeNode.setExpanded(true);
+            currTreeNode.getChildren().add(newTreeNode);
+        }
+
+    }
 }
