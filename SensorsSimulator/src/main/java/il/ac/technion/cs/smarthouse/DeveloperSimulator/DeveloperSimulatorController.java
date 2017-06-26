@@ -16,14 +16,20 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.scene.control.TextArea;
+
 
 public class DeveloperSimulatorController extends SimulatorGuiController{
 	
 	@FXML AnchorPane mainPane;
-    @FXML public TextFlow sentConsole, receivedConsole;
+    @FXML public TextArea sentConsole, receivedConsole;
 	MainSensorListController listController;
 	ConfigurationWindowController configController;
 	SendMessageController messageController;
+	
+	private Consumer<String> getConsoleConsumer(TextArea console){
+		return x -> Platform.runLater(() -> console.appendText(x+"\n\n"));
+	}
 	
 	@Override
 	protected <T extends GuiController<SensorsSimulator>> void initialize(SensorsSimulator model1, T parent1,
@@ -31,11 +37,8 @@ public class DeveloperSimulatorController extends SimulatorGuiController{
 		this.listController = createChildController(getClass().getResource("/sensor_config_list_ui.fxml"));
 		this.configController = createChildController(getClass().getResource("/sensor_configuration_ui.fxml"));
 		
-//		sentConsole.getChildren().add(new Text("Welcome to the Sensor developer simulator\n"));
-		
-		model1.addSentMsgLogger(x -> Platform.runLater(()->sentConsole.getChildren().add(new Text(x+"\n"))));
-		model1.addInstructionReceivedLogger(x -> Platform.runLater(()->receivedConsole.getChildren().add(new Text(x+"\n"))));
-		
+		model1.addSentMsgLogger(getConsoleConsumer(sentConsole));
+		model1.addInstructionReceivedLogger(getConsoleConsumer(receivedConsole));
 		JavaFxHelper.placeNodeInPane(listController.getRootViewNode(),mainPane);
 	}
 	
