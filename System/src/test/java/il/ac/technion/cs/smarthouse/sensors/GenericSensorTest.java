@@ -147,7 +147,7 @@ public class GenericSensorTest {
                 counters.get(clsPath).inc(validValKey);
         }, FileSystemEntries.SENSORS_DATA.buildPath(clsPath)));
 
-        builder.setStreamInterval(10L).build().startStreaming();
+        builder.setStreamInterval(100L).build().startStreaming();
 
         Thread.sleep(5000);
 
@@ -158,7 +158,7 @@ public class GenericSensorTest {
     }
 
     @Ignore @Test
-    public void copyConstructorWorks(){
+    public void copyConstructorWorksTest(){
         assert false;//todo
     }
 }
