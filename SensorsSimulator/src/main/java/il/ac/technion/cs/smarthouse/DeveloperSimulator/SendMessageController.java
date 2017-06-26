@@ -42,8 +42,9 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 @SuppressWarnings("rawtypes")
-public class SendMessageController extends GuiController<SensorsSimulator> {
+public class SendMessageController extends SimulatorGuiController {
 
+	final String FROM="From (inclusive)", TO="To (exclusive)";
 	@FXML
 	VBox mainPane;
 	private Map<String, List> ranges;
@@ -62,11 +63,11 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 	}
 
 	public void loadFields() {
-		this.currentSensor = this.getModel().getSensor(this.getModel().getSelectedSensor());
+		this.currentSensor = this.getModel().getSensor(getSelectedSensor());
 		Label l = new Label(currentSensor.getAlias()+" Fields:");
 		l.setFont(new Font("Arial", 20));
 		mainPane.getChildren().add(l);
-		this.typesList = currentSensor.getObservablePaths();
+		this.typesList = getObservablePaths(currentSensor);
 		this.typesList.forEach(p -> {
 			Class c = p.getValue();
 			if (c.equals(Double.class))
@@ -163,7 +164,7 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 
 	private void addIntegerField(String fieldName) {
 		Label label = new Label(fieldName + ":");
-		TextField lowerRange = new TextField("From"), topRange = new TextField("To");
+		TextField lowerRange = new TextField(FROM), topRange = new TextField(TO);
 		lowerRange.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
@@ -192,7 +193,7 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 		consumers.add(l -> {
 			List<Integer> input = new ArrayList<>();
 			try {
-				int lower = Integer.parseInt(lowerRange.getText()), top = Integer.parseInt(lowerRange.getText());
+				int lower = Integer.parseInt(lowerRange.getText()), top = Integer.parseInt(topRange.getText());
 				if (lower > top) {
 					this.encounterdIssue = true;
 					issues.add("in " + fieldName + " From must be less or equal to To");
@@ -210,7 +211,7 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 
 	private void addDoubleField(String fieldName) {
 		Label label = new Label(fieldName + ":");
-		TextField lowerRange = new TextField("From"), topRange = new TextField("To");
+		TextField lowerRange = new TextField(FROM), topRange = new TextField(TO);
 		HBox hb = new HBox(label, lowerRange, topRange);
 		hb.setSpacing(3);
 		
@@ -240,7 +241,7 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 		consumers.add(l -> {
 			List<Double> input = new ArrayList<>();
 			try {
-				double lower = Double.parseDouble(lowerRange.getText()), top = Double.parseDouble(lowerRange.getText());
+				double lower = Double.parseDouble(lowerRange.getText()), top = Double.parseDouble(topRange.getText());
 				if (lower > top) {
 					this.encounterdIssue = true;
 					issues.add("in " + fieldName + " From must be less or equal to To");

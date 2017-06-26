@@ -2,6 +2,7 @@ package il.ac.technion.cs.smarthouse.system.dashboard.widget;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,13 +32,8 @@ public class GraphWidget extends BasicWidget {
         });
 
         builder.series(dataSeries.values().stream().map(s -> (XYChart.Series) s).collect(Collectors.toList()));
+        Optional.ofNullable(data.getUnit()).ifPresent(d -> builder.unit(d));
 
-        if (!WidgetType.PROGRESS_LINE_GRAPH.equals(type))
-            return;
-        builder.gradientStops(new Stop(0, Tile.GREEN), new Stop(0.5, Tile.YELLOW), new Stop(1.0, Tile.RED))
-                        .strokeWithGradient(true);
-        if (data.getUnit() != null)
-            builder.unit(data.getUnit());
     }
 
     @Override
@@ -49,8 +45,10 @@ public class GraphWidget extends BasicWidget {
     public synchronized void update(final Double value, final String key) {
         if (WidgetType.PROGRESS_LINE_GRAPH.equals(type))
             super.update(value, key);
+        
         if (!dataSeries.containsKey(key))
             return;
+        
         Platform.runLater(() -> {
             final Integer maxDataSize = 30;
             if (points > maxDataSize)

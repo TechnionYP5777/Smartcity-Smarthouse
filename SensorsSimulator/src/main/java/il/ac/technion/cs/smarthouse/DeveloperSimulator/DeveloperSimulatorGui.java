@@ -7,14 +7,29 @@ import javafx.stage.Stage;
 
 public class DeveloperSimulatorGui extends Application{
 
+	private SensorsSimulator simulator;
+
 	@Override
 	public void start(Stage s) throws Exception {
-		final Scene scene = new Scene(DeveloperSimulatorController.createRootController(getClass().getResource("/main_window.fxml"), new SensorsSimulator()).getRootViewNode(), 400, 460);
-        s.setTitle("Sensor Simulator");
+		final Scene scene = new Scene(DeveloperSimulatorController.createRootController(
+											getClass().getResource("/main_window.fxml"), getSimulator()).getRootViewNode());
+		s.setOnHiding(e -> getSimulator().stopSendingMsgsInAllSensors());
+		s.setTitle("Sensor Simulator");
         s.setScene(scene);
         s.setResizable(false);
         s.show();
 		
+	}
+
+	private SensorsSimulator getSimulator(){
+		if(simulator == null)
+			simulator = new SensorsSimulator();
+		return simulator;
+	}
+	
+	public DeveloperSimulatorGui setSimulator(SensorsSimulator s){
+		this.simulator = s;
+		return this;
 	}
 	
     public static void main(final String[] args) {

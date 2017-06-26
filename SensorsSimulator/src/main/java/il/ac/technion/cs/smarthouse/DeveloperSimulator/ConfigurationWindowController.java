@@ -26,7 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 
 @SuppressWarnings("rawtypes")
-public class ConfigurationWindowController extends GuiController<SensorsSimulator> {
+public class ConfigurationWindowController extends SimulatorGuiController {
 
 	private GenericSensor currentSensor;
 	private ObservableList<Pair<String, Class>> typesList;
@@ -70,7 +70,7 @@ public class ConfigurationWindowController extends GuiController<SensorsSimulato
 			return $;
 		});
 
-		addTypeField.setPromptText("Sensor Type");
+		addTypeField.setPromptText("Field Type");
 		addTypeField.getItems().addAll(Types.values());
 
 		final int btnCount = buttonBox.getChildren().size();
@@ -84,8 +84,8 @@ public class ConfigurationWindowController extends GuiController<SensorsSimulato
 	}
 
 	public void loadFields() {
-		this.currentSensor = this.getModel().getSensor(this.getModel().getSelectedSensor());
-		this.typesList = currentSensor.getObservablePaths();
+		this.currentSensor = this.getModel().getSensor(getSelectedSensor());
+		this.typesList = getObservablePaths(currentSensor);
 		fieldsTable.setItems(typesList);
 	}
 
@@ -118,7 +118,7 @@ public class ConfigurationWindowController extends GuiController<SensorsSimulato
 		b.setAlias(currentSensor.getAlias());
 		b.setCommname(currentSensor.getCommname());
 		this.typesList.forEach(x -> b.addInfoSendingPath(x.getKey(), x.getValue()));
-		this.getModel().updateSensor(this.getModel().getSelectedSensor(), b.build());
+		this.getModel().updateSensor(getSelectedSensor(), b.build());
 		((DeveloperSimulatorController) this.getParentController()).moveToSensorsList();
 	}
 

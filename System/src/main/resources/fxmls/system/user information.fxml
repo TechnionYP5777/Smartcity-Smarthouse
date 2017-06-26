@@ -44,7 +44,10 @@
 														<Font size="18" />
 													</font>
 												</Label>
-												<TextField fx:id="userNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+												<TextField fx:id="userNameField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                           <tooltip>
+                              <Tooltip maxHeight="200.0" maxWidth="200.0" text="Fill personal details to register. Afterwards you can update phone number and home address and add emergency contacts" wrapText="true" />
+                           </tooltip></TextField>
 												<TextField fx:id="userIDField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 												<TextField fx:id="userPhoneNumField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 												<TextField fx:id="userHomeAddressField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
@@ -136,7 +139,4 @@
          </children>
       </AnchorPane>
   </items>
-   <tooltip>
-      <Tooltip maxHeight="200.0" maxWidth="200.0" text="Fill personal details to register. Afterwards you can update phone number and home address and add emergency contacts" wrapText="true" />
-   </tooltip>
 </SplitPane>

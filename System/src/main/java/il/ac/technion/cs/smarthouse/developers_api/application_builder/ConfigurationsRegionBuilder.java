@@ -1,5 +1,7 @@
 package il.ac.technion.cs.smarthouse.developers_api.application_builder;
 
+import java.util.function.BiConsumer;
+
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
@@ -28,4 +30,10 @@ public interface ConfigurationsRegionBuilder {
     public <T> ConfigurationsRegionBuilder addButtonInputField(String title, String textOnButton, GuiBinderObject<T> bindingDataObject);
     
     public <T extends SensorData> ConfigurationsRegionBuilder addSensorAliasSelectionField(String title, SensorApi<T> sensorApiObject);
+
+    /**
+     * @param aliasesConsumer receives (oldAlias, newAlias) and is called after a change
+     * */
+    public <T extends SensorData> ConfigurationsRegionBuilder addSensorAliasSelectionField(String title, SensorApi<T> sensorApiObject,
+                    BiConsumer<String, String> aliasesConsumer);
 }

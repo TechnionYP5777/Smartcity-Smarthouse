@@ -7,26 +7,38 @@ import java.util.function.Consumer;
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.scene.control.TextArea;
 
-public class DeveloperSimulatorController extends GuiController<SensorsSimulator>{
+
+public class DeveloperSimulatorController extends SimulatorGuiController{
 	
 	@FXML AnchorPane mainPane;
-	MainSensroListController listController;
+    @FXML public TextArea sentConsole, receivedConsole;
+	MainSensorListController listController;
 	ConfigurationWindowController configController;
 	SendMessageController messageController;
+	
+	private Consumer<String> getConsoleConsumer(TextArea console){
+		return x -> Platform.runLater(() -> console.appendText(x+"\n\n"));
+	}
+	
 	@Override
 	protected <T extends GuiController<SensorsSimulator>> void initialize(SensorsSimulator model1, T parent1,
 			URL location, ResourceBundle b) {
 		this.listController = createChildController(getClass().getResource("/sensor_config_list_ui.fxml"));
 		this.configController = createChildController(getClass().getResource("/sensor_configuration_ui.fxml"));
-		Consumer<String> s = x -> System.out.println(x);
-		model1.addSentMsgLogger(s);
+		
+		model1.addSentMsgLogger(getConsoleConsumer(sentConsole));
+		model1.addInstructionReceivedLogger(getConsoleConsumer(receivedConsole));
 		JavaFxHelper.placeNodeInPane(listController.getRootViewNode(),mainPane);
 	}
 	
@@ -40,7 +52,7 @@ public class DeveloperSimulatorController extends GuiController<SensorsSimulator
 	}
 	
 	public void openMessageWindow(){
-		if(this.getModel().getSensor(this.getModel().getSelectedSensor()).getObservablePaths().isEmpty()){
+		if(getObservablePaths(this.getModel().getSensor(getSelectedSensor())).isEmpty()){
 			final Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("Sensor has no fields");

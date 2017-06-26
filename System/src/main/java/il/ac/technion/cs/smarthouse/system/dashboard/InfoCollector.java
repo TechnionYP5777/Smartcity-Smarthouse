@@ -12,7 +12,7 @@ import com.google.gson.annotations.Expose;
 public class InfoCollector {
 
 	@Expose
-	private String unit, title;
+	private String unit = "", title = "";
 	@Expose
 	private Map<String, String> entries = new HashMap<>();
 

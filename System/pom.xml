@@ -39,5 +39,12 @@
 			<artifactId>Common</artifactId>
 			<version>1.01</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>Technion</groupId>
+			<artifactId>SensorsSimulator</artifactId>
+			<version>1.01</version>
+		</dependency>
 	</dependencies>
+	
 </project>

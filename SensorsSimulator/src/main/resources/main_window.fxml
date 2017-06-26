@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextArea?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorController"
-	fx:id="mainPane">
-</AnchorPane>
-
+<SplitPane dividerPositions="0.6809045226130653, 0.9"
+	orientation="VERTICAL" prefHeight="650" prefWidth="450"
+	xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorController">
+	<items>
+		<AnchorPane fx:id="mainPane"/>
+		<AnchorPane >
+			<children>
+			<TitledPane text="Sent Messages Console" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+					<content>
+						<TextArea fx:id="sentConsole" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+					</content>
+				</TitledPane>
+			</children>
+		</AnchorPane>
+		<AnchorPane >
+			<children>
+			<TitledPane text="Received Instructions Console" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+					<content>
+						<TextArea fx:id="receivedConsole" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+					</content>
+				</TitledPane>
+			</children>
+		</AnchorPane>
+		
+	</items>
+</SplitPane>

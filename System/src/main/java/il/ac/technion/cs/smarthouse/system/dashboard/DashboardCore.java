@@ -46,6 +46,19 @@ public class DashboardCore extends ChildCore {
             widget = type.createWidget(size, pathsInfo);
             widget.updateAutomaticallyFrom(fileSystem);
 
+            setOnMouseClick(widget);
+        }
+        
+        Widget(final BasicWidget w){
+            widget = w;
+            setOnMouseClick(w);
+        }
+
+        private Widget(final Widget other) {
+            this(other.widget.getType(), other.widget.getInitalInfo(), other.widget.getTileSize());
+        }
+        
+        private void setOnMouseClick(BasicWidget widget){
             widget.getTile().setOnMouseClicked(e -> {
                 if (e.getButton().equals(MouseButton.SECONDARY)) {
                     final MenuItem addOpt = new MenuItem("Add to Dashboard"),
@@ -57,10 +70,6 @@ public class DashboardCore extends ChildCore {
                     popup.show(widget.getTile(), e.getScreenX(), e.getScreenY());
                 }
             });
-        }
-
-        private Widget(final Widget other) {
-            this(other.widget.getType(), other.widget.getInitalInfo(), other.widget.getTileSize());
         }
 
         // TODO: can backend update be removed? may happen throught the front --
@@ -103,6 +112,10 @@ public class DashboardCore extends ChildCore {
 
     public Widget createWidget(final WidgetType t, final InfoCollector pathsInfo, final Double size) {
         return new Widget(t, pathsInfo, size);
+    }
+    
+    public Widget createWidget(final BasicWidget w){
+        return new Widget(w);
     }
 
     // -------------------front-end setters------------------------------------

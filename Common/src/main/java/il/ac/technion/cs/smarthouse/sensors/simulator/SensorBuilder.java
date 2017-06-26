@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.google.common.base.Supplier;
+
 import il.ac.technion.cs.smarthouse.sensors.InstructionHandler;
 import il.ac.technion.cs.smarthouse.sensors.InteractiveSensor;
 import il.ac.technion.cs.smarthouse.sensors.PathType;
@@ -50,6 +52,7 @@ public class SensorBuilder {
 		return newSensor;
 	}
 
+	//--------------------- sensor identification ------------------------
 	/**
 	 * if not called, a random Id will be chosen
 	 */
@@ -68,12 +71,8 @@ public class SensorBuilder {
 		return this;
 	}
 
-	public SensorBuilder setInstructionHandler(InstructionHandler h) {
-		iHandler = h;
-		return this;
-	}
-
-	SensorBuilder addPath(PathType t, String path, Class pathClass) {
+	//--------------------- paths setting --------------------------------
+	public SensorBuilder addPath(PathType t, String path, Class pathClass) {
 		genericSensor.addPath(t, path, pathClass);
 		return this;
 	}
@@ -81,39 +80,56 @@ public class SensorBuilder {
 	public SensorBuilder addInfoSendingPath(String path, Class pathClass) {
 		return addPath(PathType.INFO_SENDING, path, pathClass);
 	}
+	
 
 	public SensorBuilder addInstructionsReceiveingPath(String path) {
 		return addPath(PathType.INSTRUCTION_RECEIVING, path, null);
 	}
 
-	public SensorBuilder addStreamingRange(String path,  List values) {
+
+	//--------------------- interval setting -----------------------------
+	public SensorBuilder setPollingInterval(Long milliseconds) {
+		genericSensor.setPollingInterval(milliseconds);
+		return this;
+	}
+
+	
+	public SensorBuilder setStreamInterval(Long milliseconds) {
+		genericSensor.setStreamInterval(milliseconds);
+		return this;
+	}
+
+	//--------------------- logging setting-------------------------------
+	public SensorBuilder addLogger(PathType t, Consumer<String> logger) {
+		genericSensor.addLogger(t, logger);
+		return this;
+	}
+
+	
+	public SensorBuilder addInfoSendingLogger(Consumer<String> logger) {
+		return addLogger(PathType.INFO_SENDING, logger);
+	}
+
+	
+	public SensorBuilder addInstructionsReceiveingLogger(Consumer<String> logger) {
+		return addLogger(PathType.INSTRUCTION_RECEIVING, logger);
+	}
+	
+	//--------------------- additional settings --------------------------
+	public SensorBuilder setInstructionHandler(InstructionHandler h) {
+		iHandler = h;
+		return this;
+	}
+
+	public SensorBuilder addStreamingRange(String path, @SuppressWarnings("rawtypes") List values) {
 		if (ranges == null)
 			ranges = new HashMap<>();
 		ranges.put(path, values);
 		return this;
 	}
 
-	public SensorBuilder setPollingInterval(Long milliseconds) {
-		genericSensor.setPollingInterval(milliseconds);
+	public SensorBuilder setMessageSupplier(Supplier<Map<String, Object>> msgsGenerator){
+		genericSensor.setMsgsSupplier(msgsGenerator);
 		return this;
 	}
-
-	public SensorBuilder setStreamInterval(Long milliseconds) {
-		genericSensor.setStreamInterval(milliseconds);
-		return this;
-	}
-
-	SensorBuilder addLogger(PathType t, Consumer<String> logger) {
-		genericSensor.addLogger(t, logger);
-		return this;
-	}
-
-	public SensorBuilder addInfoSendingLogger(Consumer<String> logger) {
-		return addLogger(PathType.INFO_SENDING, logger);
-	}
-
-	public SensorBuilder addInstructionsReceiveingLogger(Consumer<String> logger) {
-		return addLogger(PathType.INSTRUCTION_RECEIVING, logger);
-	}
-
 }

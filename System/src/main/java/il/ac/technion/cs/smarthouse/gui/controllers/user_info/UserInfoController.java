@@ -3,6 +3,7 @@ package il.ac.technion.cs.smarthouse.gui.controllers.user_info;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 import java.util.function.Consumer;
 
 import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
@@ -74,7 +75,7 @@ public class UserInfoController extends SystemGuiController {
 	@FXML
 	public TextField addEmailField;
 	@FXML
-	public ComboBox<EmergencyLevel> addELevelField;
+	public ComboBox<String> addELevelField;
 	@FXML
 	public Button saveButton;
 	@FXML
@@ -95,9 +96,9 @@ public class UserInfoController extends SystemGuiController {
 
 	private class ContactGUI {
 		public Contact contact;
-		public EmergencyLevel eLevel;
+		public String eLevel;
 
-		public ContactGUI(final Contact contact, final EmergencyLevel eLevel) {
+		public ContactGUI(final Contact contact, final String eLevel) {
 			this.contact = contact;
 			this.eLevel = eLevel;
 		}
@@ -149,7 +150,7 @@ public class UserInfoController extends SystemGuiController {
 				alert.setHeaderText("User Not Registered");
 				alert.setContentText("Make sure to register the user before adding any contacts.");
 				alert.showAndWait();
-			} else if (!validateEmergencyLevel(addELevelField.getValue()))
+			} else if (!validateEmergencyLevel(EmergencyLevel.fromString(EmergencyLevel.fromPretty(addELevelField.getValue()))))
 				alertMessageUnvalidInput("elevel");
 			else if (!validateName(addNameField.getText()))
 				alertMessageUnvalidInput("name");
@@ -203,7 +204,8 @@ public class UserInfoController extends SystemGuiController {
 		HBox.setHgrow(saveButton, Priority.ALWAYS);
 
 		addELevelField.setPromptText("Emergency Level");
-		addELevelField.getItems().addAll(EmergencyLevel.values());
+		for (EmergencyLevel eLevel : EmergencyLevel.values())
+            addELevelField.getItems().add(eLevel.toPretty());
 
 		final int btnCount = buttonBox.getChildren().size();
 		addNameField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
@@ -216,7 +218,7 @@ public class UserInfoController extends SystemGuiController {
 	}
 
 	static boolean validateName(final String name) {
-		return name != null && !"".equals(name) && name.chars().allMatch(Character::isLetter);
+	    return name != null && !"".equals(name) && Pattern.compile("^[ A-Za-z]+$").matcher(name).matches();
 	}
 
 	static boolean validateId(final String id) {
@@ -254,7 +256,7 @@ public class UserInfoController extends SystemGuiController {
 	private void addContactToTable(final ActionEvent __) {
 		final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(),
 				addEmailField.getText());
-		getModel().getUser().addContact(contact, addELevelField.getValue());
+		getModel().getUser().addContact(contact, EmergencyLevel.fromString(EmergencyLevel.fromPretty(addELevelField.getValue())));
 		contactsTable.getItems().add(new ContactGUI(contact, addELevelField.getValue()));
 
 	}
@@ -379,6 +381,7 @@ public class UserInfoController extends SystemGuiController {
 		setContactListeners();
 		setCellsFactories();
 		costumizeContactsTab();
+		contactsTable.setEditable(false);
 		
 		Consumer<UserInformation> c = x ->{
 		    userNameField.setText(x.getName());
@@ -388,10 +391,9 @@ public class UserInfoController extends SystemGuiController {
 		    userNameField.setEditable(false);
             userIDField.setEditable(false);
             Map<Contact,EmergencyLevel> contacts = x.getContactsWithElevel();
-            contacts.keySet().forEach(y->contactsTable.getItems().add(new ContactGUI(y, contacts.get(y))));
+            contacts.keySet().forEach(y->contactsTable.getItems().add(new ContactGUI(y, contacts.get(y).toPretty())));
 		};
 		
 		model.subscribeToUserInformation(c);
 	}
-
 }

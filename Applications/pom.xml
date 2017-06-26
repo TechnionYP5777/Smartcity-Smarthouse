@@ -28,5 +28,6 @@
 		<module>Stove</module>
 		<module>Vitals</module>
 		<module>Calculator</module>
-	</modules>
+    <module>ACU</module>
+  </modules>
 </project>

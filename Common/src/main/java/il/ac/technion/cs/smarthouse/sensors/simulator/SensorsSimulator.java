@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.sensors.simulator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +27,6 @@ public class SensorsSimulator {
 	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
 	private Map<Action, List<Consumer<GenericSensor>>> listeners = new HashMap<>();
 	private Map<String, GenericSensor> sensors = new HashMap<>();
-	private String selectedSensor;
 
 	private void addLogger(PathType t, Consumer<String> logger) {
 		if (!loggers.containsKey(t))
@@ -46,14 +46,18 @@ public class SensorsSimulator {
 	// ------------------------- public API -----------------------------------
 	public String addSensor(GenericSensor s) {
 		Stream.of(PathType.values())
-						.forEach(type -> Optional.ofNullable(loggers.get(type))
-						.ifPresent(ls->ls.forEach(logger -> s.addLogger(type, logger))));
+				.forEach(type -> Optional.ofNullable(loggers.get(type))
+										.ifPresent(ls -> ls.forEach(logger -> s.addLogger(type, logger))));
 		String id = getNextId();
 		sensors.put(id, s);
 		callListeners(Action.ADD, s);
 		return id;
 	}
 
+	public SensorsSimulator addAllSensor(Collection<GenericSensor> sensors){
+		Optional.ofNullable(sensors).ifPresent(ss -> ss.forEach(s -> addSensor(s)));
+		return this;
+	}
 	public SensorsSimulator removeSensor(String id) {
 		callListeners(Action.REMOVE, sensors.get(id));
 		sensors.remove(id);
@@ -65,31 +69,37 @@ public class SensorsSimulator {
 		return sensors.get(id);
 	}
 	
+	public Collection<GenericSensor> getAllSensors(){
+		return sensors.values();
+	}
+	/** The usage of this method is discouraged and it remains solely for legacy purposes.<br>
+	 *  The simulator is <mark><b>not</b></mark> intended to hold half-defined sensors and might
+	 *  result in unexpected behaviour.
+	 *  Please keep incomplete sensor data in is creating builder until information
+	 *  has been fully gathered.
+	 * */
+	@Deprecated
 	public SensorsSimulator updateSensor(String id,GenericSensor s){
 		sensors.put(id,s);
 		return this;
 	}
 	
 	public SensorsSimulator startSendingMsgsInAllSensors() {
-		sensors.values().forEach(s -> new Thread(() -> s.streamMessages()).start());
+		sensors.values().forEach(s -> s.startStreaming());
 		return this;
 	}
 	
+	public SensorsSimulator stopSendingMsgsInAllSensors(){
+		sensors.values().forEach(s -> s.stopStreaming());
+		return this;
+	}
+
 	public String getSensorId(GenericSensor s){
-		for(String id:sensors.keySet())
-			if (sensors.get(id).equals(s))
-				return id;
-		return null;
+		return sensors.keySet().stream()
+						.filter(id -> sensors.get(id).equals(s))
+						.findFirst().orElse(null);
 	}
 	
-	public SensorsSimulator setSelectedSensor(String id) {
-		this.selectedSensor = id;
-		return this;
-	}
-	
-	public String getSelectedSensor() {
-		return selectedSensor;
-	}
 	
 	// ---------- access through listeners/loggers ----------
 	public SensorsSimulator addSentMsgLogger(Consumer<String> logger) {

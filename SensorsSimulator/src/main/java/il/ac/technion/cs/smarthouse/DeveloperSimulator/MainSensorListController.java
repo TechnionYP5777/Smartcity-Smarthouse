@@ -30,7 +30,7 @@ import javafx.util.Pair;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class MainSensroListController extends GuiController<SensorsSimulator>{
+public class MainSensorListController extends  SimulatorGuiController{
 	
 	ObservableList<Pair<String, String>> sensors  = FXCollections.observableArrayList();
 	@FXML private TableView<Pair<String, String>> sensorTable;
@@ -61,9 +61,8 @@ public class MainSensroListController extends GuiController<SensorsSimulator>{
 				
 				@Override
 				public void handle(ActionEvent e) {
-					model1.setSelectedSensor($.getTableView().getItems()
-                            .get($.getIndex()).getKey());
-					((DeveloperSimulatorController)MainSensroListController.this.getParentController()).moveToConfiguration();
+					setSelectedSensor($.getTableView().getItems().get($.getIndex()).getKey());
+					((DeveloperSimulatorController)MainSensorListController.this.getParentController()).moveToConfiguration();
 				}
 			});
             
@@ -79,9 +78,8 @@ public class MainSensroListController extends GuiController<SensorsSimulator>{
 				
 				@Override
 				public void handle(ActionEvent e) {
-					model1.setSelectedSensor($.getTableView().getItems()
-                            .get($.getIndex()).getKey());
-					((DeveloperSimulatorController)MainSensroListController.this.getParentController()).openMessageWindow();
+					setSelectedSensor($.getTableView().getItems().get($.getIndex()).getKey());
+					((DeveloperSimulatorController)MainSensorListController.this.getParentController()).openMessageWindow();
 				}
 			});
             
@@ -108,7 +106,7 @@ public class MainSensroListController extends GuiController<SensorsSimulator>{
 						return;
 					final Pair<String, String> currentSensor = $.getTableView().getItems().get($.getIndex());
 					model1.removeSensor(currentSensor.getKey());
-					MainSensroListController.this.sensors.remove(currentSensor);
+					MainSensorListController.this.sensors.remove(currentSensor);
 				}
 			});
             

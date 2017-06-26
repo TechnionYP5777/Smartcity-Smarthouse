@@ -25,7 +25,7 @@
 						</Pane>
 					</content>
                <tooltip>
-                  <Tooltip text="Click the + to add a new room" wrapText="true" />
+                  <Tooltip text="Click the + to add a new room. Right click on a room to edit its name" wrapText="true" />
                </tooltip>
 				</TitledPane>
 			</children>
