@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-public class DeveloperSimulatorController extends GuiController<SensorsSimulator>{
+public class DeveloperSimulatorController extends SimulatorGuiController{
 	
 	@FXML AnchorPane mainPane;
     @FXML public TextFlow sentConsole, receivedConsole;
@@ -49,7 +49,7 @@ public class DeveloperSimulatorController extends GuiController<SensorsSimulator
 	}
 	
 	public void openMessageWindow(){
-		if(this.getModel().getSensor(this.getModel().getSelectedSensor()).getObservablePaths().isEmpty()){
+		if(getObservablePaths(this.getModel().getSensor(getSelectedSensor())).isEmpty()){
 			final Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("Sensor has no fields");

@@ -13,7 +13,7 @@
 		<AnchorPane fx:id="mainPane"/>
 		<AnchorPane >
 			<children>
-				<TitledPane text="Sent Messages Console" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+			<TitledPane text="Sent Messages Console" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 					<content>
 						<TextFlow fx:id="sentConsole" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
 					</content>
@@ -22,12 +22,13 @@
 		</AnchorPane>
 		<AnchorPane >
 			<children>
-				<TitledPane text="Received Instructions Console" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+			<TitledPane text="Received Instructions Console" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 					<content>
 						<TextFlow fx:id="receivedConsole" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
 					</content>
 				</TitledPane>
 			</children>
 		</AnchorPane>
+		
 	</items>
 </SplitPane>

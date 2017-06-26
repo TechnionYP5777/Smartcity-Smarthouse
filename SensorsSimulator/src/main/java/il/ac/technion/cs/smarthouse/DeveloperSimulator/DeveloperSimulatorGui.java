@@ -12,15 +12,19 @@ public class DeveloperSimulatorGui extends Application{
 	@Override
 	public void start(Stage s) throws Exception {
 		final Scene scene = new Scene(DeveloperSimulatorController.createRootController(
-											getClass().getResource("/main_window.fxml"), 
-											(simulator!= null) ? simulator : new SensorsSimulator()
-										).getRootViewNode()
-									);
-        s.setTitle("Sensor Simulator");
+											getClass().getResource("/main_window.fxml"), getSimulator()).getRootViewNode());
+		s.setOnHiding(e -> getSimulator().stopSendingMsgsInAllSensors());
+		s.setTitle("Sensor Simulator");
         s.setScene(scene);
         s.setResizable(false);
         s.show();
 		
+	}
+
+	private SensorsSimulator getSimulator(){
+		if(simulator == null)
+			simulator = new SensorsSimulator();
+		return simulator;
 	}
 	
 	public DeveloperSimulatorGui setSimulator(SensorsSimulator s){

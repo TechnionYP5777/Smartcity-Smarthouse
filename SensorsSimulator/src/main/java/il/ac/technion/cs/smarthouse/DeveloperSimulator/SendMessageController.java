@@ -42,7 +42,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 @SuppressWarnings("rawtypes")
-public class SendMessageController extends GuiController<SensorsSimulator> {
+public class SendMessageController extends SimulatorGuiController {
 
 	@FXML
 	VBox mainPane;
@@ -62,11 +62,11 @@ public class SendMessageController extends GuiController<SensorsSimulator> {
 	}
 
 	public void loadFields() {
-		this.currentSensor = this.getModel().getSensor(this.getModel().getSelectedSensor());
+		this.currentSensor = this.getModel().getSensor(getSelectedSensor());
 		Label l = new Label(currentSensor.getAlias()+" Fields:");
 		l.setFont(new Font("Arial", 20));
 		mainPane.getChildren().add(l);
-		this.typesList = currentSensor.getObservablePaths();
+		this.typesList = getObservablePaths(currentSensor);
 		this.typesList.forEach(p -> {
 			Class c = p.getValue();
 			if (c.equals(Double.class))

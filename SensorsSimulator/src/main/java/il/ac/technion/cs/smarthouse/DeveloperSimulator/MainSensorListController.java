@@ -30,7 +30,7 @@ import javafx.util.Pair;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class MainSensorListController extends GuiController<SensorsSimulator>{
+public class MainSensorListController extends  SimulatorGuiController{
 	
 	ObservableList<Pair<String, String>> sensors  = FXCollections.observableArrayList();
 	@FXML private TableView<Pair<String, String>> sensorTable;
@@ -61,8 +61,7 @@ public class MainSensorListController extends GuiController<SensorsSimulator>{
 				
 				@Override
 				public void handle(ActionEvent e) {
-					model1.setSelectedSensor($.getTableView().getItems()
-                            .get($.getIndex()).getKey());
+					setSelectedSensor($.getTableView().getItems().get($.getIndex()).getKey());
 					((DeveloperSimulatorController)MainSensorListController.this.getParentController()).moveToConfiguration();
 				}
 			});
@@ -79,8 +78,7 @@ public class MainSensorListController extends GuiController<SensorsSimulator>{
 				
 				@Override
 				public void handle(ActionEvent e) {
-					model1.setSelectedSensor($.getTableView().getItems()
-                            .get($.getIndex()).getKey());
+					setSelectedSensor($.getTableView().getItems().get($.getIndex()).getKey());
 					((DeveloperSimulatorController)MainSensorListController.this.getParentController()).openMessageWindow();
 				}
 			});
