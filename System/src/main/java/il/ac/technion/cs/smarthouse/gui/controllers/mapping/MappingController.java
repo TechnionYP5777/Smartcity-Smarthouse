@@ -24,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -144,6 +145,26 @@ public class MappingController extends SystemGuiController {
         canvas.setOnMouseClicked(mouseEvent -> {
             double x = mouseEvent.getX();
             double y = mouseEvent.getY();
+            if(mouseEvent.getButton() == MouseButton.SECONDARY){
+                mappingInformaton.getHouse().getRooms().forEach(r -> {
+                    if (x > r.x && x < r.x + MappingInformation.getWidth() && y > r.y
+                                    && y < r.y + MappingInformation.getHeight()){
+                        if(r.location.equals(SensorLocation.UNDIFINED))
+                            return;
+                        final TextInputDialog dialog = new TextInputDialog(r.location);
+                        dialog.setTitle("Update Room");
+                        dialog.setHeaderText("Config your smarthouse");
+                        dialog.setContentText("Please enter new room name:");
+                        final Optional<String> result = dialog.showAndWait();
+                        if (!result.isPresent())
+                            return;
+                        final String name = result.get();
+                        r.location = name;
+                    }
+                });
+                return;
+            }
+                
             if (x > xPlusRoom && x < xPlusRoom + MappingInformation.getWidth() && y > yPlusRoom
                             && y < yPlusRoom + MappingInformation.getHeight()) {
                 final TextInputDialog dialog = new TextInputDialog("rooms name");

@@ -7,7 +7,7 @@ public class Room {
     @Expose public final int y;
     @Expose public final int width;
     @Expose public final int height;
-    @Expose public final String location;
+    @Expose public String location;
 
     public Room(final int x, final int y, final int width, final int height, final String location) {
         this.x = x;
