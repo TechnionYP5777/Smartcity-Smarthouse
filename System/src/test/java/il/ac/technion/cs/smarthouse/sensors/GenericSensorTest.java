@@ -10,6 +10,7 @@ import java.util.function.Function;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
@@ -146,7 +147,7 @@ public class GenericSensorTest {
                 counters.get(clsPath).inc(validValKey);
         }, FileSystemEntries.SENSORS_DATA.buildPath(clsPath)));
 
-        builder.setStreamInterval(10L).build().streamMessages();
+        builder.setStreamInterval(10L).build().startStreaming();
 
         Thread.sleep(5000);
 
@@ -154,5 +155,10 @@ public class GenericSensorTest {
         counters.values().forEach(cntr -> {
             assert cntr.get(receivedKey) > 0 && cntr.get(receivedKey).equals(cntr.get(validValKey));
         });
+    }
+
+    @Ignore @Test
+    public void copyConstructorWorks(){
+        assert false;//todo
     }
 }

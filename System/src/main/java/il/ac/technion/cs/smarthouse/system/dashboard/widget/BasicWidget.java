@@ -51,8 +51,19 @@ public abstract class BasicWidget {
             return (Double)dataObj;
         if(Boolean.class.equals(dataObj.getClass()))
             return (Boolean)dataObj? 1.0: 0.0;
-        if(String.class.equals(dataObj.getClass()))
-            return (Double) StringConverter.convert(Double.class, (String)dataObj);
+        if(String.class.equals(dataObj.getClass())){
+            final String sdata = (String) dataObj;
+            try {
+                return Double.valueOf(sdata);
+            } catch (NumberFormatException | ClassCastException e) {}
+            try {
+                return Integer.valueOf(sdata) + 0.0;
+            } catch (final NumberFormatException e) {}
+            try {
+                return Boolean.valueOf(sdata) ? 1.0 : 0.0;
+            } catch (final NumberFormatException e) {}
+//            return (Double) StringConverter.convert(Double.class, (String)dataObj);
+        }
         
         log.error("Received an object I don't know how to cast! The object is:"+dataObj+", of "+dataObj.getClass());
         return 42.0;
