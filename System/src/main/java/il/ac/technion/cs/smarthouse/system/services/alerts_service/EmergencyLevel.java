@@ -6,14 +6,14 @@ import java.util.stream.Stream;
 
 /**
  * The level of emergency, defined by the level of expertise needed to take care
- * of it. Includes the following options: {@link #NOTIFY_ELDERLY},
+ * of it. Includes the following options: {@link #NOTIFY_CLIENT},
  * {@link #SMS_EMERGENCY_CONTACT}, {@link #CALL_EMERGENCY_CONTACT},
  * {@link #CONTACT_POLICE}, {@link #CONTACT_HOSPITAL},
  * {@link #CONTACT_FIRE_FIGHTERS}
  */
 public enum EmergencyLevel {
     /** Low level of emergency, requires a reminder to the elderly */
-    NOTIFY_ELDERLY,
+    NOTIFY_CLIENT,
     /**
      * low-Medium level of emergency, requires e-mailing a previously defined
      * contact
@@ -45,6 +45,10 @@ public enum EmergencyLevel {
     
     public String toPretty() {
         return name().toLowerCase().replace('_', ' ');
+    }
+    
+    public static String fromPretty(String pretty) {
+        return pretty.toUpperCase().replace(' ', '_');
     }
 
 }

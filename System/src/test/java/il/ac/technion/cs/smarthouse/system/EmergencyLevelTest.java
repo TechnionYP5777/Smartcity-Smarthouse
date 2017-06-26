@@ -15,8 +15,8 @@ public class EmergencyLevelTest {
 
     @Test
     public void fromStringTest() {
-        emergencyLevel = EmergencyLevel.fromString("NOTIFY_ELDERLY");
-        Assert.assertEquals(EmergencyLevel.NOTIFY_ELDERLY, emergencyLevel);
+        emergencyLevel = EmergencyLevel.fromString("NOTIFY_CLIENT");
+        Assert.assertEquals(EmergencyLevel.NOTIFY_CLIENT, emergencyLevel);
 
         emergencyLevel = EmergencyLevel.fromString("EMAIL_EMERGENCY_CONTACT");
         Assert.assertEquals(EmergencyLevel.EMAIL_EMERGENCY_CONTACT, emergencyLevel);
