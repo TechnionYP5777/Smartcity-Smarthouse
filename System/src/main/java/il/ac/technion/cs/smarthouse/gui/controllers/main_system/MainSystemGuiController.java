@@ -116,18 +116,14 @@ public class MainSystemGuiController extends SystemGuiController {
                 LogConsole.setLogConsole(loggerView);
                 loggerView.setEditable(false);
 
-                mainSplitPane.getItems().add(fsTreeView);
                 setupFSTreeView(model);
-                mainSplitPane.getDividers().get(0).setPosition(0.7);
-                
-                
+
                 model.getFileSystem().subscribe((path, data) -> {
                     fsTreeView = new TreeTableView<>();
-                    setupFSTreeView(model);
+
                     Platform.runLater(() -> {
                         mainSplitPane.getItems().remove(1);
-                        mainSplitPane.getItems().add(fsTreeView);
-                        mainSplitPane.getDividers().get(0).setPosition(0.7);
+                        setupFSTreeView(model);
 
                     });
 
@@ -165,19 +161,20 @@ public class MainSystemGuiController extends SystemGuiController {
         fsTreeView.setRoot(rootElement);
         fsTreeView.getColumns().add(fsViewCol);
 
-      
+        mainSplitPane.getItems().add(fsTreeView);
+        mainSplitPane.getDividers().get(0).setPosition(0.7);
 
     }
 
     private void createTree(ReadOnlyFileNode currNode, TreeItem<String> currTreeNode) {
 
         TreeItem<String> newTreeNode = new TreeItem<>(currNode.getName());
-        if (!currNode.isLeaf()) {
-            for (ReadOnlyFileNode child : currNode.getChildren())
-                createTree(child, newTreeNode);
-            newTreeNode.setExpanded(true);
-            currTreeNode.getChildren().add(newTreeNode);
-        }
+        if (currNode.isLeaf())
+            return;
+        for (ReadOnlyFileNode child : currNode.getChildren())
+            createTree(child, newTreeNode);
+        newTreeNode.setExpanded(true);
+        currTreeNode.getChildren().add(newTreeNode);
 
     }
 }
