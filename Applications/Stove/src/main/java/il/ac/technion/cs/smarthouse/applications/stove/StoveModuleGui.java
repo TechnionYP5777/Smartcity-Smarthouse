@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ColorRange;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
+import il.ac.technion.cs.smarthouse.sensors.Simulatable;
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
@@ -23,7 +24,7 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsServi
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 import javafx.scene.paint.Color;
 
-public class StoveModuleGui extends SmarthouseApplication {
+public class StoveModuleGui extends SmarthouseApplication implements Simulatable{
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);
 
     private Boolean alertCalled = true;

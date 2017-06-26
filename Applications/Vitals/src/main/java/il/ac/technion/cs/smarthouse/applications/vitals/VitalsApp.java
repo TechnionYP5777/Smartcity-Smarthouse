@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
+import il.ac.technion.cs.smarthouse.sensors.Simulatable;
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
@@ -26,7 +27,7 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
  * @author Yarden
  * @since 19.1.17
  */
-public class VitalsApp extends SmarthouseApplication {
+public class VitalsApp extends SmarthouseApplication implements Simulatable{
     private static Logger log = LoggerFactory.getLogger(VitalsApp.class);
 
     private Controller controller;

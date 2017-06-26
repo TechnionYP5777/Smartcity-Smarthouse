@@ -13,6 +13,7 @@ import il.ac.technion.cs.simulation.Simulation.AcuAction;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.sensors.PathType;
+import il.ac.technion.cs.smarthouse.sensors.Simulatable;
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
@@ -26,7 +27,7 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
  * @author Elia Traore
  * @since Jun 22, 2017
  */
-public class AcuGui extends SmarthouseApplication{
+public class AcuGui extends SmarthouseApplication implements Simulatable {
 	static Simulation simulation = new Simulation(30,//summer sucks
 										"Roy's Man Cave", "Ron's Home Cinema");
 //										, "Yarden's AI lab", "Inbal's dogs kennel");
@@ -141,6 +142,9 @@ public class AcuGui extends SmarthouseApplication{
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see il.ac.technion.cs.smarthouse.sensors.Simulatable#getSimulatedSensors()
+	 */
 	@Override
 	public Collection<GenericSensor> getSimulatedSensors() {
 		return simulation.getSensors();
