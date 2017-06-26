@@ -1,10 +1,17 @@
 package il.ac.technion.cs.smarthouse.applications.vitals;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
+import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
+import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
+import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
@@ -28,8 +35,39 @@ public class VitalsApp extends SmarthouseApplication {
     boolean lowBPAlert;
     int highBPAlert;
 
+    static SensorsSimulator simulator = initSimulator();
     public static void main(String[] args) throws Exception {
-        launch(VitalsSensorSimulator.class);
+        launch(simulator,true);
+    }
+
+    /**
+     * @return
+     */
+    private static SensorsSimulator initSimulator() {
+        final String path = "sos" + "." + "pressed";
+        final String pulsePath = "vitals" + "." + "pulse";
+        final String sysBPPath = "vitals" + "." + "systolicBP";
+        final String diBPPath = "vitals" + "." + "diastolicBP";
+        SensorsSimulator s = new SensorsSimulator();
+        s.addSensor(new SensorBuilder()
+                .setCommname("iVitals")
+                .setAlias("Yarden's vitals sensor")
+                .addInfoSendingPath(pulsePath, Integer.class)
+                .addStreamingRange(pulsePath, Arrays.asList(30,200))
+                .addInfoSendingPath(sysBPPath, Integer.class)
+                .addStreamingRange(sysBPPath, Arrays.asList(30,200))
+                .addInfoSendingPath(diBPPath, Integer.class)
+                .addStreamingRange(diBPPath, Arrays.asList(30,200))
+                .setStreamInterval(TimeUnit.SECONDS.toMillis(1))
+                .build()
+                );
+        return s;
+    }
+    
+
+    @Override
+    public Collection<GenericSensor> getSimulatedSensors() {
+        return simulator.getAllSensors();
     }
 
     @Override

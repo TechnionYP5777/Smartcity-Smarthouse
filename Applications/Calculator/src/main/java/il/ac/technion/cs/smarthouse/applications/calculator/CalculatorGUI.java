@@ -10,7 +10,7 @@ import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinder
 public class CalculatorGUI extends SmarthouseApplication {
 
 	public static void main(String[] args) throws Exception {
-		launch();
+		launch(null,false);
 	}
 
 	@Override
