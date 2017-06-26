@@ -3,6 +3,9 @@
  */
 package il.ac.technion.cs.smarthouse.DeveloperSimulator;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.sensors.PathType;
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
@@ -28,7 +31,8 @@ public abstract class SimulatorGuiController extends GuiController<SensorsSimula
 	
 	protected static ObservableList<Pair<String,Class>> getObservablePaths(GenericSensor sensor){
 		ObservableList<Pair<String,Class>> list = FXCollections.observableArrayList();
-		sensor.getPathsWithClasses(PathType.INFO_SENDING).forEach((path,cls)-> list.add(new Pair<String,Class>(path, cls)));
+		Optional.ofNullable(sensor.getPathsWithClasses(PathType.INFO_SENDING))
+				.ifPresent(paths -> paths.forEach((path,cls)-> list.add(new Pair<String,Class>(path, cls))));
 		return list;
 	}
 }

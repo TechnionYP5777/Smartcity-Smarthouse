@@ -26,7 +26,6 @@ public class SensorsSimulator {
 	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
 	private Map<Action, List<Consumer<GenericSensor>>> listeners = new HashMap<>();
 	private Map<String, GenericSensor> sensors = new HashMap<>();
-	private String selectedSensor;
 
 	private void addLogger(PathType t, Consumer<String> logger) {
 		if (!loggers.containsKey(t))
@@ -65,13 +64,20 @@ public class SensorsSimulator {
 		return sensors.get(id);
 	}
 	
+	/** The usage of this method is discouraged and it remains solely for legacy purposes.<br>
+	 *  The simulator is <mark><b>not</b></mark> intended to hold half-defined sensors and might
+	 *  result in unexpected behaviour.
+	 *  Please keep incomplete sensor data in is creating builder until information
+	 *  has been fully gathered.
+	 * */
+	@Deprecated
 	public SensorsSimulator updateSensor(String id,GenericSensor s){
 		sensors.put(id,s);
 		return this;
 	}
 	
 	public SensorsSimulator startSendingMsgsInAllSensors() {
-		sensors.values().forEach(s -> s.streamMessages());
+		sensors.values().forEach(s -> s.startStreaming());
 		return this;
 	}
 	
@@ -86,15 +92,6 @@ public class SensorsSimulator {
 						.findFirst().orElse(null);
 	}
 	
-	//todo: is this here?
-	public SensorsSimulator setSelectedSensor(String id) {
-		this.selectedSensor = id;
-		return this;
-	}
-	
-	public String getSelectedSensor() {
-		return selectedSensor;
-	}
 	
 	// ---------- access through listeners/loggers ----------
 	public SensorsSimulator addSentMsgLogger(Consumer<String> logger) {

@@ -70,7 +70,7 @@ public class ConfigurationWindowController extends SimulatorGuiController {
 			return $;
 		});
 
-		addTypeField.setPromptText("Sensor Type");
+		addTypeField.setPromptText("Field Type");
 		addTypeField.getItems().addAll(Types.values());
 
 		final int btnCount = buttonBox.getChildren().size();

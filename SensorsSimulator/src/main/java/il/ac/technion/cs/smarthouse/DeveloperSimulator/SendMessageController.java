@@ -44,6 +44,7 @@ import javafx.util.Pair;
 @SuppressWarnings("rawtypes")
 public class SendMessageController extends SimulatorGuiController {
 
+	final String FROM="From (inclusive)", TO="To (exclusive)";
 	@FXML
 	VBox mainPane;
 	private Map<String, List> ranges;
@@ -163,7 +164,7 @@ public class SendMessageController extends SimulatorGuiController {
 
 	private void addIntegerField(String fieldName) {
 		Label label = new Label(fieldName + ":");
-		TextField lowerRange = new TextField("From"), topRange = new TextField("To");
+		TextField lowerRange = new TextField(FROM), topRange = new TextField(TO);
 		lowerRange.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
@@ -192,7 +193,7 @@ public class SendMessageController extends SimulatorGuiController {
 		consumers.add(l -> {
 			List<Integer> input = new ArrayList<>();
 			try {
-				int lower = Integer.parseInt(lowerRange.getText()), top = Integer.parseInt(lowerRange.getText());
+				int lower = Integer.parseInt(lowerRange.getText()), top = Integer.parseInt(topRange.getText());
 				if (lower > top) {
 					this.encounterdIssue = true;
 					issues.add("in " + fieldName + " From must be less or equal to To");
@@ -210,7 +211,7 @@ public class SendMessageController extends SimulatorGuiController {
 
 	private void addDoubleField(String fieldName) {
 		Label label = new Label(fieldName + ":");
-		TextField lowerRange = new TextField("From"), topRange = new TextField("To");
+		TextField lowerRange = new TextField(FROM), topRange = new TextField(TO);
 		HBox hb = new HBox(label, lowerRange, topRange);
 		hb.setSpacing(3);
 		
@@ -240,7 +241,7 @@ public class SendMessageController extends SimulatorGuiController {
 		consumers.add(l -> {
 			List<Double> input = new ArrayList<>();
 			try {
-				double lower = Double.parseDouble(lowerRange.getText()), top = Double.parseDouble(lowerRange.getText());
+				double lower = Double.parseDouble(lowerRange.getText()), top = Double.parseDouble(topRange.getText());
 				if (lower > top) {
 					this.encounterdIssue = true;
 					issues.add("in " + fieldName + " From must be less or equal to To");

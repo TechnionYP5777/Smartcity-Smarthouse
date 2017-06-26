@@ -122,16 +122,22 @@ public class GenericSensor {
 		return sensor;
 	}
 
+	String name(){
+		return "A sensor called: " +getAlias() + " ("+ getCommname()+", "+getId()+")";
+	}
 	// ------------------------ logging --------------------------------------
 	void logInstruction(String path, String inst) {
 		Optional.ofNullable(loggers.get(PathType.INSTRUCTION_RECEIVING)).ifPresent(ls -> ls
-				.forEach(logger -> logger.accept("Received instruction:\n\t" + inst + "\nOn path:\n\t" + path)));
+				.forEach(logger -> logger.accept(name()+ 
+													"\n\tReceived instruction:\t"+ inst+
+													"\n\tOn path:\t" + path)));
 	}
 
 	void logMsgSent(Map<String, String> data) {
 		final List<String> $ = new ArrayList<>();
-		$.add("Sending following msg:\n");
-		data.keySet().forEach(path -> $.add("path:" + path + "\tvalue:" + data.get(path)));
+		$.add(name());
+		$.add("\tSending following msg:");
+		data.keySet().forEach(path -> $.add("\t\tpath:" + path + "\tvalue:" + data.get(path)));
 
 		$.stream().reduce((x, y) -> x + "\n" + y)
 				.ifPresent(formatedData -> Optional.ofNullable(loggers.get(PathType.INFO_SENDING))
@@ -172,14 +178,6 @@ public class GenericSensor {
 	
 	public Map<String, Class> getPathsWithClasses(PathType t){
 		return paths.get(t);
-	}
-
-	//todo: move to view
-	public ObservableList<Pair<String,Class>> getObservablePaths(){
-		ObservableList<Pair<String,Class>> list = FXCollections.observableArrayList();
-		if(this.paths.get(PathType.INFO_SENDING) != null)				
-			this.paths.get(PathType.INFO_SENDING).keySet().forEach(x->list.add(new Pair<String,Class>(x,this.paths.get(PathType.INFO_SENDING).get(x))));
-		return list;
 	}
 	
 	@Override
@@ -241,7 +239,7 @@ public class GenericSensor {
 	 * streams with the default given values: 
 	 * first tries through supplier, and if none exists through ranges
 	 */
-	public void streamMessages() {
+	public void startStreaming() {
 		if (msgsGenerator != null)
 			streamMessages(msgsGenerator);
 		else if (lastReceivedRanges != null)
