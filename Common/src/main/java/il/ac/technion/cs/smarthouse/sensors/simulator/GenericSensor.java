@@ -23,11 +23,14 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.MsgStrea
 import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.RangeStreamer;
 import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.SupplierStreamer;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.util.Pair;
+
 /**
  * @author Elia Traore
  * @since Jun 17, 2017
  */
-
 @SuppressWarnings("rawtypes")
 public class GenericSensor {
 	private static Logger log = LoggerFactory.getLogger(GenericSensor.class);
@@ -158,7 +161,7 @@ public class GenericSensor {
 	public String getAlias() {
 		return sensor.getAlias();
 	}
-
+	
 	public List<String> getObservationSendingPaths() {
 		return sensor.getObservationSendingPaths();
 	}
@@ -170,6 +173,20 @@ public class GenericSensor {
 	public Map<String, Class> getPathsWithClasses(PathType t){
 		return paths.get(t);
 	}
+
+	//todo: move to view
+	public ObservableList<Pair<String,Class>> getObservablePaths(){
+		ObservableList<Pair<String,Class>> list = FXCollections.observableArrayList();
+		if(this.paths.get(PathType.INFO_SENDING) != null)				
+			this.paths.get(PathType.INFO_SENDING).keySet().forEach(x->list.add(new Pair<String,Class>(x,this.paths.get(PathType.INFO_SENDING).get(x))));
+		return list;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof GenericSensor && this.getId().equals(((GenericSensor) o).getId());
+	}
+
 	// ----------- Data sending methods -----------
 	/**
 	 * will also connect if sensor not connected yet
@@ -195,7 +212,7 @@ public class GenericSensor {
 			try {
 				streamer.join();
 			} catch (InterruptedException e) {
-				log.warn("Simulator was interrupted will waiting for a msg streamer");
+				log.warn("\n\tSimulator was interrupted will waiting for a msg streamer");
 			}
 		});
 

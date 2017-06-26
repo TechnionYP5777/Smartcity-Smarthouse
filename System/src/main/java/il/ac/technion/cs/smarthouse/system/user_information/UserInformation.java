@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.system.user_information;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.annotations.Expose;
 
@@ -90,5 +91,8 @@ public class UserInformation {
     public void setContactEmergencyLevel(final String id, final String eLevel) {
         emergencyContacts.setContactEmergencyLevel(id, EmergencyLevel.fromString(eLevel));
     }
-
+    
+    public Map<Contact,EmergencyLevel> getContactsWithElevel(){
+        return this.emergencyContacts.getContactsWithElevel();
+    }
 }

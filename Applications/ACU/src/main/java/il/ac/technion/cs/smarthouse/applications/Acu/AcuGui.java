@@ -35,6 +35,7 @@ public class AcuGui extends SmarthouseApplication{
 	static final String ON="on", OFF="off";
 	
 	AcuAction prevAction;
+	
 	public static void main(String[] args) throws Exception {
 		launch(simulation.getSimulator(), false);
 	}

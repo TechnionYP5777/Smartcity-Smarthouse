@@ -49,18 +49,17 @@ public class SensorsLocalServer implements Runnable {
                                     .getParameterTypes();
                     managerThreadClass.getConstructor(params).newInstance(client, fileSystem).start();
                 } catch (final SocketException e) {
-                    log.info("Server socket closed, Sensors' server at port " + port + " (TCP) is shutting down");
+                    log.info("\n\tServer socket closed, Sensors' server at port " + port + " (TCP) is shutting down");
                     return;
                 } catch (final IOException e) {
-                    // log.warn("I/O error occurred while waiting for a
-                    // connection", e); no need to log this - it spams the log
+                // no need to log this - it spams the log
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                                 | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    log.error("Error occured during the reflection process creating a single sensor managing thread.",
+                    log.error("\n\tError occured during the reflection process creating a single sensor managing thread.",
                                     e);
                 }
         } catch (final IOException e) {
-            log.warn("I/O error occurred when the socket was opened", e);
+            log.warn("\n\tI/O error occurred when the socket was opened", e);
         }
     }
 
@@ -82,12 +81,12 @@ public class SensorsLocalServer implements Runnable {
 					server.receive(packet);
 					server.send(new DatagramPacket(buf, buf.length, packet.getAddress(), packet.getPort()));
 				} catch (final SocketException e) {
-					log.info("Server socket closed, Sensors' server at port " + port + " (UDP) is shutting down");
+					log.info("\n\tServer socket closed, Sensors' server at port " + port + " (UDP) is shutting down");
 					return;
 				} catch (final IOException e) {
 				}
         } catch (final SocketException e1) {
-            log.warn("I/O error occurred when the socket was opened", e1);
+            log.warn("\n\tI/O error occurred when the socket was opened", e1);
         }
     }
 

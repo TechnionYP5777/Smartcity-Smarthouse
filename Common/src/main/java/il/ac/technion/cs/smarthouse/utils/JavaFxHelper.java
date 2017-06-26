@@ -115,11 +115,11 @@ public enum JavaFxHelper {
                     openStages.add(s);
                     guiStarted.setTrueAndRelease();
                 } catch (final Exception e) {
-                    log.error("couldn't start " + jfxApplication.getClass().getName(), e);
+                    log.error("\n\tCouldn't start " + jfxApplication.getClass().getName(), e);
                 }
             });
         } catch (final IllegalStateException ¢) {
-            log.error("Platform.runLater failed! This shouldn't happen!", ¢);
+            log.error("\n\tPlatform.runLater failed! This shouldn't happen!", ¢);
         }
 
         if (blockUntilStarted)

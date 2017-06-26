@@ -96,6 +96,13 @@ public class ContactsInformation {
 
         return $;
     }
+    
+    public Map<Contact,EmergencyLevel> getContactsWithElevel(){
+        Map<Contact,EmergencyLevel> l = new HashMap<>();
+        for (final EmergencyLevel elvl : EmergencyLevel.values())
+            data.get(elvl).values().forEach(x -> l.put(x,elvl));
+        return l;
+    }
 
     // For debug mainly, leaving it implemented for future use
     @Override

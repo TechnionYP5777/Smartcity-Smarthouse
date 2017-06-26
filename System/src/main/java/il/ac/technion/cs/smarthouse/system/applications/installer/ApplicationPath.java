@@ -55,10 +55,10 @@ public class ApplicationPath {
                 return AppInstallHelper.loadApplication(Arrays.asList((String) path));
             case PACKAGE_NAME:
                 // TODO: we can add support for package names here if we want...
-                log.error("PathType " + pathType + " is not implemented");
+                log.error("\n\tPathType " + pathType + " is not implemented");
                 return null;
             default:
-                log.error("PathType " + pathType + " is not an option");
+                log.error("\n\tPathType " + pathType + " is not an option");
                 return null;
         }
     }

@@ -56,7 +56,7 @@ public class ApplicationsCore extends ChildCore {
             initializeApplicationManager($);
             return $;
         } catch (final Exception $) {
-            log.warn("Aplication (" + appPath + ") failed to install", $);
+            log.warn("\n\tAplication (" + appPath + ") failed to install", $);
             NotificationsCenter.sendAppFailedToInstall($.getMessage());
         }
         return null;

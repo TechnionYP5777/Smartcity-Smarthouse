@@ -33,6 +33,7 @@ public class GraphWidget extends BasicWidget {
 
         builder.series(dataSeries.values().stream().map(s -> (XYChart.Series) s).collect(Collectors.toList()));
         Optional.ofNullable(data.getUnit()).ifPresent(d -> builder.unit(d));
+
     }
 
     @Override

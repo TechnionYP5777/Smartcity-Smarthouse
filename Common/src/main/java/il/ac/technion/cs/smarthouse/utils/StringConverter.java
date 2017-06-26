@@ -32,7 +32,7 @@ public class StringConverter {
 
 		final PropertyEditor editor = PropertyEditorManager.findEditor(targetType);
 		if (editor == null) {
-			log.warn("Converting an uknown Object to null: [targetType: " + targetType.getCanonicalName() + "]");
+			log.warn("\n\tConverting an uknown Object to null: [targetType: " + targetType.getCanonicalName() + "]");
 			return null;
 		}
 		editor.setAsText(text);

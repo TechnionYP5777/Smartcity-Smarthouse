@@ -54,7 +54,7 @@ public enum NotificationsCenter {
         try {
             Notification.Notifier.INSTANCE.stop();
         } catch (Exception e) {
-            log.warn("Couldn't close Notification center");
+            log.warn("\n\tCouldn't close Notification center");
         }
     }
 }

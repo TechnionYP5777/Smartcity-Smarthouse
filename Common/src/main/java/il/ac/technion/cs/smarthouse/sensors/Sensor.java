@@ -143,14 +143,14 @@ public class Sensor {
 			try {
 				systemIP = getSystemIp();
 			} catch (IOException | InterruptedException e) {
-				log.warn(getClass() + " sensor failed to get system IP, using localhost");
+				log.warn("\n\t" + getClass() + " sensor failed to get system IP, using localhost");
 				systemIP = InetAddress.getByName("127.0.0.1");
 			}
 			socket = new Socket(systemIP, systemPort);
 			out = new PrintWriter(socket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (final IOException e) {
-			log.error("I/O error occurred when the sensor's socket was created", e);
+			log.error("\n\tI/O error occurred when the sensor's socket was created", e);
 		}
 
 		try {

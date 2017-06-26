@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<TabPane fx:id="tabs" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.main_system.MainSystemGuiController">
-	<tabs>
-		<Tab fx:id="homeTab" text="Home">
-   			<content>
-               <HBox fx:id="homeTabHBox" alignment="CENTER" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-                  <children>
-                  <VBox fx:id="homeVBox" prefHeight="371.0" prefWidth="502.0">
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Pane fx:id="dummyPaneLeft" prefHeight="200.0" prefWidth="200.0" />
-                                 <ImageView fx:id="homePageImageView" pickOnBounds="true" preserveRatio="true" />
-                              <Pane fx:id="dummyPaneRight" prefHeight="200.0" prefWidth="200.0" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  </children>
-               </HBox>
-   			</content>
-        </Tab>
-		<Tab fx:id="userTab" text="User Information" />
-		<Tab fx:id="sensorsTab" text="Sensors" />
-		<Tab fx:id="dashboardTab" text="Dashboard" />
-		<Tab fx:id="appsTab" text="Applications" />
-	</tabs>
-</TabPane>
+<AnchorPane fx:id="MainAnchorPane" prefHeight="460.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.main_system.MainSystemGuiController">
+   <children>
+      <VBox fx:id="mainVBox" alignment="CENTER" prefHeight="529.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TabPane fx:id="tabs" prefHeight="529.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+            	<tabs>
+            		<Tab fx:id="homeTab" text="Home">
+               			<content>
+                           <HBox fx:id="homeTabHBox" alignment="CENTER" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                              <children>
+                              <VBox fx:id="homeVBox" prefHeight="371.0" prefWidth="502.0">
+                                 <children>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Pane fx:id="dummyPaneLeft" prefHeight="200.0" prefWidth="200.0" />
+                                             <ImageView fx:id="homePageImageView" pickOnBounds="true" preserveRatio="true" />
+                                          <Pane fx:id="dummyPaneRight" prefHeight="200.0" prefWidth="200.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              </children>
+                           </HBox>
+               			</content>
+                    </Tab>
+        				<Tab fx:id="userTab" text="User Information" />
+						<Tab fx:id="sensorsTab" text="Sensors" />
+						<Tab fx:id="dashboardTab" text="Dashboard" />
+						<Tab fx:id="appsTab" text="Applications" />
+            	</tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
+

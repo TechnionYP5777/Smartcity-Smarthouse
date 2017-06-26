@@ -72,7 +72,7 @@ public abstract class Message {
 			try {
 				return in.readLine();
 			} catch (final IOException e) {
-				log.error("I/O error occurred", e);
+				log.error("\n\tI/O error occurred", e);
 				return null;
 			}
 		return null;

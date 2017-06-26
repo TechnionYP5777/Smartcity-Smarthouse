@@ -27,10 +27,10 @@ public final class ServiceManager {
         for (final ServiceType s : ServiceType.values())
             try {
                 services.put(s, s.getServiceClass().getDeclaredConstructor(SystemCore.class).newInstance(systemCore));
-                log.info("Service " + s + " started");
+                log.info("\n\tService " + s + " started");
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                             | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                log.error("Service " + s + " can't start ", e);
+                log.error("\n\tService " + s + " can't start ", e);
             }
     }
 
