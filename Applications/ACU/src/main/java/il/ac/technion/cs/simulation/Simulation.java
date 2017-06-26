@@ -4,6 +4,7 @@
 package il.ac.technion.cs.simulation;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,9 +131,9 @@ public class Simulation {
 				.setPollingInterval(TimeUnit.SECONDS.toMillis(20));
 
 		//previously the run method
-		simulator = new SensorsSimulator()
+		simulator = new SensorsSimulator();
 //				.addSentMsgLogger(s -> System.out.println("MSGs LOGGER:" + s))
-				.addInstructionReceivedLogger(s -> System.out.println("INSTRUCTIONSs LOGGER:\n" + s));
+//				.addInstructionReceivedLogger(s -> System.out.println("INSTRUCTIONSs LOGGER:\n" + s));
 		
 		sensors.keySet().forEach(alias -> {
 			GenericSensor s = builder.setAlias(alias)
@@ -159,4 +160,7 @@ public class Simulation {
 		return simulator;
 	}
 	
+	public Collection<GenericSensor> getSensors(){
+		return simulator.getAllSensors();
+	}
 }

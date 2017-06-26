@@ -4,6 +4,7 @@
 package il.ac.technion.cs.smarthouse.applications.Acu;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import il.ac.technion.cs.simulation.Simulation.AcuAction;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.sensors.PathType;
+import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
@@ -37,7 +39,7 @@ public class AcuGui extends SmarthouseApplication{
 	AcuAction prevAction;
 	
 	public static void main(String[] args) throws Exception {
-		launch(simulation.getSimulator(), false);
+		launch(simulation.getSimulator(), true);
 	}
 
 	/* (non-Javadoc)
@@ -138,4 +140,11 @@ public class AcuGui extends SmarthouseApplication{
 		}
 	}
 
+	
+	@Override
+	public Collection<GenericSensor> getSimulatedSensors() {
+		return simulation.getSensors();
+	}
+
+	
 }
