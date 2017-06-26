@@ -42,7 +42,7 @@ public class StoveSensorSimulator extends Application {
 				.setStreamInterval(1000L)//TimeUnit.SECONDS.toMillis(1))
 				.addInfoSendingLogger(logger)
 				.build();
-		stoveSensor.streamMessages();
+		stoveSensor.startStreaming();
 	}
 
 	private Scene setFromSensorSimulator() {
