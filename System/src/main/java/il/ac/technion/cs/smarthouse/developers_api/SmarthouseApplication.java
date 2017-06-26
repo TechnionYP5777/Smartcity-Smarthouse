@@ -1,8 +1,11 @@
 package il.ac.technion.cs.smarthouse.developers_api;
 
+import java.util.Optional;
+
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.AppBuilder;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.AppBuilderImpl;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.WidgetsRegionBuilderImpl;
+import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
@@ -33,8 +36,7 @@ public abstract class SmarthouseApplication {
 
     public SmarthouseApplication() {}
 
-    @SafeVarargs
-    public static void launch(final Class<? extends Application>... sensors) throws Exception {
+    public static void launch(final SensorsSimulator simluator, final Boolean showGui) throws Exception {
         final SystemPresenter p = new SystemPresenterFactory()
                         .setUseCloudServer(false)
                         .setRegularFileSystemListeners(false)
@@ -43,11 +45,28 @@ public abstract class SmarthouseApplication {
                         .enableModePopup(false)
                         .build();
 
-        for (final Class<? extends Application> s : sensors)
-            JavaFxHelper.startGui(s.newInstance());
+        Optional.ofNullable(simluator).ifPresent(s -> 
+        new Thread(){
+
+            @Override
+            public void interrupt() {
+                s.stopSendingMsgsInAllSensors();
+                super.interrupt();
+            }
+
+            @Override
+            public void run() {
+                s.startSendingMsgsInAllSensors();
+                super.run();
+            }
+            
+        }.start()
+        );
+        
 
         p.getSystemView().gotoAppsTab();
     }
+
 
     // [start] Public - Services to the SystemCore
     final SmarthouseApplication setDataFromApplicationManager(final SystemCore $, final String applicationId) {
