@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -19,19 +20,22 @@ import javafx.stage.Stage;
 public class DeveloperSimulatorController extends GuiController<SensorsSimulator>{
 	
 	@FXML AnchorPane mainPane;
-    @FXML public TextFlow console;
+    @FXML public TextFlow sentConsole, receivedConsole;
 	MainSensorListController listController;
 	ConfigurationWindowController configController;
 	SendMessageController messageController;
+	
 	@Override
 	protected <T extends GuiController<SensorsSimulator>> void initialize(SensorsSimulator model1, T parent1,
 			URL location, ResourceBundle b) {
 		this.listController = createChildController(getClass().getResource("/sensor_config_list_ui.fxml"));
 		this.configController = createChildController(getClass().getResource("/sensor_configuration_ui.fxml"));
-		console.getChildren().add(new Text("Welcome to the Sensor developer simulator\n"));
-		Consumer<String> s = x -> console.getChildren().add(new Text(x+"\n"));
-		model1.addSentMsgLogger(s);
-		model1.addInstructionReceivedLogger(s);
+		
+//		sentConsole.getChildren().add(new Text("Welcome to the Sensor developer simulator\n"));
+		
+		model1.addSentMsgLogger(x -> Platform.runLater(()->sentConsole.getChildren().add(new Text(x+"\n"))));
+		model1.addInstructionReceivedLogger(x -> Platform.runLater(()->receivedConsole.getChildren().add(new Text(x+"\n"))));
+		
 		JavaFxHelper.placeNodeInPane(listController.getRootViewNode(),mainPane);
 	}
 	
