@@ -73,21 +73,19 @@ public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implem
     @Override
     public WidgetsRegionBuilder addWidget(WidgetType type, InfoCollector info) {
         if(canAdd()){
-            Widget w = core.createWidget(type, info, tileSize);
-            widgetsHbox.getChildren().add(w.get());
+            widgetsHbox.getChildren().add(core.createWidget(type, info, tileSize).get());
         }
         
         return this;
     }
 
     @Override
-    public <T extends SensorData> WidgetsRegionBuilder addWidget(WidgetType type, InfoCollector info,
-                    SensorApi<T> sensor, Function<T, Map<String, Object>> sensorProcessor) {
+    public <T extends SensorData> WidgetsRegionBuilder addWidget(final WidgetType type, final InfoCollector info,
+                    final SensorApi<T> sensor, final Function<T, Map<String, Object>> sensorProcessor) {
         if(canAdd()){
             BasicWidget bw = type.createWidget(tileSize, info);
-            sensor.subscribe(data -> sensorProcessor.apply(data).forEach((path,val)->bw.update(BasicWidget.cast(val), path)));
-            Widget w = core.createWidget(bw);
-            widgetsHbox.getChildren().add(w.get());
+            sensor.subscribe(data -> sensorProcessor.apply(data).forEach((path,val)->bw.update(val, path)));
+            widgetsHbox.getChildren().add(core.createWidget(bw).get());
         }
          
         return this;

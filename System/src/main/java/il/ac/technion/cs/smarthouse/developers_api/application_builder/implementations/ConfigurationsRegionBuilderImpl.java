@@ -1,6 +1,7 @@
 package il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ConfigurationsRegionBuilder;
@@ -83,9 +84,20 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
 
     @Override
     public <T extends SensorData> ConfigurationsRegionBuilder addSensorAliasSelectionField(final String title,
-                    final SensorApi<T> sensorApiObject) {
+                    final SensorApi<T> sensorApiObject){
+        return addSensorAliasSelectionField(title, sensorApiObject, null);
+    }
+    
+    @Override
+    public <T extends SensorData> ConfigurationsRegionBuilder addSensorAliasSelectionField(final String title,
+                    final SensorApi<T> sensorApiObject, BiConsumer<String,String> aliasesConsumer) {
         final AppComboBoxField<String> cBox = new AppComboBoxField<>(
-                        alias -> sensorApiObject.reselectSensorByAlias(alias), null, sensorApiObject.getAllAliases().toArray(new String[0]));
+                        alias -> {
+                            String oldAlias = sensorApiObject.getSensorAlias();
+                            sensorApiObject.reselectSensorByAlias(alias);
+                            Optional.ofNullable(aliasesConsumer).ifPresent(c -> c.accept(alias, oldAlias));
+                        }, 
+                        null, sensorApiObject.getAllAliases().toArray(new String[0]));
         
         addAppBuilderItem(new AppBuilderItem(title, cBox));
         
