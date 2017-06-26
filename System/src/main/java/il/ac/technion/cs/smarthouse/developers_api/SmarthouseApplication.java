@@ -142,11 +142,5 @@ public abstract class SmarthouseApplication {
     public abstract void onLoad() throws Exception;
 
     public abstract String getApplicationName();
-    
-    /** Override in order to have simulated sensors loaded in case of simulated run of the house
-     * */
-    public Collection<GenericSensor> getSimulatedSensors(){
-        return new ArrayList<>();
-    }
     // [end]
 }
