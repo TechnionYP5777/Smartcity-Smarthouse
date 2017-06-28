@@ -72,28 +72,20 @@ public class FileSystemImplTest {
         assert !fs.wasPathInitiated("s");
         assert fs.wasPathInitiated("a");
         
-        System.out.println(fs.getReadOnlyFileSystem("a"));
-        System.out.println(fs);
-        
-        System.out.println("--- paths with out leaves ---");
-        for (String p : allPathsWithOutLeaves(fs.getReadOnlyFileSystem(), new ArrayList<>()))
-            System.out.println(p);
         
         
         assert fs.<Integer>getMostRecentDataOnBranch("a") == NEW_VAL;
     }
     
+    @SuppressWarnings("unused")
     @Test //(timeout = 1000)
     public void testOnCoreFs() {
-        String path = FileSystemEntries.SENSORS_DATA.buildPath();
-        System.out.println(path);
-        ReadOnlyFileNode n = new SystemCore()
-                                    .getFileSystem()
-                                    .getReadOnlyFileSystem(path);
-        for (String p : allPathsWithOutLeaves(n, new ArrayList<>()))
-            System.out.println(p);
+        ReadOnlyFileNode n = new SystemCore().getFileSystem()
+                        .getReadOnlyFileSystem(FileSystemEntries.SENSORS_DATA.buildPath());
+     
     }
     
+    @SuppressWarnings("unused")
     private List<String> allPathsWithOutLeaves(ReadOnlyFileNode n, List<String> ss) {
         
         if (n.isLeaf())

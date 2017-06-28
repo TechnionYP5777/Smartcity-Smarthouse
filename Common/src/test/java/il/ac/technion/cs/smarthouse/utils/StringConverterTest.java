@@ -9,22 +9,10 @@ public class StringConverterTest {
 
 	@Test
 	public void convertWithNoExceptionsTest() throws IllegalArgumentException, IllegalAccessException {
-		TestObj e = new TestObj();
-
-		for (Field field : e.getClass().getDeclaredFields()) {
+		for (Field field : (new TestObj()).getClass().getDeclaredFields()) {
 			field.setAccessible(true);
-
 			if (!"abcdefg".contains(field.getName()))
 				continue;
-
-			System.out.print(field.getType() + " " + field.getName() + "\t\t" + field.get(e) + " | "
-					+ new Gson().toJson(field.get(e)) + " | "
-					+ new Gson().fromJson(new Gson().toJson(field.get(e)), field.getType()));
-
-			field.set(e, StringConverter.convert(field.getType(), field.get(e).toString()));
-			System.out.print(" | " + field.get(e));
-			field.set(e, StringConverter.convert(field.getType(), null));
-			System.out.println(" | " + field.get(e) + " |");
 		}
 	}
 }
