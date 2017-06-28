@@ -13,7 +13,10 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
  */
 public interface Simulatable {
 
-	/** @return he list of sensors needed to allow the simulatable object to run 
+	/** notice, even though this method is not static (#java), a Simulatable object cannot
+	 * be depended on specific details of implemention and must be able to work with any instance of
+	 * obj.getSimulatedSensors() (even if <b>!</b>obj.eqauls(this).  
+	 * @return he list of sensors needed to allow the simulatable object to run 
 	 * */
 	public Collection<GenericSensor> getSimulatedSensors();
 }

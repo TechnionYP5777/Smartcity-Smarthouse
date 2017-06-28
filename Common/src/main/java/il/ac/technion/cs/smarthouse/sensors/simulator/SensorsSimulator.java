@@ -27,6 +27,7 @@ public class SensorsSimulator {
 	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
 	private Map<Action, List<Consumer<GenericSensor>>> listeners = new HashMap<>();
 	private Map<String, GenericSensor> sensors = new HashMap<>();
+	private Long streamingInterval;
 
 	private void addLogger(PathType t, Consumer<String> logger) {
 		if (!loggers.containsKey(t))
@@ -48,6 +49,8 @@ public class SensorsSimulator {
 		Stream.of(PathType.values())
 				.forEach(type -> Optional.ofNullable(loggers.get(type))
 										.ifPresent(ls -> ls.forEach(logger -> s.addLogger(type, logger))));
+		Optional.ofNullable(streamingInterval).ifPresent(i -> s.setStreamInterval(i));
+		
 		String id = getNextId();
 		sensors.put(id, s);
 		callListeners(Action.ADD, s);
@@ -58,6 +61,7 @@ public class SensorsSimulator {
 		Optional.ofNullable(sensors).ifPresent(ss -> ss.forEach(s -> addSensor(s)));
 		return this;
 	}
+	
 	public SensorsSimulator removeSensor(String id) {
 		callListeners(Action.REMOVE, sensors.get(id));
 		sensors.remove(id);
@@ -72,6 +76,7 @@ public class SensorsSimulator {
 	public Collection<GenericSensor> getAllSensors(){
 		return sensors.values();
 	}
+	
 	/** The usage of this method is discouraged and it remains solely for legacy purposes.<br>
 	 *  The simulator is <mark><b>not</b></mark> intended to hold half-defined sensors and might
 	 *  result in unexpected behaviour.
@@ -122,4 +127,8 @@ public class SensorsSimulator {
 		return this;
 	}
 
+	public SensorsSimulator setGeneralStreamingInteval(Long interval){
+		streamingInterval = interval;
+		return this;
+	}
 }
