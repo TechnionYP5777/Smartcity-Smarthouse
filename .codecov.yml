@@ -4,7 +4,7 @@ coverage:
   range: "40...70"
   ignore: 
     - "*/src/main/java/il/ac/technion/cs/smarthouse/applications/*"
-    - "**/src/main/java/il/ac/technion/cs/simulation/*"
+    - "Applications/ACU/src/main/java/il/ac/technion/cs/simulation/*"
     - "**/gui/**"
     - "System/**/dashboard/*"
     - "System/**/SystemFailureDetector.java"
