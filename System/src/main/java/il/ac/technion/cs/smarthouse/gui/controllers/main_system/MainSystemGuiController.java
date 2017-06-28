@@ -1,9 +1,6 @@
 package il.ac.technion.cs.smarthouse.gui.controllers.main_system;
 
-import java.io.PrintWriter;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
@@ -12,10 +9,8 @@ import il.ac.technion.cs.smarthouse.gui.javafx_elements.LogConsole;
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
-import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
-import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystem.ReadOnlyFileNode;
-import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl.ReadOnlyFileNodeImpl;
+import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
@@ -150,6 +145,7 @@ public class MainSystemGuiController extends SystemGuiController {
     public void setupFSTreeView(SystemCore model) {
 
         TreeItem<String> rootElement = new TreeItem<>("File System View");
+        rootElement.setExpanded(true);
 
         createTree(model.getFileSystem().getReadOnlyFileSystem(), rootElement);
         TreeTableColumn<String, String> fsViewCol = new TreeTableColumn<>();

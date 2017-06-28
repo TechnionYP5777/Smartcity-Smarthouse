@@ -1,15 +1,11 @@
 package il.ac.technion.cs.smarthouse.developers_api;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 
-import il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorController;
 import il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorGui;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.AppBuilder;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.AppBuilderImpl;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.implementations.WidgetsRegionBuilderImpl;
-import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
@@ -20,7 +16,6 @@ import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system_presenter.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system_presenter.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
-import javafx.application.Application;
 import javafx.scene.Parent;
 
 /**
