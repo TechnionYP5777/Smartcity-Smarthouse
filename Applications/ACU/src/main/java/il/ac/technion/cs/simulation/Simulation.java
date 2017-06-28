@@ -119,7 +119,7 @@ public class Simulation {
 	public Simulation(Integer defaultTemp, String ... aliases){
 		this.defaultTemp = defaultTemp;
 		sensors = new HashMap<>();
-		Stream.of(aliases).forEach(key -> sensors.put(key, null));
+		Stream.of(aliases).forEach(key -> sensors.put(key+" ACU sensor", null));
 		
 		builder = new SensorBuilder()
 				.setCommname(commname)
