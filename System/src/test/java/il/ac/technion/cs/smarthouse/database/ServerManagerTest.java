@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.system.database.cloud_server.ServerManager;
 
@@ -25,6 +27,8 @@ public class ServerManagerTest {
     private static ParseObject temp;
     private static ParseObject temp1;
     private static ParseObject mObj;
+
+    private static Logger log = LoggerFactory.getLogger(ServerManagerTest.class);
 
     @Test
     @SuppressWarnings("static-method")
@@ -67,7 +71,7 @@ public class ServerManagerTest {
             Assert.assertEquals(0, countQuery.count());
 
         } catch (final ParseException e) {
-            e.printStackTrace();
+            log.error("A server error has occured", e);
             assert false;
         }
     }
@@ -100,7 +104,7 @@ public class ServerManagerTest {
             serverManager.deleteById(testParse, mObj.getObjectId());
 
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("A server error has occured", e);
             assert false;
         }
 

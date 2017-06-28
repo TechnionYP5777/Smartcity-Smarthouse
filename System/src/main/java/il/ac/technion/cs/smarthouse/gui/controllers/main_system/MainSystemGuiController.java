@@ -3,6 +3,9 @@ package il.ac.technion.cs.smarthouse.gui.controllers.main_system;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController;
 import il.ac.technion.cs.smarthouse.gui.controllers.applications.ApplicationViewController;
 import il.ac.technion.cs.smarthouse.gui.javafx_elements.LogConsole;
@@ -55,6 +58,8 @@ public class MainSystemGuiController extends SystemGuiController {
     TextArea loggerView = new TextArea();
     TitledPane consolePane = new TitledPane("Console", loggerView);
     TreeTableView<String> fsTreeView = new TreeTableView<>();
+
+    private static Logger log = LoggerFactory.getLogger(MainSystemGuiController.class);
 
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model, final T parent,
@@ -126,8 +131,9 @@ public class MainSystemGuiController extends SystemGuiController {
 
             }
 
-        } catch (final Exception ¢) {
-            ¢.printStackTrace();
+        } catch (final Exception e) {
+            log.error("The controller encountered exception", e);
+            // TODO: should throw runtime exception?
         }
     }
 

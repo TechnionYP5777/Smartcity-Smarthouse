@@ -121,7 +121,6 @@ public class SystemCore implements Savable {
     
     @Override
     public void populate(String jsonString) throws Exception {
-        // TODO Auto-generated method stub
         Savable.super.populate(jsonString);
         if(userInitialized)
             userInformationSubs.forEach(c -> c.accept(user));
