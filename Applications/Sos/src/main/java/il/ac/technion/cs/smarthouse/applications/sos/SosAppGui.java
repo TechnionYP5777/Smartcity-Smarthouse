@@ -14,7 +14,6 @@ import il.ac.technion.cs.smarthouse.sensors.Simulatable;
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
-import il.ac.technion.cs.smarthouse.sensors.sos.gui.SosSensorSimulator;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
