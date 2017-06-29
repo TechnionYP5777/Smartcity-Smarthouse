@@ -31,69 +31,59 @@ public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implem
 	public WidgetsRegionBuilderImpl() {
 		super.setTitle("Widgets");
 	}
-	
-	public WidgetsRegionBuilderImpl setTitle(String title){
-    	super.setTitle(title);
-        return this;
+
+	public WidgetsRegionBuilderImpl setTitle(String title) {
+		super.setTitle(title);
+		return this;
 	}
-	
-    private void initWidgetPane(){
-        widgetsHbox = new HBox();
-        widgetsHbox.setSpacing(5);
-        widgetsHbox.setPadding(new Insets(5));
-        
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(widgetsHbox);
-        scrollPane.setFitToWidth(true);
-        Double size = tileSize*1.2;
-//        scrollPane.setMaxHeight(size);
-        scrollPane.setMinHeight(size);
-        scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
-//        scrollPane.setFitToHeight(true);
-        
-        
-        addAppBuilderItem(new AppBuilderItem(null, scrollPane));
-    }
-    
-//    @Override
-    public WidgetsRegionBuilder setDashboardCore(DashboardCore core){
-        this.core = core;
-        return this;
-    }
-    
-    private Boolean canAdd(){
-        if(core == null)
-            return false;
-        
-        if(widgetsHbox == null)
-            initWidgetPane();
-        return true;
-    }
-    
-    @Override
-    public WidgetsRegionBuilder addWidget(WidgetType type, InfoCollector info) {
-        if(canAdd()){
-            widgetsHbox.getChildren().add(core.createWidget(type, info, tileSize).get());
-        }
-        
-        return this;
-    }
 
-    @Override
-    public <T extends SensorData> WidgetsRegionBuilder addWidget(final WidgetType type, final InfoCollector info,
-                    final SensorApi<T> sensor, final Function<T, Map<String, Object>> sensorProcessor) {
-        if(canAdd()){
-            BasicWidget bw = type.createWidget(tileSize, info);
-            sensor.subscribe(data -> sensorProcessor.apply(data).forEach((path,val)->bw.update(val, path)));
-            widgetsHbox.getChildren().add(core.createWidget(bw).get());
-        }
-         
-        return this;
-    }
+	private void initWidgetPane() {
+		widgetsHbox = new HBox();
+		widgetsHbox.setSpacing(5);
+		widgetsHbox.setPadding(new Insets(5));
 
-    
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setContent(widgetsHbox);
+		scrollPane.setFitToWidth(true);
+		Double size = 1.2 * tileSize;
 
-    
-    
+		scrollPane.setMinHeight(size);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+
+		addAppBuilderItem(new AppBuilderItem(null, scrollPane));
+	}
+
+	public WidgetsRegionBuilder setDashboardCore(DashboardCore c) {
+		this.core = c;
+		return this;
+	}
+
+	private Boolean canAdd() {
+		if (core == null)
+			return false;
+
+		if (widgetsHbox == null)
+			initWidgetPane();
+		return true;
+	}
+
+	@Override
+	public WidgetsRegionBuilder addWidget(WidgetType t, InfoCollector c) {
+		if (canAdd())
+			widgetsHbox.getChildren().add(core.createWidget(t, c, tileSize).get());
+
+		return this;
+	}
+
+	@Override
+	public <T extends SensorData> WidgetsRegionBuilder addWidget(final WidgetType t, final InfoCollector c,
+			final SensorApi<T> a, final Function<T, Map<String, Object>> sensorProcessor) {
+		if (!canAdd())
+			return this;
+		BasicWidget bw = t.createWidget(tileSize, c);
+		a.subscribe(data -> sensorProcessor.apply(data).forEach((path, val) -> bw.update(val, path)));
+		widgetsHbox.getChildren().add(core.createWidget(bw).get());
+		return this;
+	}
 
 }

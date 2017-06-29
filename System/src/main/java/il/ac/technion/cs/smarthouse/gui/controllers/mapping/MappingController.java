@@ -64,8 +64,8 @@ public class MappingController extends SystemGuiController {
         // this is somewhat whiteboxing. todo: refactor nicer.
         model.getFileSystem().subscribe((p, l) -> {
             log.debug("map gui was notified on (path,val)=(" + p + "," + l + ")");
-            final String commname = FileSystemEntries.COMMERCIAL_NAME.getPartFromPath(p);
-            final String id = FileSystemEntries.SENSOR_ID.getPartFromPath(p);
+			final String commname = FileSystemEntries.COMMERCIAL_NAME.getPartFromPath(p),
+					id = FileSystemEntries.SENSOR_ID.getPartFromPath(p);
             if (l != null && mappingInformaton.getAllLocations().contains(l) && !sensors.containsKey(id))
                 Platform.runLater(() -> {
                     try {
@@ -135,16 +135,14 @@ public class MappingController extends SystemGuiController {
             }
         }
 
-        int xPlusRoom = mappingInformaton.calcxPlusRoom();
-        int yPlusRoom = mappingInformaton.calcyPlusRoom();
+        int xPlusRoom = mappingInformaton.calcxPlusRoom(), yPlusRoom = mappingInformaton.calcyPlusRoom();
         g.strokeRect(xPlusRoom, yPlusRoom, MappingInformation.getWidth(), MappingInformation.getHeight());
         g.setFont(new Font(45.0));
         g.fillText("+", xPlusRoom + 65, yPlusRoom + 85);
         g.setFill(Color.BLUE);
         g.setFont(new Font(84.0));
         canvas.setOnMouseClicked(mouseEvent -> {
-            double x = mouseEvent.getX();
-            double y = mouseEvent.getY();
+            double x = mouseEvent.getX(), y = mouseEvent.getY();
             if(mouseEvent.getButton() == MouseButton.SECONDARY){
                 mappingInformaton.getHouse().getRooms().forEach(r -> {
                     if (x > r.x && x < r.x + MappingInformation.getWidth() && y > r.y

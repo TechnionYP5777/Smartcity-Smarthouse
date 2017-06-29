@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -30,8 +31,8 @@ public class StoveSensorSimulator extends Application {
 
 	GenericSensor stoveSensor;
 	private void startSensor(Consumer<String> logger) {
-		final String onPath = "stove" + "." + "is_on";
-		final String temperPath = "stove" + "." + "temperature";
+		final String onPath = "stove" + PathBuilder.DELIMITER + "is_on";
+		final String temperPath = "stove" + PathBuilder.DELIMITER + "temperature";
 		stoveSensor =new SensorBuilder()
 		        .setCommname("iStoves")
 		        .setAlias("Roy's awesome stove")

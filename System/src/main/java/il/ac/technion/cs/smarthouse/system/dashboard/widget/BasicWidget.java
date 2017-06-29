@@ -82,11 +82,11 @@ public abstract class BasicWidget {
     }
 
     public Tile getTile() {
-        if (tile == null) {
-            tile = builder.build();
-            setSize(getTileSize());
-        }
-        return tile;
+        if (tile != null)
+			return tile;
+		tile = builder.build();
+		setSize(getTileSize());
+		return tile;
     }
 
     public Double getTileSize() {

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads;
 
 import org.slf4j.Logger;

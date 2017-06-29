@@ -89,8 +89,8 @@ public enum SystemFailureDetector {
                 oldAlert = null;
             }
 
-            ButtonType reportType = new ButtonType("Send Report", ButtonBar.ButtonData.LEFT);
-            ButtonType tryToRecover = new ButtonType("Try to Recover", ButtonBar.ButtonData.LEFT);
+            ButtonType reportType = new ButtonType("Send Report", ButtonBar.ButtonData.LEFT),
+					tryToRecover = new ButtonType("Try to Recover", ButtonBar.ButtonData.LEFT);
             Alert a = new Alert(AlertType.ERROR, errTxt, reportType, tryToRecover, ButtonType.CLOSE);
             oldAlert = a;
             if (!enableTryToRecover)
@@ -118,8 +118,7 @@ public enum SystemFailureDetector {
                                                         + "\n\nStack Trace:\n" + sw.toString());
                         ((Stage) reportButton.getScene().getWindow()).close();
                     });
-                    Pane pane1 = new Pane();
-                    Pane pane2 = new Pane();
+                    Pane pane1 = new Pane(), pane2 = new Pane();
                     HBox hbox1 = new HBox(text, pane1);
                     hbox1.setPadding(new Insets(0, 0, 5, 0));
                     HBox hbox2;
