@@ -56,7 +56,6 @@ public class ApplicationsCore extends ChildCore {
             final ApplicationMetaData $ = new ApplicationMetaData(UuidGenerator.GenerateUniqueIDstring(), appPath);
             apps.add($);
             initializeApplicationManager($);
-            System.out.println("fu meeeeeeeE? "+apps);
             return $;
         } catch (final Exception $) {
             log.warn("\n\tAplication (" + appPath + ") failed to install", $);
@@ -66,7 +65,6 @@ public class ApplicationsCore extends ChildCore {
     }
 
     public List<ApplicationMetaData> getApplicationsMetaData() {
-        System.out.println("fuuuuuuuuuu meeeee "+ apps);
         return Collections.unmodifiableList(apps);
     }
 

@@ -28,7 +28,8 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 public class Entry {
 	
 	public static void main(final String[] args) {
-		SensorsSimulator simulator = new SensorsSimulator().setGeneralStreamingInteval(TimeUnit.SECONDS.toMillis(30));
+		SensorsSimulator simulator = new SensorsSimulator()
+										.setGeneralStreamingInteval(TimeUnit.SECONDS.toMillis(5));
 		
 		SystemPresenterFactory factory = new SystemPresenterFactory()
 											.initMode(SystemMode.USER_MODE)

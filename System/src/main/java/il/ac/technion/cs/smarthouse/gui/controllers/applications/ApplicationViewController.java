@@ -85,10 +85,9 @@ public class ApplicationViewController extends SystemGuiController {
         updateListView();
         listView.setOnMouseClicked(e -> {
             final int index = listView.getSelectionModel().getSelectedIndex();
-            if (index >= 0) {
-                System.out.println(listView.getChildrenUnmodifiable()+ " fuuuuuuu "+appsHandler.getApplicationsMetaData());
+            if (index >= 0) 
                 appsHandler.getApplicationsMetaData().get(index).reopen(appView);
-            };
+            
         });
     }
 

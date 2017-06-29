@@ -44,7 +44,6 @@ public class AppBooleanButtonField extends HBox {
     public AppBooleanButtonField(Consumer<Boolean> onChangeFunction, boolean initialValue) {
         SwitchButton b = new SwitchButton();
         b.switchOnProperty().set(initialValue);
-        b.switchOnProperty().addListener((v, t, t1) -> System.out.println(t1));
         b.switchOnProperty().addListener((v, t, t1) -> onChangeFunction.accept(t1));
 
         this.getChildren().add(b);
