@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>Technion</groupId>
+    <artifactId>SmartcitySmarthouse</artifactId>
+    <version>1.01</version>
+  </parent>
+  <groupId>Technion</groupId>
+  <artifactId>ApplicationsIncludedHouse</artifactId>
+  <version>1.01</version>
+  <name>ApplicationsIncludedHouse</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+
+	<dependency>
+			<groupId>Technion</groupId>
+			<artifactId>Sos</artifactId>
+			<version>1.01</version>
+	</dependency>
+	<dependency>
+			<groupId>Technion</groupId>
+			<artifactId>Vitals</artifactId>
+			<version>1.01</version>
+	</dependency>
+	<dependency>
+			<groupId>Technion</groupId>
+			<artifactId>Calculator</artifactId>
+			<version>1.01</version>
+	</dependency>
+	<dependency>
+			<groupId>Technion</groupId>
+			<artifactId>ACU</artifactId>
+			<version>1.01</version>
+	</dependency>
+	<dependency>
+			<groupId>Technion</groupId>
+			<artifactId>Stove</artifactId>
+			<version>1.01</version>
+	</dependency>
+
+	<dependency>
+			<groupId>Technion</groupId>
+			<artifactId>System</artifactId>
+			<version>1.01</version>
+	</dependency>
+	
+	
+	<!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
+	<dependency>
+	    <groupId>org.reflections</groupId>
+	    <artifactId>reflections</artifactId>
+	    <version>0.9.10</version>
+	</dependency>
+
+	
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
