@@ -18,4 +18,5 @@ coverage:
     - "Common/**/utils/JavaFxHelper.java"
     - "Common/**/gui_controller/*"
     - "Common/**/sensors/*"
+    - "ApplicationsIncludedHouse/**"
 
