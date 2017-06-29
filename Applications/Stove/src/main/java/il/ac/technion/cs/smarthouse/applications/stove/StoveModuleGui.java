@@ -40,7 +40,7 @@ public class StoveModuleGui extends SmarthouseApplication implements Simulatable
 		SensorsSimulator s = new SensorsSimulator();
 		s.addSensor(new SensorBuilder().setCommname("iStoves").setAlias("Roy's awesome stove")
 				.addInfoSendingPath(onPath, Boolean.class).addInfoSendingPath(temperPath, Integer.class)
-				.addStreamingRange(onPath, Arrays.asList(true, false))
+				.addStreamingRange(onPath, Arrays.asList(true))
 				.addStreamingRange(temperPath, Arrays.asList(0, 140)).setStreamInterval(1000L)
 				.build());
 		return s;
@@ -80,7 +80,7 @@ public class StoveModuleGui extends SmarthouseApplication implements Simulatable
 		Runnable c = () -> {
 			synchronized (alertCalled) {
 
-				if (timer.getData(0.0) <= alertAfterSecs.getData(0.0) || temps.getData(0) <= alertAboveDegs.getData(0))
+				if (timer.getData(0.0) <= alertAfterSecs.getData(0.0) && temps.getData(0) <= alertAboveDegs.getData(0))
 					alertCalled = false;
 				else if (!alertCalled) {
 					((AlertsManager) getService(ServiceType.ALERTS_SERVICE)).sendAlert(getApplicationName(),
