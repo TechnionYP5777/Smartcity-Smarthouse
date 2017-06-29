@@ -13,7 +13,7 @@ import il.ac.technion.cs.smarthouse.sensors.Simulatable;
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
-import il.ac.technion.cs.smarthouse.sensors.vitals.gui.VitalsSensorSimulator;
+import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.AlertsManager;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLevel;
@@ -27,7 +27,7 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
  * @author Yarden
  * @since 19.1.17
  */
-public class VitalsApp extends SmarthouseApplication implements Simulatable{
+public class VitalsApp extends SmarthouseApplication implements Simulatable {
     private static Logger log = LoggerFactory.getLogger(VitalsApp.class);
 
     private Controller controller;
@@ -37,34 +37,25 @@ public class VitalsApp extends SmarthouseApplication implements Simulatable{
     int highBPAlert;
 
     static SensorsSimulator simulator = initSimulator();
+
     public static void main(String[] args) throws Exception {
-        launch(simulator,true);
+        launch(simulator, true);
     }
 
-    /**
-     * @return
-     */
     private static SensorsSimulator initSimulator() {
-        final String path = "sos" + "." + "pressed";
-        final String pulsePath = "vitals" + "." + "pulse";
-        final String sysBPPath = "vitals" + "." + "systolicBP";
-        final String diBPPath = "vitals" + "." + "diastolicBP";
+        final String pulsePath = "vitals" + PathBuilder.DELIMITER + "pulse",
+                        sysBPPath = "vitals" + PathBuilder.DELIMITER + "systolicBP",
+                        diBPPath = "vitals" + PathBuilder.DELIMITER + "diastolicBP";
         SensorsSimulator s = new SensorsSimulator();
-        s.addSensor(new SensorBuilder()
-                .setCommname("iVitals")
-                .setAlias("Yarden's vitals sensor")
-                .addInfoSendingPath(pulsePath, Integer.class)
-                .addStreamingRange(pulsePath, Arrays.asList(30,200))
-                .addInfoSendingPath(sysBPPath, Integer.class)
-                .addStreamingRange(sysBPPath, Arrays.asList(30,200))
-                .addInfoSendingPath(diBPPath, Integer.class)
-                .addStreamingRange(diBPPath, Arrays.asList(30,200))
-                .setStreamInterval(TimeUnit.SECONDS.toMillis(1))
-                .build()
-                );
+        s.addSensor(new SensorBuilder().setCommname("iVitals").setAlias("Yarden's vitals sensor")
+                        .addInfoSendingPath(pulsePath, Integer.class)
+                        .addStreamingRange(pulsePath, Arrays.asList(30, 200))
+                        .addInfoSendingPath(sysBPPath, Integer.class)
+                        .addStreamingRange(sysBPPath, Arrays.asList(30, 200))
+                        .addInfoSendingPath(diBPPath, Integer.class).addStreamingRange(diBPPath, Arrays.asList(30, 200))
+                        .setStreamInterval(TimeUnit.SECONDS.toMillis(1)).build());
         return s;
     }
-    
 
     @Override
     public Collection<GenericSensor> getSimulatedSensors() {

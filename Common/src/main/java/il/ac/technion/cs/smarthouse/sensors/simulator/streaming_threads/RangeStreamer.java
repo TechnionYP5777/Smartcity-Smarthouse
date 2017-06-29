@@ -1,6 +1,3 @@
-/**
- * 
- */
 package il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads;
 
 import java.util.ArrayList;
@@ -20,12 +17,11 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 @SuppressWarnings("rawtypes")
 public class RangeStreamer extends MsgStreamerThread {
 	private Map<String, List> ranges;
-	
-	public RangeStreamer(GenericSensor sensor, Long streamingInterval, final  Map<String, List> ranges){
+
+	public RangeStreamer(GenericSensor sensor, Long streamingInterval, final Map<String, List> ranges) {
 		super(sensor, streamingInterval);
 		this.ranges = ranges;
 	}
-
 
 	private Object random(String path) {
 		Class c = sensor.getPathsWithClasses(PathType.INFO_SENDING).get(path);
@@ -37,8 +33,11 @@ public class RangeStreamer extends MsgStreamerThread {
 						: vals.get(ThreadLocalRandom.current().nextInt(vals.size()));
 	}
 
-	/* (non-Javadoc)
-	 * @see il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.MsgStreamerThread#send()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.
+	 * MsgStreamerThread#send()
 	 */
 	@Override
 	void send() {
@@ -48,16 +47,21 @@ public class RangeStreamer extends MsgStreamerThread {
 		sensor.sendMessage(data);
 	}
 
-	/* (non-Javadoc)
-	 * @see il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.MsgStreamerThread#canStartStreaming()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.
+	 * MsgStreamerThread#canStartStreaming()
 	 */
-	/** checks that the ranges are legal
-	 * */
-	@Override @SuppressWarnings("unchecked")
+	/**
+	 * checks that the ranges are legal
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
 	Boolean canStartStreaming() {
 		final List<Boolean> $ = new ArrayList<>();
-		
-		sensor.getPathsWithClasses(PathType.INFO_SENDING).forEach((path,c) -> {
+
+		sensor.getPathsWithClasses(PathType.INFO_SENDING).forEach((path, c) -> {
 			List vals = ranges.get(path);
 			Boolean sizeOk = !Integer.class.isAssignableFrom(c) && !Double.class.isAssignableFrom(c)
 					|| vals.size() == 2,
@@ -65,8 +69,8 @@ public class RangeStreamer extends MsgStreamerThread {
 							.reduce((x, y) -> (Boolean) x && (Boolean) x).orElse(true);
 			$.add(sizeOk && valsOk);
 		});
-		
+
 		return $.stream().reduce((x, y) -> x && y).orElse(false);
 	}
-	
+
 }

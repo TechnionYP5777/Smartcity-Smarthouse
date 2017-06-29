@@ -34,7 +34,7 @@ public final class GuiBinderObject<T> {
     }
 
     public String getDataAsString() {
-        return data != null ? data.toString() : "";
+        return data == null ? "" : data.toString();
     }
 
     public Optional<T> getDataAsOptional() {
@@ -42,11 +42,11 @@ public final class GuiBinderObject<T> {
     }
 
     public GuiBinderObject<T> setData(T newData) {
-        if (data != newData) {
-            data = newData;
-            notifyListeners();
-        }
-        return this;
+        if (data == newData)
+			return this;
+		data = newData;
+		notifyListeners();
+		return this;
     }
 
     public void notifyListeners() {

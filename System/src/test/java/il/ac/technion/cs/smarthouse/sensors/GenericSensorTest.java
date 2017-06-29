@@ -113,11 +113,10 @@ public class GenericSensorTest {
             final Integer iVal = Integer.parseInt((String) val);
             return (Integer) range.get(0) <= iVal && iVal < (Integer) range.get(1);
         }
-        if (Double.class.equals(valsCls)) {
-            final Double iVal = Double.parseDouble((String) val);
-            return (Double) range.get(0) <= iVal && iVal < (Double) range.get(1);
-        }
-        return false;
+        if (!Double.class.equals(valsCls))
+			return false;
+		final Double iVal = Double.parseDouble((String) val);
+		return (Double) range.get(0) <= iVal && iVal < (Double) range.get(1);
     }
 
     @Test
