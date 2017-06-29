@@ -29,8 +29,7 @@ public class SystemPresenterFactory {
     private boolean model_useSensorsServer = true;
     private List<Tuple<BiConsumer<String, Object>, String[]>> model_fileSystemListeners = new ArrayList<>();
     private boolean model_initRegularFileSystemListeners = true;
-    private List<String> model_applicationsToInstall = new ArrayList<>();
-    private List<Class<? extends SmarthouseApplication>> model_applicationsClassestoInstall = new ArrayList<>();
+    private List<ApplicationPath> model_applicationsToInstall = new ArrayList<>();
     private boolean view_enableView = true;
     private List<Runnable> view_onCloseListeners = new ArrayList<>();
     private boolean view_openOnNewStage = true;
@@ -69,14 +68,8 @@ public class SystemPresenterFactory {
         return this;
     }
 
-    public SystemPresenterFactory addApplicationToInstall(
-                    final Class<? extends SmarthouseApplication> applicationClass) {
-        model_applicationsToInstall.add(applicationClass.getName());
-        return this;
-    }
-
-    public SystemPresenterFactory addApplicationToInstall(final String applicationClassName) {
-        model_applicationsToInstall.add(applicationClassName);
+    public SystemPresenterFactory addApplicationToInstall(ApplicationPath appPath) {
+        model_applicationsToInstall.add(appPath);
         return this;
     }
 
@@ -113,33 +106,19 @@ public class SystemPresenterFactory {
         if (view_enableView)
             p.viewOnCloseListeners.addAll(view_onCloseListeners);
 
-        model_applicationsToInstall.forEach(clsName -> {
+        model_applicationsToInstall.forEach(appPath -> {
             try {
-                p.getSystemModel().getSystemApplicationsHandler()
-                                .addApplication(new ApplicationPath(PathType.CLASS_NAME, clsName));
+                p.getSystemModel().getSystemApplicationsHandler().addApplication(appPath);
             } catch (Exception e) {
-                log.error("\n\tCan't install the application " + clsName + " on the system", e);
+                log.error("\n\tCan't install the application " + appPath + " on the system", e);
             }
         });
         
-        model_applicationsClassestoInstall.forEach(cls -> {
-            try {
-                p.getSystemModel().getSystemApplicationsHandler().addApplication(new ApplicationPath(cls));
-            } catch (Exception e) {
-                log.error("\n\tCan't install the application " + cls + " on the system", e);
-            }
-        });
-
         p.getSystemModel().initializeSystemComponents(model_useSensorsServer, model_useCloudServer, model_enableLocalDatabase,
                         model_initRegularFileSystemListeners);
 
         p.getSystemView().waitUntilInitFinishes();
 
         return p;
-    }
-
-    public SystemPresenterFactory addApplicationToInstallAsIs(Class<? extends SmarthouseApplication> cls) {
-        model_applicationsClassestoInstall.add(cls);
-        return this;
     }
 }

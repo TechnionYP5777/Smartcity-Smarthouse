@@ -106,6 +106,6 @@ public final class ApplicationMetaData {
 
     @Override
     public String toString() {
-        return "ApplicationManager [id=" + id + ", path={" + appPath + "}]";
+        return this.getClass().getSimpleName()+" [id=" + id + ", path={" + appPath + "}]";
     }
 }

@@ -29,10 +29,10 @@ public class ApplicationsCoreTest {
     
     @Test
     public void addApplicationAndApplicationManagerTest() throws Exception {
-        assert appCore.getApplicationManagers().isEmpty();
+        assert appCore.getApplicationsMetaData().isEmpty();
         ApplicationMetaData m;
         Assert.assertNotNull(m = appCore.addApplication(new ApplicationPath(PathType.CLASS_NAME, APP1_CLASSPATH)));
-        assert !appCore.getApplicationManagers().isEmpty();
+        assert !appCore.getApplicationsMetaData().isEmpty();
         Assert.assertEquals(appCore.getInstalledApplicationNames().stream().filter(n->n.equals(APP1_CLASS.getName())).count(), 1);
         
         m.setId("XXX");
@@ -98,7 +98,7 @@ public class ApplicationsCoreTest {
         
         ApplicationsCore appCoreNew = new SystemCore().getSystemApplicationsHandler();
         appCoreNew.populate(appCore.toJsonString());
-        assert !appCoreNew.getApplicationManagers().isEmpty();
+        assert !appCoreNew.getApplicationsMetaData().isEmpty();
         Assert.assertEquals(appCoreNew.getInstalledApplicationNames().stream().filter(n->n.equals(APP1_CLASS.getName())).count(), 1);
     }
 }

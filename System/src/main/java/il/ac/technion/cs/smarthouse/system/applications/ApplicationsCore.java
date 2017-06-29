@@ -18,6 +18,7 @@ import il.ac.technion.cs.smarthouse.system.applications.installer.AppInstallerEx
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
+import javafx.application.Platform;
 
 /**
  * Part of the system's core. Stores the managers of the running applications.
@@ -54,6 +55,7 @@ public class ApplicationsCore extends ChildCore {
             final ApplicationMetaData $ = new ApplicationMetaData(UuidGenerator.GenerateUniqueIDstring(), appPath);
             apps.add($);
             initializeApplicationManager($);
+            System.out.println("fu meeeeeeeE? "+apps);
             return $;
         } catch (final Exception $) {
             log.warn("\n\tAplication (" + appPath + ") failed to install", $);
@@ -62,7 +64,8 @@ public class ApplicationsCore extends ChildCore {
         return null;
     }
 
-    public List<ApplicationMetaData> getApplicationManagers() {
+    public List<ApplicationMetaData> getApplicationsMetaData() {
+        System.out.println("fuuuuuuuuuu meeeee "+ apps);
         return Collections.unmodifiableList(apps);
     }
 

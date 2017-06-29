@@ -85,8 +85,10 @@ public class ApplicationViewController extends SystemGuiController {
         updateListView();
         listView.setOnMouseClicked(e -> {
             final int index = listView.getSelectionModel().getSelectedIndex();
-            if (index >= 0)
-                appsHandler.getApplicationManagers().get(index).reopen(appView);
+            if (index >= 0) {
+                System.out.println(listView.getChildrenUnmodifiable()+ " fuuuuuuu "+appsHandler.getApplicationsMetaData());
+                appsHandler.getApplicationsMetaData().get(index).reopen(appView);
+            };
         });
     }
 
@@ -135,7 +137,7 @@ public class ApplicationViewController extends SystemGuiController {
     }
 
     public void selectFirstApp() {
-        if (!appsHandler.getApplicationManagers().isEmpty())
-            Platform.runLater(() -> appsHandler.getApplicationManagers().get(0).reopen(appView));
+        if (!appsHandler.getApplicationsMetaData().isEmpty())
+            Platform.runLater(() -> appsHandler.getApplicationsMetaData().get(0).reopen(appView));
     }
 }
