@@ -121,7 +121,7 @@ public class SensorBuilder {
 		return this;
 	}
 
-	public SensorBuilder addStreamingRange(String path, @SuppressWarnings("rawtypes") List values) {
+	public SensorBuilder addStreamingRange(String path, List values) {
 		if (ranges == null)
 			ranges = new HashMap<>();
 		ranges.put(path, values);

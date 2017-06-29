@@ -27,8 +27,7 @@ public class GenericSensorTest {
         private final Map<String, Integer> counters = new HashMap<>();
         private final String defaultKey = "##DfefaultKey##";
 
-        public Counter() {
-        }
+        public Counter() {}
 
         public void inc() {
             inc(defaultKey);
@@ -151,14 +150,14 @@ public class GenericSensorTest {
 
         Thread.sleep(5000);
 
-        System.out.println("##### counters: " + counters);
         counters.values().forEach(cntr -> {
             assert cntr.get(receivedKey) > 0 && cntr.get(receivedKey).equals(cntr.get(validValKey));
         });
     }
 
-    @Ignore @Test
-    public void copyConstructorWorksTest(){
-        assert false;//todo
+    @Ignore
+    @Test
+    public void copyConstructorWorksTest() {
+        assert false;// todo
     }
 }

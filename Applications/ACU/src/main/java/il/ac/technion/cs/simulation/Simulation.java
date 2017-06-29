@@ -3,19 +3,14 @@
  */
 package il.ac.technion.cs.simulation;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-
-import com.google.gson.Gson;
 
 import il.ac.technion.cs.smarthouse.sensors.PathType;
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;

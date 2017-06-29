@@ -8,10 +8,10 @@ import javafx.scene.control.TextArea;
 
 public class LogConsole extends WriterAppender {
 
-    private static TextArea console = null;
+    private static TextArea console;
 
-    public static void setLogConsole(TextArea textArea) {
-        LogConsole.console = textArea;
+    public static void setLogConsole(TextArea a) {
+        LogConsole.console = a;
     }
 
     @Override
@@ -21,16 +21,16 @@ public class LogConsole extends WriterAppender {
             Platform.runLater(new Runnable() {
 
                 @Override
+                @SuppressWarnings("synthetic-access")
                 public void run() {
                     if (console != null) {
-                        if (console.getText().length() == 0) {
+                        if (console.getText().length() == 0)
                             console.setText(newLine);
-                        } else {
+                        else {
                             console.selectEnd();
                             console.insertText(console.getText().length(), newLine);
                         }
                     }
-
                 }
             });
         } catch (IllegalStateException e) {

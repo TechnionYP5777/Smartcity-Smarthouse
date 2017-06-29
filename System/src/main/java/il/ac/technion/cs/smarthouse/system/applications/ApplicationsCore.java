@@ -17,6 +17,7 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.applications.installer.AppInstallerException;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
+import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 import javafx.application.Platform;
 
@@ -86,7 +87,7 @@ public class ApplicationsCore extends ChildCore {
         $.initialize(systemCore);
         log.info("\n\tApplicationsCore: initializing a new application\n\tAppliactions name: "
                         + $.getApplicationName());
-        Optional.ofNullable(onAppsChange).ifPresent(a -> a.run());
+        Optional.ofNullable(onAppsChange).ifPresent(a -> JavaFxHelper.surroundConsumerWithFx(a).run());
         NotificationsCenter.sendNewAppInstalled($.getApplicationName());
     }
     // [end]

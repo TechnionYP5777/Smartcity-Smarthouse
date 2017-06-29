@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.networking.messages.MessageType;
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
@@ -22,11 +24,13 @@ import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLeve
  */
 public class EnumsTest {
 
+    private static Logger log = LoggerFactory.getLogger(EnumsTest.class);
+
     final Class<?>[] enumClassesToTest = { FileSystemEntries.class, ServiceType.class, MessageType.class,
             EmergencyLevel.class };
 
     @Test
-    public void generalEnumStupidToStringTest() {
+    public void generalEnumToStringTest() {
         Stream.of(enumClassesToTest).flatMap(enumClass -> Stream.of((Object[]) (enumClass.getEnumConstants())))
                         .map(enumVal -> (enumVal + ""));
         assert true;
@@ -34,7 +38,7 @@ public class EnumsTest {
 
     @Test
     @SuppressWarnings("cast")
-    public void enumDeclaredFunctionsWithNoParamsStupidTest() {
+    public void enumDeclaredFunctionsWithNoParamsTest() {
         Stream.of(enumClassesToTest)
                         .flatMap(enumClass -> Stream.of((Method[]) ((Class<?>) enumClass).getDeclaredMethods()))
                         .filter(m -> ((Method) m).getParameterTypes().length == 0)
@@ -44,7 +48,7 @@ public class EnumsTest {
                                 ((Method) m).invoke(e);
                                 ((Method) m).setAccessible(false);
                             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
-                                e1.printStackTrace();
+                                log.error("Enum methods test failed", e1);
                                 assert false;
                             }
                         }));

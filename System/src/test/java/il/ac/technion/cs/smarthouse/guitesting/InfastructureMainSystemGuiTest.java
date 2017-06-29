@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.junit.After;
 import org.loadui.testfx.GuiTest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
@@ -17,13 +19,15 @@ import javafx.scene.Parent;
 
 public class InfastructureMainSystemGuiTest extends GuiTest {
 
+    private static Logger log = LoggerFactory.getLogger(InfastructureMainSystemGuiTest.class);
+
     private SystemPresenter gui;
     private List<Application> sensors = new ArrayList<>();
 
     @Override
     protected Parent getRootNode() {
-        gui = new SystemPresenterFactory().setUseCloudServer(false)
-                        .setRegularFileSystemListeners(false).setOpenOnNewStage(false).build();
+        gui = new SystemPresenterFactory().setUseCloudServer(false).setRegularFileSystemListeners(false)
+                        .setOpenOnNewStage(false).build();
         return gui.getSystemView().getRootViewNode();
     }
 
@@ -33,7 +37,7 @@ public class InfastructureMainSystemGuiTest extends GuiTest {
             try {
                 s.stop();
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("Closing the system errored", e);
             }
         });
     }
@@ -48,7 +52,7 @@ public class InfastructureMainSystemGuiTest extends GuiTest {
         try {
             JavaFxHelper.startGui(sensorSimulator.newInstance());
         } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            log.error("Opening a sensor failed", e);
         }
     }
 }

@@ -46,6 +46,19 @@ public enum JavaFxHelper {
                 }
         };
     }
+    
+    public static Runnable surroundConsumerWithFx(final Runnable functionToRun) {
+        return () -> {
+            if (Platform.isFxApplicationThread())
+                functionToRun.run();
+            else
+                try {
+                    Platform.runLater(() -> functionToRun.run());
+                } catch (final IllegalStateException __) {
+                    new Thread(() -> functionToRun.run()).start();
+                }
+        };
+    }
 
     public static void placeNodeInPane(final Node n, final Pane parent) {
         AnchorPane.setTopAnchor(n, 0.0);
