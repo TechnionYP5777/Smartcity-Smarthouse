@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-1.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" prefWidth="418.0002999999924" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.dashboard.ConfigController">
+<AnchorPane id="AnchorPane" maxHeight="-1.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.technion.cs.smarthouse.gui.controllers.dashboard.ConfigController">
   <children>
     <Label prefWidth="116.99999482421117" text="Widget Type:" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="284.0" AnchorPane.topAnchor="27.0" />
-    <ComboBox fx:id="typesComboBox" prefHeight="30.0" prefWidth="267.99999482421117" AnchorPane.leftAnchor="134.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="20.0">
+    <ComboBox fx:id="typesComboBox" layoutX="112.0" prefHeight="30.0" prefWidth="290.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="20.0">
       <items>
         <FXCollections fx:factory="observableArrayList">
           <String fx:value="Item 1" />
@@ -27,16 +27,18 @@
         <HBox id="widgetsVbox" fx:id="widgetsHbox" prefHeight="158.0" prefWidth="384.0" />
       </content>
     </ScrollPane>
-    <Label layoutY="259.0" prefWidth="60.0" text="Paths:" AnchorPane.leftAnchor="16.0" />
-    <TableView fx:id="table" prefHeight="161.0" prefWidth="388.00019999999495" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="277.0">
+      <Label layoutX="15.0" layoutY="255.0" prefHeight="17.0" prefWidth="81.0" text="Widget Title:" />
+      <TextField fx:id="titleField" layoutX="112.0" layoutY="248.0" prefHeight="30.0" prefWidth="290.0" />
+    <Label layoutX="17.0" layoutY="286.0" prefWidth="60.0" text="Paths:" AnchorPane.leftAnchor="17.0" />
+    <TableView fx:id="table" layoutX="17.0" layoutY="304.0" prefHeight="161.0" prefWidth="388.00019999999495" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="304.0">
       <columns>
         <TableColumn fx:id="nameCol" maxWidth="5000.0" minWidth="10.0" prefWidth="146.0" text="Name" />
         <TableColumn fx:id="pathCol" maxWidth="5000.0" minWidth="10.0" prefWidth="207.0" text="Path" />
         <TableColumn fx:id="cancelCol" maxWidth="5000.0" minWidth="10.0" prefWidth="34.0" text="" />
       </columns>
     </TableView>
-    <TextField fx:id="nameField" prefHeight="30.0" prefWidth="138.00019999999495" text="&lt;name&gt;" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="452.0" />
-    <ComboBox fx:id="sysPathsComboBox" prefHeight="30.0" prefWidth="168.00019999999495" AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="84.0" AnchorPane.topAnchor="452.0">
+    <TextField fx:id="nameField" layoutX="21.0" layoutY="479.0" prefHeight="30.0" prefWidth="138.00019999999495" text="&lt;name&gt;" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="479.0" />
+    <ComboBox fx:id="sysPathsComboBox" layoutX="166.0" layoutY="479.0" prefHeight="30.0" prefWidth="168.00019999999495" AnchorPane.leftAnchor="166.0" AnchorPane.rightAnchor="83.0" AnchorPane.topAnchor="479.0">
       <items>
         <FXCollections fx:factory="observableArrayList">
           <String fx:value="Item 1" />
@@ -45,8 +47,8 @@
         </FXCollections>
       </items>
     </ComboBox>
-    <Label layoutX="26.0" layoutY="499.0" text="Unit of data:" />
-    <TextField fx:id="unitField" layoutX="120.0" layoutY="493.0" prefHeight="30.0" prefWidth="81.0" text="(optional)">
+    <Label layoutX="27.0" layoutY="526.0" text="Unit of data:" />
+    <TextField fx:id="unitField" layoutX="121.0" layoutY="520.0" prefHeight="30.0" prefWidth="81.0" text="(optional)">
          <tooltip>
             <Tooltip maxWidth="200.0" text="Unit is a property of the widget and applies to all paths " wrapText="true" />
          </tooltip></TextField>
