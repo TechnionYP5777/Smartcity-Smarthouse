@@ -30,10 +30,17 @@ public class ApplicationPath {
 
     @Expose private final PathType pathType;
     @Expose private final Object path;
+    private Class<?> cls;
 
     public ApplicationPath(final PathType pathType, final Object path) {
         this.pathType = pathType;
         this.path = path;
+    }
+    
+    public ApplicationPath(final Class<? extends SmarthouseApplication> cls){
+        this.cls = cls;
+        this.path = null;
+        this.pathType = null;
     }
 
     public PathType getPathType() {
@@ -46,6 +53,10 @@ public class ApplicationPath {
 
     @SuppressWarnings("unchecked")
     public SmarthouseApplication installMe() throws AppInstallerException, IOException {
+        if(pathType == null)
+            try {
+                return (SmarthouseApplication) cls.newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {}
         switch (pathType) {
             case JAR_PATH:
                 return AppInstallHelper.loadApplication((String) path);
