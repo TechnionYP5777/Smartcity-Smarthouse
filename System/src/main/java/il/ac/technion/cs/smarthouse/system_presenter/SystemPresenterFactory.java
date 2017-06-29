@@ -94,7 +94,7 @@ public class SystemPresenterFactory {
     }
     
     public SystemPresenterFactory enableLocalDatabase(final boolean enable) {
-        model_enableLocalDatabase = true;
+        model_enableLocalDatabase = enable;
         return this;
     }
 
