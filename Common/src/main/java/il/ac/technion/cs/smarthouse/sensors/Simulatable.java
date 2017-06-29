@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package il.ac.technion.cs.smarthouse.sensors;
 
 import java.util.Collection;
@@ -10,8 +13,7 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
  */
 public interface Simulatable {
 
-	/**
-	 * @return he list of sensors needed to allow the simulatable object to run
-	 */
+	/** @return he list of sensors needed to allow the simulatable object to run 
+	 * */
 	public Collection<GenericSensor> getSimulatedSensors();
 }
