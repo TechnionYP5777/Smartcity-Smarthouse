@@ -13,9 +13,8 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 
 /**
- * 
  * @author Inbal Zukerman
- * @date May 13, 2017
+ * @since May 13, 2017
  */
 public class DatabaseManager implements DatabaseAPI {
 
@@ -37,6 +36,13 @@ public class DatabaseManager implements DatabaseAPI {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.system.database.cloud_server.DatabaseAPI#
+     * addInfo(java.lang.String, java.lang.Object)
+     */
     @Override
     public ParseObject addInfo(final String path, final Object value) throws ParseException {
         serverManager.initialize();
@@ -49,6 +55,14 @@ public class DatabaseManager implements DatabaseAPI {
 
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.system.database.cloud_server.DatabaseAPI#
+     * deleteInfo(il.ac.technion.cs.smarthouse.system.file_system.
+     * FileSystemEntries)
+     */
     @Override
     public void deleteInfo(final FileSystemEntries fsEntry) {
         serverManager.initialize();
@@ -69,6 +83,13 @@ public class DatabaseManager implements DatabaseAPI {
 
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.system.database.cloud_server.DatabaseAPI#
+     * deleteInfo(java.lang.String[])
+     */
     @Override
     public void deleteInfo(final String... path) {
         serverManager.initialize();
@@ -88,6 +109,13 @@ public class DatabaseManager implements DatabaseAPI {
 
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.system.database.cloud_server.DatabaseAPI#
+     * getLastEntry(java.lang.String[])
+     */
     @Override
     public DataEntry getLastEntry(final String... path) {
 

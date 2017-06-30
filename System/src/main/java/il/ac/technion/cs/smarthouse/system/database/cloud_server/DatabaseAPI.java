@@ -8,7 +8,7 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
 /**
  * @author Inbal Zukerman
- * @date May 22, 2017
+ * @since May 22, 2017
  */
 public interface DatabaseAPI {
 
