@@ -52,7 +52,7 @@ public class Simulation {
 
 			if(calcFuture){
 				if(action.isOn())
-					currTemp += AcuAction.HOTTER.equals(action)? +1 : -1;
+					currTemp += 5*(AcuAction.HOTTER.equals(action)? +1 : -1);
 				else{ //if(ThreadLocalRandom.current().nextBoolean())
 					Integer delta = currTemp - defaultTemp;
 					delta = delta.equals(0) ? delta :delta/Math.abs(delta);
@@ -122,8 +122,8 @@ public class Simulation {
 				.addInfoSendingPath(getPath(PathType.INFO_SENDING,stateSuffix), Boolean.class)
 				.addInstructionsReceiveingPath(getPath(PathType.INSTRUCTION_RECEIVING,stateSuffix))
 				.addInstructionsReceiveingPath(getPath(PathType.INSTRUCTION_RECEIVING,defaultTempSuffix))
-				.setStreamInterval(TimeUnit.SECONDS.toMillis(30))
-				.setPollingInterval(TimeUnit.SECONDS.toMillis(20));
+				.setStreamInterval(TimeUnit.SECONDS.toMillis(5))
+				.setPollingInterval(TimeUnit.SECONDS.toMillis(1));
 
 		//previously the run method
 		simulator = new SensorsSimulator();

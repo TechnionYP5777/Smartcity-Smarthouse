@@ -64,7 +64,7 @@ public class AcuGui extends SmarthouseApplication implements Simulatable {
 				
 				//instruct sensor
 				Integer want = wantedTemp.getData(100), have = currentTemp.getData(0);
-				AcuAction nextAction = (want < have) ? AcuAction.HOTTER : (want > have)? AcuAction.COLDER: AcuAction.STOP;
+				AcuAction nextAction = (have < want) ? AcuAction.HOTTER : (have > want)? AcuAction.COLDER: AcuAction.STOP;
 				if(!nextAction.equals(prevAction)){
 					sensor.instruct(nextAction+"", setStatePath);
 					prevAction = nextAction;
