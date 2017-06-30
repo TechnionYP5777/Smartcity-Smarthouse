@@ -15,6 +15,9 @@ import il.ac.technion.cs.smarthouse.system.file_system.PathBuilder;
 /**
  * @author Inbal Zukerman
  * @since May 13, 2017
+ * 
+ *        This class supply the methods to communicate with the Parse server and
+ *        manage it.
  */
 public class DatabaseManager implements DatabaseAPI {
 
