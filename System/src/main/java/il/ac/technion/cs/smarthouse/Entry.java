@@ -9,7 +9,6 @@ public class Entry {
         final SystemPresenter p =new SystemPresenterFactory()
                         .setUseCloudServer(false) // false for now, because there is only one instance of the cloud server
                         .enableLocalDatabase(true)
-                        .enableLocalDatabase(false)
                         .build();
     }
     
