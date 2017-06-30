@@ -61,7 +61,7 @@ public final class ApplicationMetaData {
 
         application = appPath.installMe();
 
-        application.setDataFromApplicationManager($, id);
+        application.setDataFromApplicationMetaData($, id);
         application.onLoad();
         rootNode = application.buildLayout();
 

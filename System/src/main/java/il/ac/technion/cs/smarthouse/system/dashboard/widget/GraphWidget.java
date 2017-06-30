@@ -6,12 +6,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import eu.hansolo.tilesfx.Tile;
 import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
-import javafx.scene.paint.Stop;
 
 /**
  * @author Elia Traore
@@ -46,17 +44,13 @@ public class GraphWidget extends BasicWidget {
         if (WidgetType.PROGRESS_LINE_GRAPH.equals(type))
             super.update(value, key);
         
-        if (!dataSeries.containsKey(key))
-            return;
-        
-        Platform.runLater(() -> {
-            final Integer maxDataSize = 30;
-            if (points > maxDataSize)
-                dataSeries.get(key).getData().remove(0);
-
-            dataSeries.get(key).getData().add(new XYChart.Data<>(points + "", value));
-            ++points;
-        });
+        if (dataSeries.containsKey(key))
+            Platform.runLater(() -> {
+                if (points > 30)
+                    dataSeries.get(key).getData().remove(0);
+                dataSeries.get(key).getData().add(new XYChart.Data<>(points + "", value));
+                ++points;
+            });
     }
 
     public Set<String> getUpdateKeys() {
