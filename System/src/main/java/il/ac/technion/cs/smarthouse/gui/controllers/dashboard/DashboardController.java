@@ -35,100 +35,107 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+/**
+ * This is the controller for the dashboard view
+ * 
+ * @author RON
+ * @since 14-06-2017
+ */
 public class DashboardController extends SystemGuiController {
-	private static Logger log = LoggerFactory.getLogger(DashboardController.class);
 
-	private FileSystem filesystem;
-	private DashboardCore core;
+    private static Logger log = LoggerFactory.getLogger(DashboardController.class);
 
-	private static final double TILE_SIZE = 200;
-	private final Map<String, BasicWidget> currentWidgets = new HashMap<>();
-	private Integer id = 0;
+    private FileSystem filesystem;
+    private DashboardCore core;
 
-	// ---- GUI elements members -----
-	@FXML
-	public FlowPane pane;
-	private Tile addWidgetTile;
+    private static final double TILE_SIZE = 200;
+    private final Map<String, BasicWidget> currentWidgets = new HashMap<>();
+    private Integer id = 0;
 
-	@Override
-	protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model1, final T parent1,
-			final SystemMode extraData1, final URL location, final ResourceBundle b) {
+    // ---- GUI elements members -----
+    @FXML public FlowPane pane;
+    private Tile addWidgetTile;
 
-		filesystem = model1.getFileSystem();
-		core = model1.getSystemDashboardCore();
-		core.setWidgetPresenter(this::addWidget);
-		core.setWidgetRemover(this::removeWidget);
+    @Override
+    protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model1, final T parent1,
+                    final SystemMode extraData1, final URL location, final ResourceBundle b) {
 
-		final Label plus = new Label("+");
-		plus.setFont(Font.font("Arial Black", FontWeight.EXTRA_BOLD, 70));
-		plus.setTextFill(Color.ANTIQUEWHITE);
-		addWidgetTile = TileBuilder.create().prefSize(TILE_SIZE, TILE_SIZE).skinType(SkinType.CUSTOM).graphic(plus)
-				// .roundedCorners(false)
-				.build();
-		Tooltip addTooltip = new Tooltip("Click to add a widget");
-		addTooltip.setStyle("-fx-font: System 12");
-		addWidgetTile.setTooltip(addTooltip);
-		addWidgetTile.setOnMouseClicked(e -> openConfigWindow());
+        filesystem = model1.getFileSystem();
+        core = model1.getSystemDashboardCore();
+        core.setWidgetPresenter(this::addWidget);
+        core.setWidgetRemover(this::removeWidget);
 
-		pane.setBackground(new Background(new BackgroundFill(Tile.BACKGROUND.darker(), null, null)));
-		pane.setPrefSize(3000, 3000);
-		pane.setPadding(new Insets(5));
-		pane.getChildren().add(addWidgetTile);
-	}
+        final Label plus = new Label("+");
+        plus.setFont(Font.font("Arial Black", FontWeight.EXTRA_BOLD, 70));
+        plus.setTextFill(Color.ANTIQUEWHITE);
 
-	private void openConfigWindow() {
-		try {
-			final ConfigController configController = createChildController("dashboard_config_window_ui.fxml");
-			configController.setConfigConsumer((type, info) -> {
-				final String wid = addWidget(type.createWidget(TILE_SIZE, info));
-				core.registerWidget(wid, currentWidgets.get(wid));
-			});
-			final Stage stage = new Stage();
-			stage.setTitle("Widget Configuration Window");
-			stage.setScene(new Scene(configController.getRootViewNode()));
-			stage.show();
-		} catch (final Exception $) {
-			log.error("\n\tFailed to open widget configuration window, as a result of:\n\t" + $);
-			throw new RuntimeException();
-		}
-	}
+        addWidgetTile = TileBuilder.create().prefSize(TILE_SIZE, TILE_SIZE).skinType(SkinType.CUSTOM).graphic(plus)
+                        .build();
 
-	private String getId() {
-		return id + "";
-	}
+        Tooltip addTooltip = new Tooltip("Click to add a widget");
+        addTooltip.setStyle("-fx-font: System 12");
+        addWidgetTile.setTooltip(addTooltip);
+        addWidgetTile.setOnMouseClicked(e -> openConfigWindow());
 
-	// returns the old id
-	private String incId() {
-		return id++ + "";
-	}
+        pane.setBackground(new Background(new BackgroundFill(Tile.BACKGROUND.darker(), null, null)));
+        pane.setPrefSize(3000, 3000);
+        pane.setPadding(new Insets(5));
+        pane.getChildren().add(addWidgetTile);
+    }
 
-	private String addWidget(final BasicWidget w) {
-		final String wid = getId();
-		w.getTile().setOnMouseClicked(e -> {
-			if (e.getButton().equals(MouseButton.SECONDARY)) {
-				final MenuItem deleteOption = new MenuItem("Delete");
-				deleteOption.setOnAction(e1 -> removeWidget(wid));
-				final ContextMenu popup = new ContextMenu();
-				popup.getItems().add(deleteOption);
-				popup.show(w.getTile(), e.getScreenX(), e.getScreenY());
-			}
-		});
-		w.updateAutomaticallyFrom(filesystem);
-		w.setSize(TILE_SIZE);
+    private void openConfigWindow() {
+        try {
+            final ConfigController configController = createChildController("dashboard_config_window_ui.fxml");
+            configController.setConfigConsumer((type, info) -> {
+                final String wid = addWidget(type.createWidget(TILE_SIZE, info));
+                core.registerWidget(wid, currentWidgets.get(wid));
+            });
+            final Stage stage = new Stage();
+            stage.setTitle("Widget Configuration Window");
+            stage.setScene(new Scene(configController.getRootViewNode()));
+            stage.show();
+        } catch (final Exception $) {
+            log.error("\n\tFailed to open widget configuration window, as a result of:\n\t" + $);
+            throw new RuntimeException();
+        }
+    }
 
-		currentWidgets.put(wid, w);
-		pane.getChildren().add(pane.getChildren().indexOf(addWidgetTile), w.getTile());
-		core.registerWidget(wid, w);
+    private String getId() {
+        return id + "";
+    }
 
-		return incId();
-	}
+    // returns the old id
+    private String incId() {
+        return id++ + "";
+    }
 
-	private void removeWidget(final String givenId) {
-		Optional.ofNullable(currentWidgets.get(givenId)).ifPresent(widget -> {
-			currentWidgets.remove(givenId);
-			pane.getChildren().remove(widget.getTile());
-			core.deregisterWidget(givenId);
-		});
-	}
+    private String addWidget(final BasicWidget w) {
+        final String wid = getId();
+        w.getTile().setOnMouseClicked(e -> {
+            if (e.getButton().equals(MouseButton.SECONDARY)) {
+                final MenuItem deleteOption = new MenuItem("Delete");
+                deleteOption.setOnAction(e1 -> removeWidget(wid));
+                final ContextMenu popup = new ContextMenu();
+                popup.getItems().add(deleteOption);
+                popup.show(w.getTile(), e.getScreenX(), e.getScreenY());
+            }
+        });
+        w.updateAutomaticallyFrom(filesystem);
+        w.setSize(TILE_SIZE);
+
+        currentWidgets.put(wid, w);
+        pane.getChildren().add(pane.getChildren().indexOf(addWidgetTile), w.getTile());
+        core.registerWidget(wid, w);
+
+        return incId();
+    }
+
+    private void removeWidget(final String givenId) {
+        Optional.ofNullable(currentWidgets.get(givenId)).ifPresent(widget -> {
+            currentWidgets.remove(givenId);
+            pane.getChildren().remove(widget.getTile());
+            core.deregisterWidget(givenId);
+        });
+    }
 
 }

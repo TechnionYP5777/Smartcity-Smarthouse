@@ -14,6 +14,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 
+/**
+ * This is the controller of the sensor information, which is part of the house
+ * mapping
+ * 
+ * @author Sharon Kuninin
+ * @since 20-01-2017
+ */
 public class SensorInfoController extends SystemGuiController {
     private FileSystem fileSystem;
 
@@ -24,15 +31,16 @@ public class SensorInfoController extends SystemGuiController {
     @FXML private Label idLabel;
     @FXML private ComboBox<String> room;
     private MappingController mapController;
-    
+
     @Override
-    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent,
-                    SystemMode m, URL location, ResourceBundle b) {
+    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
+                    URL location, ResourceBundle b) {
         fileSystem = model.getFileSystem();
 
         room.getSelectionModel().select(0);
         room.valueProperty().addListener((ov, prevVal, newVal) -> {
             this.<MappingController>getParentController().updateSensorLocation(id, newVal);
+
             // update model
             fileSystem.sendMessage(newVal, FileSystemEntries.LOCATION.buildPath(commName, id));
         });
@@ -45,19 +53,19 @@ public class SensorInfoController extends SystemGuiController {
 
         return this;
     }
-    
-    public SensorInfoController setLocation(final String r) {
-        room.getSelectionModel().select(r);
+
+    public SensorInfoController setLocation(final String s) {
+        room.getSelectionModel().select(s);
         return this;
     }
-    
-    public SensorInfoController setMapController(final MappingController controller){
-        mapController = controller;
+
+    public SensorInfoController setMapController(final MappingController c) {
+        mapController = c;
         room.getItems().setAll(mapController.getAlllocations());
         return this;
     }
-    
-    public SensorInfoController updateRooms(){
+
+    public SensorInfoController updateRooms() {
         room.getItems().setAll(mapController.getAlllocations());
         return this;
     }

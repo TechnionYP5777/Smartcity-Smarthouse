@@ -28,6 +28,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
+/**
+ * This controller is for the application view, both in the user and develper
+ * modes.
+ * 
+ * @author Roy
+ * @since 10-01-2017
+ */
 public class ApplicationViewController extends SystemGuiController {
     @FXML ListView<String> listView;
     @FXML AnchorPane appView;
@@ -45,8 +52,8 @@ public class ApplicationViewController extends SystemGuiController {
     private ApplicationsCore appsHandler;
 
     @Override
-    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent,
-                    SystemMode m, URL location, ResourceBundle b) {
+    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
+                    URL location, ResourceBundle b) {
         appsHandler = model.getSystemApplicationsHandler();
 
         model.getSystemApplicationsHandler().setOnAppsListChange(this::updateListView);
@@ -85,9 +92,9 @@ public class ApplicationViewController extends SystemGuiController {
         updateListView();
         listView.setOnMouseClicked(e -> {
             final int index = listView.getSelectionModel().getSelectedIndex();
-            if (index >= 0) 
+            if (index >= 0)
                 appsHandler.getApplicationsMetaData().get(index).reopen(appView);
-            
+
         });
     }
 
@@ -131,10 +138,17 @@ public class ApplicationViewController extends SystemGuiController {
         updateListView();
     }
 
+    /**
+     * This method updates the applications' list view
+     */
     public void updateListView() {
         listView.setItems(FXCollections.observableArrayList(appsHandler.getInstalledApplicationNames()));
     }
 
+    /**
+     * This method selects the first application in the list, given the latter
+     * is not empty
+     */
     public void selectFirstApp() {
         if (!appsHandler.getApplicationsMetaData().isEmpty())
             Platform.runLater(() -> appsHandler.getApplicationsMetaData().get(0).reopen(appView));
