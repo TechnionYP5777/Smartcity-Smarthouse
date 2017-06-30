@@ -11,22 +11,36 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 /**
- * Implementation of {@link StatusRegionBuilder}
- * 
  * @author RON
  * @since 10-06-2017
+ * 
+ *        Implementation of {@link StatusRegionBuilder}
  */
 public final class StatusRegionBuilderImpl extends AbstractRegionBuilder implements StatusRegionBuilder {
     public StatusRegionBuilderImpl() {
         super.setTitle("Status");
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * implementations.AbstractRegionBuilder#setTitle(java.lang.String)
+     */
     @Override
     public StatusRegionBuilderImpl setTitle(String title) {
         super.setTitle(title);
         return this;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * StatusRegionBuilder#addStatusField(java.lang.String,
+     * il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * GuiBinderObject)
+     */
     @Override
     public <T> StatusRegionBuilderImpl addStatusField(String title, GuiBinderObject<T> bindingDataObject) {
         final Label l = createStatusLabel(bindingDataObject.getDataAsString());
@@ -37,9 +51,19 @@ public final class StatusRegionBuilderImpl extends AbstractRegionBuilder impleme
         return this;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * StatusRegionBuilder#addStatusField(java.lang.String,
+     * il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * GuiBinderObject,
+     * il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * ColorRange)
+     */
     @Override
-    public <T extends Comparable<T>> StatusRegionBuilderImpl addStatusField(String title, GuiBinderObject<T> bindingDataObject,
-                    ColorRange<T> r) {        
+    public <T extends Comparable<T>> StatusRegionBuilderImpl addStatusField(String title,
+                    GuiBinderObject<T> bindingDataObject, ColorRange<T> r) {
         final Label l = createStatusLabel(bindingDataObject.getDataAsString());
 
         bindingDataObject.addOnDataChangedListener(d -> {
@@ -53,19 +77,41 @@ public final class StatusRegionBuilderImpl extends AbstractRegionBuilder impleme
         return this;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * StatusRegionBuilder#addTimerStatusField(java.lang.String,
+     * il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * GuiBinderObject,
+     * il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * GuiBinderObject)
+     */
     @Override
     public StatusRegionBuilderImpl addTimerStatusField(String title, GuiBinderObject<Boolean> timerToggle,
                     GuiBinderObject<Double> timerDuration) {
         return addTimerStatusField(title, timerToggle, timerDuration, null);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * StatusRegionBuilder#addTimerStatusField(java.lang.String,
+     * il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * GuiBinderObject,
+     * il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * GuiBinderObject,
+     * il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * ColorRange)
+     */
     @Override
     public StatusRegionBuilderImpl addTimerStatusField(String title, GuiBinderObject<Boolean> timerToggle,
                     GuiBinderObject<Double> timerDuration, ColorRange<Double> d) {
         final Label timeLabel = createStatusLabel("");
         final Timeline timeline;
         final GuiBinderObject<Duration> time = new GuiBinderObject<>(Duration.ZERO);
-        
+
         timeLabel.setText(0.0 + " [sec]");
 
         timeline = new Timeline(new KeyFrame(Duration.millis(100), ¢ -> {

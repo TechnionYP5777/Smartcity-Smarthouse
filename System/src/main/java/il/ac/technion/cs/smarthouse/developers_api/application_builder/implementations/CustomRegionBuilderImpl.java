@@ -13,36 +13,57 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 
 /**
- * Implementation of {@link CustomRegionBuilder}
- * 
  * @author RON
  * @since 10-06-2017
+ * 
+ *        Implementation of {@link CustomRegionBuilder}
  */
 public class CustomRegionBuilderImpl extends AbstractRegionBuilder implements CustomRegionBuilder {
     private static Logger log = LoggerFactory.getLogger(CustomRegionBuilderImpl.class);
-    
+
     private final ClassLoader applicationsClassLoader;
-    
+
     public CustomRegionBuilderImpl(final ClassLoader applicationsClassLoader) {
         super.setTitle("Custom Region");
         this.applicationsClassLoader = applicationsClassLoader;
     }
-    
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * implementations.AbstractRegionBuilder#setTitle(java.lang.String)
+     */
     @Override
     public CustomRegionBuilderImpl setTitle(String title) {
         super.setTitle(title);
         return this;
     }
-    
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * CustomRegionBuilder#add(javafx.scene.Node)
+     */
     @Override
     public CustomRegionBuilderImpl add(final Node n) {
         if (n != null)
             addAppBuilderItem(new AppBuilderItem(null, n));
         return this;
     }
-    
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * CustomRegionBuilder#add(java.lang.String,
+     * il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * GuiBinderObject)
+     */
     @Override
-    public CustomRegionBuilderImpl add(final String fxmlFileName, final GuiBinderObject<? extends Initializable> outController) {
+    public CustomRegionBuilderImpl add(final String fxmlFileName,
+                    final GuiBinderObject<? extends Initializable> outController) {
         Node rootNode;
         try {
             final FXMLLoader fxmlLoader = createFXMLLoader(fxmlFileName);
@@ -53,17 +74,17 @@ public class CustomRegionBuilderImpl extends AbstractRegionBuilder implements Cu
             log.error("\n\tCouldn't load the fxml: " + fxmlFileName, e);
             throw new RuntimeException("Couldn't load the fxml: " + fxmlFileName + "\n" + e.getClass().getSimpleName());
         }
-        
+
         return add(rootNode);
     }
-    
+
     private FXMLLoader createFXMLLoader(final String fxmlFileName) {
         final URL url = getResource(fxmlFileName);
         final FXMLLoader fxmlLoader = new FXMLLoader(url);
         fxmlLoader.setClassLoader(applicationsClassLoader);
         return fxmlLoader;
     }
-    
+
     private URL getResource(final String resourcePath) {
         return Optional.ofNullable(applicationsClassLoader.getResource(resourcePath))
                         .orElse(getClass().getResource(resourcePath));

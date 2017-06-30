@@ -7,10 +7,11 @@ import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinder
 import javafx.scene.paint.Color;
 
 /**
- * Used by the {@link StatusRegionBuilder} to set the color of the text fields
- * 
  * @author RON
  * @since 11-06-2017
+ * 
+ *        Used by the {@link StatusRegionBuilder} to set the color of the text
+ *        fields
  */
 public class ColorRange<T extends Comparable<T>> {
 
@@ -36,8 +37,8 @@ public class ColorRange<T extends Comparable<T>> {
         }
 
         T getValue() {
-			return isRegularValue ? value : dataObject.getData();
-		}
+            return isRegularValue ? value : dataObject.getData();
+        }
     }
 
     Color defaultColor = Color.BLACK;
@@ -76,16 +77,16 @@ public class ColorRange<T extends Comparable<T>> {
     }
 
     public Color getColorOfValue(T value) {
-		if (value == null)
-			return defaultColor;
-		for (ColorAndValue colorAndValue : ifEqualsList)
-			if (value.equals(colorAndValue.getValue()))
-				return colorAndValue.color;
-		ColorAndValue choosenCv = null;
-		for (ColorAndValue colorAndValue : rangeList)
-			if (value.compareTo(colorAndValue.getValue()) >= 0
-					&& (choosenCv == null || choosenCv.getValue().compareTo(colorAndValue.getValue()) < 0))
-				choosenCv = colorAndValue;
-		return choosenCv == null ? defaultColor : choosenCv.color;
-	}
+        if (value == null)
+            return defaultColor;
+        for (ColorAndValue colorAndValue : ifEqualsList)
+            if (value.equals(colorAndValue.getValue()))
+                return colorAndValue.color;
+        ColorAndValue choosenCv = null;
+        for (ColorAndValue colorAndValue : rangeList)
+            if (value.compareTo(colorAndValue.getValue()) >= 0
+                            && (choosenCv == null || choosenCv.getValue().compareTo(colorAndValue.getValue()) < 0))
+                choosenCv = colorAndValue;
+        return choosenCv == null ? defaultColor : choosenCv.color;
+    }
 }

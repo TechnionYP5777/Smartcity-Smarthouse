@@ -14,10 +14,10 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 
 /**
- * Implementation of {@link AppBuilder}
- * 
  * @author RON
  * @since 10-06-2017
+ * 
+ *        Implementation of {@link AppBuilder}
  */
 public final class AppBuilderImpl implements AppBuilder {
     private final ConfigurationsRegionBuilderImpl configurationsBuilder;
@@ -32,21 +32,45 @@ public final class AppBuilderImpl implements AppBuilder {
         customBuilder = new CustomRegionBuilderImpl(applicationsClassLoader);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * AppBuilder#getConfigurationsRegionBuilder()
+     */
     @Override
     public ConfigurationsRegionBuilder getConfigurationsRegionBuilder() {
         return configurationsBuilder;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * AppBuilder#getStatusRegionBuilder()
+     */
     @Override
     public StatusRegionBuilder getStatusRegionBuilder() {
         return statusBuilder;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * AppBuilder#getWidgetsRegionBuilder()
+     */
     @Override
     public WidgetsRegionBuilder getWidgetsRegionBuilder() {
         return widgetBuilder;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.application_builder.
+     * AppBuilder#getCustomRegionBuilder()
+     */
     @Override
     public CustomRegionBuilder getCustomRegionBuilder() {
         return customBuilder;
