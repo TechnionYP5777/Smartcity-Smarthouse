@@ -16,11 +16,11 @@ import org.slf4j.LoggerFactory;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 
 /**
- * This class contains static functions that handle loading
- * SmartHouseApplications using ClassLoaders
- * 
  * @author RON
  * @since 09-12-2016
+ * 
+ *        This class contains static functions that handle loading
+ *        SmartHouseApplications using ClassLoaders
  */
 public class AppInstallHelper {
 

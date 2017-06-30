@@ -3,10 +3,11 @@ package il.ac.technion.cs.smarthouse.system.applications.installer;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 
 /**
- * This exception describes an error in the process of installing an application
- * 
  * @author RON
  * @since 09-12-2016
+ * 
+ *        This exception describes an error in the process of installing an
+ *        application
  */
 public class AppInstallerException extends Exception {
     public enum ErrorCode {
