@@ -8,7 +8,7 @@ import com.google.gson.annotations.Expose;
 /**
  * This class represent a house and meant to be used for the house mapping GUI
  * 
- * @author Sharon Kuninin
+ * @author Roy Shchory
  * @since 27-01-2017
  */
 public class House {

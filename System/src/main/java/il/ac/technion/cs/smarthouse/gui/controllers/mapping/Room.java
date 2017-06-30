@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
  * This class represents a room in the house and meant to be used for the house
  * mapping
  * 
- * @author Sharon Kuninin
+ * @author Roy Shchory
  * @since 20-01-2017
  */
 public class Room {

@@ -18,7 +18,7 @@ import javafx.scene.control.TitledPane;
  * This is the controller of the sensor information, which is part of the house
  * mapping
  * 
- * @author Sharon Kuninin
+ * @author Roy Shchory
  * @since 20-01-2017
  */
 public class SensorInfoController extends SystemGuiController {

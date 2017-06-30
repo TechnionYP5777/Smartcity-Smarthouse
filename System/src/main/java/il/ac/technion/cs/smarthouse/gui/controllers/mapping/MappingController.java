@@ -32,7 +32,7 @@ import javafx.scene.text.Font;
 /**
  * This is the controller of the house mapping
  * 
- * @author Sharon Kuninin
+ * @author Roy Shchory
  * @since 04-01-2017
  */
 public class MappingController extends SystemGuiController {
