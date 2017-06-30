@@ -8,6 +8,10 @@ import org.junit.Test;
 import il.ac.technion.cs.smarthouse.system.database.local_cache.LocalSaver;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
+/**
+ * @author RON
+ * @since 19-06-2017
+ */
 public class LocalSaverTest {
     private static final String filename = "blablaTest_" + UuidGenerator.GenerateUniqueIDstring() + ".data";
 

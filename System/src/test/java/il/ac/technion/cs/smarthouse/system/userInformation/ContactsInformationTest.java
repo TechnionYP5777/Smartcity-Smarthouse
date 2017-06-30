@@ -20,8 +20,6 @@ public class ContactsInformationTest {
     private final Contact contactA = new Contact("123", "Alon", "0508080123", "alon@gmail.com");
     private final Contact contactB = new Contact("456", "Miri", "0547887261", "miri100@hotmail.com");
 
- 
-
     @Test
     public void singleContactTest() {
         contactsInfo.addContact(contactA, EmergencyLevel.CALL_EMERGENCY_CONTACT);

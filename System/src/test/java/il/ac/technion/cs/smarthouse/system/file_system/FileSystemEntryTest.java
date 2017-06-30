@@ -3,6 +3,10 @@ package il.ac.technion.cs.smarthouse.system.file_system;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * @author RON
+ * @since 31-05-2017
+ */
 public class FileSystemEntryTest {
     @Test
     public void testAll() {

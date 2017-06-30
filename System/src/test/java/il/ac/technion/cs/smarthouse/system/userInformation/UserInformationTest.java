@@ -10,8 +10,8 @@ import il.ac.technion.cs.smarthouse.system.user_information.Contact;
 import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
 /**
- * 
  * @author Inbal Zukerman
+ * @since 3.1.2017
  */
 public class UserInformationTest {
 
