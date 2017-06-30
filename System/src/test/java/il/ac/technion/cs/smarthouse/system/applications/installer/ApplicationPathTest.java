@@ -9,22 +9,26 @@ import org.junit.Test;
 
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 
+/**
+ * @author RON
+ * @since 30-05-2017
+ */
 public class ApplicationPathTest {
     private static String APP1_CLASSPATH = ApplicationPathTest.class.getPackage().getName() + ".examples.MyTestClass1";
-    
+
     @Test
     public void mainTest() throws AppInstallerException, IOException {
         ApplicationPath p = new ApplicationPath(PathType.CLASS_NAME, APP1_CLASSPATH);
-        
+
         Assert.assertEquals(p.getPath(), APP1_CLASSPATH);
         Assert.assertEquals(p.getPathType(), PathType.CLASS_NAME);
-        
+
         assert p.installMe() != null;
-        
+
         assert (new ApplicationPath(PathType.CLASS_NAMES_LIST, Arrays.asList(APP1_CLASSPATH))).installMe() != null;
         Assert.assertNull((new ApplicationPath(PathType.PACKAGE_NAME, APP1_CLASSPATH)).installMe());
     }
-    
+
     @Test(expected = FileNotFoundException.class)
     public void jarTypeTest() throws AppInstallerException, IOException {
         (new ApplicationPath(PathType.JAR_PATH, APP1_CLASSPATH)).installMe();

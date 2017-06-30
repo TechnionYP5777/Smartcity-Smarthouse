@@ -6,6 +6,10 @@ import org.junit.Test;
 import il.ac.technion.cs.smarthouse.system.services.ServiceManager;
 import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 
+/**
+ * @author RON
+ * @since 30-05-2017
+ */
 public class CommunicationServicesTest {
     private ServiceManager serviceManager;
 

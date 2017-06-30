@@ -11,6 +11,10 @@ import org.junit.Test;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.system.applications.installer.examples.MyTestClass1;
 
+/**
+ * @author RON
+ * @since 14-12-2016
+ */
 public class AppInstallHelperTest {
     private static String testClassesPathPrefix;
 
