@@ -101,13 +101,18 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
         
         addAppBuilderItem(new AppBuilderItem(title, cBox));
         
-        sensorApiObject.listenForNewAliases(alias -> {
+        Consumer<String> c = alias -> {
             final String currValue = cBox.getValue();
             cBox.getItems().clear();
             cBox.getItems().addAll(sensorApiObject.getAllAliases());
             if (!cBox.getItems().isEmpty())
-				cBox.setValue(cBox.getItems().contains(currValue) ? currValue : cBox.getItems().get(0));
-        });
+                cBox.setValue(cBox.getItems().contains(currValue) ? currValue : cBox.getItems().get(0));
+        };
+        
+        sensorApiObject.listenForNewAliases(c);
+        
+        c.accept("");
+        
         return this;
     }
 }
