@@ -11,10 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class implements an API to work with the database on the server.
- * 
  * @author Inbal Zukerman
- * @date Mar 31, 2017
+ * @since Mar 31, 2017
+ * 
+ *        This class implements an API to work with the database on the server.
  */
 
 public class ServerManager {
@@ -31,6 +31,9 @@ public class ServerManager {
         initialize();
     }
 
+    /**
+     * This method initializes the database.
+     */
     public void initialize() {
 
         if (init)

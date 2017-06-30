@@ -24,76 +24,102 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsServi
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 import javafx.scene.paint.Color;
 
+/**
+ * @author roysh
+ * @since 20.12.16
+ * 
+ *        This class contains the logic of the SOS application.
+ */
 public class SosAppGui extends SmarthouseApplication implements Simulatable {
-	private static Logger log = LoggerFactory.getLogger(SosAppGui.class);
+    private static Logger log = LoggerFactory.getLogger(SosAppGui.class);
 
-	public boolean shouldAlert = true;
+    public boolean shouldAlert = true;
 
-	static SensorsSimulator simulator = initSimulator();
+    static SensorsSimulator simulator = initSimulator();
 
-	public static void main(String[] args) throws Exception {
-		launch(simulator, true);
-	}
+    public static void main(String[] args) throws Exception {
+        launch(simulator, true);
+    }
 
-	private static SensorsSimulator initSimulator() {
-		final String path = "sos" + PathBuilder.DELIMITER + "pressed";
-		SensorsSimulator s = new SensorsSimulator();
-		s.addSensor(new SensorBuilder().setCommname("iSOS").setAlias("Elia's sos sensor")
-				.addInfoSendingPath(path, Boolean.class).addStreamingRange(path, Arrays.asList(true))
-				.setStreamInterval(TimeUnit.MINUTES.toMillis(3)).build());
-		return s;
-	}
+    private static SensorsSimulator initSimulator() {
+        final String path = "sos" + PathBuilder.DELIMITER + "pressed";
+        SensorsSimulator s = new SensorsSimulator();
+        s.addSensor(new SensorBuilder().setCommname("iSOS").setAlias("Elia's sos sensor")
+                        .addInfoSendingPath(path, Boolean.class).addStreamingRange(path, Arrays.asList(true))
+                        .setStreamInterval(TimeUnit.MINUTES.toMillis(3)).build());
+        return s;
+    }
 
-	@Override
-	public Collection<GenericSensor> getSimulatedSensors() {
-		return simulator.getAllSensors();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.sensors.Simulatable#getSimulatedSensors()
+     */
+    @Override
+    public Collection<GenericSensor> getSimulatedSensors() {
+        return simulator.getAllSensors();
+    }
 
-	@Override
-	public void onLoad() throws Exception {
-		SensorApi<SosSensor> mySosSensor = ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE))
-				.getSensor("iSOS", SosSensor.class);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication#onLoad(
+     * )
+     */
+    @Override
+    public void onLoad() throws Exception {
+        SensorApi<SosSensor> mySosSensor = ((SensorsService) super.getService(ServiceType.SENSORS_SERVICE))
+                        .getSensor("iSOS", SosSensor.class);
 
-		final String INIT = "SOS not pressed";
-		GuiBinderObject<String> str = new GuiBinderObject<>(INIT);
+        final String INIT = "SOS not pressed";
+        GuiBinderObject<String> str = new GuiBinderObject<>(INIT);
 
-		getAppBuilder().getConfigurationsRegionBuilder()
-				.addSensorAliasSelectionField("Selected SOS button", mySosSensor)
-				.addButtonInputField("Press if ok", "OK", (new GuiBinderObject<Void>()).addOnDataChangedListener(d -> {
-					if (!shouldAlert) {
-						shouldAlert = !shouldAlert;
-						str.setData(INIT);
-					}
-				}));
+        getAppBuilder().getConfigurationsRegionBuilder()
+                        .addSensorAliasSelectionField("Selected SOS button", mySosSensor)
+                        .addButtonInputField("Press if ok", "OK",
+                                        (new GuiBinderObject<Void>()).addOnDataChangedListener(d -> {
+                                            if (!shouldAlert) {
+                                                shouldAlert = !shouldAlert;
+                                                str.setData(INIT);
+                                            }
+                                        }));
 
-		getAppBuilder().getStatusRegionBuilder().addStatusField("", str,
-				new ColorRange<String>(Color.RED).addIfEquals(INIT, Color.GREEN));
+        getAppBuilder().getStatusRegionBuilder().addStatusField("", str,
+                        new ColorRange<String>(Color.RED).addIfEquals(INIT, Color.GREEN));
 
-		mySosSensor.subscribe(sos -> {
-			final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
-			if (shouldAlert) {
-				str.setData(t);
-				((AlertsManager) super.getService(ServiceType.ALERTS_SERVICE)).sendAlert(getApplicationName(),
-						"ATTENTION SOS: Client is requesting help.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
-				shouldAlert = false;
-			}
-			log.debug("App msg (from function subscibed to sos sensor): " + t + " | Sensor is located at: "
-					+ sos.getSensorLocation());
-		});
-	}
+        mySosSensor.subscribe(sos -> {
+            final String t = "SOS " + (sos.isPressed() ? "" : "Not ") + "Pressed";
+            if (shouldAlert) {
+                str.setData(t);
+                ((AlertsManager) super.getService(ServiceType.ALERTS_SERVICE)).sendAlert(getApplicationName(),
+                                "ATTENTION SOS: Client is requesting help.", EmergencyLevel.EMAIL_EMERGENCY_CONTACT);
+                shouldAlert = false;
+            }
+            log.debug("App msg (from function subscibed to sos sensor): " + t + " | Sensor is located at: "
+                            + sos.getSensorLocation());
+        });
+    }
 
-	@Override
-	public String getApplicationName() {
-		return "SOS Application";
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication#
+     * getApplicationName()
+     */
+    @Override
+    public String getApplicationName() {
+        return "SOS Application";
+    }
 
-	public static class SosSensor extends SensorData {
-		@SystemPath("sos.pressed")
-		private boolean pressed;
+    public static class SosSensor extends SensorData {
+        @SystemPath("sos.pressed")
+        private boolean pressed;
 
-		boolean isPressed() {
-			return pressed;
-		}
-	}
+        boolean isPressed() {
+            return pressed;
+        }
+    }
 
 }

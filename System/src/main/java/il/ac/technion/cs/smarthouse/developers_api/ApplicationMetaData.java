@@ -12,10 +12,11 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 /**
- * A class that stores information about the installed application
  * 
  * @author RON
  * @since 09-12-2016
+ * 
+ *        A class that stores information about the installed application
  */
 public final class ApplicationMetaData {
     @Expose private String id;
@@ -106,6 +107,6 @@ public final class ApplicationMetaData {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName()+" [id=" + id + ", path={" + appPath + "}]";
+        return this.getClass().getSimpleName() + " [id=" + id + ", path={" + appPath + "}]";
     }
 }

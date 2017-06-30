@@ -22,10 +22,10 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsServi
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 
 /**
- * This class contains the logic of the vitals signs application.
- * 
  * @author Yarden
  * @since 19.1.17
+ * 
+ *        This class contains the logic of the vitals signs application.
  */
 public class VitalsApp extends SmarthouseApplication implements Simulatable {
     private static Logger log = LoggerFactory.getLogger(VitalsApp.class);
@@ -58,11 +58,24 @@ public class VitalsApp extends SmarthouseApplication implements Simulatable {
         return s;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.sensors.Simulatable#getSimulatedSensors()
+     */
     @Override
     public Collection<GenericSensor> getSimulatedSensors() {
         return simulator.getAllSensors();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication#onLoad(
+     * )
+     */
     @Override
     public void onLoad() throws Exception {
         log.debug("App starting - in onLoad");
@@ -80,7 +93,7 @@ public class VitalsApp extends SmarthouseApplication implements Simulatable {
             log.debug("App msg (from function subscibed to vitals sensor): " + t + " | Sensor is located at: "
                             + vitals.getSensorLocation());
 
-            // major alerts
+            // Major alerts
             if (pulse < 45 && !lowPulseAlert) {
                 lowPulseAlert = true;
                 alertsManager.sendAlert(getApplicationName(), "Client has an extremely low pulse.",
@@ -125,6 +138,12 @@ public class VitalsApp extends SmarthouseApplication implements Simulatable {
         controller = c.getData();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication#
+     * getApplicationName()
+     */
     @Override
     public String getApplicationName() {
         return "Vitals Application";

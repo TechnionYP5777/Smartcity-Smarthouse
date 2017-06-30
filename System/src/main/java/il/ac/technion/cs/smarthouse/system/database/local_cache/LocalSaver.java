@@ -12,10 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Saves system data to local file
- * 
  * @author RON
  * @since 18-06-2017
+ * 
+ *        Saves system data to local file
  */
 public class LocalSaver {
     private static Logger log = LoggerFactory.getLogger(LocalSaver.class);
@@ -49,7 +49,7 @@ public class LocalSaver {
             o.write(data);
             o.flush();
             log.trace("\n\tLocalSaver: Wrote data to file\n\tFile name: " + f.getAbsolutePath() + "\n\tData: " + data);
-            log.info("\n\tLocalSaver: Wrote data to file\n\tFile name: " + f.getAbsolutePath() );
+            log.info("\n\tLocalSaver: Wrote data to file\n\tFile name: " + f.getAbsolutePath());
         } catch (NumberFormatException | IOException e) {
             log.error("\n\tCan't write to file (" + f.getAbsolutePath() + ")", e);
         }

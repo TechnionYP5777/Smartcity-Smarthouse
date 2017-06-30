@@ -8,10 +8,10 @@ import il.ac.technion.cs.smarthouse.gui.javafx_elements.AppLabel;
 import javafx.scene.Node;
 
 /**
- * an abstract GUI layout region
- * 
  * @author RON
  * @since 10-06-2017
+ * 
+ *        An abstract GUI layout region.
  */
 abstract class AbstractRegionBuilder {
     static class AppBuilderItem {

@@ -17,6 +17,10 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.application.Application;
 import javafx.scene.Parent;
 
+/**
+ * @author roysh
+ * @since 29-04-2017
+ */
 public class InfastructureMainSystemGuiTest extends GuiTest {
 
     private static Logger log = LoggerFactory.getLogger(InfastructureMainSystemGuiTest.class);

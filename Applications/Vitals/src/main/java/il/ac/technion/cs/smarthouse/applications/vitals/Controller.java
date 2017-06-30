@@ -18,12 +18,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-/** This class is responsible for the visual part of the vitals signs
- * application.
+/**
  * @author Yarden
- * @since 19.1.17 */
+ * @since 19.1.17
+ * 
+ *        This class is responsible for the visual part of the vitals signs
+ *        application.
+ */
 public class Controller implements Initializable {
     private static final int MAX_POINTS = 30;
+    private static final double SIZE = 50;
 
     private int points;
     private final XYChart.Series<Number, Number> pulseSeries = new XYChart.Series<>();
@@ -34,11 +38,21 @@ public class Controller implements Initializable {
     private final HBox backHBox = new HBox();
     private final HBox frontHBox = new HBox();
 
-    @FXML public Label pulseLabel;
-    @FXML public Label bpLabel;
-    @FXML public StackPane stackPane;
+    @FXML
+    public Label pulseLabel;
+    @FXML
+    public Label bpLabel;
+    @FXML
+    public StackPane stackPane;
 
-    @Override public void initialize(final URL location, final ResourceBundle __) {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javafx.fxml.Initializable#initialize(java.net.URL,
+     * java.util.ResourceBundle)
+     */
+    @Override
+    public void initialize(final URL location, final ResourceBundle __) {
         pulseLabel.setDisable(false);
         bpLabel.setDisable(false);
 
@@ -63,12 +77,16 @@ public class Controller implements Initializable {
         pulseYAxis.setLabel("Pulse (BPM)");
 
         final LineChart<Number, Number> bpLineChart = new LineChart<Number, Number>(xAxis, bpYAxis) {
-            @Override protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex, final Data<Number, Number> item) {
-                // remove symbols from data points
+            @Override
+            protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex,
+                            final Data<Number, Number> item) {
+                // Remove symbols from data points
             }
         }, pulseLineChart = new LineChart<Number, Number>(xAxis, pulseYAxis) {
-            @Override protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex, final Data<Number, Number> item) {
-                // remove symbols from data points
+            @Override
+            protected void dataItemAdded(final Series<Number, Number> __1, final int itemIndex,
+                            final Data<Number, Number> item) {
+                // Remove symbols from data points
             }
         };
         bpLineChart.setDisable(false);
@@ -83,18 +101,17 @@ public class Controller implements Initializable {
         bpLineChart.getData().add(systolicSeries);
         bpLineChart.getData().add(diastolicSeries);
 
-        bpLineChart.lookup(".chart-content").lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
+        bpLineChart.lookup(".chart-content").lookup(".chart-plot-background")
+                        .setStyle("-fx-background-color: transparent;");
         bpLineChart.setVerticalGridLinesVisible(false);
         bpLineChart.setHorizontalGridLinesVisible(false);
 
-        // stackPane.getChildren().add(pulseLineChart);
-        // stackPane.getChildren().add(bpLineChart);
         final Pane tmpBackPane = new Pane();
-        tmpBackPane.setMinSize(50, Region.USE_COMPUTED_SIZE);
-        tmpBackPane.setMaxSize(50, Region.USE_COMPUTED_SIZE);
+        tmpBackPane.setMinSize(SIZE, Region.USE_COMPUTED_SIZE);
+        tmpBackPane.setMaxSize(SIZE, Region.USE_COMPUTED_SIZE);
         final Pane tmpFrontPane = new Pane();
-        tmpFrontPane.setMinSize(50, Region.USE_COMPUTED_SIZE);
-        tmpFrontPane.setMaxSize(50, Region.USE_COMPUTED_SIZE);
+        tmpFrontPane.setMinSize(SIZE, Region.USE_COMPUTED_SIZE);
+        tmpFrontPane.setMaxSize(SIZE, Region.USE_COMPUTED_SIZE);
 
         backHBox.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         frontHBox.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
@@ -114,14 +131,26 @@ public class Controller implements Initializable {
 
     }
 
-    /* This method assumes the client is an adult. */
+    /**
+     * Updates the graphs based on the data received from the client and
+     * produces minor alerts in the application's GUI if needed. This method
+     * assumes the client is an adult.
+     * 
+     * @param pulse
+     *            The client's current pulse
+     * @param systolicBP
+     *            The client's current systolic blood pressure
+     * @param diastolicBP
+     *            The client's current diastolic blood pressure
+     */
     public void updateChart(final int pulse, final int systolicBP, final int diastolicBP) {
         pulseLabel.setText("Pulse: " + pulse);
         bpLabel.setText("Blood Pressure: " + systolicBP + "/" + diastolicBP);
 
-        // minor alerts
+        // Minor alerts
         pulseLabel.setTextFill(pulse < 60 || pulse > 100 ? Color.RED : Color.BLACK);
-        bpLabel.setTextFill(systolicBP < 90 || systolicBP > 140 || diastolicBP < 60 || diastolicBP > 90 ? Color.RED : Color.BLACK);
+        bpLabel.setTextFill(systolicBP < 90 || systolicBP > 140 || diastolicBP < 60 || diastolicBP > 90 ? Color.RED
+                        : Color.BLACK);
 
         if (points > MAX_POINTS) {
             pulseSeries.getData().remove(0);

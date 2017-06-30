@@ -8,15 +8,20 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
 /**
  * @author Inbal Zukerman
- * @date May 22, 2017
+ * @since May 22, 2017
+ * 
+ *        This interface defines the required methods for communication with the
+ *        database.
  */
 public interface DatabaseAPI {
 
     /**
      * This method adds new information to the DB on the server
      * 
-     * @param info
-     *            The information to add to the DB
+     * @param path
+     *            The path on the data is relevant to
+     * @param value
+     *            the new value to save on the path
      * @return The newly created parseObject which is saved on the server
      * @throws ParseException
      */
@@ -26,13 +31,13 @@ public interface DatabaseAPI {
      * This method deletes all occurrences of information of a certain InfoType
      * from the DB
      * 
-     * @param infoType
+     * @param fsEntry
      *            The infoType to delete all information of
      */
     public void deleteInfo(FileSystemEntries fsEntry);
 
     /**
-     * This method deletes all record from the DB with a certain path.
+     * This method deletes all records from the DB with a certain path.
      * 
      * @param path
      */

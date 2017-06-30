@@ -16,7 +16,7 @@ import il.ac.technion.cs.smarthouse.system.database.cloud_server.ServerManager;
 
 /**
  * @author Inbal Zukerman
- * @date Apr 5, 2017
+ * @since Apr 5, 2017
  */
 public class ServerManagerTest {
 

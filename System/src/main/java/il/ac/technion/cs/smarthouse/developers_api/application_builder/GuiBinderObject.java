@@ -6,13 +6,14 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * A linkable data object
- * <p>
- * Use this object to link data fields to the GUI's configuration and status
- * fields
  * 
  * @author RON
  * @since 10-06-2017
+ * 
+ *        A linkable data object
+ *        <p>
+ *        Use this object to link data fields to the GUI's configuration and
+ *        status fields
  */
 public final class GuiBinderObject<T> {
     private T data;
@@ -28,7 +29,7 @@ public final class GuiBinderObject<T> {
     public T getData() {
         return data;
     }
-    
+
     public T getData(T orElseValue) {
         return getDataAsOptional().orElse(orElseValue);
     }
@@ -43,10 +44,10 @@ public final class GuiBinderObject<T> {
 
     public GuiBinderObject<T> setData(T newData) {
         if (data == newData)
-			return this;
-		data = newData;
-		notifyListeners();
-		return this;
+            return this;
+        data = newData;
+        notifyListeners();
+        return this;
     }
 
     public void notifyListeners() {

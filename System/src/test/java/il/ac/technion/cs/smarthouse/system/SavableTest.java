@@ -5,6 +5,10 @@ import org.junit.Test;
 
 import com.google.gson.annotations.Expose;
 
+/**
+ * @author RON
+ * @since 09-05-2017
+ */
 public class SavableTest {
     static int DEFAULT_MY_INT = 52;
     static int NEW_MY_INT = 123;
@@ -69,15 +73,9 @@ public class SavableTest {
         Assert.assertEquals(B.constructorCalledCounter, 1);
         Assert.assertEquals(C.constructorCalledCounter, 1);
 
-        
-
         a.myInt1 = a.myInt2 = a.b.myInt1 = a.b.myInt2 = a.c.myInt1 = a.c.myInt2 = NEW_MY_INT;
 
-     
-
         a.populate(a.toJsonString());
-
-      
 
         Assert.assertEquals(A.constructorCalledCounter, 1);
         Assert.assertEquals(B.constructorCalledCounter, 1);
@@ -95,14 +93,12 @@ public class SavableTest {
         // ----
 
         final A aa = new A();
-       
 
         Assert.assertEquals(A.constructorCalledCounter, 2);
         Assert.assertEquals(B.constructorCalledCounter, 2);
         Assert.assertEquals(C.constructorCalledCounter, 3);
 
         aa.populate(a.toJsonString());
-        
 
         Assert.assertEquals(A.constructorCalledCounter, 2);
         Assert.assertEquals(B.constructorCalledCounter, 2);
