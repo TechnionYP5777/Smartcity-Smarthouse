@@ -37,6 +37,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * @author Roy
+ * @since 10-01-2017
+ */
 public class MainSystemGuiController extends SystemGuiController {
     ApplicationViewController appsPresenterInfo;
 
@@ -64,91 +69,94 @@ public class MainSystemGuiController extends SystemGuiController {
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model, final T parent,
                     final SystemMode m, final URL location, final ResourceBundle b) {
-        try {
-            // home tab:
-            homeTab.setContent(homeTabHBox);
-            homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
-            homePageImageView.setFitHeight(250);
 
-            // user tab:
-            userTab.setContent(createChildController("user information.fxml").getRootViewNode());
+        setTabs();
 
-            // sensors tab:
-            sensorsTab.setContent(createChildController("house_mapping.fxml").getRootViewNode());
+        switch (m) {
+            case USER_MODE:
+                setUserMode();
+                break;
 
-            // applications tab:
-            appsPresenterInfo = createChildController("application_view.fxml");
-            appsTab.setContent(appsPresenterInfo.getRootViewNode());
-
-            // Dashboard tab:
-            dashboardTab.setContent(createChildController("dashboard_ui.fxml").getRootViewNode());
-
-            HBox.setHgrow(dummyPaneLeft, Priority.ALWAYS);
-            HBox.setHgrow(dummyPaneRight, Priority.ALWAYS);
-            HBox.setHgrow(homeVBox, Priority.ALWAYS);
-            homeVBox.setPadding(new Insets(50));
-
-            homeVBox.setAlignment(Pos.BASELINE_LEFT);
-
-            if (m == SystemMode.DEVELOPER_MODE) {
-                addDescriptionLine("Welcome! You are in Developer Mode.");
-                addDescriptionLine("In this mode you can:");
-                addDescriptionLine("- Test your application (\"Applications\" tab).");
-                addDescriptionLine("- View widgets you add (\"Dashboard\" tab).");
-
-            } else {
-                addDescriptionLine("Welcome! You are in User Mode.");
-                addDescriptionLine("In this mode you can:");
-                addDescriptionLine("- Add applications and view them (\"Applications\" tab).");
-                addDescriptionLine("- Design your own home structure, add sensors and view them (\"Sensors\" tab).");
-                addDescriptionLine("- Register, add emergency contacts and view them (\"User Information\" tab).");
-                addDescriptionLine(
-                                "- View specific data collected from the sensors in your Smarthouse, using widgets (\"Dashboard\" tab).");
-
-            }
-
-            if (m == SystemMode.DEVELOPER_MODE) {
-                tabs.getTabs().removeAll(userTab, sensorsTab);
-
-                mainVBox.getChildren().add(consolePane);
-                consolePane.autosize();
-
-                LogConsole.setLogConsole(loggerView);
-                loggerView.setEditable(false);
-
-                setupFSTreeView(model);
-
-                model.getFileSystem().subscribe((path, data) -> {
-                    fsTreeView = new TreeTableView<>();
-
-                    Platform.runLater(() -> {
-                        mainSplitPane.getItems().remove(1);
-                        setupFSTreeView(model);
-
-                    });
-
-                }, FileSystemEntries.SENSORS.buildPath());
-
-            }
-
-        } catch (final Exception e) {
-            log.error("The controller encountered exception", e);
-            // TODO: should throw runtime exception?
+            case DEVELOPER_MODE:
+                setDeveloperMode(model);
+                break;
+            default:
+                break;
         }
+
     }
 
-    public void gotoAppsTab() {
-        tabs.getSelectionModel().select(appsTab);
-        appsPresenterInfo.selectFirstApp();
+    private void setTabs() {
+        // home tab:
+        homeTab.setContent(homeTabHBox);
+        homePageImageView.setImage(new Image(getClass().getResourceAsStream("/icons/smarthouse-icon-logo.png")));
+        homePageImageView.setFitHeight(250);
+
+        // user tab:
+        userTab.setContent(createChildController("user information.fxml").getRootViewNode());
+
+        // sensors tab:
+        sensorsTab.setContent(createChildController("house_mapping.fxml").getRootViewNode());
+
+        // applications tab:
+        appsPresenterInfo = createChildController("application_view.fxml");
+        appsTab.setContent(appsPresenterInfo.getRootViewNode());
+
+        // Dashboard tab:
+        dashboardTab.setContent(createChildController("dashboard_ui.fxml").getRootViewNode());
+
+        HBox.setHgrow(dummyPaneLeft, Priority.ALWAYS);
+        HBox.setHgrow(dummyPaneRight, Priority.ALWAYS);
+        HBox.setHgrow(homeVBox, Priority.ALWAYS);
+        homeVBox.setPadding(new Insets(50));
+
+        homeVBox.setAlignment(Pos.BASELINE_LEFT);
     }
 
-    public void addDescriptionLine(final String description) {
-        final Label label = new Label(description);
-        label.setStyle("-fx-font: 20 System");
-        homeVBox.getChildren().add(label);
+    private void setUserMode() {
+        addDescriptionLine("Welcome! You are in User Mode.");
+        addDescriptionLine("In this mode you can:");
+        addDescriptionLine("- Add applications and view them (\"Applications\" tab).");
+        addDescriptionLine("- Design your own home structure, add sensors and view them (\"Sensors\" tab).");
+        addDescriptionLine("- Register, add emergency contacts and view them (\"User Information\" tab).");
+        addDescriptionLine(
+                        "- View specific data collected from the sensors in your Smarthouse, using widgets (\"Dashboard\" tab).");
+
     }
 
-    public void setupFSTreeView(SystemCore model) {
+    private void setDeveloperMode(SystemCore model) {
+        addDescriptionLine("Welcome! You are in Developer Mode.");
+        addDescriptionLine("In this mode you can:");
+        addDescriptionLine("- Test your application (\"Applications\" tab).");
+        addDescriptionLine("- View widgets you add (\"Dashboard\" tab).");
+
+        tabs.getTabs().removeAll(userTab, sensorsTab);
+
+        mainVBox.getChildren().add(consolePane);
+        consolePane.autosize();
+
+        LogConsole.setLogConsole(loggerView);
+        loggerView.setEditable(false);
+
+        setupFSTreeView(model);
+        try {
+            model.getFileSystem().subscribe((path, data) -> {
+                fsTreeView = new TreeTableView<>();
+
+                Platform.runLater(() -> {
+                    mainSplitPane.getItems().remove(1);
+                    setupFSTreeView(model);
+
+                });
+
+            }, FileSystemEntries.SENSORS.buildPath());
+        } catch (Exception e) {
+            log.error("The controller encountered exception", e);
+        }
+
+    }
+
+    private void setupFSTreeView(SystemCore model) {
 
         TreeItem<String> rootElement = new TreeItem<>("File System View");
         rootElement.setExpanded(true);
@@ -178,5 +186,24 @@ public class MainSystemGuiController extends SystemGuiController {
         newTreeNode.setExpanded(true);
         currTreeNode.getChildren().add(newTreeNode);
 
+    }
+
+    /**
+     * This method set the selected tab t be the applications tab
+     */
+    public void gotoAppsTab() {
+        tabs.getSelectionModel().select(appsTab);
+        appsPresenterInfo.selectFirstApp();
+    }
+
+    /**
+     * This method adds the description lines to the "homepage" tab
+     * 
+     * @param description
+     */
+    public void addDescriptionLine(final String description) {
+        final Label label = new Label(description);
+        label.setStyle("-fx-font: 20 System");
+        homeVBox.getChildren().add(label);
     }
 }

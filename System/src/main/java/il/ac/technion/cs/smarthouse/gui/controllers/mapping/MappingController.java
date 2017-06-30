@@ -29,6 +29,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+/**
+ * This is the controller of the house mapping
+ * 
+ * @author Sharon Kuninin
+ * @since 04-01-2017
+ */
 public class MappingController extends SystemGuiController {
     private static Logger log = LoggerFactory.getLogger(MappingController.class);
     private final Map<String, SensorInfoController> sensors = new HashMap<>();
@@ -44,28 +50,29 @@ public class MappingController extends SystemGuiController {
     }
 
     @Override
+
     protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
                     URL location, ResourceBundle b) {
         log.debug("initialized the map gui");
-        
+
         Consumer<MappingInformation> c = x -> {
             this.mappingInformaton = x;
             drawMapping();
         };
         model.subscribeToMappingInformation(c);
         this.mappingInformaton = model.getHouse();
-        
+
         canvas.setWidth(2000);
         canvas.setHeight(2000);
 
         addRoom(SensorLocation.UNDIFINED);
 
         log.debug("subscribed to sensors root");
-        // this is somewhat whiteboxing. todo: refactor nicer.
+
         model.getFileSystem().subscribe((p, l) -> {
             log.debug("map gui was notified on (path,val)=(" + p + "," + l + ")");
-			final String commname = FileSystemEntries.COMMERCIAL_NAME.getPartFromPath(p),
-					id = FileSystemEntries.SENSOR_ID.getPartFromPath(p);
+            final String commname = FileSystemEntries.COMMERCIAL_NAME.getPartFromPath(p),
+                            id = FileSystemEntries.SENSOR_ID.getPartFromPath(p);
             if (l != null && mappingInformaton.getAllLocations().contains(l) && !sensors.containsKey(id))
                 Platform.runLater(() -> {
                     try {
@@ -81,21 +88,35 @@ public class MappingController extends SystemGuiController {
 
     }
 
+    /**
+     * Adds a sensor to the house mapping
+     * 
+     * @param id
+     * @param commName
+     * @throws Exception
+     */
     public void addSensor(final String id, final String commName) throws Exception {
         if (sensors.containsKey(id))
             return;
         final SensorInfoController controller = createChildController("sensor_info.fxml");
         sensorsPaneList.getChildren().add(controller.getRootViewNode());
-        
-        if(mappingInformaton.getSensorsLocations().containsKey(id))
+
+        if (mappingInformaton.getSensorsLocations().containsKey(id))
             controller.setLocation(mappingInformaton.getSensorsLocations().get(id));
 
         controller.setId(id).setName(commName).setMapController(this);
         sensors.put(id, controller);
     }
 
+    /**
+     * Updates a sensor location on the house mapping
+     * 
+     * @param id
+     * @param l
+     */
     public void updateSensorLocation(final String id, final String l) {
-        if (mappingInformaton.getSensorsLocations().containsKey(id) && mappingInformaton.getLocationsContents().containsKey(mappingInformaton.getSensorsLocations().get(id)))
+        if (mappingInformaton.getSensorsLocations().containsKey(id) && mappingInformaton.getLocationsContents()
+                        .containsKey(mappingInformaton.getSensorsLocations().get(id)))
             mappingInformaton.getLocationsContents().get(mappingInformaton.getSensorsLocations().get(id)).remove(id);
 
         mappingInformaton.getSensorsLocations().put(id, l);
@@ -109,6 +130,10 @@ public class MappingController extends SystemGuiController {
 
     }
 
+    /**
+     * 
+     * @return a list of all the locations in the house
+     */
     public List<String> getAlllocations() {
         return mappingInformaton.getAllLocations();
     }
@@ -143,11 +168,11 @@ public class MappingController extends SystemGuiController {
         g.setFont(new Font(84.0));
         canvas.setOnMouseClicked(mouseEvent -> {
             double x = mouseEvent.getX(), y = mouseEvent.getY();
-            if(mouseEvent.getButton() == MouseButton.SECONDARY){
+            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                 mappingInformaton.getHouse().getRooms().forEach(r -> {
                     if (x > r.x && x < r.x + MappingInformation.getWidth() && y > r.y
-                                    && y < r.y + MappingInformation.getHeight()){
-                        if(r.location.equals(SensorLocation.UNDIFINED))
+                                    && y < r.y + MappingInformation.getHeight()) {
+                        if (r.location.equals(SensorLocation.UNDIFINED))
                             return;
                         final TextInputDialog dialog = new TextInputDialog(r.location);
                         dialog.setTitle("Update Room");
@@ -162,7 +187,7 @@ public class MappingController extends SystemGuiController {
                 });
                 return;
             }
-                
+
             if (x > xPlusRoom && x < xPlusRoom + MappingInformation.getWidth() && y > yPlusRoom
                             && y < yPlusRoom + MappingInformation.getHeight()) {
                 final TextInputDialog dialog = new TextInputDialog("rooms name");

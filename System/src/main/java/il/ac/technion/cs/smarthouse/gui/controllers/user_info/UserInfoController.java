@@ -36,364 +36,345 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 
+/**
+ * 
+ * @author Inbal Zukerman
+ * @since 07-01-2017
+ */
 public class UserInfoController extends SystemGuiController {
-	@FXML
-	public TextField userNameField;
-	@FXML
-	public TextField userIDField;
-	@FXML
-	public TextField userPhoneNumField;
-	@FXML
-	public TextField userHomeAddressField;
-	@FXML
-	public Button userSaveField;
 
-	@FXML
-	public ImageView nameStatus;
-	@FXML
-	public ImageView idStatus;
-	@FXML
-	public ImageView phoneStatus;
-	@FXML
-	public ImageView addressStatus;
+    @FXML public TextField userNameField;
+    @FXML public TextField userIDField;
+    @FXML public TextField userPhoneNumField;
+    @FXML public TextField userHomeAddressField;
+    @FXML public Button userSaveField;
 
-	@FXML
-	public Label nameMessage;
-	@FXML
-	public Label idMessage;
-	@FXML
-	public Label phoneMessage;
-	@FXML
-	public Label addressMessage;
+    @FXML public ImageView nameStatus;
+    @FXML public ImageView idStatus;
+    @FXML public ImageView phoneStatus;
+    @FXML public ImageView addressStatus;
 
-	@FXML
-	public TextField addNameField;
-	@FXML
-	public TextField addIDField;
-	@FXML
-	public TextField addPhoneField;
-	@FXML
-	public TextField addEmailField;
-	@FXML
-	public ComboBox<String> addELevelField;
-	@FXML
-	public Button saveButton;
-	@FXML
-	public HBox buttonBox;
+    @FXML public Label nameMessage;
+    @FXML public Label idMessage;
+    @FXML public Label phoneMessage;
+    @FXML public Label addressMessage;
 
-	@FXML
-	private TableView<ContactGUI> contactsTable;
-	@FXML
-	public TableColumn<ContactGUI, String> nameColumn;
-	@FXML
-	public TableColumn<ContactGUI, String> idColumn;
-	@FXML
-	public TableColumn<ContactGUI, String> phoneColumn;
-	@FXML
-	public TableColumn<ContactGUI, String> emailColumn;
-	@FXML
-	public TableColumn<ContactGUI, String> eLevelColumn;
+    @FXML public TextField addNameField;
+    @FXML public TextField addIDField;
+    @FXML public TextField addPhoneField;
+    @FXML public TextField addEmailField;
+    @FXML public ComboBox<String> addELevelField;
+    @FXML public Button saveButton;
+    @FXML public HBox buttonBox;
 
-	private class ContactGUI {
-		public Contact contact;
-		public String eLevel;
+    @FXML private TableView<ContactGUI> contactsTable;
+    @FXML public TableColumn<ContactGUI, String> nameColumn;
+    @FXML public TableColumn<ContactGUI, String> idColumn;
+    @FXML public TableColumn<ContactGUI, String> phoneColumn;
+    @FXML public TableColumn<ContactGUI, String> emailColumn;
+    @FXML public TableColumn<ContactGUI, String> eLevelColumn;
 
-		public ContactGUI(final Contact contact, final String eLevel) {
-			this.contact = contact;
-			this.eLevel = eLevel;
-		}
+    private class ContactGUI {
+        public Contact contact;
+        public String eLevel;
 
-	}
+        public ContactGUI(final Contact contact, final String eLevel) {
+            this.contact = contact;
+            this.eLevel = eLevel;
+        }
 
-	private void openSuccessDialog(String title, String header, String content) {
-		Alert a = new Alert(AlertType.INFORMATION, content, ButtonType.OK);
-		a.setHeaderText(header);
-		a.setTitle(title);
-		a.showAndWait();
-	}
+    }
 
-	private void setButtons() {
-		userSaveField.setOnAction(event -> {
+    private void openSuccessDialog(String title, String header, String content) {
+        Alert a = new Alert(AlertType.INFORMATION, content, ButtonType.OK);
+        a.setHeaderText(header);
+        a.setTitle(title);
+        a.showAndWait();
+    }
 
-			final String name = userNameField.getText(), id = userIDField.getText(),
-					phoneNum = userPhoneNumField.getText(), address = userHomeAddressField.getText();
-			if (!validateName(name))
-				alertMessageUnvalidInput("name");
-			else if (!validateId(id))
-				alertMessageUnvalidInput("ID");
-			else if (!validatePhone(phoneNum))
-				alertMessageUnvalidInput("phone number");
-			else if (!validateAddress(address))
-				alertMessageUnvalidInput("home address");
-			else {
-				if (getModel().isUserInitialized()) {
-					final UserInformation temp = getModel().getUser();
-					temp.setHomeAddress(address);
-					temp.setPhoneNumber(phoneNum);
-					openSuccessDialog("Successful Update", "Thanks for the update!",
-							"Your information was updated successfully.");
-				} else {
-					getModel().initializeUser(name, id, phoneNum, address);
-					userNameField.setEditable(false);
-					userIDField.setEditable(false);
-					openSuccessDialog("Successful Registration", "Hello " + userNameField.getText() + "!",
-							"You registered successfully.");
-				}
-				clearAfterUserSave();
-			}
-		});
+    private void setButtons() {
+        userSaveField.setOnAction(event -> {
 
-		saveButton.setOnAction(event -> {
-			if (!getModel().isUserInitialized()) {
-				final Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error Dialog");
-				alert.setHeaderText("User Not Registered");
-				alert.setContentText("Make sure to register the user before adding any contacts.");
-				alert.showAndWait();
-			} else if (!validateEmergencyLevel(EmergencyLevel.fromString(EmergencyLevel.fromPretty(addELevelField.getValue()))))
-				alertMessageUnvalidInput("elevel");
-			else if (!validateName(addNameField.getText()))
-				alertMessageUnvalidInput("name");
-			else if (!validateId(addIDField.getText()))
-				alertMessageUnvalidInput("ID");
-			else if (!validatePhone(addPhoneField.getText()))
-				alertMessageUnvalidInput("phone number");
-			else if (!validateEmail(addEmailField.getText()))
-				alertMessageUnvalidInput("email address");
-			else {
-				addContactToTable(event);
-				openSuccessDialog("Successful Update", addNameField.getText() + " is an emergency contact now",
-						"The emergency contact was added successfully.");
-				clearAfterContactSave();
-			}
-		});
-	}
+            final String name = userNameField.getText(), id = userIDField.getText(),
+                            phoneNum = userPhoneNumField.getText(), address = userHomeAddressField.getText();
+            if (!validateName(name))
+                alertMessageUnvalidInput("name");
+            else if (!validateId(id))
+                alertMessageUnvalidInput("ID");
+            else if (!validatePhone(phoneNum))
+                alertMessageUnvalidInput("phone number");
+            else if (!validateAddress(address))
+                alertMessageUnvalidInput("home address");
+            else {
+                if (getModel().isUserInitialized()) {
+                    final UserInformation temp = getModel().getUser();
+                    temp.setHomeAddress(address);
+                    temp.setPhoneNumber(phoneNum);
+                    openSuccessDialog("Successful Update", "Thanks for the update!",
+                                    "Your information was updated successfully.");
+                } else {
+                    getModel().initializeUser(name, id, phoneNum, address);
+                    userNameField.setEditable(false);
+                    userIDField.setEditable(false);
+                    openSuccessDialog("Successful Registration", "Hello " + userNameField.getText() + "!",
+                                    "You registered successfully.");
+                }
+                clearAfterUserSave();
+            }
+        });
 
-	private void setCellsFactories() {
-		nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getName()));
-		idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getId()));
-		phoneColumn.setCellValueFactory(
-				cellData -> new SimpleStringProperty(cellData.getValue().contact.getPhoneNumber()));
-		emailColumn.setCellValueFactory(
-				cellData -> new SimpleStringProperty(cellData.getValue().contact.getEmailAddress()));
-		eLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().eLevel + ""));
+        saveButton.setOnAction(event -> {
+            if (!getModel().isUserInitialized()) {
+                final Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("User Not Registered");
+                alert.setContentText("Make sure to register the user before adding any contacts.");
+                alert.showAndWait();
+            } else if (!validateEmergencyLevel(
+                            EmergencyLevel.fromString(EmergencyLevel.fromPretty(addELevelField.getValue()))))
+                alertMessageUnvalidInput("elevel");
+            else if (!validateName(addNameField.getText()))
+                alertMessageUnvalidInput("name");
+            else if (!validateId(addIDField.getText()))
+                alertMessageUnvalidInput("ID");
+            else if (!validatePhone(addPhoneField.getText()))
+                alertMessageUnvalidInput("phone number");
+            else if (!validateEmail(addEmailField.getText()))
+                alertMessageUnvalidInput("email address");
+            else {
+                addContactToTable(event);
+                openSuccessDialog("Successful Update", addNameField.getText() + " is an emergency contact now",
+                                "The emergency contact was added successfully.");
+                clearAfterContactSave();
+            }
+        });
+    }
 
-		contactsTable.setEditable(true);
+    private void setCellsFactories() {
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getName()));
+        idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().contact.getId()));
+        phoneColumn.setCellValueFactory(
+                        cellData -> new SimpleStringProperty(cellData.getValue().contact.getPhoneNumber()));
+        emailColumn.setCellValueFactory(
+                        cellData -> new SimpleStringProperty(cellData.getValue().contact.getEmailAddress()));
+        eLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().eLevel + ""));
 
-		phoneColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-		phoneColumn.setOnEditCommit(¢ -> ¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact
-				.setPhoneNumber(¢.getNewValue()));
+        contactsTable.setEditable(true);
 
-		emailColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-		emailColumn.setOnEditCommit(¢ -> ¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact
-				.setEmailAddress(¢.getNewValue()));
+        phoneColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        phoneColumn.setOnEditCommit(¢ -> ¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact
+                        .setPhoneNumber(¢.getNewValue()));
 
-		eLevelColumn.setCellFactory(ComboBoxTableCell
-				.<ContactGUI, String>forTableColumn(FXCollections.observableArrayList(EmergencyLevel.stringValues())));
-		eLevelColumn.setOnEditCommit(¢ -> getModel().getUser().setContactEmergencyLevel(
-				¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact.getId(), ¢.getNewValue()));
-	}
+        emailColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        emailColumn.setOnEditCommit(¢ -> ¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact
+                        .setEmailAddress(¢.getNewValue()));
 
-	private void costumizeContactsTab() {
+        eLevelColumn.setCellFactory(ComboBoxTableCell.<ContactGUI, String>forTableColumn(
+                        FXCollections.observableArrayList(EmergencyLevel.stringValues())));
+        eLevelColumn.setOnEditCommit(¢ -> getModel().getUser().setContactEmergencyLevel(
+                        ¢.getTableView().getItems().get(¢.getTablePosition().getRow()).contact.getId(),
+                        ¢.getNewValue()));
+    }
 
-		HBox.setHgrow(addNameField, Priority.ALWAYS);
-		HBox.setHgrow(addELevelField, Priority.ALWAYS);
-		HBox.setHgrow(addIDField, Priority.ALWAYS);
-		HBox.setHgrow(addPhoneField, Priority.ALWAYS);
-		HBox.setHgrow(addEmailField, Priority.ALWAYS);
-		HBox.setHgrow(saveButton, Priority.ALWAYS);
+    private void costumizeContactsTab() {
 
-		addELevelField.setPromptText("Emergency Level");
-		for (EmergencyLevel eLevel : EmergencyLevel.values())
+        HBox.setHgrow(addNameField, Priority.ALWAYS);
+        HBox.setHgrow(addELevelField, Priority.ALWAYS);
+        HBox.setHgrow(addIDField, Priority.ALWAYS);
+        HBox.setHgrow(addPhoneField, Priority.ALWAYS);
+        HBox.setHgrow(addEmailField, Priority.ALWAYS);
+        HBox.setHgrow(saveButton, Priority.ALWAYS);
+
+        addELevelField.setPromptText("Emergency Level");
+        for (EmergencyLevel eLevel : EmergencyLevel.values())
             addELevelField.getItems().add(eLevel.toPretty());
 
-		final int btnCount = buttonBox.getChildren().size();
-		addNameField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
-		addELevelField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
-		addIDField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
-		addPhoneField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
-		addEmailField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
-		saveButton.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        final int btnCount = buttonBox.getChildren().size();
+        addNameField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        addELevelField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        addIDField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        addPhoneField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        addEmailField.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
+        saveButton.prefWidthProperty().bind(buttonBox.widthProperty().divide(btnCount));
 
-	}
+    }
 
-	static boolean validateName(final String name) {
-	    return name != null && !"".equals(name) && Pattern.compile("^[ A-Za-z]+$").matcher(name).matches();
-	}
+    static boolean validateName(final String name) {
+        return name != null && !"".equals(name) && Pattern.compile("^[ A-Za-z]+$").matcher(name).matches();
+    }
 
-	static boolean validateId(final String id) {
-		return id != null && !"".equals(id) && id.chars().allMatch(Character::isDigit);
-	}
+    static boolean validateId(final String id) {
+        return id != null && !"".equals(id) && id.chars().allMatch(Character::isDigit);
+    }
 
-	static boolean validatePhone(final String phone) {
-		return phone != null && !"".equals(phone) && phone.chars().allMatch(Character::isDigit);
-	}
+    static boolean validatePhone(final String phone) {
+        return phone != null && !"".equals(phone) && phone.chars().allMatch(Character::isDigit);
+    }
 
-	static boolean validateAddress(final String address) {
-		// TODO: add more checks
-		return address != null && !"".equals(address);
-	}
+    static boolean validateAddress(final String address) {
+        return address != null && !"".equals(address);
+    }
 
-	static boolean validateEmail(final String email) {
-		// TODO: add more checks
-		return email != null && !"".equals(email);
-	}
+    static boolean validateEmail(final String email) {
+        return email != null && !"".equals(email) && email.contains("@");
+    }
 
-	static boolean validateEmergencyLevel(final EmergencyLevel eLevel) {
-		return eLevel != null;
-	}
+    static boolean validateEmergencyLevel(final EmergencyLevel eLevel) {
+        return eLevel != null;
+    }
 
-	private static void alertMessageUnvalidInput(String fieldType) {
-		final Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error Dialog");
-		alert.setHeaderText("Bad Input");
-		alert.setContentText(("elevel".equals(fieldType) ? "Please select an emergency level"
-				: "Make sure the " + fieldType + " you typed is valid") + ".");
-		alert.showAndWait();
-	}
+    private static void alertMessageUnvalidInput(String fieldType) {
+        final Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText("Bad Input");
+        alert.setContentText(("elevel".equals(fieldType) ? "Please select an emergency level"
+                        : "Make sure the " + fieldType + " you typed is valid") + ".");
+        alert.showAndWait();
+    }
 
-	@FXML
-	private void addContactToTable(final ActionEvent __) {
-		final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(),
-				addEmailField.getText());
-		getModel().getUser().addContact(contact, EmergencyLevel.fromString(EmergencyLevel.fromPretty(addELevelField.getValue())));
-		contactsTable.getItems().add(new ContactGUI(contact, addELevelField.getValue()));
+    @FXML
+    private void addContactToTable(final ActionEvent __) {
+        final Contact contact = new Contact(addIDField.getText(), addNameField.getText(), addPhoneField.getText(),
+                        addEmailField.getText());
+        getModel().getUser().addContact(contact,
+                        EmergencyLevel.fromString(EmergencyLevel.fromPretty(addELevelField.getValue())));
+        contactsTable.getItems().add(new ContactGUI(contact, addELevelField.getValue()));
 
-	}
+    }
 
-	void setStatus(ImageView statusImage, Label statusLabel, String message, boolean valid) {
-		if (getModel().isUserInitialized() && (statusImage == nameStatus || statusImage == idStatus)) {
-			statusImage.setVisible(false);
-			statusLabel.setText("");
-			return;
-		}
-		statusImage.setVisible(true);
-		if (valid) {
-			statusImage.setImage(new Image(getClass().getResourceAsStream("/icons/check-icon.png")));
-			statusLabel.setText("");
-		} else {
-			statusImage.setImage(new Image(getClass().getResourceAsStream("/icons/cross-icon.png")));
-			statusLabel.setText(message);
-			statusLabel.setTextFill(Color.RED);
-		}
-	}
+    void setStatus(ImageView statusImage, Label statusLabel, String message, boolean valid) {
+        if (getModel().isUserInitialized() && (statusImage == nameStatus || statusImage == idStatus)) {
+            statusImage.setVisible(false);
+            statusLabel.setText("");
+            return;
+        }
+        statusImage.setVisible(true);
+        if (valid) {
+            statusImage.setImage(new Image(getClass().getResourceAsStream("/icons/check-icon.png")));
+            statusLabel.setText("");
+        } else {
+            statusImage.setImage(new Image(getClass().getResourceAsStream("/icons/cross-icon.png")));
+            statusLabel.setText(message);
+            statusLabel.setTextFill(Color.RED);
+        }
+    }
 
-	private void setInputListeners() {
-		userNameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
-				if (!newValue) // Focusing out
-					setStatus(nameStatus, nameMessage, "Name can't be empty and must contain only letters",
-							validateName(userNameField.getText()));
-			}
-		});
+    private void setInputListeners() {
+        userNameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    setStatus(nameStatus, nameMessage, "Name can't be empty and must contain only letters",
+                                    validateName(userNameField.getText()));
+            }
+        });
 
-		userIDField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
-				if (!newValue) // Focusing out
-					setStatus(idStatus, idMessage, "ID can't be empty and must contain only digits",
-							validateId(userIDField.getText()));
-			}
-		});
+        userIDField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    setStatus(idStatus, idMessage, "ID can't be empty and must contain only digits",
+                                    validateId(userIDField.getText()));
+            }
+        });
 
-		userPhoneNumField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
-				if (!newValue) // Focusing out
-					setStatus(phoneStatus, phoneMessage, "Phone number can't be empty and must contain only digits",
-							validatePhone(userPhoneNumField.getText()));
-			}
-		});
+        userPhoneNumField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    setStatus(phoneStatus, phoneMessage, "Phone number can't be empty and must contain only digits",
+                                    validatePhone(userPhoneNumField.getText()));
+            }
+        });
 
-		userHomeAddressField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
-				if (!newValue) // Focusing out
-					setStatus(addressStatus, addressMessage, "Home address can't be empty",
-							validateAddress(userHomeAddressField.getText()));
-			}
-		});
-	}
+        userHomeAddressField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    setStatus(addressStatus, addressMessage, "Home address can't be empty",
+                                    validateAddress(userHomeAddressField.getText()));
+            }
+        });
+    }
 
-	private void setContactListeners() {
-		addNameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
-				if (!newValue) // Focusing out
-					addNameField
-							.setStyle("-fx-border-color: " + (!validateName(addNameField.getText()) ? "red" : "green"));
-			}
-		});
+    private void setContactListeners() {
+        addNameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    addNameField.setStyle(
+                                    "-fx-border-color: " + (!validateName(addNameField.getText()) ? "red" : "green"));
+            }
+        });
 
-		addIDField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
-				if (!newValue) // Focusing out
-					addIDField.setStyle("-fx-border-color: " + (!validateId(addIDField.getText()) ? "red" : "green"));
-			}
-		});
+        addIDField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    addIDField.setStyle("-fx-border-color: " + (!validateId(addIDField.getText()) ? "red" : "green"));
+            }
+        });
 
-		addPhoneField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
-				if (!newValue) // Focusing out
-					addPhoneField.setStyle(
-							"-fx-border-color: " + (!validatePhone(addPhoneField.getText()) ? "red" : "green"));
-			}
-		});
+        addPhoneField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    addPhoneField.setStyle(
+                                    "-fx-border-color: " + (!validatePhone(addPhoneField.getText()) ? "red" : "green"));
+            }
+        });
 
-		addEmailField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
-				if (!newValue) // Focusing out
-					addEmailField.setStyle(
-							"-fx-border-color: " + (!validateEmail(addEmailField.getText()) ? "red" : "green"));
-			}
-		});
-	}
+        addEmailField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
+                if (!newValue) // Focusing out
+                    addEmailField.setStyle(
+                                    "-fx-border-color: " + (!validateEmail(addEmailField.getText()) ? "red" : "green"));
+            }
+        });
+    }
 
-	private void clearAfterUserSave() {
-		nameStatus.setVisible(false);
-		idStatus.setVisible(false);
-		phoneStatus.setVisible(false);
-		addressStatus.setVisible(false);
-	}
+    private void clearAfterUserSave() {
+        nameStatus.setVisible(false);
+        idStatus.setVisible(false);
+        phoneStatus.setVisible(false);
+        addressStatus.setVisible(false);
+    }
 
-	private void clearAfterContactSave() {
-		addNameField.clear();
-		addIDField.clear();
-		addPhoneField.clear();
-		addEmailField.clear();
-		addELevelField.setValue(null);
+    private void clearAfterContactSave() {
+        addNameField.clear();
+        addIDField.clear();
+        addPhoneField.clear();
+        addEmailField.clear();
+        addELevelField.setValue(null);
 
-		addNameField.setStyle(null);
-		addIDField.setStyle(null);
-		addPhoneField.setStyle(null);
-		addEmailField.setStyle(null);
-	}
+        addNameField.setStyle(null);
+        addIDField.setStyle(null);
+        addPhoneField.setStyle(null);
+        addEmailField.setStyle(null);
+    }
 
-	@Override
-	protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
-			URL location, ResourceBundle b) {
-		setButtons();
-		setInputListeners();
-		setContactListeners();
-		setCellsFactories();
-		costumizeContactsTab();
-		contactsTable.setEditable(false);
-		
-		Consumer<UserInformation> c = x ->{
-		    userNameField.setText(x.getName());
+    @Override
+    protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
+                    URL location, ResourceBundle b) {
+        setButtons();
+        setInputListeners();
+        setContactListeners();
+        setCellsFactories();
+        costumizeContactsTab();
+        contactsTable.setEditable(false);
+
+        Consumer<UserInformation> c = x -> {
+            userNameField.setText(x.getName());
             userIDField.setText(x.getId());
-		    userPhoneNumField.setText(x.getPhoneNumber());
+            userPhoneNumField.setText(x.getPhoneNumber());
             userHomeAddressField.setText(x.getHomeAddress());
-		    userNameField.setEditable(false);
+            userNameField.setEditable(false);
             userIDField.setEditable(false);
-            Map<Contact,EmergencyLevel> contacts = x.getContactsWithElevel();
-            contacts.keySet().forEach(y->contactsTable.getItems().add(new ContactGUI(y, contacts.get(y).toPretty())));
-		};
-		
-		model.subscribeToUserInformation(c);
-	}
+            Map<Contact, EmergencyLevel> contacts = x.getContactsWithElevel();
+            contacts.keySet().forEach(y -> contactsTable.getItems().add(new ContactGUI(y, contacts.get(y).toPretty())));
+        };
+
+        model.subscribeToUserInformation(c);
+    }
 }

@@ -40,6 +40,8 @@ public class ContactsInformation {
     }
 
     /**
+     * Retrieves a contact by his ID
+     * 
      * @param id
      *            the id of the contact required
      * @return the contact with the required id or null if does not exist
@@ -51,6 +53,13 @@ public class ContactsInformation {
         return null;
     }
 
+    /**
+     * This method sets the emergency level of a contact
+     * 
+     * @param id
+     *            the contact's id whom emergency level we would like to change
+     * @param newELevel
+     */
     public void setContactEmergencyLevel(final String id, final EmergencyLevel newELevel) {
         for (final EmergencyLevel $ : EmergencyLevel.values())
             if (data.get($).containsKey(id)) {
@@ -62,6 +71,11 @@ public class ContactsInformation {
 
     }
 
+    /**
+     * This method removes a contct by his ID
+     * 
+     * @param id
+     */
     public void removeContact(final String id) {
         for (final EmergencyLevel $ : EmergencyLevel.values())
             if (data.get($).containsKey(id))
@@ -70,6 +84,8 @@ public class ContactsInformation {
     }
 
     /**
+     * Retrieves all contact of a certain emergency level
+     * 
      * @param elvl
      *            emergency level of the required contacts
      * @return list of all the contacts to be informed at required emergency
@@ -96,11 +112,14 @@ public class ContactsInformation {
 
         return $;
     }
-    
-    public Map<Contact,EmergencyLevel> getContactsWithElevel(){
-        Map<Contact,EmergencyLevel> l = new HashMap<>();
+
+    /**
+     * @return a map with all contacts with their emergency levels
+     */
+    public Map<Contact, EmergencyLevel> getContactsWithElevel() {
+        Map<Contact, EmergencyLevel> l = new HashMap<>();
         for (final EmergencyLevel elvl : EmergencyLevel.values())
-            data.get(elvl).values().forEach(x -> l.put(x,elvl));
+            data.get(elvl).values().forEach(x -> l.put(x, elvl));
         return l;
     }
 
