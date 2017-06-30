@@ -14,13 +14,13 @@ import il.ac.technion.cs.smarthouse.system.services.ServiceType;
 import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLevel;
 
 /**
- * Cheating on the enum coverage
- * <p>
- * This class tests the enums for coverage purposes only... Yes I know this is
- * stupid...
- * 
  * @author RON
  * @since 30-05-2017
+ *
+ *        Cheating on the enum coverage
+ *        <p>
+ *        This class tests the enums for coverage purposes only... Yes I know
+ *        this is stupid...
  */
 public class EnumsTest {
 
