@@ -13,6 +13,10 @@ import il.ac.technion.cs.smarthouse.system.file_system.FileSystemImpl;
 import il.ac.technion.cs.smarthouse.utils.BoolLatch;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
+/**
+ * @author RON
+ * @since 30-05-2017
+ */
 public class SensorApiTest {
     static final String PARAM1_BASE_PATH = "my_sensor.data.param1";
     static final String SENSOR_COMM_NAME = "iCoolSensor";
