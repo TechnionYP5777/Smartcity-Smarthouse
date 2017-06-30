@@ -32,7 +32,8 @@ public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implem
 		super.setTitle("Widgets");
 	}
 
-	public WidgetsRegionBuilderImpl setTitle(String title) {
+	@Override
+    public WidgetsRegionBuilderImpl setTitle(String title) {
 		super.setTitle(title);
 		return this;
 	}
@@ -43,11 +44,10 @@ public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implem
 		widgetsHbox.setPadding(new Insets(5));
 
 		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setStyle("-fx-background-color:transparent;");
 		scrollPane.setContent(widgetsHbox);
 		scrollPane.setFitToWidth(true);
-		Double size = 1.2 * tileSize;
-
-		scrollPane.setMinHeight(size);
+		scrollPane.setMinHeight(1.2 * tileSize);
 		scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 
 		addAppBuilderItem(new AppBuilderItem(null, scrollPane));
