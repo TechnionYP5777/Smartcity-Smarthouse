@@ -100,8 +100,7 @@ public class GenericSensorTest {
         return ranges;
     }
 
-    @SuppressWarnings("rawtypes")
-    private Boolean inRange(final List range, final Object val, final Class valsCls) {
+    private Boolean inRange(final List<Object> range, final Object val, final Class<?> valsCls) {
         if (String.class.equals(valsCls))
             return range.contains(val);
         if (Boolean.class.equals(valsCls)) {

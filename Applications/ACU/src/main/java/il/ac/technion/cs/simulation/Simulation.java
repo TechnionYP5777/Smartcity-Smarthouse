@@ -45,6 +45,10 @@ public class Simulation {
 			this.action = AcuAction.STOP;
 		}
 		
+		private synchronized Integer getActualDefaultTemp(){
+			return action.isOn() ? defaultTemp : Simulation.this.defaultTemperature;
+		}
+		
 		private synchronized Map<String, Object> getCurrentState(Boolean calcFuture){
 			Map<String, Object> data = new HashMap<>();
 			data.put(getPath(PathType.INFO_SENDING,tempSuffix), currTemp);
@@ -52,9 +56,9 @@ public class Simulation {
 
 			if(calcFuture){
 				if(action.isOn())
-					currTemp += 5*(AcuAction.HOTTER.equals(action)? +1 : -1);
+					currTemp += (AcuAction.HOTTER.equals(action)? +1 : -1);
 				else{ //if(ThreadLocalRandom.current().nextBoolean())
-					Integer delta = currTemp - defaultTemp;
+					Integer delta = currTemp - getActualDefaultTemp();
 					delta = delta.equals(0) ? delta :delta/Math.abs(delta);
 					currTemp -= delta;
 				}
@@ -80,7 +84,7 @@ public class Simulation {
 				action = AcuAction.valueOf(val);
 			if(getPath(PathType.INSTRUCTION_RECEIVING,defaultTempSuffix).equals(path))
 //				defaultTemp = Integer.parseInt(val);
-				defaultTemp =  new Double(Double.parseDouble(val)).intValue();
+				defaultTemp =   Double.valueOf(Double.parseDouble(val)).intValue();
 			Map<String,Object> curr = getm.get();
 			
 			Boolean eqls = old.keySet().stream()
@@ -102,7 +106,7 @@ public class Simulation {
 	public static final String tempSuffix = "temperature", stateSuffix = "state",
 			defaultTempSuffix = "defaultTemperature";
 
-	Integer defaultTemp;
+	Integer defaultTemperature;
 	final Map<String, AcuState> sensors;
 	SensorBuilder builder;
 	
@@ -112,7 +116,7 @@ public class Simulation {
 	 * [[SuppressWarningsSpartan]]
 	 */
 	public Simulation(Integer defaultTemp, String ... aliases){
-		this.defaultTemp = defaultTemp;
+		this.defaultTemperature = defaultTemp;
 		sensors = new HashMap<>();
 		Stream.of(aliases).forEach(key -> sensors.put(key+" ACU sensor", null));
 		
@@ -136,7 +140,7 @@ public class Simulation {
 					.setInstructionHandler((p,v)->sensors.get(alias).processInstruction(p,v))
 					.build();
 			final String id = simulator.addSensor(s);
-			sensors.put(alias, new AcuState(id, defaultTemp));
+			sensors.put(alias, new AcuState(id, defaultTemperature));
 		});
 	}
 	

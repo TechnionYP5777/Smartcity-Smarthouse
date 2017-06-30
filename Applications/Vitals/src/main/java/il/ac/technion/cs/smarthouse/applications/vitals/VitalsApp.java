@@ -49,10 +49,11 @@ public class VitalsApp extends SmarthouseApplication implements Simulatable {
         SensorsSimulator s = new SensorsSimulator();
         s.addSensor(new SensorBuilder().setCommname("iVitals").setAlias("Yarden's vitals sensor")
                         .addInfoSendingPath(pulsePath, Integer.class)
-                        .addStreamingRange(pulsePath, Arrays.asList(30, 200))
+                        .addStreamingRange(pulsePath, Arrays.asList(80, 100))
                         .addInfoSendingPath(sysBPPath, Integer.class)
-                        .addStreamingRange(sysBPPath, Arrays.asList(30, 200))
-                        .addInfoSendingPath(diBPPath, Integer.class).addStreamingRange(diBPPath, Arrays.asList(30, 200))
+                        .addStreamingRange(sysBPPath, Arrays.asList(100, 130))
+                        .addInfoSendingPath(diBPPath, Integer.class)
+                        .addStreamingRange(diBPPath, Arrays.asList(30, 40))
                         .setStreamInterval(TimeUnit.SECONDS.toMillis(1)).build());
         return s;
     }

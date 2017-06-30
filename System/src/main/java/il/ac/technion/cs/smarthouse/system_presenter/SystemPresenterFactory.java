@@ -7,10 +7,8 @@ import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
-import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
 import il.ac.technion.cs.smarthouse.utils.Tuple;
 
 /**

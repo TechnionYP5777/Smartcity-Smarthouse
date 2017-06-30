@@ -29,8 +29,8 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
  */
 public class AcuGui extends SmarthouseApplication implements Simulatable {
 	static Simulation simulation = new Simulation(30,//summer sucks
-										"Roy's Man Cave", "Ron's Home Cinema");
-//										, "Yarden's AI lab", "Inbal's dogs kennel");
+										"Roy's Man Cave", "Ron's Home Cinema"
+										, "Yarden's AI lab", "Inbal's dogs kennel");
 	static final String setTempPath = Simulation.getPath(PathType.INSTRUCTION_RECEIVING, Simulation.defaultTempSuffix);
 	static final String setStatePath = Simulation.getPath(PathType.INSTRUCTION_RECEIVING, Simulation.stateSuffix);
 	static final String getTempPath = Simulation.getPath(PathType.INFO_SENDING, Simulation.tempSuffix);
@@ -68,7 +68,9 @@ public class AcuGui extends SmarthouseApplication implements Simulatable {
 				if(!nextAction.equals(prevAction)){
 					sensor.instruct(nextAction+"", setStatePath);
 					prevAction = nextAction;
+					System.out.println("Sent new instruction");
 				}
+				System.out.println(String.join(" ", sensor.getSensorAlias()," controlled. want:",want+""," but have", have+"", ".  last sent action:", prevAction+""));
 		});
 		
 		sensor.instruct(wantedTemp.getData()+0.1+"", setTempPath); //init so the simulation and the gui are on the same page

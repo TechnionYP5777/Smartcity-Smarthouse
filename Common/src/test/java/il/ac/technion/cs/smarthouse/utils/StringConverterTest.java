@@ -3,7 +3,6 @@ package il.ac.technion.cs.smarthouse.utils;
 import java.lang.reflect.Field;
 
 import org.junit.Test;
-import com.google.gson.Gson;
 
 public class StringConverterTest {
 
