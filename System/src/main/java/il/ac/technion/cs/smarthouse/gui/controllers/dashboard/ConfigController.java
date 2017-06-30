@@ -140,7 +140,7 @@ public class ConfigController extends SystemGuiController {
 	private ConfigConsumer consumer;
 	private WidgetType chosenType;
 	private final String unitfDefaultText = "(optional)", namefDefaultText = "<name>",
-			pathscbDefaultText = "<choose path>";
+			pathscbDefaultText = "<choose path>", titlefDefaultText = "(optional)";
 
 	// ------------------ private helper methods ------------------------------
 	private Map<String, List<BasicWidget>> initWidgets() {
@@ -230,7 +230,7 @@ public class ConfigController extends SystemGuiController {
 	private InfoCollector getCollectedInfo() {
 		final InfoCollector c = new InfoCollector();
 
-		if (!unitfDefaultText.equals(titleField.getText()))
+		if (!titlefDefaultText.equals(titleField.getText()))
             c.setTitle(titleField.getText());
 		if (!unitfDefaultText.equals(unitField.getText()))
 			c.setUnit(unitField.getText());
@@ -285,7 +285,7 @@ public class ConfigController extends SystemGuiController {
 
 	private void initPathDataAddingRegion(final SystemCore model) {
 
-	    titleField.setPromptText(unitfDefaultText);
+	    titleField.setPromptText(titlefDefaultText);
 	    // path fields
 		table.setItems(tableData);
 		nameCol.setCellValueFactory(new PropertyValueFactory<NamedPath, String>("name"));
