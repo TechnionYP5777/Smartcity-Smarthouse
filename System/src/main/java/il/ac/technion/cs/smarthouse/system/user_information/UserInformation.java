@@ -67,32 +67,70 @@ public class UserInformation {
 
     }
 
+    /**
+     * Adding a contact with a certain emergency level
+     * 
+     * @param c
+     *            the contact to add
+     * @param elevel
+     */
     public void addContact(final Contact c, final EmergencyLevel elevel) {
         emergencyContacts.addContact(c, elevel);
     }
 
+    /**
+     * Remove a contact with a certain ID
+     * 
+     * @param contactID
+     */
     public void removeContact(final String contactID) {
         emergencyContacts.removeContact(contactID);
 
     }
 
+    /**
+     * Retrieves a contact with a certain ID
+     * 
+     * @param contactId
+     * @return
+     */
     public Contact getContact(final String contactId) {
         return emergencyContacts.getContact(contactId);
     }
 
+    /**
+     * Retrieves all contacts with a certain emergency level
+     * 
+     * @param elvl
+     * @return a list of all contacts with elvl as emergency level
+     */
     public List<Contact> getContacts(final EmergencyLevel elvl) {
         return emergencyContacts.getContacts(elvl);
     }
 
+    /**
+     * 
+     * @return All contacts
+     */
     public List<Contact> getContacts() {
         return emergencyContacts.getContacts();
     }
 
+    /**
+     * This method sets the emergency level of a contact
+     * 
+     * @param id
+     *            the contact's id whom emergency level we would like to change
+     * @param eLevel
+     */
     public void setContactEmergencyLevel(final String id, final String eLevel) {
         emergencyContacts.setContactEmergencyLevel(id, EmergencyLevel.fromString(eLevel));
     }
-    
-    public Map<Contact,EmergencyLevel> getContactsWithElevel(){
+
+    /**
+     * @return a map with all contacts with their emergency levels
+     */
+    public Map<Contact, EmergencyLevel> getContactsWithElevel() {
         return this.emergencyContacts.getContactsWithElevel();
     }
 }
