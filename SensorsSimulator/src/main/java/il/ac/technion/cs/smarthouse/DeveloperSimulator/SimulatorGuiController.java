@@ -1,6 +1,3 @@
-/**
- * 
- */
 package il.ac.technion.cs.smarthouse.DeveloperSimulator;
 
 import java.util.Optional;
@@ -29,9 +26,9 @@ public abstract class SimulatorGuiController extends GuiController<SensorsSimula
 	}
 	
 	@SuppressWarnings("rawtypes")
-	protected static ObservableList<Pair<String,Class>> getObservablePaths(GenericSensor sensor){
+	protected static ObservableList<Pair<String,Class>> getObservablePaths(GenericSensor s){
 		ObservableList<Pair<String,Class>> list = FXCollections.observableArrayList();
-		Optional.ofNullable(sensor.getPathsWithClasses(PathType.INFO_SENDING))
+		Optional.ofNullable(s.getPathsWithClasses(PathType.INFO_SENDING))
 				.ifPresent(paths -> paths.forEach((path,cls)-> list.add(new Pair<String,Class>(path, cls))));
 		return list;
 	}

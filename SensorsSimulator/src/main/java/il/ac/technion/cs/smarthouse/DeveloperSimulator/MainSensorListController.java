@@ -8,7 +8,6 @@ import java.util.function.Consumer;
 
 import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
-import il.ac.technion.cs.smarthouse.sensors.simulator.SensorBuilder;
 import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -29,7 +28,10 @@ import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-
+/**
+ * @author Roy Shchory
+ * @since Jun 17, 2017
+ */
 public class MainSensorListController extends  SimulatorGuiController{
 	
 	ObservableList<Pair<String, String>> sensors  = FXCollections.observableArrayList();
@@ -43,7 +45,7 @@ public class MainSensorListController extends  SimulatorGuiController{
 	@Override
 	protected <T extends GuiController<SensorsSimulator>> void initialize(SensorsSimulator model1, T parent1,
 			URL location, ResourceBundle b) {
-		Consumer<GenericSensor> addConsumer = x ->{ this.sensors.add(new Pair<String, String>(model1.getSensorId(x), x.getAlias()));
+		Consumer<GenericSensor> addConsumer = x ->{ this.sensors.add(new Pair<String, String>(model1.getSensorId(x),x.getCommname()+"("+x.getAlias()+")"));
 		sensors.sort(new Comparator<Pair<String, String>>() {
 
 			@Override
@@ -53,24 +55,38 @@ public class MainSensorListController extends  SimulatorGuiController{
 		});};
 		model1.addListenerWhen(SensorsSimulator.Action.ADD, addConsumer);
 		sensorTable.setItems(sensors);
+		nameColumn.prefWidthProperty().bind(sensorTable.widthProperty().multiply(0.7));
+		nameColumn.setResizable(false);
 		nameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getValue()));
-        configColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+		configColumn.prefWidthProperty().bind(sensorTable.widthProperty().multiply(0.1));
+		configColumn.setResizable(false);
+		configColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         configColumn.setCellFactory(p -> {
             final ButtonCell $ = new ButtonCell();
             $.setAction(new EventHandler<ActionEvent>() {
 				
 				@Override
 				public void handle(ActionEvent e) {
-					setSelectedSensor($.getTableView().getItems().get($.getIndex()).getKey());
-					((DeveloperSimulatorController)MainSensorListController.this.getParentController()).moveToConfiguration();
+					final TextInputDialog dialog = new TextInputDialog();
+			        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/Homeicon.png"))));
+			        dialog.setTitle("Sensor simulator");
+			        dialog.setHeaderText("Clone Sensor");
+			        dialog.setContentText("Please enter the cloned sensor alias:");
+			        final Optional<String> result = dialog.showAndWait();
+			        if (!result.isPresent())
+			            return;
+			        final String name = result.get();
+			        MainSensorListController.this.getModel().cloneSensor($.getTableView().getItems().get($.getIndex()).getKey(),name);
 				}
 			});
             
-            $.setImage(new ImageView(new Image(getClass().getResourceAsStream("/Settings.png"))));
+            $.setImage(new ImageView(new Image(getClass().getResourceAsStream("/Copy.png"))));
             
             $.setAlignment(Pos.CENTER);
             return $;
         });
+        messageColumn.prefWidthProperty().bind(sensorTable.widthProperty().multiply(0.1));
+		messageColumn.setResizable(false);
         messageColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         messageColumn.setCellFactory(p -> {
             final ButtonCell $ = new ButtonCell();
@@ -88,6 +104,8 @@ public class MainSensorListController extends  SimulatorGuiController{
             $.setAlignment(Pos.CENTER);
             return $;
         });
+        deleteColumn.prefWidthProperty().bind(sensorTable.widthProperty().multiply(0.1));
+        deleteColumn.setResizable(false);
         deleteColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         deleteColumn.setCellFactory(p -> {
             final ButtonCell $ = new ButtonCell();
@@ -95,7 +113,6 @@ public class MainSensorListController extends  SimulatorGuiController{
 				
 				@Override
 				public void handle(ActionEvent e) {
-					// TODO add are you sure alert
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Confirmation Dialog");
 					alert.setHeaderText("Are you sure?");
@@ -119,19 +136,7 @@ public class MainSensorListController extends  SimulatorGuiController{
 
 			@Override
 			public void handle(ActionEvent e) {
-				final TextInputDialog dialog = new TextInputDialog();
-		        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/Homeicon.png"))));
-		        dialog.setTitle("Create Sensor");
-		        dialog.setHeaderText("Config your simulator");
-		        dialog.setContentText("Please enter sensor name:");
-		        final Optional<String> result = dialog.showAndWait();
-		        if (!result.isPresent())
-		            return;
-		        final String name = result.get();
-				SensorBuilder b = new SensorBuilder();
-				b.setAlias(name);
-				b.setCommname(name);
-				model1.addSensor(b.build());
+				((DeveloperSimulatorController)MainSensorListController.this.getParentController()).moveToConfiguration();
 			}
 		});
 	}

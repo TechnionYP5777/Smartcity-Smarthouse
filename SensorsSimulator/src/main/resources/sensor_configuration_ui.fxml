@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
 
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
@@ -28,12 +29,23 @@
 								<Font name="System Bold" size="25.0" />
 							</font>
 						</Label>
-						<Label nodeOrientation="LEFT_TO_RIGHT"
-							textAlignment="CENTER" fx:id="sensorNameLabel">
-							<font>
-								<Font name="System Bold" size="15.0" />
-							</font>
-						</Label>
+						<GridPane hgap="10" vgap="10">
+							<children>
+								<Label underline="true" text="Sensors Commercial name:"
+									GridPane.columnIndex="0" GridPane.rowIndex="0" />
+								<TextField fx:id="commName" promptText="Commercial Name"
+									GridPane.columnIndex="1" GridPane.rowIndex="0" />
+								<Label underline="true" text="Sensors Alias:"
+									GridPane.columnIndex="0" GridPane.rowIndex="1" />
+								<TextField fx:id="alias" promptText="Alias"
+									GridPane.columnIndex="1" GridPane.rowIndex="1" />
+								<Label underline="true" text="Sensors Paths:"
+									GridPane.columnIndex="0" GridPane.rowIndex="2" />
+							</children>
+							<padding>
+								<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+							</padding>
+						</GridPane>
 						<TableView fx:id="fieldsTable" AnchorPane.leftAnchor="0.0"
 							AnchorPane.rightAnchor="0.0">
 							<columns>
@@ -57,15 +69,7 @@
 						<Insets bottom="10.0" left="20.0" right="20.0" />
 					</padding>
 				</VBox>
-				<HBox>
-					<children>
-						<Button fx:id="saveButton" mnemonicParsing="false"
-							text="Save" />
-					</children>
-					<padding>
-						<Insets left="20.0" right="20.0" />
-					</padding>
-				</HBox>
+				<Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
 			</children>
 		</VBox>
 	</children>

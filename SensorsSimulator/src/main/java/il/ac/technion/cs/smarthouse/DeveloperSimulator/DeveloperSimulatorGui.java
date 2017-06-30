@@ -4,7 +4,10 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+/**
+ * @author Roy Shchory
+ * @since Jun 17, 2017
+ */
 public class DeveloperSimulatorGui extends Application{
 
 	private SensorsSimulator simulator;
