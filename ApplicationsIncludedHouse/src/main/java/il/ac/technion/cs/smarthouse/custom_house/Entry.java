@@ -1,10 +1,5 @@
-/**
- * 
- */
 package il.ac.technion.cs.smarthouse.custom_house;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.reflections.Reflections;
@@ -17,7 +12,6 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.SensorsSimulator;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath;
 import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPath.PathType;
-import il.ac.technion.cs.smarthouse.system_presenter.SystemPresenter;
 import il.ac.technion.cs.smarthouse.system_presenter.SystemPresenterFactory;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 
