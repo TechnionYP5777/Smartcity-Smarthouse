@@ -10,12 +10,10 @@ import il.ac.technion.cs.smarthouse.system.dashboard.widget.BasicWidget;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore;
-import il.ac.technion.cs.smarthouse.system.dashboard.DashboardCore.Widget;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 
 /**
  * Implementation of {@link WidgetsRegionBuilder}

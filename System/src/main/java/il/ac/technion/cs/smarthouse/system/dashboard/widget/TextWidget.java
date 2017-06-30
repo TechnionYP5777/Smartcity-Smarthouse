@@ -43,6 +43,7 @@ public class TextWidget extends BasicWidget {
         s.subscribe((rPath, sData) -> update(sData, path), FileSystemEntries.SENSORS_DATA.buildPath(path));
     }
 
+    @Override
     public void update(final Object value, final String key) {
 
         getTile().setText(key.replace(PathBuilder.DELIMITER, " "));

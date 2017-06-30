@@ -58,8 +58,8 @@ public class DashboardCore extends ChildCore {
             this(other.widget.getType(), other.widget.getInitalInfo(), other.widget.getTileSize());
         }
         
-        private void setOnMouseClick(BasicWidget widget){
-            widget.getTile().setOnMouseClicked(e -> {
+        private void setOnMouseClick(BasicWidget w){
+            w.getTile().setOnMouseClicked(e -> {
                 if (e.getButton().equals(MouseButton.SECONDARY)) {
                     final MenuItem addOpt = new MenuItem("Add to Dashboard"),
 							removeOpt = new MenuItem("Remove from Dashboard");
@@ -67,7 +67,7 @@ public class DashboardCore extends ChildCore {
                     removeOpt.setOnAction(e1 -> removeFromDashboard());
                     final ContextMenu popup = new ContextMenu();
                     popup.getItems().addAll(addOpt, removeOpt);
-                    popup.show(widget.getTile(), e.getScreenX(), e.getScreenY());
+                    popup.show(w.getTile(), e.getScreenX(), e.getScreenY());
                 }
             });
         }

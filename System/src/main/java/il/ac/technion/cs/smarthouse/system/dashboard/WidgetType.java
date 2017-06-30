@@ -101,8 +101,9 @@ public enum WidgetType {
                                         new Stop(0.5, Tile.YELLOW), 
                                         new Stop(1.0, Tile.RED))
                         .strokeWithGradient(true);
+                break;
             default:
-
+                break;
         }
 
         return builder;

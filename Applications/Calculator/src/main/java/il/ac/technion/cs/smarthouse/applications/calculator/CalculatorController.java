@@ -31,8 +31,7 @@ public class CalculatorController implements Initializable {
 
 	@FXML
 	protected void handleOnAnyButtonClicked(ActionEvent evt) {
-		Button button = (Button) evt.getSource();
-		final String buttonText = button.getText();
+		final String buttonText = ((Button) evt.getSource()).getText();
 		if ("C".equals(buttonText)) {
 			selectedOperator = "";
 			numberInputting = false;
@@ -48,8 +47,7 @@ public class CalculatorController implements Initializable {
 			selectedOperator = buttonText;
 			numberInputting = false;
 		} else if ("=".equals(buttonText)) {
-			final BigDecimal right = !numberInputting ? left : new BigDecimal(display.getText());
-			left = calculate(selectedOperator, left, right);
+			left = calculate(selectedOperator, left, !numberInputting ? left : new BigDecimal(display.getText()));
 			display.setText(left.toString());
 			numberInputting = false;
 			return;
