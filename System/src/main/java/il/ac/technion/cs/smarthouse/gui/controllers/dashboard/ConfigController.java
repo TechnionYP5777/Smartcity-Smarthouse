@@ -102,8 +102,7 @@ public class ConfigController extends SystemGuiController {
 
 	}
 
-	// ------------------ GUI element in the config window
-	// ----------------------------------------
+	// ------------------ GUI element in the config window --------------------
 	@FXML
 	ScrollPane scrollPane;
 	@FXML
@@ -111,6 +110,7 @@ public class ConfigController extends SystemGuiController {
 	@FXML
 	HBox widgetsHbox;
 
+	TextField titleField;
 	@FXML
 	TableView<NamedPath> table;
 	@FXML
@@ -129,8 +129,7 @@ public class ConfigController extends SystemGuiController {
 	@FXML
 	Button okBtn, cancelBtn;
 
-	// ------------------ other members
-	// -----------------------------------------------------------
+	// ------------------ other members ---------------------------------------
 	private static final Color chosenColor = Color.DEEPSKYBLUE, enteredTileColor = Color.BISQUE,
 			normalTileColor = Color.WHITE;
 	// don't change order of lines - timer definition needs to come before
@@ -143,8 +142,7 @@ public class ConfigController extends SystemGuiController {
 	private final String unitfDefaultText = "(optional)", namefDefaultText = "<name>",
 			pathscbDefaultText = "<choose path>";
 
-	// ------------------ private helper methods
-	// --------------------------------------------------
+	// ------------------ private helper methods ------------------------------
 	private Map<String, List<BasicWidget>> initWidgets() {
 		final Map<String, List<BasicWidget>> allWidgets = new HashMap<>();
 		final InfoCollector info = new InfoCollector().addInfoEntry("path.to.foo", "foo")
@@ -232,6 +230,8 @@ public class ConfigController extends SystemGuiController {
 	private InfoCollector getCollectedInfo() {
 		final InfoCollector c = new InfoCollector();
 
+		if (!unitfDefaultText.equals(titleField.getText()))
+            c.setTitle(titleField.getText());
 		if (!unitfDefaultText.equals(unitField.getText()))
 			c.setUnit(unitField.getText());
 
@@ -266,8 +266,7 @@ public class ConfigController extends SystemGuiController {
 		return ss;
 	}
 
-	// ------------------ GUI elements initializers
-	// -----------------------------------------------
+	// ------------------ GUI elements initializers ---------------------------
 	private void initWidgetsRegion() {
 		// widgets
 		typesComboBox.setItems(FXCollections.observableArrayList(widgets.keySet()));
@@ -285,7 +284,9 @@ public class ConfigController extends SystemGuiController {
 	}
 
 	private void initPathDataAddingRegion(final SystemCore model) {
-		// path fields
+
+	    titleField.setPromptText(unitfDefaultText);
+	    // path fields
 		table.setItems(tableData);
 		nameCol.setCellValueFactory(new PropertyValueFactory<NamedPath, String>("name"));
 		pathCol.setCellValueFactory(new PropertyValueFactory<NamedPath, String>("path"));
@@ -329,8 +330,7 @@ public class ConfigController extends SystemGuiController {
 		initExitButtonsRegion();
 	}
 
-	// ------------------ public methods
-	// ----------------------------------------------------------
+	// ------------------ public methods --------------------------------------
 	public void setConfigConsumer(final ConfigConsumer cc) {
 		consumer = cc;
 	}
