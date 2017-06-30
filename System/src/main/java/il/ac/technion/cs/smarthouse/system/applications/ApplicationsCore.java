@@ -19,7 +19,6 @@ import il.ac.technion.cs.smarthouse.system.applications.installer.ApplicationPat
 import il.ac.technion.cs.smarthouse.system.cores.ChildCore;
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
-import javafx.application.Platform;
 
 /**
  * Part of the system's core. Stores the managers of the running applications.
