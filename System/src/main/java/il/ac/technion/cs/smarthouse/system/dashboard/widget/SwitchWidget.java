@@ -4,6 +4,8 @@ import il.ac.technion.cs.smarthouse.system.dashboard.InfoCollector;
 import il.ac.technion.cs.smarthouse.system.dashboard.WidgetType;
 
 /**
+ * A text widget which can show any data with relevant toString method, and
+ * specifically makes it convenient to represent text data type.
  * 
  * @author Inbal Zukerman
  * @since 21-06-2017
