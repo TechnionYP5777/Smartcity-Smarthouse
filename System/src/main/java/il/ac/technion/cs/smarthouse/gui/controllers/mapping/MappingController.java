@@ -28,6 +28,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Pair;
 
 /**
  * This is the controller of the house mapping
@@ -112,19 +113,26 @@ public class MappingController extends SystemGuiController {
      * Updates a sensor location on the house mapping
      * 
      * @param id
+     * @param commName
      * @param l
      */
-    public void updateSensorLocation(final String id, final String l) {
+    public void updateSensorLocation(final String id,final String commName ,final String l) {
         if (mappingInformaton.getSensorsLocations().containsKey(id) && mappingInformaton.getLocationsContents()
-                        .containsKey(mappingInformaton.getSensorsLocations().get(id)))
-            mappingInformaton.getLocationsContents().get(mappingInformaton.getSensorsLocations().get(id)).remove(id);
-
+                        .containsKey(mappingInformaton.getSensorsLocations().get(id))){
+            List<Pair<String,String>> sList = mappingInformaton.getLocationsContents().get(mappingInformaton.getSensorsLocations().get(id));
+            Pair<String,String> pToRemove = null;
+            for(Pair<String,String> p:sList)
+                if(p.getKey().equals(id))
+                    pToRemove = p;
+           if(pToRemove != null)
+               sList.remove(pToRemove);
+        }
         mappingInformaton.getSensorsLocations().put(id, l);
 
         if (!mappingInformaton.getLocationsContents().containsKey(l))
             mappingInformaton.getLocationsContents().put(l, new ArrayList<>());
 
-        mappingInformaton.getLocationsContents().get(l).add(id);
+        mappingInformaton.getLocationsContents().get(l).add(new Pair<>(id,commName));
 
         drawMapping();
 
@@ -136,6 +144,11 @@ public class MappingController extends SystemGuiController {
      */
     public List<String> getAlllocations() {
         return mappingInformaton.getAllLocations();
+    }
+    
+    private String getPath_alias(final String sensorId1 , String commName) {
+        assert commName != null && sensorId1 != null;
+        return FileSystemEntries.ALIAS.buildPath(commName, sensorId1);
     }
 
     private void drawMapping() {
@@ -153,8 +166,9 @@ public class MappingController extends SystemGuiController {
             if (mappingInformaton.getLocationsContents().containsKey(room.location)) {
                 int dy = 20;
 
-                for (final String id : mappingInformaton.getLocationsContents().get(room.location)) {
-                    g.fillText(" (" + id + ")", room.x + 10, room.y + dy + 20);
+                for (final Pair<String,String> p : mappingInformaton.getLocationsContents().get(room.location)) {
+                    String alias = this.getModel().getFileSystem().getData(getPath_alias(p.getKey(),p.getValue()));
+                    g.fillText(" (" + alias + ")", room.x + 10, room.y + dy + 20);
                     dy += 20;
                 }
             }

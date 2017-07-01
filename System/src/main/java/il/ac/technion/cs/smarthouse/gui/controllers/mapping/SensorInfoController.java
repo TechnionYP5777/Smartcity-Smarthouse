@@ -39,7 +39,7 @@ public class SensorInfoController extends SystemGuiController {
 
         room.getSelectionModel().select(0);
         room.valueProperty().addListener((ov, prevVal, newVal) -> {
-            this.<MappingController>getParentController().updateSensorLocation(id, newVal);
+            this.<MappingController>getParentController().updateSensorLocation(id, commName, newVal);
 
             // update model
             fileSystem.sendMessage(newVal, FileSystemEntries.LOCATION.buildPath(commName, id));
