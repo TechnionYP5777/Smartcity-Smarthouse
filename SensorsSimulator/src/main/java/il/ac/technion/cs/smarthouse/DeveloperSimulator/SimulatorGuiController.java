@@ -15,21 +15,21 @@ import javafx.util.Pair;
  * @since Jun 26, 2017
  */
 public abstract class SimulatorGuiController extends GuiController<SensorsSimulator> {
-	private static String selectedSensor;
-	
-	protected static void setSelectedSensor(String id) {
-		selectedSensor = id;
-	}
-	
-	protected static String getSelectedSensor() {
-		return selectedSensor;
-	}
-	
-	@SuppressWarnings("rawtypes")
-	protected static ObservableList<Pair<String,Class>> getObservablePaths(GenericSensor s){
-		ObservableList<Pair<String,Class>> list = FXCollections.observableArrayList();
-		Optional.ofNullable(s.getPathsWithClasses(PathType.INFO_SENDING))
-				.ifPresent(paths -> paths.forEach((path,cls)-> list.add(new Pair<String,Class>(path, cls))));
-		return list;
-	}
+    private static String selectedSensor;
+
+    protected static void setSelectedSensor(String id) {
+        selectedSensor = id;
+    }
+
+    protected static String getSelectedSensor() {
+        return selectedSensor;
+    }
+
+    @SuppressWarnings("rawtypes")
+    protected static ObservableList<Pair<String, Class>> getObservablePaths(GenericSensor s) {
+        ObservableList<Pair<String, Class>> list = FXCollections.observableArrayList();
+        Optional.ofNullable(s.getPathsWithClasses(PathType.INFO_SENDING))
+                        .ifPresent(paths -> paths.forEach((path, cls) -> list.add(new Pair<String, Class>(path, cls))));
+        return list;
+    }
 }
