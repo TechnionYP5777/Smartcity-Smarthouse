@@ -39,6 +39,7 @@ public class SensorsLocalServer implements Runnable {
         new Thread(() -> runInstructionSensorServer(40002)).start();
     }
 
+    @SuppressWarnings("resource")
     private void runBasicTcpServer(final Integer port, final Class<? extends SensorManagingThread> managerThreadClass) {
         try (ServerSocket server = new ServerSocket(port)) {
             serverSockets.add(server);

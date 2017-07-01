@@ -23,14 +23,19 @@ public class SensorMessageTest extends MessageTest {
 
     @Before
     public void init() {
-        sensor = new InteractiveSensor("ACUSensor", Random.sensorId(), "MyAlias", obserPaths, instPaths) {};
+        sensor = new InteractiveSensor("ACUSensor", Random.sensorId(), "MyAlias", obserPaths, instPaths) {
+            // Noting here
+        };
     }
 
     @Override
+    @SuppressWarnings("unused")
     protected SensorMessage defaultMessage() {
         try {
             msg = msg != null ? msg : new SensorMessage(type, sensor);
-        } catch (IllegalMessageBaseExecption e) {}
+        } catch (IllegalMessageBaseExecption e) {
+            // Ignoring
+        }
         return msg;
     }
 

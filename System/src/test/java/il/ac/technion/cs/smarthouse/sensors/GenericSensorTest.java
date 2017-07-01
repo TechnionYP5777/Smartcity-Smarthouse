@@ -100,6 +100,7 @@ public class GenericSensorTest {
         return ranges;
     }
 
+    @SuppressWarnings("null")
     private Boolean inRange(final List<Object> range, final Object val, final Class<?> valsCls) {
         if (String.class.equals(valsCls))
             return range.contains(val);
@@ -119,7 +120,7 @@ public class GenericSensorTest {
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public void StreamMessagesSuccesfullyTest() throws InterruptedException {
         final Function<Class, String> pathOf = cls -> sendPath + "." + cls.toString().replace(' ', '.');
 

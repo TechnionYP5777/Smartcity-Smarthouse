@@ -20,45 +20,41 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
  * @since Jun 26, 2017
  */
 public class Entry {
-	
-	public static void main(final String[] args) {
-		SensorsSimulator simulator = new SensorsSimulator()
-										.setGeneralStreamingInteval(TimeUnit.SECONDS.toMillis(5));
-		
-		SystemPresenterFactory factory = new SystemPresenterFactory()
-											.initMode(SystemMode.USER_MODE)
-											.enableModePopup(false)
-											.setUseCloudServer(false)
-											.enableLocalDatabase(false);
-		new Reflections("il.ac.technion.cs.smarthouse.applications", new SubTypesScanner(false))
-				.getSubTypesOf(SmarthouseApplication.class)
-				.forEach(cls -> {
-					factory.addApplicationToInstall(new ApplicationPath(PathType.CLASS, cls));
-					if(Simulatable.class.isAssignableFrom(cls))
-						try {
-							simulator.addAllSensor(((Simulatable)cls.newInstance()).getSimulatedSensors());
-						} catch (InstantiationException | IllegalAccessException e){}
-				});
-		factory.build();
 
-		new Thread(){
+    @SuppressWarnings("unused")
+    public static void main(final String[] args) {
+        SensorsSimulator simulator = new SensorsSimulator().setGeneralStreamingInteval(TimeUnit.SECONDS.toMillis(5));
+
+        SystemPresenterFactory factory = new SystemPresenterFactory().initMode(SystemMode.USER_MODE)
+                        .enableModePopup(false).setUseCloudServer(false).enableLocalDatabase(false);
+        new Reflections("il.ac.technion.cs.smarthouse.applications", new SubTypesScanner(false))
+                        .getSubTypesOf(SmarthouseApplication.class).forEach(cls -> {
+                            factory.addApplicationToInstall(new ApplicationPath(PathType.CLASS, cls));
+                            if (Simulatable.class.isAssignableFrom(cls))
+                                try {
+                                    simulator.addAllSensor(((Simulatable) cls.newInstance()).getSimulatedSensors());
+                                } catch (InstantiationException | IllegalAccessException e) {
+                                    // Ignoring
+                                }
+                        });
+        factory.build();
+
+        new Thread() {
 
             @Override
             public void interrupt() {
-            	simulator.stopSendingMsgsInAllSensors();
+                simulator.stopSendingMsgsInAllSensors();
                 super.interrupt();
             }
 
             @Override
             public void run() {
-            	simulator.startSendingMsgsInAllSensors();
+                simulator.startSendingMsgsInAllSensors();
                 JavaFxHelper.startGui(new DeveloperSimulatorGui().setSimulator(simulator));
                 super.run();
             }
-            
+
         }.start();
-		        
-				
-		
-	}
+
+    }
 }

@@ -36,6 +36,8 @@ public class AppTextField extends AppOk<TextField, String> {
      * 
      * @param e
      *            The given keyboard event
+     * 
+     *            [[SuppressWarningsSpartan]]
      */
     protected void handleKeyPressed(final KeyEvent e) {
         if (e != null && e.getCode().equals(KeyCode.ENTER)) {

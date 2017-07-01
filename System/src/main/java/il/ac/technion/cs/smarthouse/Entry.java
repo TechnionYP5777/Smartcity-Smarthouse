@@ -5,13 +5,25 @@ import il.ac.technion.cs.smarthouse.system_presenter.SystemPresenterFactory;
 
 public class Entry {
 
+    /**
+     * [[SuppressWarningsSpartan]]
+     */
+    @SuppressWarnings("unused")
     public static void main(final String[] args) {
-        final SystemPresenter p =new SystemPresenterFactory()
-                        .setUseCloudServer(false) // false for now, because there is only one instance of the cloud server
-                        .enableLocalDatabase(true)
-                        .build();
+        final SystemPresenter p = new SystemPresenterFactory().setUseCloudServer(false) // false
+                                                                                        // for
+                                                                                        // now,
+                                                                                        // because
+                                                                                        // there
+                                                                                        // is
+                                                                                        // only
+                                                                                        // one
+                                                                                        // instance
+                                                                                        // of
+                                                                                        // the
+                                                                                        // cloud
+                                                                                        // server
+                        .enableLocalDatabase(true).build();
     }
-    
-    
 
 }

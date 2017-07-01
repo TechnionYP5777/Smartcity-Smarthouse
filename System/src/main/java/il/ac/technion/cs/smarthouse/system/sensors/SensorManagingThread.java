@@ -50,6 +50,9 @@ public abstract class SensorManagingThread extends Thread {
         });
     }
 
+    /**
+     * [[SuppressWarningsSpartan]]
+     */
     @Override
     public void run() {
         if (resources.contains(null)) {
@@ -69,7 +72,7 @@ public abstract class SensorManagingThread extends Thread {
                     } catch (final IllegalMessageBaseExecption e1) {}
                     continue;
                 }
-               
+
                 handleSensorMessage(message);
             }
         } catch (final IOException e) {} finally {

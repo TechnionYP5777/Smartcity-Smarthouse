@@ -37,8 +37,8 @@ public enum SystemFailureDetector {
     ;
     static final Logger log = LoggerFactory.getLogger(SystemFailureDetector.class);
 
-    private static boolean isExceptionFromHere(Throwable e) {
-        return Stream.of(e.getStackTrace()).filter(c -> SystemFailureDetector.class.getName().equals(c.getClassName())
+    private static boolean isExceptionFromHere(Throwable t) {
+        return Stream.of(t.getStackTrace()).filter(c -> SystemFailureDetector.class.getName().equals(c.getClassName())
                         || ErrorPopupApp.class.getName().equals(c.getClassName())).count() > 0;
     }
 
@@ -82,6 +82,9 @@ public enum SystemFailureDetector {
             this.enableTryToRecover = enableTryToRecover;
         }
 
+        /**
+         * [[SuppressWarningsSpartan]]
+         */
         @Override
         public void start(Stage primaryStage) throws Exception {
             if (oldAlert != null && oldAlert.isShowing()) {
@@ -90,7 +93,7 @@ public enum SystemFailureDetector {
             }
 
             ButtonType reportType = new ButtonType("Send Report", ButtonBar.ButtonData.LEFT),
-					tryToRecover = new ButtonType("Try to Recover", ButtonBar.ButtonData.LEFT);
+                            tryToRecover = new ButtonType("Try to Recover", ButtonBar.ButtonData.LEFT);
             Alert a = new Alert(AlertType.ERROR, errTxt, reportType, tryToRecover, ButtonType.CLOSE);
             oldAlert = a;
             if (!enableTryToRecover)

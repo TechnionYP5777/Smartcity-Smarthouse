@@ -196,6 +196,7 @@ public class GenericSensor {
         logMsgSent(d);
     }
 
+    @SuppressWarnings("unused")
     private void stream(final MsgStreamerThread t) {
         if (!paths.containsKey(PathType.INFO_SENDING))
             return;
@@ -225,6 +226,7 @@ public class GenericSensor {
 
     }
 
+    @SuppressWarnings("hiding")
     public void streamMessages(final Supplier<Map<String, Object>> msgsGenerator) {
         this.msgsGenerator = msgsGenerator;
         stream(new SupplierStreamer(this, streamingInterval, msgsGenerator));

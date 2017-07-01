@@ -49,6 +49,7 @@ public class InteractiveSensor extends Sensor {
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise
      */
+    @SuppressWarnings("unused")
     public boolean registerInstructions() {
         try {
             instSocket = new Socket(systemIP, instPort);
@@ -61,7 +62,9 @@ public class InteractiveSensor extends Sensor {
         try {
             final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(instOut, instIn);
             return $ != null && new SensorMessage($).isSuccesful();
-        } catch (final IllegalMessageBaseExecption e) {}
+        } catch (final IllegalMessageBaseExecption e) {
+            // Ignoring
+        }
         return false;
     }
 

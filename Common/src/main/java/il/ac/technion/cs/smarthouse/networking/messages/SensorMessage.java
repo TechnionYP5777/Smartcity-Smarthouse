@@ -114,6 +114,7 @@ public class SensorMessage extends Message {
      * @throws IllegalMessageBaseExecption
      *             if the message interpretation fails
      */
+    @SuppressWarnings("unused")
     public SensorMessage(final String json) throws IllegalMessageBaseExecption {
         SensorMessage msg;
         try {

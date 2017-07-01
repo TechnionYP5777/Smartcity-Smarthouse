@@ -24,6 +24,9 @@ public abstract class BasicWidget {
     protected TileBuilder builder;
     protected Tile tile;
 
+    /**
+     * [[SuppressWarningsSpartan]]
+     */
     public BasicWidget(final WidgetType type, final Double tileSize, final InfoCollector data) {
         this.type = type;
         this.tileSize = tileSize;
@@ -70,7 +73,8 @@ public abstract class BasicWidget {
     }
 
     protected void updateAutomaticallyFrom(final FileSystem s, final String path) {
-        s.subscribeWithNoNulls((rPath, sData) -> update(cast(sData), path), FileSystemEntries.SENSORS_DATA.buildPath(path));
+        s.subscribeWithNoNulls((rPath, sData) -> update(cast(sData), path),
+                        FileSystemEntries.SENSORS_DATA.buildPath(path));
     }
 
     public void update(final Object value, final String key) {

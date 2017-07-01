@@ -137,6 +137,7 @@ public class Sensor {
      * @return <code>true</code> if registration was successful,
      *         <code>false</code> otherwise
      */
+    @SuppressWarnings("unused")
     public boolean register() {
         try {
             // use arp
@@ -156,7 +157,9 @@ public class Sensor {
         try {
             final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(out, in);
             return $ != null && new SensorMessage($).isSuccesful();
-        } catch (final IllegalMessageBaseExecption e) {}
+        } catch (final IllegalMessageBaseExecption e) {
+            // Ignoring
+        }
         return false;
     }
 
@@ -168,6 +171,7 @@ public class Sensor {
      * @param data
      *            observations to send to the system Map<path,value.toString>
      */
+    @SuppressWarnings("unused")
     public void updateSystem(final Map<String, String> data) {
         final long currMillis = System.currentTimeMillis();
         for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
@@ -181,7 +185,9 @@ public class Sensor {
 
         try {
             new SensorMessage(MessageType.UPDATE, this).setData(data).send(out, null);
-        } catch (final IllegalMessageBaseExecption e) {}
+        } catch (final IllegalMessageBaseExecption e) {
+            // Ignoring
+        }
     }
 
     public void updateSystem(final String path, final Object data) {
