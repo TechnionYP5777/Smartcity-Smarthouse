@@ -8,10 +8,10 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
 
 /**
- * This is the abstract controller of the entire system GUI
- * 
  * @author RON
  * @since 07-06-2017
+ * 
+ *        This is the abstract controller of the entire system GUI
  */
 
 public abstract class SystemGuiController extends GuiController<SystemCore> {
@@ -27,6 +27,14 @@ public abstract class SystemGuiController extends GuiController<SystemCore> {
         return super.createChildController(SystemGuiController.class.getResource(FXML_BASE_PATH + fxmlFileName));
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.gui_controller.GuiController#initialize(java
+     * .lang.Object, il.ac.technion.cs.smarthouse.gui_controller.GuiController,
+     * java.net.URL, java.util.ResourceBundle)
+     */
     @Override
     protected final <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, URL location,
                     ResourceBundle b) {

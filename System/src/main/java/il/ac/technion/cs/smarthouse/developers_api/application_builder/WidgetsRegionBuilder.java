@@ -9,12 +9,12 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 
 /**
+ * GUI layout - widgets region
+ * <p>
+ * A region for custom widgets
+ * 
  * @author RON
  * @since 10-06-2017
- * 
- *        GUI layout - widgets region
- *        <p>
- *        A region for custom widgets
  */
 public interface WidgetsRegionBuilder {
     public WidgetsRegionBuilder setTitle(String title);

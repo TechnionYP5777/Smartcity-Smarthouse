@@ -21,15 +21,15 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import javafx.scene.Parent;
 
 /**
+ * The API for the application developers.
+ * <p>
+ * Every application that wants to be installed on the system, MUST extend this
+ * class.
+ * 
  * @author RON
  * @author roysh
  * @author Elia Traore
  * @since 8.12.2016
- * 
- *        The API for the application developers.
- *        <p>
- *        Every application that wants to be installed on the system, MUST
- *        extend this class.
  */
 public abstract class SmarthouseApplication {
     private SystemCore systemCore;

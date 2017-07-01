@@ -13,10 +13,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 
 /**
+ * Implementation of {@link CustomRegionBuilder}
+ * 
  * @author RON
  * @since 10-06-2017
- * 
- *        Implementation of {@link CustomRegionBuilder}
  */
 public class CustomRegionBuilderImpl extends AbstractRegionBuilder implements CustomRegionBuilder {
     private static Logger log = LoggerFactory.getLogger(CustomRegionBuilderImpl.class);

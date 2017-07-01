@@ -11,10 +11,10 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 /**
+ * Implementation of {@link StatusRegionBuilder}
+ * 
  * @author RON
  * @since 10-06-2017
- * 
- *        Implementation of {@link StatusRegionBuilder}
  */
 public final class StatusRegionBuilderImpl extends AbstractRegionBuilder implements StatusRegionBuilder {
     public StatusRegionBuilderImpl() {

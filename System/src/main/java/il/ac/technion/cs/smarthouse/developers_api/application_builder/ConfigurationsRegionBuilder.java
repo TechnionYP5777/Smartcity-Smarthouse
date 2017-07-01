@@ -7,12 +7,12 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorApi;
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 
 /**
+ * GUI layout - configurations region
+ * <p>
+ * A region for editable fields
+ * 
  * @author RON
  * @since 10-06-2017
- * 
- *        GUI layout - configurations region
- *        <p>
- *        A region for editable fields
  */
 public interface ConfigurationsRegionBuilder {
     public ConfigurationsRegionBuilder setTitle(String title);

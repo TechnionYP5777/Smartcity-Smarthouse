@@ -20,15 +20,15 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
 import javafx.scene.Node;
 
 /**
+ * Implementation of {@link ConfigurationsRegionBuilder}
+ * 
  * @author RON
  * @since 10-06-2017
- * 
- *        Implementation of {@link ConfigurationsRegionBuilder}
  */
 public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
                 implements ConfigurationsRegionBuilder {
     private static final Logger log = LoggerFactory.getLogger(ConfigurationsRegionBuilderImpl.class);
-    
+
     public ConfigurationsRegionBuilderImpl() {
         super.setTitle("Configurations");
     }
@@ -171,14 +171,14 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
                     final SensorApi<T> sensorApiObject, BiConsumer<String, String> aliasesConsumer) {
 
         final AppComboBoxField<String> cBox = new AppComboBoxField<>(
-            alias ->  Optional.ofNullable(alias).ifPresent(newAlias -> {
-                String oldAlias = sensorApiObject.getSensorAlias();
-                if(!newAlias.equals(oldAlias)){
-                    log.info("changed sensor through field! old:"+oldAlias+" new:"+newAlias);
-                    sensorApiObject.reselectSensorByAlias(newAlias);
-                    Optional.ofNullable(aliasesConsumer).ifPresent(c -> c.accept(oldAlias, newAlias));
-                }
-            }) , null, sensorApiObject.getAllAliases().toArray(new String[0]));
+                        alias -> Optional.ofNullable(alias).ifPresent(newAlias -> {
+                            String oldAlias = sensorApiObject.getSensorAlias();
+                            if (!newAlias.equals(oldAlias)) {
+                                log.info("changed sensor through field! old:" + oldAlias + " new:" + newAlias);
+                                sensorApiObject.reselectSensorByAlias(newAlias);
+                                Optional.ofNullable(aliasesConsumer).ifPresent(c -> c.accept(oldAlias, newAlias));
+                            }
+                        }), null, sensorApiObject.getAllAliases().toArray(new String[0]));
 
         addAppBuilderItem(new AppBuilderItem(title, cBox));
 

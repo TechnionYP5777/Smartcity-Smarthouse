@@ -14,10 +14,10 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 
 /**
+ * Implementation of {@link AppBuilder}
+ * 
  * @author RON
  * @since 10-06-2017
- * 
- *        Implementation of {@link AppBuilder}
  */
 public final class AppBuilderImpl implements AppBuilder {
     private final ConfigurationsRegionBuilderImpl configurationsBuilder;

@@ -37,9 +37,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 
 /**
- * 
  * @author Inbal Zukerman
  * @since 07-01-2017
+ * 
+ *        This class handles the User Information tab in the Smart-House window.
  */
 public class UserInfoController extends SystemGuiController {
 
@@ -354,6 +355,15 @@ public class UserInfoController extends SystemGuiController {
         addEmailField.setStyle(null);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController#
+     * initialize(il.ac.technion.cs.smarthouse.system.SystemCore,
+     * il.ac.technion.cs.smarthouse.gui_controller.GuiController,
+     * il.ac.technion.cs.smarthouse.system.SystemMode, java.net.URL,
+     * java.util.ResourceBundle)
+     */
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
                     URL location, ResourceBundle b) {

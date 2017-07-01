@@ -16,10 +16,10 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.HBox;
 
 /**
+ * Implementation of {@link WidgetsRegionBuilder}
+ * 
  * @author RON
  * @since 10-06-2017
- * 
- *        Implementation of {@link WidgetsRegionBuilder}
  */
 public final class WidgetsRegionBuilderImpl extends AbstractRegionBuilder implements WidgetsRegionBuilder {
     private HBox widgetsHbox;

@@ -90,14 +90,20 @@ public class SystemPresenterFactory {
         initMode = m;
         return this;
     }
-    
+
     public SystemPresenterFactory enableLocalDatabase(final boolean enable) {
         model_enableLocalDatabase = enable;
         return this;
     }
 
+    /**
+     * Creates a new SystemPresenter
+     * 
+     * @return The created SystemPresenter
+     */
     public SystemPresenter build() {
-        final SystemPresenter p = new SystemPresenter(view_enableView, view_openOnNewStage, enablePopup, initMode, !disableFailureDetector, true);
+        final SystemPresenter p = new SystemPresenter(view_enableView, view_openOnNewStage, enablePopup, initMode,
+                        !disableFailureDetector, true);
 
         model_fileSystemListeners.forEach(t -> p.getSystemModel().getFileSystem().subscribe(t.left, t.right));
 
@@ -111,9 +117,9 @@ public class SystemPresenterFactory {
                 log.error("\n\tCan't install the application " + appPath + " on the system", e);
             }
         });
-        
-        p.getSystemModel().initializeSystemComponents(model_useSensorsServer, model_useCloudServer, model_enableLocalDatabase,
-                        model_initRegularFileSystemListeners);
+
+        p.getSystemModel().initializeSystemComponents(model_useSensorsServer, model_useCloudServer,
+                        model_enableLocalDatabase, model_initRegularFileSystemListeners);
 
         p.getSystemView().waitUntilInitFinishes();
 

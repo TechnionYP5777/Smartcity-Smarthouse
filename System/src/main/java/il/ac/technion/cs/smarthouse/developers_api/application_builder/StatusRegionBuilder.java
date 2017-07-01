@@ -1,13 +1,12 @@
 package il.ac.technion.cs.smarthouse.developers_api.application_builder;
 
 /**
+ * GUI layout - status region
+ * <p>
+ * A region for read-only fields
  * 
  * @author RON
  * @since 10-06-2017
- * 
- *        GUI layout - status region
- *        <p>
- *        A region for read-only fields
  */
 public interface StatusRegionBuilder {
     public StatusRegionBuilder setTitle(String title);

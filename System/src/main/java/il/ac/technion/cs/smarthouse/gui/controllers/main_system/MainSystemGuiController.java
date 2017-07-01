@@ -38,9 +38,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
- * 
  * @author Roy
  * @since 10-01-2017
+ * 
+ *        This class handles the visual part of the Smart-House window.
  */
 public class MainSystemGuiController extends SystemGuiController {
     ApplicationViewController appsPresenterInfo;
@@ -66,6 +67,15 @@ public class MainSystemGuiController extends SystemGuiController {
 
     private static Logger log = LoggerFactory.getLogger(MainSystemGuiController.class);
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController#
+     * initialize(il.ac.technion.cs.smarthouse.system.SystemCore,
+     * il.ac.technion.cs.smarthouse.gui_controller.GuiController,
+     * il.ac.technion.cs.smarthouse.system.SystemMode, java.net.URL,
+     * java.util.ResourceBundle)
+     */
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model, final T parent,
                     final SystemMode m, final URL location, final ResourceBundle b) {
@@ -200,6 +210,7 @@ public class MainSystemGuiController extends SystemGuiController {
      * This method adds the description lines to the "homepage" tab
      * 
      * @param description
+     *            The given description
      */
     public void addDescriptionLine(final String description) {
         final Label label = new Label(description);

@@ -22,8 +22,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
- * A presenter class for the whole system. The model and gui should be started
- * from here.
+ * A presenter class for the whole system. The model and the GUI should be
+ * started from here.
  * 
  * @author RON
  * @author Yarden
@@ -140,7 +140,7 @@ public class SystemPresenter {
             alert.setHeaderText("The Smarthouse has two operation modes.");
             Stage s = (Stage) alert.getDialogPane().getScene().getWindow();
             s.getIcons().add(new Image(getClass().getResourceAsStream(APP_LOGO)));
-            s.setOnCloseRequest(e->System.exit(0));
+            s.setOnCloseRequest(e -> System.exit(0));
 
             ButtonType response = alert.showAndWait().get();
             if (response != null)
