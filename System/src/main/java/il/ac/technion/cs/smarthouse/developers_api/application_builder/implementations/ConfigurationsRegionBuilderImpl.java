@@ -4,6 +4,10 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.ConfigurationsRegionBuilder;
 import il.ac.technion.cs.smarthouse.developers_api.application_builder.GuiBinderObject;
 import il.ac.technion.cs.smarthouse.gui.javafx_elements.AppBooleanButtonField;
@@ -23,6 +27,8 @@ import javafx.scene.Node;
  */
 public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
                 implements ConfigurationsRegionBuilder {
+    private static final Logger log = LoggerFactory.getLogger(ConfigurationsRegionBuilderImpl.class);
+    
     public ConfigurationsRegionBuilderImpl() {
         super.setTitle("Configurations");
     }
@@ -163,11 +169,16 @@ public final class ConfigurationsRegionBuilderImpl extends AbstractRegionBuilder
     @Override
     public <T extends SensorData> ConfigurationsRegionBuilder addSensorAliasSelectionField(final String title,
                     final SensorApi<T> sensorApiObject, BiConsumer<String, String> aliasesConsumer) {
-        final AppComboBoxField<String> cBox = new AppComboBoxField<>(alias -> {
-            String oldAlias = sensorApiObject.getSensorAlias();
-            sensorApiObject.reselectSensorByAlias(alias);
-            Optional.ofNullable(aliasesConsumer).ifPresent(c -> c.accept(alias, oldAlias));
-        }, null, sensorApiObject.getAllAliases().toArray(new String[0]));
+
+        final AppComboBoxField<String> cBox = new AppComboBoxField<>(
+            alias ->  Optional.ofNullable(alias).ifPresent(newAlias -> {
+                String oldAlias = sensorApiObject.getSensorAlias();
+                if(!newAlias.equals(oldAlias)){
+                    log.info("changed sensor through field! old:"+oldAlias+" new:"+newAlias);
+                    sensorApiObject.reselectSensorByAlias(newAlias);
+                    Optional.ofNullable(aliasesConsumer).ifPresent(c -> c.accept(oldAlias, newAlias));
+                }
+            }) , null, sensorApiObject.getAllAliases().toArray(new String[0]));
 
         addAppBuilderItem(new AppBuilderItem(title, cBox));
 

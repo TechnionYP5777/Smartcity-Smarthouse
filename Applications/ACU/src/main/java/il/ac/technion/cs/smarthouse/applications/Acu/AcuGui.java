@@ -37,8 +37,6 @@ public class AcuGui extends SmarthouseApplication implements Simulatable {
 	
 	static final String ON="on", OFF="off";
 	
-	AcuAction prevAction;
-	
 	public static void main(String[] args) throws Exception {
 		launch(simulation.getSimulator(), true);
 	}
@@ -65,15 +63,8 @@ public class AcuGui extends SmarthouseApplication implements Simulatable {
 				//instruct sensor
 				Integer want = wantedTemp.getData(100), have = currentTemp.getData(0);
 				AcuAction nextAction = (have < want) ? AcuAction.HOTTER : (have > want)? AcuAction.COLDER: AcuAction.STOP;
-				if(!nextAction.equals(prevAction)){
-					sensor.instruct(nextAction+"", setStatePath);
-					prevAction = nextAction;
-					System.out.println("Sent new instruction");
-				}
-				System.out.println(String.join(" ", sensor.getSensorAlias()," controlled. want:",want+""," but have", have+"", ".  last sent action:", prevAction+""));
+				sensor.instruct(nextAction+"", setStatePath);
 		});
-		
-		sensor.instruct(wantedTemp.getData()+0.1+"", setTempPath); //init so the simulation and the gui are on the same page
 		
 		wantedTemp.addOnDataChangedListener(
 				desiredT -> desiredT.getDataAsOptional().ifPresent(t->sensor.instruct(t+0.2+"", setTempPath)));
@@ -107,7 +98,7 @@ public class AcuGui extends SmarthouseApplication implements Simulatable {
 										.addWidget(WidgetType.PROGRESS_LINE_GRAPH, 
 													new InfoCollector()
 														.addInfoEntry(getTempPath, "temperature")
-														.setTitle("At "+alias), 
+														.setTitle(alias), 
 													currSensor, 
 													acu -> {
 														Map<String,Object> data = new HashMap<>();
