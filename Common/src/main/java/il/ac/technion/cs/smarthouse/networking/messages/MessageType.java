@@ -13,19 +13,29 @@ import java.util.stream.Collectors;
  * @since 11.12.16
  */
 public enum MessageType {
-	REGISTRATION("registration"), UPDATE("update"), SUCCESS_ANSWER("success_answer"), FAILURE_ANSWER("failure_answer");
+    REGISTRATION("registration"),
+    UPDATE("update"),
+    SUCCESS_ANSWER("success_answer"),
+    FAILURE_ANSWER("failure_answer");
 
-	private final String type;
+    private final String type;
 
-	private MessageType(final String type) {
-		this.type = type;
-	}
+    private MessageType(final String type) {
+        this.type = type;
+    }
 
-	public static MessageType fromString(final String from) {
-		final String fromLower = from.toLowerCase();
-		final List<MessageType> $ = Arrays.asList(MessageType.values()).stream().filter(mt -> mt.type.equals(fromLower))
-				.collect(Collectors.toList());
-		$.add(null);
-		return $.get(0);
-	}
+    /**
+     * Retrieves the type of a message.
+     * 
+     * @param from
+     *            A string representing the type of a message
+     * @return The matching MessageType
+     */
+    public static MessageType fromString(final String from) {
+        final String fromLower = from.toLowerCase();
+        final List<MessageType> $ = Arrays.asList(MessageType.values()).stream().filter(mt -> mt.type.equals(fromLower))
+                        .collect(Collectors.toList());
+        $.add(null);
+        return $.get(0);
+    }
 }
