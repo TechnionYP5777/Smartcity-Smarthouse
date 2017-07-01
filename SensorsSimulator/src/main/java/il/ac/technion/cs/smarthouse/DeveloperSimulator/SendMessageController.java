@@ -40,7 +40,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
+/**
+ * @author Roy Shchory
+ * @since Jun 17, 2017
+ */
 @SuppressWarnings("rawtypes")
 public class SendMessageController extends SimulatorGuiController {
 

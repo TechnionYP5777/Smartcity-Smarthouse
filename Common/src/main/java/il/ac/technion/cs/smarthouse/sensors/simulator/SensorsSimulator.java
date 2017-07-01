@@ -46,22 +46,21 @@ public class SensorsSimulator {
 
 	// ------------------------- public API -----------------------------------
 	public String addSensor(GenericSensor s) {
-		Stream.of(PathType.values())
-				.forEach(type -> Optional.ofNullable(loggers.get(type))
-										.ifPresent(ls -> ls.forEach(logger -> s.addLogger(type, logger))));
+		Stream.of(PathType.values()).forEach(type -> Optional.ofNullable(loggers.get(type))
+				.ifPresent(ls -> ls.forEach(logger -> s.addLogger(type, logger))));
 		Optional.ofNullable(streamingInterval).ifPresent(i -> s.setStreamInterval(i));
-		
+
 		String id = getNextId();
 		sensors.put(id, s);
 		callListeners(Action.ADD, s);
 		return id;
 	}
 
-	public SensorsSimulator addAllSensor(Collection<GenericSensor> sensors){
+	public SensorsSimulator addAllSensor(Collection<GenericSensor> sensors) {
 		Optional.ofNullable(sensors).ifPresent(ss -> ss.forEach(s -> addSensor(s)));
 		return this;
 	}
-	
+
 	public SensorsSimulator removeSensor(String id) {
 		callListeners(Action.REMOVE, sensors.get(id));
 		sensors.remove(id);
@@ -72,40 +71,41 @@ public class SensorsSimulator {
 		callListeners(Action.GET, sensors.get(id));
 		return sensors.get(id);
 	}
-	
-	public Collection<GenericSensor> getAllSensors(){
+
+	public Collection<GenericSensor> getAllSensors() {
 		return sensors.values();
 	}
-	
-	/** The usage of this method is discouraged and it remains solely for legacy purposes.<br>
-	 *  The simulator is <mark><b>not</b></mark> intended to hold half-defined sensors and might
-	 *  result in unexpected behaviour.
-	 *  Please keep incomplete sensor data in is creating builder until information
-	 *  has been fully gathered.
-	 * */
-	@Deprecated
-	public SensorsSimulator updateSensor(String id,GenericSensor s){
-		sensors.put(id,s);
-		return this;
-	}
-	
+
 	public SensorsSimulator startSendingMsgsInAllSensors() {
 		sensors.values().forEach(s -> s.startStreaming());
 		return this;
 	}
-	
-	public SensorsSimulator stopSendingMsgsInAllSensors(){
+
+	public SensorsSimulator stopSendingMsgsInAllSensors() {
 		sensors.values().forEach(s -> s.stopStreaming());
 		return this;
 	}
 
-	public String getSensorId(GenericSensor s){
-		return sensors.keySet().stream()
-						.filter(id -> sensors.get(id).equals(s))
-						.findFirst().orElse(null);
+	public String getSensorId(GenericSensor s) {
+		return sensors.keySet().stream().filter(id -> sensors.get(id).equals(s)).findFirst().orElse(null);
 	}
-	
-	
+
+	public boolean checkCommNameExists(String c) {
+		for (GenericSensor s : this.sensors.values())
+			if (s.getCommname().equals(c))
+				return true;
+		return false;
+	}
+
+	public void cloneSensor(String id, String alias) {
+		GenericSensor currentSensor = this.sensors.get(id);
+		SensorBuilder b = new SensorBuilder();
+		b.setAlias(alias);
+		b.setCommname(currentSensor.getCommname());
+		currentSensor.getPathsWithClasses(PathType.INFO_SENDING).forEach((x, y) -> b.addInfoSendingPath(x, y));
+		this.addSensor(b.build());
+	}
+
 	// ---------- access through listeners/loggers ----------
 	public SensorsSimulator addSentMsgLogger(Consumer<String> logger) {
 		addLogger(PathType.INFO_SENDING, logger);
@@ -127,7 +127,7 @@ public class SensorsSimulator {
 		return this;
 	}
 
-	public SensorsSimulator setGeneralStreamingInteval(Long interval){
+	public SensorsSimulator setGeneralStreamingInteval(Long interval) {
 		streamingInterval = interval;
 		return this;
 	}

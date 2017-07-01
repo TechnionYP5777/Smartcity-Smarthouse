@@ -21,12 +21,13 @@ import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 import il.ac.technion.cs.smarthouse.utils.UuidGenerator;
 
 /**
- * Part of the system's core. Stores the managers of the running applications.
- * 
  * @author Elia Traore
  * @author Inbal Zukerman
  * @author RON
  * @since Dec 13, 2016
+ * 
+ *        Part of the system's core. Stores the managers of the running
+ *        applications.
  */
 public class ApplicationsCore extends ChildCore {
     private static Logger log = LoggerFactory.getLogger(ApplicationsCore.class);
@@ -89,6 +90,12 @@ public class ApplicationsCore extends ChildCore {
     }
     // [end]
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.system.Savable#populate(java.lang.String)
+     */
     @Override
     public void populate(final String jsonString) throws Exception {
         super.populate(jsonString);

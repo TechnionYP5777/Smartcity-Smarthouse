@@ -7,6 +7,13 @@ import il.ac.technion.cs.smarthouse.gui_controller.GuiController;
 import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
 
+/**
+ * This is the abstract controller of the entire system GUI
+ * 
+ * @author RON
+ * @since 07-06-2017
+ */
+
 public abstract class SystemGuiController extends GuiController<SystemCore> {
     public static final String FXML_BASE_PATH = "/fxmls/system/";
 

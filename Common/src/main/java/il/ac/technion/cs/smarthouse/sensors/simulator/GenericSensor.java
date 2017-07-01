@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -23,9 +22,6 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.MsgStrea
 import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.RangeStreamer;
 import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.SupplierStreamer;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.util.Pair;
 
 /**
  * @author Elia Traore
@@ -110,8 +106,8 @@ public class GenericSensor {
 		lastReceivedRanges = ranges;
 	}
 
-	void setMsgsSupplier(Supplier<Map<String, Object>> supplier){
-		msgsGenerator = supplier;
+	void setMsgsSupplier(Supplier<Map<String, Object>> m){
+		msgsGenerator = m;
 	}
 	// ------------------------ getters --------------------------------------
 	List<String> getPaths(PathType t) {
