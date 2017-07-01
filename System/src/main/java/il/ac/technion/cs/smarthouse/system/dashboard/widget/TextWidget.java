@@ -41,7 +41,7 @@ public class TextWidget extends BasicWidget {
 
     @Override
     protected void updateAutomaticallyFrom(final FileSystem s, final String path) {
-        s.subscribe((rPath, sData) -> update(sData, path), FileSystemEntries.SENSORS_DATA.buildPath(path));
+        s.subscribeWithNoNulls((rPath, sData) -> update(sData, path), FileSystemEntries.SENSORS_DATA.buildPath(path));
     }
 
     @Override
