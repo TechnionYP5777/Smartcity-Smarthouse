@@ -20,6 +20,9 @@ import org.slf4j.LoggerFactory;
 public class LocalSaver {
     private static Logger log = LoggerFactory.getLogger(LocalSaver.class);
 
+    /**
+     * Default system DB file path
+     */
     public static final String DATA_FILE_PATH = "SmarthouseDb.data";
 
     private static File getFile(String path) {
@@ -35,14 +38,33 @@ public class LocalSaver {
         return db;
     }
 
+    /**
+     * Saves data to the default file: {@link #DATA_FILE_PATH}
+     * 
+     * @param data
+     *            the data to save
+     */
     public static synchronized void saveData(String data) {
         saveData(data, null);
     }
 
+    /**
+     * Reads data from the default file: {@link #DATA_FILE_PATH}
+     * 
+     * @return the file's content or null if a problem occurred
+     */
     public static synchronized String readData() {
         return readData(null);
     }
 
+    /**
+     * Save data to a file
+     * 
+     * @param data
+     *            the data to save in the file
+     * @param path
+     *            the file's path
+     */
     public static synchronized void saveData(String data, String path) {
         File f = getFile(path);
         try (BufferedWriter o = new BufferedWriter(new FileWriter(f))) {
@@ -55,6 +77,13 @@ public class LocalSaver {
         }
     }
 
+    /**
+     * Read the file's content and return it
+     * 
+     * @param path
+     *            the file's path
+     * @return the file's content or null if a problem occurred
+     */
     public static synchronized String readData(String path) {
         File f = getFile(path);
         try (BufferedReader o = new BufferedReader(new FileReader(f))) {

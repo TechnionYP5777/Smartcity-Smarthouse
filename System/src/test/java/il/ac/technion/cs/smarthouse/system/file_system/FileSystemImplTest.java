@@ -16,7 +16,7 @@ import il.ac.technion.cs.smarthouse.utils.BoolLatch;
  * @since 28-05-2017
  */
 public class FileSystemImplTest {
-    FileSystem fs;
+    FileSystemImpl fs;
     int resultNum;
     String resultString;
 
@@ -54,6 +54,13 @@ public class FileSystemImplTest {
             resultNum = (int) data;
             resultString = path;
         }, "a.b");
+        
+        fs.subscribe((path, data) -> {
+            wasCalled.setTrueAndRelease();
+            resultNum = data;
+            resultString = path;
+        }, Integer.class, "a.b");
+        
         fs.sendMessage(NEW_VAL, "a.b.c.d");
 
         wasCalled.blockUntilTrue();
@@ -76,23 +83,36 @@ public class FileSystemImplTest {
         assert !fs.wasPathInitiated("s");
         assert fs.wasPathInitiated("a");
 
+        assert fs.getReadOnlyFileSystem("a") != null;
+
+        for (String p : allPathsWithOutLeaves(fs.getReadOnlyFileSystem(), new ArrayList<>()))
+            assert p != null;
+
         assert fs.<Integer>getMostRecentDataOnBranch("a") == NEW_VAL;
     }
 
-    /**
-     * [[SuppressWarningsSpartan]]
-     */
-    @SuppressWarnings("unused")
-    @Test // (timeout = 1000)
+    @Test
     public void testOnCoreFs() {
-        ReadOnlyFileNode n = new SystemCore().getFileSystem()
-                        .getReadOnlyFileSystem(FileSystemEntries.SENSORS_DATA.buildPath());
-
+        for (String p : allPathsWithOutLeaves(new SystemCore().getFileSystem()
+                        .getReadOnlyFileSystem(FileSystemEntries.SENSORS_DATA.buildPath()), new ArrayList<>()))
+            assert p.startsWith("a");
+    }
+    
+    @Test
+    public void testToString() {
+        assert fs.toString().contains(fs.toString(""));
+    }
+    
+    @Test
+    public void testRemove() {
+        fs.sendMessage(11, "a.b.c");
+        fs.sendMessage(12, "a.b.d");
+        Assert.assertEquals(2, fs.getChildren("a.b").size());
+        fs.deleteFromPath("a.b");
+        Assert.assertEquals(0, fs.getChildren("a.b").size());
     }
 
-    @SuppressWarnings("unused")
     private List<String> allPathsWithOutLeaves(ReadOnlyFileNode n, List<String> ss) {
-
         if (n.isLeaf())
             return ss;
 

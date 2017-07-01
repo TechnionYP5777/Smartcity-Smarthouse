@@ -46,7 +46,7 @@ public abstract class SmarthouseApplication {
      * @param showSimulatorGui
      * @throws Exception
      */
-    public static void launch(final SensorsSimulator simluator, final Boolean showSimulatorGui) throws Exception {
+    protected static void launch(final SensorsSimulator simluator, final Boolean showSimulatorGui) throws Exception {
         final SystemPresenter p = new SystemPresenterFactory().setUseCloudServer(false)
                         .setRegularFileSystemListeners(false)
                         .addApplicationToInstall(new ApplicationPath(PathType.CLASS_NAME,
@@ -116,7 +116,7 @@ public abstract class SmarthouseApplication {
      * 
      * @return the application's {@link AppBuilder} object
      */
-    public AppBuilder getAppBuilder() {
+    protected AppBuilder getAppBuilder() {
         return appBuilder;
     }
 
@@ -126,7 +126,7 @@ public abstract class SmarthouseApplication {
      * @param $
      * @return a system service
      */
-    public <T extends Service> T getService(final ServiceType $) {
+    protected <T extends Service> T getService(final ServiceType $) {
         return systemCore.getSystemServiceManager().getService($);
     }
 
@@ -138,7 +138,7 @@ public abstract class SmarthouseApplication {
      * @param path
      *            the path to save it on
      */
-    public final void saveApplicationData(final Object data, final String... path) {
+    protected final void saveApplicationData(final Object data, final String... path) {
         assert applicationId != null;
         systemCore.getFileSystem().sendMessage(data,
                         FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));
@@ -152,7 +152,7 @@ public abstract class SmarthouseApplication {
      * @return the data that was stored on the path, or null if there was no
      *         data on that path.
      */
-    public final <T> T readApplicationData(final String... path) {
+    protected final <T> T readApplicationData(final String... path) {
         assert applicationId != null;
         return systemCore.getFileSystem().getData(
                         FileSystemEntries.APPLICATIONS_DATA.buildPath(applicationId, PathBuilder.buildPath(path)));

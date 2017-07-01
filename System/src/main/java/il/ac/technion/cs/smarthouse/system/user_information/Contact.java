@@ -3,11 +3,11 @@ package il.ac.technion.cs.smarthouse.system.user_information;
 import com.google.gson.annotations.Expose;
 
 /**
- * This class saves information about a contact and implements the required API
- * for the system
- * 
  * @author Inbal Zukerman
  * @since Dec 28, 2016
+ * 
+ *        This class saves information about a contact and implements the
+ *        required API for the system
  */
 
 public class Contact {

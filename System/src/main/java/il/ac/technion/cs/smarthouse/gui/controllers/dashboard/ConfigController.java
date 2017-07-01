@@ -48,10 +48,11 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 /**
- * This is the controller for the configuration window in the dashboard view
- * 
  * @author Elia Traore
  * @since 11-06-2017
+ * 
+ *        This is the controller for the configuration window in the dashboard
+ *        view
  */
 public class ConfigController extends SystemGuiController {
     private class ButtonCell extends TableCell<NamedPath, String> {
@@ -111,6 +112,7 @@ public class ConfigController extends SystemGuiController {
     @FXML HBox widgetsHbox;
     @FXML TableView<NamedPath> table;
     @FXML TableColumn<NamedPath, String> nameCol, pathCol, cancelCol;
+    @FXML TextField titleField;
     @FXML TextField nameField;
     @FXML ComboBox<String> sysPathsComboBox;
     @FXML TextField unitField;
@@ -118,7 +120,6 @@ public class ConfigController extends SystemGuiController {
     @FXML Button okBtn, cancelBtn;
 
     private final ObservableList<NamedPath> tableData = FXCollections.observableArrayList();
-    TextField titleField;
 
     // ------------------ other members ---------------------------------------
 
@@ -312,6 +313,15 @@ public class ConfigController extends SystemGuiController {
         cancelBtn.setOnMouseClicked(e -> shutdownFrom(cancelBtn));
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController#
+     * initialize(il.ac.technion.cs.smarthouse.system.SystemCore,
+     * il.ac.technion.cs.smarthouse.gui_controller.GuiController,
+     * il.ac.technion.cs.smarthouse.system.SystemMode, java.net.URL,
+     * java.util.ResourceBundle)
+     */
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model1, final T parent1,
                     final SystemMode extraData1, final URL location, final ResourceBundle b) {
@@ -328,6 +338,7 @@ public class ConfigController extends SystemGuiController {
      * This method allows to set a consumer to the configuration
      * 
      * @param c
+     *            The consumer
      */
     public void setConfigConsumer(final ConfigConsumer c) {
         consumer = c;

@@ -35,11 +35,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-/**
- * This is the controller for the dashboard view
- * 
+/** 
  * @author RON
  * @since 14-06-2017
+ * 
+ * This is the controller for the dashboard view
  */
 public class DashboardController extends SystemGuiController {
 
@@ -56,6 +56,15 @@ public class DashboardController extends SystemGuiController {
     @FXML public FlowPane pane;
     private Tile addWidgetTile;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController#
+     * initialize(il.ac.technion.cs.smarthouse.system.SystemCore,
+     * il.ac.technion.cs.smarthouse.gui_controller.GuiController,
+     * il.ac.technion.cs.smarthouse.system.SystemMode, java.net.URL,
+     * java.util.ResourceBundle)
+     */
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(final SystemCore model1, final T parent1,
                     final SystemMode extraData1, final URL location, final ResourceBundle b) {

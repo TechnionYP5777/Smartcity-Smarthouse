@@ -54,27 +54,27 @@ public class SystemCore implements Savable {
         if (useSensorsServer)
             new Thread(sensorsLocalServer).start();
     }
-    
+
     public UserInformation getUser() {
         return user;
     }
-    
+
     public MappingInformation getHouse() {
-        if(house == null)
+        if (house == null)
             house = new MappingInformation();
         return house;
     }
-    
-    public SystemCore subscribeToUserInformation(Consumer<UserInformation> c){
+
+    public SystemCore subscribeToUserInformation(Consumer<UserInformation> c) {
         this.userInformationSubs.add(c);
         return this;
     }
-    
-    public SystemCore subscribeToMappingInformation(Consumer<MappingInformation> c){
+
+    public SystemCore subscribeToMappingInformation(Consumer<MappingInformation> c) {
         this.mappingInformationSubs.add(c);
         return this;
     }
-    
+
     public void initializeUser(final String name, final String id, final String phoneNumber, final String homeAddress) {
         user = new UserInformation(name, id, phoneNumber, homeAddress);
         userInitialized = true;
@@ -118,11 +118,17 @@ public class SystemCore implements Savable {
     public void initFileSystemListeners() {
         // TODO: add some listeners here
     }
-    
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.system.Savable#populate(java.lang.String)
+     */
     @Override
     public void populate(String jsonString) throws Exception {
         Savable.super.populate(jsonString);
-        if(userInitialized)
+        if (userInitialized)
             userInformationSubs.forEach(c -> c.accept(user));
         mappingInformationSubs.forEach(c -> c.accept(house));
     }
