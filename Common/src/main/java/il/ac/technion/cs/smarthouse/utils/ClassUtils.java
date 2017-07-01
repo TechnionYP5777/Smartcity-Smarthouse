@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author RON
+ * @since 01-06-2017
+ */
 public enum ClassUtils {
     ;
 
