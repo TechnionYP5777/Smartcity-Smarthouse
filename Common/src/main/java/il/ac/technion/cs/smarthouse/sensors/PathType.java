@@ -10,19 +10,20 @@ import java.util.List;
  */
 // TODO: RENAME!
 public enum PathType {
-	INFO_SENDING("INFO_SENDING"), INSTRUCTION_RECEIVING("INSTRUCTION_RECEIVING");
+    INFO_SENDING("INFO_SENDING"),
+    INSTRUCTION_RECEIVING("INSTRUCTION_RECEIVING");
 
-	private final String type;
+    private final String type;
 
-	private PathType(final String type) {
-		this.type = type;
-	}
+    private PathType(final String type) {
+        this.type = type;
+    }
 
-	public static PathType fromString(final String from) {
-		final String fromLower = from.toLowerCase();
-		final List<PathType> $ = Arrays.asList(PathType.values()).stream().filter(mt -> mt.type.equals(fromLower))
-				.collect(Collectors.toList());
-		$.add(null);
-		return $.get(0);
-	}
+    public static PathType fromString(final String from) {
+        final String fromLower = from.toLowerCase();
+        final List<PathType> $ = Arrays.asList(PathType.values()).stream().filter(mt -> mt.type.equals(fromLower))
+                        .collect(Collectors.toList());
+        $.add(null);
+        return $.get(0);
+    }
 }
