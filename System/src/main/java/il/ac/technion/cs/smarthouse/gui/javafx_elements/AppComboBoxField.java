@@ -6,6 +6,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
+/**
+ * @author RON
+ * @since 10-06-2017
+ */
 public class AppComboBoxField<T> extends ComboBox<T> {
     @SafeVarargs
     public AppComboBoxField(Consumer<T> onChangeFunction, T initialValue, T... comboOptions) {
@@ -16,7 +20,7 @@ public class AppComboBoxField<T> extends ComboBox<T> {
         else if (comboOptions.length > 0)
             setValue(comboOptions[0]);
         setMaxWidth(Double.MAX_VALUE);
-        
+
         HBox.setHgrow(this, Priority.ALWAYS);
     }
 }

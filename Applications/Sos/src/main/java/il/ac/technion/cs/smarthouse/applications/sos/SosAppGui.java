@@ -25,10 +25,10 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 import javafx.scene.paint.Color;
 
 /**
+ * This class contains the logic of the SOS application.
+ * 
  * @author roysh
  * @since 20.12.16
- * 
- *        This class contains the logic of the SOS application.
  */
 public class SosAppGui extends SmarthouseApplication implements Simulatable {
     private static Logger log = LoggerFactory.getLogger(SosAppGui.class);

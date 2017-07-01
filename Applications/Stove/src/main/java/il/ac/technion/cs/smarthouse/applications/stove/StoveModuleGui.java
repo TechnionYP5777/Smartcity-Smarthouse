@@ -25,10 +25,10 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 import javafx.scene.paint.Color;
 
 /**
+ * This class contains the logic of the stove application.
+ * 
  * @author roysh
  * @since 13.12.16
- * 
- *        This class contains the logic of the stove application.
  */
 public class StoveModuleGui extends SmarthouseApplication implements Simulatable {
     private static Logger log = LoggerFactory.getLogger(StoveModuleGui.class);

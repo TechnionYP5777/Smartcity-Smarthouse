@@ -19,11 +19,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 /**
+ * This class is responsible for the visual part of the vitals signs
+ * application.
+ * 
  * @author Yarden
  * @since 19.1.17
- * 
- *        This class is responsible for the visual part of the vitals signs
- *        application.
  */
 public class Controller implements Initializable {
     private static final int MAX_POINTS = 30;

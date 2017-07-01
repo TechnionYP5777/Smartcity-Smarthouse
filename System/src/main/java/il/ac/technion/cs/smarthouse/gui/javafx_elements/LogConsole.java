@@ -6,6 +6,10 @@ import org.apache.log4j.spi.LoggingEvent;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
+/**
+ * @author Inbal Zukerman
+ * @since 25-06-2017
+ */
 public class LogConsole extends WriterAppender {
 
     private static TextArea console;

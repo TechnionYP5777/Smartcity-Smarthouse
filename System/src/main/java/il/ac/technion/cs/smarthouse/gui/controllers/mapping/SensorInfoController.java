@@ -18,6 +18,7 @@ import javafx.scene.control.TitledPane;
  * This is the controller of the sensor information, which is part of the house
  * mapping
  * 
+ * @author Sharon
  * @author Roy Shchory
  * @since 20-01-2017
  */
@@ -32,6 +33,15 @@ public class SensorInfoController extends SystemGuiController {
     @FXML private ComboBox<String> room;
     private MappingController mapController;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController#
+     * initialize(il.ac.technion.cs.smarthouse.system.SystemCore,
+     * il.ac.technion.cs.smarthouse.gui_controller.GuiController,
+     * il.ac.technion.cs.smarthouse.system.SystemMode, java.net.URL,
+     * java.util.ResourceBundle)
+     */
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
                     URL location, ResourceBundle b) {

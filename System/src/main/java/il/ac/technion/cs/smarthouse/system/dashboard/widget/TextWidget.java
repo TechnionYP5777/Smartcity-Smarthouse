@@ -27,8 +27,9 @@ public class TextWidget extends BasicWidget {
         super(type, tileSize, data);
 
         if (data.getInfoEntries().isEmpty()) {
-            //TODO: not always should be logged (i.e. preview)
-            log.warn("\n\t" + type + " widget is not supposed to be initialized with no data entries. The widget will not update.");
+            // TODO: not always should be logged (i.e. preview)
+            log.warn("\n\t" + type
+                            + " widget is not supposed to be initialized with no data entries. The widget will not update.");
             return;
         }
 
