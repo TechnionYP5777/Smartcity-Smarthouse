@@ -34,6 +34,16 @@ public interface FileSystem {
 
     /**
      * Same as {@link #subscribe(BiConsumer, String...)} <br>
+     * But here, if the sent data is null, the event handler won't be called!
+     * 
+     * @param eventHandler
+     * @param path
+     * @return
+     */
+    String subscribeWithNoNulls(BiConsumer<String, Object> eventHandler, String... path);
+
+    /**
+     * Same as {@link #subscribe(BiConsumer, String...)} <br>
      * But here, the eventHandler will be called only of the data is an instance
      * of dataClass
      * 

@@ -17,6 +17,10 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 
+/**
+ * @author Elia Traore
+ * @since 14-06-2017
+ */
 public class DashboardCore extends ChildCore {
     private class wInfo {
         @Expose WidgetType type;
@@ -48,8 +52,8 @@ public class DashboardCore extends ChildCore {
 
             setOnMouseClick(widget);
         }
-        
-        Widget(final BasicWidget w){
+
+        Widget(final BasicWidget w) {
             widget = w;
             setOnMouseClick(w);
         }
@@ -57,12 +61,12 @@ public class DashboardCore extends ChildCore {
         private Widget(final Widget other) {
             this(other.widget.getType(), other.widget.getInitalInfo(), other.widget.getTileSize());
         }
-        
-        private void setOnMouseClick(BasicWidget w){
+
+        private void setOnMouseClick(BasicWidget w) {
             w.getTile().setOnMouseClicked(e -> {
                 if (e.getButton().equals(MouseButton.SECONDARY)) {
                     final MenuItem addOpt = new MenuItem("Add to Dashboard"),
-							removeOpt = new MenuItem("Remove from Dashboard");
+                                    removeOpt = new MenuItem("Remove from Dashboard");
                     addOpt.setOnAction(e1 -> addToDashboard());
                     removeOpt.setOnAction(e1 -> removeFromDashboard());
                     final ContextMenu popup = new ContextMenu();
@@ -104,6 +108,12 @@ public class DashboardCore extends ChildCore {
         fileSystem = systemCore.getFileSystem();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * il.ac.technion.cs.smarthouse.system.Savable#populate(java.lang.String)
+     */
     @Override
     public void populate(final String jsonString) throws Exception {
         super.populate(jsonString);
@@ -113,8 +123,8 @@ public class DashboardCore extends ChildCore {
     public Widget createWidget(final WidgetType t, final InfoCollector pathsInfo, final Double size) {
         return new Widget(t, pathsInfo, size);
     }
-    
-    public Widget createWidget(final BasicWidget w){
+
+    public Widget createWidget(final BasicWidget w) {
         return new Widget(w);
     }
 
@@ -122,9 +132,9 @@ public class DashboardCore extends ChildCore {
     public void setWidgetPresenter(final Function<BasicWidget, String> presenter) {
         widgetPresenter = presenter;
         if (!Boolean.TRUE.equals(waitingToBePresented))
-			return;
-		widgetsInfo.values().forEach(winfo -> winfo.getRepresentedWidget().addToDashboard());
-		waitingToBePresented = false;
+            return;
+        widgetsInfo.values().forEach(winfo -> winfo.getRepresentedWidget().addToDashboard());
+        waitingToBePresented = false;
     }
 
     public void setWidgetRemover(final Consumer<String> remover) {

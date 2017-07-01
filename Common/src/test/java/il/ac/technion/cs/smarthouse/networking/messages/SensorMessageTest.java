@@ -63,35 +63,36 @@ public class SensorMessageTest extends MessageTest {
     public void testJson() throws IllegalMessageBaseExecption {
         new SensorMessage(defaultMessage().toJson()).toString();
     }
-    
+
     @Test
+    @SuppressWarnings("static-method")
     public void testConstractorFromMsgType() throws IllegalMessageBaseExecption {
         assert (new SensorMessage(MessageType.SUCCESS_ANSWER)).isSuccesful();
     }
-    
+
     @Test
     public void testAlias() {
         Assert.assertEquals(sensor.getAlias(), defaultMessage().getAlias());
     }
-    
+
     @Test
     public void testIsSuccesful() {
         Assert.assertNull(defaultMessage().isSuccesful());
     }
-    
+
     @Test
     public void testIsRespond() {
         assert !defaultMessage().isRespond();
     }
-    
+
     @Test
     public void testGetData() {
         assert !defaultMessage().getData().isEmpty();
     }
-    
+
     @Test
     public void testSetData() {
-        Map<String, String> m =new HashMap<>();
+        Map<String, String> m = new HashMap<>();
         defaultMessage().setData(m);
         Assert.assertEquals(m, defaultMessage().getData());
     }

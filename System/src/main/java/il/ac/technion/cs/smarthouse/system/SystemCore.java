@@ -22,7 +22,11 @@ import il.ac.technion.cs.smarthouse.system.user_information.UserInformation;
 
 /**
  * Hold the databases of the smart house, and allow sensors and applications to
- * store and read information about the changes in the environment
+ * store and read information about the changes in the environment.
+ * 
+ * @author Roy
+ * @author RON
+ * @since 08-12-2016
  */
 public class SystemCore implements Savable {
     private static Logger log = LoggerFactory.getLogger(SystemCore.class);

@@ -27,8 +27,9 @@ public class TextWidget extends BasicWidget {
         super(type, tileSize, data);
 
         if (data.getInfoEntries().isEmpty()) {
-            //TODO: not always should be logged (i.e. preview)
-            log.warn("\n\t" + type + " widget is not supposed to be initialized with no data entries. The widget will not update.");
+            // TODO: not always should be logged (i.e. preview)
+            log.warn("\n\t" + type
+                            + " widget is not supposed to be initialized with no data entries. The widget will not update.");
             return;
         }
 
@@ -40,7 +41,7 @@ public class TextWidget extends BasicWidget {
 
     @Override
     protected void updateAutomaticallyFrom(final FileSystem s, final String path) {
-        s.subscribe((rPath, sData) -> update(sData, path), FileSystemEntries.SENSORS_DATA.buildPath(path));
+        s.subscribeWithNoNulls((rPath, sData) -> update(sData, path), FileSystemEntries.SENSORS_DATA.buildPath(path));
     }
 
     @Override

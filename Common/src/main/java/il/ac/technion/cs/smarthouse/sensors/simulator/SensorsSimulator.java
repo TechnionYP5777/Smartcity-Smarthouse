@@ -20,7 +20,7 @@ import il.ac.technion.cs.smarthouse.sensors.PathType;
 public class SensorsSimulator {
 	public enum Action {
 		ADD, REMOVE, GET
-	};
+	}
 
 	private Integer id = 0;
 
@@ -50,7 +50,7 @@ public class SensorsSimulator {
 				.ifPresent(ls -> ls.forEach(logger -> s.addLogger(type, logger))));
 		Optional.ofNullable(streamingInterval).ifPresent(i -> s.setStreamInterval(i));
 
-		String id = getNextId();
+        String id = getNextId();
 		sensors.put(id, s);
 		callListeners(Action.ADD, s);
 		return id;

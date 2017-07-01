@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
  */
 @SuppressWarnings("rawtypes")
 public class ListWidget extends BasicWidget {
-    
+
     private static final List<Color> colors = Arrays.asList(Tile.BLUE, Tile.GREEN, Tile.MAGENTA, Tile.ORANGE, Tile.RED,
                     Tile.YELLOW);
     private final Random rand = new Random();

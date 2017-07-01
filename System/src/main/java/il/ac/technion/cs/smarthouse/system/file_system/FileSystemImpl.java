@@ -214,6 +214,11 @@ public class FileSystemImpl implements FileSystem, Savable {
 				+ PathBuilder.buildPath(path) + "\n\tSubscriber: " + getNameOfCaller());
 		return id;
 	}
+	
+	@Override
+    public String subscribeWithNoNulls(BiConsumer<String, Object> eventHandler, String... path) {
+        return subscribe((p, d) -> {if (d != null) eventHandler.accept(p,  d);}, path);
+    }
 
 	@Override
 	public <T> String subscribe(BiConsumer<String, T> eventHandler, Class<T> dataClass, String... path) {

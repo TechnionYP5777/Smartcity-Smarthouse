@@ -9,6 +9,7 @@ import com.google.gson.annotations.Expose;
 
 import il.ac.technion.cs.smarthouse.gui.controllers.mapping.House;
 import il.ac.technion.cs.smarthouse.gui.controllers.mapping.Room;
+import javafx.util.Pair;
 
 public class MappingInformation {
 
@@ -18,7 +19,7 @@ public class MappingInformation {
     private static final int WIDTH = 160;
     @Expose private List<String> allLocations = new ArrayList<>();
     @Expose private final House house = new House();
-    @Expose private final Map<String, List<String>> locationsContents = new HashMap<>();
+    @Expose private final Map<String, List<Pair<String,String>>> locationsContents = new HashMap<>();
     @Expose private final Map<String, String> sensorsLocations = new HashMap<>();
     @Expose private int roomNumbers;
 
@@ -65,7 +66,7 @@ public class MappingInformation {
         return MARGIN + (roomNumbers % ROOM_IN_ROW) * WIDTH;
     }
 
-    public Map<String, List<String>> getLocationsContents() {
+    public Map<String, List<Pair<String,String>>> getLocationsContents() {
         return locationsContents;
     }
     

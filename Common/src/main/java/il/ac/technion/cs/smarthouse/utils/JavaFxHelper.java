@@ -34,6 +34,7 @@ public enum JavaFxHelper {
      *            - the Consumer to surround
      * @return the modified consumer
      */
+    @SuppressWarnings("unused")
     public static <T> Consumer<T> surroundConsumerWithFx(final Consumer<T> functionToRun) {
         return x -> {
             if (Platform.isFxApplicationThread())
@@ -46,7 +47,8 @@ public enum JavaFxHelper {
                 }
         };
     }
-    
+
+    @SuppressWarnings("unused")
     public static Runnable surroundConsumerWithFx(final Runnable functionToRun) {
         return () -> {
             if (Platform.isFxApplicationThread())
@@ -74,9 +76,12 @@ public enum JavaFxHelper {
      * 
      * @return true if the JavaFx thread was initiated, or false otherwise
      */
+    @SuppressWarnings("unused")
     public static boolean isJavaFxThreadStarted() {
         try {
-            Platform.runLater(() -> {});
+            Platform.runLater(() -> {
+                // Nothing to run, just checking
+            });
         } catch (final IllegalStateException __) {
             return false;
         }
@@ -86,6 +91,7 @@ public enum JavaFxHelper {
     /**
      * initializes the javaFx toolkit
      */
+    @SuppressWarnings("unused")
     public static void initJavaFxThread() {
         // PlatformImpl.startup(()->{});
         new JFXPanel();

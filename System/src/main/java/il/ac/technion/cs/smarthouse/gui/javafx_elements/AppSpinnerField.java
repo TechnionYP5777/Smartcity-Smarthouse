@@ -10,8 +10,25 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * A spinner with an OK button that can be used in the applications' GUI
+ * builder.
+ * 
+ * @author RON
+ * @author Yarden
+ * @since 10-06-2017
+ */
 public class AppSpinnerField<T> extends AppOk<Spinner<T>, T> {
 
+    /**
+     * Creates a Double spinner with an OK button
+     * 
+     * @param onChangeFunction
+     *            A consumer that will be activated when the value changes
+     * @param initialValue
+     *            The initial value of the spinner
+     * @return The created AppSpinnerField
+     */
     public static AppSpinnerField<Double> createDoubleAppSpinner(Consumer<Double> onChangeFunction,
                     double initialValue) {
         return new AppSpinnerField<>(onChangeFunction, s -> {
@@ -24,6 +41,15 @@ public class AppSpinnerField<T> extends AppOk<Spinner<T>, T> {
         }, new SpinnerValueFactory.DoubleSpinnerValueFactory(Double.MIN_VALUE, Double.MAX_VALUE, initialValue));
     }
 
+    /**
+     * Creates an Integer spinner with an OK button
+     * 
+     * @param onChangeFunction
+     *            A consumer that will be activated when the value changes
+     * @param initialValue
+     *            The initial value of the spinner
+     * @return The created AppSpinnerField
+     */
     public static AppSpinnerField<Integer> createIntegerAppSpinner(Consumer<Integer> onChangeFunction,
                     int initialValue) {
         return new AppSpinnerField<>(onChangeFunction, s -> {
@@ -58,6 +84,11 @@ public class AppSpinnerField<T> extends AppOk<Spinner<T>, T> {
         node.getEditor().setAlignment(Pos.CENTER_RIGHT);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.gui.javafx_elements.AppOk#getValue()
+     */
     @Override
     protected T getValue() {
         return node.getValue();
@@ -74,6 +105,11 @@ public class AppSpinnerField<T> extends AppOk<Spinner<T>, T> {
         return null;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.gui.javafx_elements.AppOk#finishEdit()
+     */
     @Override
     protected void finishEdit() {
         Optional.ofNullable(fixText()).ifPresent(
