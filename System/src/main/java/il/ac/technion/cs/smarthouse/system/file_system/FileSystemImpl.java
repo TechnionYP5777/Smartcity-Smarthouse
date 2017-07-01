@@ -55,7 +55,7 @@ public class FileSystemImpl implements FileSystem, Savable {
 		private Object data;
 		@Expose
 		private Object mostRecentDataOnBranch;
-		private final Map<String, BiConsumer<String, Object>> eventHandlers = new HashMap<>();
+		private final Map<String, EventHandler> eventHandlers = new HashMap<>();
 		@Expose
 		Map<String, FileNode> children = new HashMap<>();
 
@@ -93,7 +93,7 @@ public class FileSystemImpl implements FileSystem, Savable {
 
 		String addEventHandler(final BiConsumer<String, Object> eventHandler) {
 			final String id = UuidGenerator.GenerateUniqueIDstring();
-			eventHandlers.put(id, eventHandler);
+			eventHandlers.put(id, new EventHandler(eventHandler));
 			return id;
 		}
 
@@ -101,7 +101,7 @@ public class FileSystemImpl implements FileSystem, Savable {
 			eventHandlers.remove(eventHandlerId);
 		}
 
-		public Collection<BiConsumer<String, Object>> getEventHandlers() {
+		public Collection<EventHandler> getEventHandlers() {
 			return eventHandlers.values();
 		}
 
@@ -146,9 +146,9 @@ public class FileSystemImpl implements FileSystem, Savable {
 	 */
 	private static class FileSystemWalkResults {
 		FileNode fileNode;
-		List<BiConsumer<String, Object>> eventHandlersOnBranch;
+		List<EventHandler> eventHandlersOnBranch;
 
-		FileSystemWalkResults(final FileNode fileNode, final List<BiConsumer<String, Object>> eventHandlersOnBranch) {
+		FileSystemWalkResults(final FileNode fileNode, final List<EventHandler> eventHandlersOnBranch) {
 			this.fileNode = fileNode;
 			this.eventHandlersOnBranch = eventHandlersOnBranch;
 		}
@@ -174,7 +174,7 @@ public class FileSystemImpl implements FileSystem, Savable {
 	 */
 	private FileSystemWalkResults fileSystemWalk(final boolean create, final Object newDataToAdd,
 			final String... path) {
-		final List<BiConsumer<String, Object>> eventHandlersOnBranch = new ArrayList<>();
+		final List<EventHandler> eventHandlersOnBranch = new ArrayList<>();
 
 		FileNode node = root;
 
@@ -239,7 +239,7 @@ public class FileSystemImpl implements FileSystem, Savable {
 		log.info("\n\tFileSystem: Sending message \n\tMessage on path: " + PathBuilder.buildPath(path) + "\n\tSender: "
 				+ getNameOfCaller() + "\n\tData: " + data + "\n\tFiring " + r.eventHandlersOnBranch.size()
 				+ " listeners (event handlers)");
-		for (BiConsumer<String, Object> eventHandler : r.eventHandlersOnBranch)
+		for (EventHandler eventHandler : r.eventHandlersOnBranch)
 			eventHandler.accept(PathBuilder.buildPath(path), data);
 	}
 
@@ -374,4 +374,16 @@ public class FileSystemImpl implements FileSystem, Savable {
 		Optional.ofNullable(fileSystemWalk(false, null, path).fileNode).ifPresent(n -> n.children.clear());
 	}
 
+}
+
+class EventHandler {
+    BiConsumer<String, Object> eventHandlerFunction;
+    
+    public EventHandler(BiConsumer<String, Object> eventHandlerFunction) {
+        this.eventHandlerFunction = eventHandlerFunction;
+    }
+    
+    synchronized void accept(String path, Object data) {
+        eventHandlerFunction.accept(path, data);
+    }
 }
