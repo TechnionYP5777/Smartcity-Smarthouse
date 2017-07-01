@@ -32,167 +32,165 @@ import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMes
  * @since 7.12.16
  */
 public class Sensor {
-    private static Logger log = LoggerFactory.getLogger(Sensor.class);
+	private static Logger log = LoggerFactory.getLogger(Sensor.class);
 
-    protected static final int SYSTEM_PORT = 40001;
+	protected static final int SYSTEM_PORT = 40001;
 
-    /**
-     * Defines the maximal amount of update messages that can be sent by this
-     * sensor each second.
-     */
-    public static final int MAX_MESSAGES_PER_SECOND = 10;
-    private final List<Long> lastMessagesMillis = new ArrayList<>();
+	/**
+	 * Defines the maximal amount of update messages that can be sent by this
+	 * sensor each second.
+	 */
+	public static final int MAX_MESSAGES_PER_SECOND = 10;
+	private final List<Long> lastMessagesMillis = new ArrayList<>();
 
-    protected String commname, id, alias;
-    protected List<String> observationSendingPaths, instructionRecievingPaths;
+	protected String commname, id, alias;
+	protected List<String> observationSendingPaths, instructionRecievingPaths;
 
-    protected InetAddress systemIP;
-    protected int systemPort;
+	protected InetAddress systemIP;
+	protected int systemPort;
 
-    protected Socket socket;
-    protected PrintWriter out;
-    protected BufferedReader in;
+	protected Socket socket;
+	protected PrintWriter out;
+	protected BufferedReader in;
 
-    /**
-     * see {@link #Sensor(String, String, String, List, List)}
-     */
-    public Sensor(final String commname, final String id, final String alias,
-                    final List<String> observationSendingPaths) {
-        this(commname, id, alias, observationSendingPaths, null);
-    }
+	/**
+	 * see {@link #Sensor(String, String, String, List, List)}
+	 */
+	public Sensor(final String commname, final String id, final String alias,
+			final List<String> observationSendingPaths) {
+		this(commname, id, alias, observationSendingPaths, null);
+	}
 
-    /**
-     * Initializes a new sensor
-     * 
-     * @param id
-     *            the mac id of the sensor
-     * @param observationSendingPaths
-     *            the paths on which the sensor will send information
-     * @param instructionRecievingPaths
-     *            the paths on which the sensor is willing to receive
-     *            information
-     * @param systemPort
-     *            the port on which the system listens to incoming messages
-     */
-    protected Sensor(final String commname, final String id, final String alias,
-                    final List<String> observationSendingPaths, final List<String> instructionRecievingPaths) {
+	/**
+	 * Initializes a new sensor
+	 * 
+	 * @param id
+	 *            the mac id of the sensor
+	 * @param observationSendingPaths
+	 *            the paths on which the sensor will send information
+	 * @param instructionRecievingPaths
+	 *            the paths on which the sensor is willing to receive
+	 *            information
+	 * @param systemPort
+	 *            the port on which the system listens to incoming messages
+	 */
+	protected Sensor(final String commname, final String id, final String alias,
+			final List<String> observationSendingPaths, final List<String> instructionRecievingPaths) {
 
-        this.commname = commname;
-        this.id = id;
-        this.alias = alias;
-        this.observationSendingPaths = observationSendingPaths;
-        this.instructionRecievingPaths = instructionRecievingPaths;
+		this.commname = commname;
+		this.id = id;
+		this.alias = alias;
+		this.observationSendingPaths = observationSendingPaths;
+		this.instructionRecievingPaths = instructionRecievingPaths;
 
-        this.systemPort = SYSTEM_PORT;
-    }
+		this.systemPort = SYSTEM_PORT;
+	}
 
-    public String getCommname() {
-        return commname;
-    }
+	public String getCommname() {
+		return commname;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getAlias() {
-        return alias;
-    }
+	public String getAlias() {
+		return alias;
+	}
 
-    public List<String> getObservationSendingPaths() {
-        return observationSendingPaths;
-    }
+	public List<String> getObservationSendingPaths() {
+		return observationSendingPaths;
+	}
 
-    public List<String> getInstructionRecievingPaths() {
-        return instructionRecievingPaths;
-    }
+	public List<String> getInstructionRecievingPaths() {
+		return instructionRecievingPaths;
+	}
 
-    private InetAddress getSystemIp() throws IOException, SocketException, InterruptedException {
-        try (DatagramChannel channel = DatagramChannel.open()) {
-            channel.configureBlocking(false);
-            channel.socket().bind(new InetSocketAddress(0)); // zero means the
-                                                             // port
-                                                             // number is
-                                                             // chosen
-                                                             // dynamically
-            channel.socket().setBroadcast(true);
+	private InetAddress getSystemIp() throws IOException, SocketException, InterruptedException {
+		try (DatagramChannel channel = DatagramChannel.open()) {
+			channel.configureBlocking(false);
+			channel.socket().bind(new InetSocketAddress(0)); // zero means the
+																// port
+																// number is
+																// chosen
+																// dynamically
+			channel.socket().setBroadcast(true);
 
-            final ByteBuffer buf = ByteBuffer.allocate(8);
-            buf.clear();
-            SocketAddress serverAddress;
-            do {
-                channel.send(buf, new InetSocketAddress("255.255.255.255", systemPort));
-                Thread.sleep(1000);
-                // see if got answer
-                serverAddress = channel.receive(buf);
-            } while (serverAddress == null);
+			final ByteBuffer buf = ByteBuffer.allocate(8);
+			buf.clear();
+			SocketAddress serverAddress;
+			do {
+				channel.send(buf, new InetSocketAddress("255.255.255.255", systemPort));
+				Thread.sleep(1000);
+				// see if got answer
+				serverAddress = channel.receive(buf);
+			} while (serverAddress == null);
 
-            return ((InetSocketAddress) serverAddress).getAddress();
-        }
-    }
+			return ((InetSocketAddress) serverAddress).getAddress();
+		}
+	}
 
-    /**
-     * Registers the sensor its TCP connection with the system. This method must
-     * be called before any calls to the updateSystem method.
-     * 
-     * @return <code>true</code> if registration was successful,
-     *         <code>false</code> otherwise
-     */
-    @SuppressWarnings("unused")
-    public boolean register() {
-        try {
-            // use arp
-            try {
-                systemIP = getSystemIp();
-            } catch (IOException | InterruptedException e) {
-                log.warn("\n\t" + getClass() + " sensor failed to get system IP, using localhost");
-                systemIP = InetAddress.getByName("127.0.0.1");
-            }
-            socket = new Socket(systemIP, systemPort);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (final IOException e) {
-            log.error("\n\tI/O error occurred when the sensor's socket was created", e);
-        }
+	/**
+	 * Registers the sensor its TCP connection with the system. This method must
+	 * be called before any calls to the updateSystem method.
+	 * 
+	 * @return <code>true</code> if registration was successful,
+	 *         <code>false</code> otherwise
+	 */
+	public boolean register() {
+		try {
+			// use arp
+			try {
+				systemIP = getSystemIp();
+			} catch (IOException | InterruptedException e) {
+				log.warn("\n\t" + getClass() + " sensor failed to get system IP, using localhost");
+				systemIP = InetAddress.getByName("127.0.0.1");
+			}
+			socket = new Socket(systemIP, systemPort);
+			out = new PrintWriter(socket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		} catch (final IOException e) {
+			log.error("\n\tI/O error occurred when the sensor's socket was created", e);
+		}
 
-        try {
-            final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(out, in);
-            return $ != null && new SensorMessage($).isSuccesful();
-        } catch (final IllegalMessageBaseExecption e) {
-            // Ignoring
-        }
-        return false;
-    }
+		try {
+			final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(out, in);
+			return $ != null && new SensorMessage($).isSuccesful();
+		} catch (final IllegalMessageBaseExecption e) {
+			// Ignoring
+		}
+		return false;
+	}
 
-    /**
-     * Sends an update message to the system with the given observations. The
-     * observations are represented as a map from the names of the paths, to
-     * their values.
-     * 
-     * @param data
-     *            observations to send to the system Map<path,value.toString>
-     */
-    @SuppressWarnings("unused")
-    public void updateSystem(final Map<String, String> data) {
-        final long currMillis = System.currentTimeMillis();
-        for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
-            if (currMillis - lastMessagesMillis.get(¢) > 1000)
-                lastMessagesMillis.remove(¢);
+	/**
+	 * Sends an update message to the system with the given observations. The
+	 * observations are represented as a map from the names of the paths, to
+	 * their values.
+	 * 
+	 * @param data
+	 *            observations to send to the system Map<path,value.toString>
+	 */
+	public void updateSystem(final Map<String, String> data) {
+		final long currMillis = System.currentTimeMillis();
+		for (int ¢ = lastMessagesMillis.size() - 1; ¢ >= 0; --¢)
+			if (currMillis - lastMessagesMillis.get(¢) > 1000)
+				lastMessagesMillis.remove(¢);
 
-        if (lastMessagesMillis.size() >= 10)
-            return;
+		if (lastMessagesMillis.size() >= 10)
+			return;
 
-        lastMessagesMillis.add(currMillis);
+		lastMessagesMillis.add(currMillis);
 
-        try {
-            new SensorMessage(MessageType.UPDATE, this).setData(data).send(out, null);
-        } catch (final IllegalMessageBaseExecption e) {
-            // Ignoring
-        }
-    }
+		try {
+			new SensorMessage(MessageType.UPDATE, this).setData(data).send(out, null);
+		} catch (final IllegalMessageBaseExecption e) {
+			// Ignoring
+		}
+	}
 
-    public void updateSystem(final String path, final Object data) {
-        final Map<String, String> d = new HashMap<>();
-        d.put(path, data + "");
-        updateSystem(d);
-    }
+	public void updateSystem(final String path, final Object data) {
+		final Map<String, String> d = new HashMap<>();
+		d.put(path, data + "");
+		updateSystem(d);
+	}
 }

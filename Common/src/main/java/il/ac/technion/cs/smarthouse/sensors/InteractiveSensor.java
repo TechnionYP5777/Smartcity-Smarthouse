@@ -25,93 +25,93 @@ import il.ac.technion.cs.smarthouse.networking.messages.SensorMessage.IllegalMes
  * @since 31.3.17
  */
 public class InteractiveSensor extends Sensor {
-    private static Logger log = LoggerFactory.getLogger(InteractiveSensor.class);
+	private static Logger log = LoggerFactory.getLogger(InteractiveSensor.class);
 
-    protected static final int INSTRACTIONS_PORT = 40002;
+	protected static final int INSTRACTIONS_PORT = 40002;
 
-    protected int instPort;
-    protected Socket instSocket;
-    protected PrintWriter instOut;
-    protected BufferedReader instIn;
-    protected InstructionHandler handler;
-    protected long period;
+	protected int instPort;
+	protected Socket instSocket;
+	protected PrintWriter instOut;
+	protected BufferedReader instIn;
+	protected InstructionHandler handler;
+	protected long period;
 
-    public InteractiveSensor(final String commname, final String id, final String alias,
-                    final List<String> observationSendingPaths, final List<String> instructionRecievingPaths) {
-        super(commname, id, alias, observationSendingPaths, instructionRecievingPaths);
-        instPort = INSTRACTIONS_PORT;
-    }
+	public InteractiveSensor(final String commname, final String id, final String alias,
+			final List<String> observationSendingPaths, final List<String> instructionRecievingPaths) {
+		super(commname, id, alias, observationSendingPaths, instructionRecievingPaths);
+		instPort = INSTRACTIONS_PORT;
+	}
 
-    /**
-     * Registers the sensor its instructions TCP connection with the system.
-     * This method must be called before any instructions are sent.
-     * 
-     * @return <code>true</code> if registration was successful,
-     *         <code>false</code> otherwise
-     */
-    @SuppressWarnings("unused")
-    public boolean registerInstructions() {
-        try {
-            instSocket = new Socket(systemIP, instPort);
-            instOut = new PrintWriter(instSocket.getOutputStream(), true);
-            instIn = new BufferedReader(new InputStreamReader(instSocket.getInputStream()));
-        } catch (final IOException e) {
-            log.error("\n\tI/O error occurred when the sensor's instructions socket was created", e);
-        }
+	/**
+	 * Registers the sensor its instructions TCP connection with the system.
+	 * This method must be called before any instructions are sent.
+	 * 
+	 * @return <code>true</code> if registration was successful,
+	 *         <code>false</code> otherwise
+	 */
 
-        try {
-            final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(instOut, instIn);
-            return $ != null && new SensorMessage($).isSuccesful();
-        } catch (final IllegalMessageBaseExecption e) {
-            // Ignoring
-        }
-        return false;
-    }
+	public boolean registerInstructions() {
+		try {
+			instSocket = new Socket(systemIP, instPort);
+			instOut = new PrintWriter(instSocket.getOutputStream(), true);
+			instIn = new BufferedReader(new InputStreamReader(instSocket.getInputStream()));
+		} catch (final IOException e) {
+			log.error("\n\tI/O error occurred when the sensor's instructions socket was created", e);
+		}
 
-    /**
-     * Sets the operation to be made when instruction is received. This method
-     * must be called before sending instructions.
-     */
-    public void setInstructionHandler(final InstructionHandler h) {
-        handler = h;
-    }
+		try {
+			final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(instOut, instIn);
+			return $ != null && new SensorMessage($).isSuccesful();
+		} catch (final IllegalMessageBaseExecption e) {
+			// Ignoring
+		}
+		return false;
+	}
 
-    /**
-     * If there is an incoming instruction, extracts it and executes it.
-     * 
-     * @return <code>true</code> if the instruction was completed successfully
-     *         (or if there is no waiting instruction), <code>false</code>
-     *         otherwise
-     */
-    public boolean operate() {
+	/**
+	 * Sets the operation to be made when instruction is received. This method
+	 * must be called before sending instructions.
+	 */
+	public void setInstructionHandler(final InstructionHandler h) {
+		handler = h;
+	}
 
-        try {
-            if (!instIn.ready())
-                return false;
-            final String[] inst = instIn.readLine().split("##");
-            return handler.applyInstruction(inst[0], inst[1]);
-        } catch (final IOException e) {
-            log.error("\n\tI/O error occurred", e);
-            return false;
-        }
-    }
+	/**
+	 * If there is an incoming instruction, extracts it and executes it.
+	 * 
+	 * @return <code>true</code> if the instruction was completed successfully
+	 *         (or if there is no waiting instruction), <code>false</code>
+	 *         otherwise
+	 */
+	public boolean operate() {
 
-    /**
-     * Checks for waiting instructions by polling the connection repeatedly
-     * every specified period of time.
-     * 
-     * @param p
-     *            The polling period, in milliseconds
-     */
-    public void pollInstructions(final long p) {
-        period = p;
-        new Timer().schedule(new TimerTask() {
+		try {
+			if (!instIn.ready())
+				return false;
+			final String[] inst = instIn.readLine().split("##");
+			return handler.applyInstruction(inst[0], inst[1]);
+		} catch (final IOException e) {
+			log.error("\n\tI/O error occurred", e);
+			return false;
+		}
+	}
 
-            @Override
-            public void run() {
-                operate();
+	/**
+	 * Checks for waiting instructions by polling the connection repeatedly
+	 * every specified period of time.
+	 * 
+	 * @param p
+	 *            The polling period, in milliseconds
+	 */
+	public void pollInstructions(final long p) {
+		period = p;
+		new Timer().schedule(new TimerTask() {
 
-            }
-        }, 0, period);
-    }
+			@Override
+			public void run() {
+				operate();
+
+			}
+		}, 0, period);
+	}
 }
