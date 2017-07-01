@@ -18,63 +18,62 @@ import com.google.gson.Gson;
  * @since 11.12.16
  */
 public abstract class Message {
-	private static Logger log = LoggerFactory.getLogger(Message.class);
-	protected MessageType type;
+    private static Logger log = LoggerFactory.getLogger(Message.class);
+    protected MessageType type;
 
-	/**
-	 * Creates a new message object.
-	 * 
-	 * @param type
-	 *            type of this message
-	 */
-	public Message(final MessageType type) {
-		this.type = type;
-	}
+    /**
+     * Creates a new message object.
+     * 
+     * @param type
+     *            type of this message
+     */
+    public Message(final MessageType type) {
+        this.type = type;
+    }
 
-	protected Message() {
-	}
+    protected Message() {}
 
-	/** @return type of this message */
-	public MessageType getType() {
-		return type;
-	}
+    /** @return type of this message */
+    public MessageType getType() {
+        return type;
+    }
 
-	/**
-	 * Converts the contents of this message into JSON format.
-	 * 
-	 * @return JSON formatted string
-	 */
-	public String toJson() {
-		return new Gson().toJson(this);
-	}
+    /**
+     * Converts the contents of this message into JSON format.
+     * 
+     * @return JSON formatted string
+     */
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
 
-	/**
-	 * Sends the message to the specified destination.
-	 * 
-	 * @param out
-	 *            a PrintWrite object that was created from a socket connected
-	 *            to the destination
-	 * @param in
-	 *            a BufferedReader object that was created from a socket
-	 *            connected to the destination.If a response from the
-	 *            destination is not requested, <code> null </code> should be
-	 *            sent.
-	 * @return the response from the destination, if requested. If an error
-	 *         occurred or if a response was not requested, <code> null </code>
-	 *         will be returned.
-	 */
-	public String send(final PrintWriter out, final BufferedReader in) {
-		if (out == null)
-			return null;
+    /**
+     * Sends the message to the specified destination.
+     * 
+     * @param out
+     *            a PrintWrite object that was created from a socket connected
+     *            to the destination
+     * @param in
+     *            a BufferedReader object that was created from a socket
+     *            connected to the destination.If a response from the
+     *            destination is not requested, <code> null </code> should be
+     *            sent.
+     * @return the response from the destination, if requested. If an error
+     *         occurred or if a response was not requested, <code> null </code>
+     *         will be returned.
+     */
+    public String send(final PrintWriter out, final BufferedReader in) {
+        if (out == null)
+            return null;
 
-		out.println(toJson());
-		if (in != null)
-			try {
-				return in.readLine();
-			} catch (final IOException e) {
-				log.error("\n\tI/O error occurred", e);
-				return null;
-			}
-		return null;
-	}
+        out.println(toJson());
+        if (in != null)
+            try {
+                return in.readLine();
+            } catch (final IOException e) {
+                log.error("\n\tI/O error occurred", e);
+                return null;
+            }
+        return null;
+    }
 }

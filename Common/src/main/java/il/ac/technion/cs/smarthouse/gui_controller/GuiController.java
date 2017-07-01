@@ -13,7 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 
 /**
- * An abstruct controller class for JavaFx's controllers.
+ * An abstract controller class for JavaFx's controllers.
  * <p>
  * This controller class support a specific model that is used by all
  * sub-controllers that are created by the root controller.
@@ -35,7 +35,9 @@ public abstract class GuiController<M> implements Initializable {
     private final BoolLatch startedLatch = new BoolLatch();
 
     @Override
-    public final void initialize(final URL location, final ResourceBundle b) {}
+    public final void initialize(final URL location, final ResourceBundle b) {
+        // No default initialization
+    }
 
     /**
      * This function will be called by
@@ -108,9 +110,8 @@ public abstract class GuiController<M> implements Initializable {
      * @return the new controller
      */
     @SuppressWarnings("unchecked")
-    private static <ModelType, T extends GuiController<ModelType>> T loadPresenter(
-                    final FXMLLoader l, final ModelType model1, 
-                    final GuiController<ModelType> parent) {
+    private static <ModelType, T extends GuiController<ModelType>> T loadPresenter(final FXMLLoader l,
+                    final ModelType model1, final GuiController<ModelType> parent) {
         assert l != null;
         assert model1 != null;
 
@@ -146,8 +147,8 @@ public abstract class GuiController<M> implements Initializable {
      * @param model1
      * @return the new controller
      */
-    public static <ModelType, T extends GuiController<ModelType>> T createRootController(
-                    final URL fxmlLocation, final ModelType model1) {
+    public static <ModelType, T extends GuiController<ModelType>> T createRootController(final URL fxmlLocation,
+                    final ModelType model1) {
         return loadPresenter(new FXMLLoader(fxmlLocation), model1, null);
     }
 
