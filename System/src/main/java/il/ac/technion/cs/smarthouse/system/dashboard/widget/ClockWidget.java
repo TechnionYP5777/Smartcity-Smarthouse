@@ -23,7 +23,6 @@ public class ClockWidget extends BasicWidget {
     }
 
     @Override
-    public void updateAutomaticallyFrom(final FileSystem s) {
-    }
+    public void updateAutomaticallyFrom(final FileSystem s) {}
 
 }

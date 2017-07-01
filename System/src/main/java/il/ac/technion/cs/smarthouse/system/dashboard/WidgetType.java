@@ -97,10 +97,8 @@ public enum WidgetType {
                 builder.text("path");
                 break;
             case PROGRESS_LINE_GRAPH:
-                builder.gradientStops(new Stop(0, Tile.GREEN), 
-                                        new Stop(0.5, Tile.YELLOW), 
-                                        new Stop(1.0, Tile.RED))
-                        .strokeWithGradient(true);
+                builder.gradientStops(new Stop(0, Tile.GREEN), new Stop(0.5, Tile.YELLOW), new Stop(1.0, Tile.RED))
+                                .strokeWithGradient(true);
                 break;
             default:
                 break;

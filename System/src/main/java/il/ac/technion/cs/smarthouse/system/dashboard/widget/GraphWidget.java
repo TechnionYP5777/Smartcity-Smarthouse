@@ -43,7 +43,7 @@ public class GraphWidget extends BasicWidget {
     public synchronized void update(final Double value, final String key) {
         if (WidgetType.PROGRESS_LINE_GRAPH.equals(type))
             super.update(value, key);
-        
+
         if (dataSeries.containsKey(key))
             Platform.runLater(() -> {
                 if (points > 30)
