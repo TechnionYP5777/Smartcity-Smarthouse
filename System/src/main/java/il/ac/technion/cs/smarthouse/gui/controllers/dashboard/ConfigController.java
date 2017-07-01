@@ -111,6 +111,7 @@ public class ConfigController extends SystemGuiController {
     @FXML HBox widgetsHbox;
     @FXML TableView<NamedPath> table;
     @FXML TableColumn<NamedPath, String> nameCol, pathCol, cancelCol;
+    @FXML TextField titleField;
     @FXML TextField nameField;
     @FXML ComboBox<String> sysPathsComboBox;
     @FXML TextField unitField;
@@ -118,7 +119,7 @@ public class ConfigController extends SystemGuiController {
     @FXML Button okBtn, cancelBtn;
 
     private final ObservableList<NamedPath> tableData = FXCollections.observableArrayList();
-    TextField titleField;
+    
 
     // ------------------ other members ---------------------------------------
 
