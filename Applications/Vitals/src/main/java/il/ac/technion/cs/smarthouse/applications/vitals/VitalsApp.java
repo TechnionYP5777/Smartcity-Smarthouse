@@ -22,10 +22,10 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorsServi
 import il.ac.technion.cs.smarthouse.system.services.sensors_service.SystemPath;
 
 /**
+ * This class contains the logic of the vitals signs application.
+ * 
  * @author Yarden
  * @since 19.1.17
- * 
- *        This class contains the logic of the vitals signs application.
  */
 public class VitalsApp extends SmarthouseApplication implements Simulatable {
     private static Logger log = LoggerFactory.getLogger(VitalsApp.class);
@@ -52,8 +52,7 @@ public class VitalsApp extends SmarthouseApplication implements Simulatable {
                         .addStreamingRange(pulsePath, Arrays.asList(80, 100))
                         .addInfoSendingPath(sysBPPath, Integer.class)
                         .addStreamingRange(sysBPPath, Arrays.asList(100, 130))
-                        .addInfoSendingPath(diBPPath, Integer.class)
-                        .addStreamingRange(diBPPath, Arrays.asList(30, 40))
+                        .addInfoSendingPath(diBPPath, Integer.class).addStreamingRange(diBPPath, Arrays.asList(30, 40))
                         .setStreamInterval(TimeUnit.SECONDS.toMillis(1)).build());
         return s;
     }

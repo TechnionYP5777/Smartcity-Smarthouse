@@ -11,10 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 /**
+ * This class contains the logic of the calculator application.
+ * 
  * @author Inbal Zukerman
  * @since 20-07-17
- * 
- *        This class contains the logic of the calculator application.
  */
 public class CalculatorController implements Initializable {
 
