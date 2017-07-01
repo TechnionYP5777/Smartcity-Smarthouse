@@ -9,6 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
+/**
+ * @author RON
+ * @since 10-06-2017
+ */
 public class AppBooleanButtonField extends HBox {
 
     public class SwitchButton extends Label {

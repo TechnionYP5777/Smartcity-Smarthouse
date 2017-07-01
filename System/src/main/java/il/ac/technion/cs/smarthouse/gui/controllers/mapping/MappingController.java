@@ -32,6 +32,7 @@ import javafx.scene.text.Font;
 /**
  * This is the controller of the house mapping
  * 
+ * @author Sharon
  * @author Roy Shchory
  * @since 04-01-2017
  */
@@ -49,6 +50,15 @@ public class MappingController extends SystemGuiController {
         drawMapping();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController#
+     * initialize(il.ac.technion.cs.smarthouse.system.SystemCore,
+     * il.ac.technion.cs.smarthouse.gui_controller.GuiController,
+     * il.ac.technion.cs.smarthouse.system.SystemMode, java.net.URL,
+     * java.util.ResourceBundle)
+     */
     @Override
 
     protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
@@ -92,7 +102,9 @@ public class MappingController extends SystemGuiController {
      * Adds a sensor to the house mapping
      * 
      * @param id
+     *            The ID of the sensor
      * @param commName
+     *            The commercial name of the sensor
      * @throws Exception
      */
     public void addSensor(final String id, final String commName) throws Exception {
@@ -112,7 +124,9 @@ public class MappingController extends SystemGuiController {
      * Updates a sensor location on the house mapping
      * 
      * @param id
+     *            The ID of the sensor
      * @param l
+     *            The location
      */
     public void updateSensorLocation(final String id, final String l) {
         if (mappingInformaton.getSensorsLocations().containsKey(id) && mappingInformaton.getLocationsContents()
