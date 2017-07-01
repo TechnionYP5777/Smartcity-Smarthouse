@@ -38,10 +38,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
+ * This class handles the visual part of the Smart-House window.
+ * 
  * @author Roy
  * @since 10-01-2017
- * 
- *        This class handles the visual part of the Smart-House window.
  */
 public class MainSystemGuiController extends SystemGuiController {
     ApplicationViewController appsPresenterInfo;

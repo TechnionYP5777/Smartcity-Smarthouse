@@ -35,11 +35,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-/** 
+/**
+ * This is the controller for the dashboard view
+ * 
  * @author RON
  * @since 14-06-2017
- * 
- * This is the controller for the dashboard view
  */
 public class DashboardController extends SystemGuiController {
 

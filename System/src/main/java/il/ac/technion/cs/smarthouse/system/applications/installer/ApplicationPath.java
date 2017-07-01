@@ -12,11 +12,11 @@ import com.google.gson.annotations.Expose;
 import il.ac.technion.cs.smarthouse.developers_api.SmarthouseApplication;
 
 /**
+ * This class will store the path for the application's .jar file OR a list of
+ * classes. This will help the debugging process.
+ * 
  * @author RON
  * @since 30-12-2016
- * 
- *        This class will store the path for the application's .jar file OR a
- *        list of classes. This will help the debugging process.
  */
 public class ApplicationPath {
     private static Logger log = LoggerFactory.getLogger(ApplicationPath.class);

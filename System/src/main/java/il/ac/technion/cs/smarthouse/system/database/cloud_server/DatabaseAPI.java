@@ -7,11 +7,11 @@ import il.ac.technion.cs.smarthouse.system.database.cloud_server.DatabaseManager
 import il.ac.technion.cs.smarthouse.system.file_system.FileSystemEntries;
 
 /**
+ * This interface defines the required methods for communication with the
+ * database.
+ * 
  * @author Inbal Zukerman
  * @since May 22, 2017
- * 
- *        This interface defines the required methods for communication with the
- *        database.
  */
 public interface DatabaseAPI {
 

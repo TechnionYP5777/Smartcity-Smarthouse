@@ -18,14 +18,14 @@ import il.ac.technion.cs.smarthouse.utils.TimeCounter;
 import il.ac.technion.cs.smarthouse.utils.TimedListener;
 
 /**
+ * All system saving stuff is in this class
+ * <p>
+ * The system is saved both on server and locally. <br>
+ * The system is loaded from the local DB if possible, and from the cloud if
+ * not.
+ * 
  * @author RON
  * @since 18-06-2017
- * 
- *        All system saving stuff is in this class
- *        <p>
- *        The system is saved both on server and locally. <br>
- *        The system is loaded from the local DB if possible, and from the cloud
- *        if not.
  */
 public class SystemSaver extends ChildCore {
     private static Logger log = LoggerFactory.getLogger(SystemSaver.class);

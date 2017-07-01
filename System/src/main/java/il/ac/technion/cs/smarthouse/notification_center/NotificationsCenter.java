@@ -10,11 +10,11 @@ import il.ac.technion.cs.smarthouse.system.services.alerts_service.EmergencyLeve
 import il.ac.technion.cs.smarthouse.utils.JavaFxHelper;
 
 /**
+ * The notification center manages the notifications to the user while using the
+ * house system GUI
+ * 
  * @author RON
  * @since 14-06-2017
- * 
- *        The notification center manages the notifications to the user while
- *        using the house system GUI
  */
 public enum NotificationsCenter {
     ;

@@ -12,10 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Saves system data to local file
+ * 
  * @author RON
  * @since 18-06-2017
- * 
- *        Saves system data to local file
  */
 public class LocalSaver {
     private static Logger log = LoggerFactory.getLogger(LocalSaver.class);

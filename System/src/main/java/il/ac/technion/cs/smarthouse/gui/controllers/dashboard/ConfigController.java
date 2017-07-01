@@ -48,11 +48,10 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 /**
+ * This is the controller for the configuration window in the dashboard view
+ * 
  * @author Elia Traore
  * @since 11-06-2017
- * 
- *        This is the controller for the configuration window in the dashboard
- *        view
  */
 public class ConfigController extends SystemGuiController {
     private class ButtonCell extends TableCell<NamedPath, String> {

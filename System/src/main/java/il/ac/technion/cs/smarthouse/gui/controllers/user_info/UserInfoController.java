@@ -37,10 +37,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 
 /**
+ * This class handles the User Information tab in the Smart-House window.
+ * 
  * @author Inbal Zukerman
  * @since 07-01-2017
- * 
- *        This class handles the User Information tab in the Smart-House window.
  */
 public class UserInfoController extends SystemGuiController {
 

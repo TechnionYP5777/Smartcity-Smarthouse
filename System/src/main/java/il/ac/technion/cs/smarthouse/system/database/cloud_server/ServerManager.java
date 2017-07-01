@@ -11,10 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This class implements an API to work with the database on the server.
+ * 
  * @author Inbal Zukerman
  * @since Mar 31, 2017
- * 
- *        This class implements an API to work with the database on the server.
  */
 
 public class ServerManager {

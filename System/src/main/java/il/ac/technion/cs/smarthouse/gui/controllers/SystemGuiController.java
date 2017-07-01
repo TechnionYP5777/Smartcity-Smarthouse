@@ -8,10 +8,10 @@ import il.ac.technion.cs.smarthouse.system.SystemCore;
 import il.ac.technion.cs.smarthouse.system.SystemMode;
 
 /**
+ * This is the abstract controller of the entire system GUI
+ * 
  * @author RON
  * @since 07-06-2017
- * 
- *        This is the abstract controller of the entire system GUI
  */
 
 public abstract class SystemGuiController extends GuiController<SystemCore> {
