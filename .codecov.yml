@@ -15,6 +15,7 @@ coverage:
     - "System/**/Entry.java"
     - "System/**/SystemSaver.java"
     - "System/**/SystemCore.java"
+    - "System/**/MappingInformation.java"
     - "SensorsSimulator/**"
     - "Common/**/utils/JavaFxHelper.java"
     - "Common/**/gui_controller/*"
