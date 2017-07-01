@@ -20,7 +20,7 @@ import il.ac.technion.cs.smarthouse.sensors.PathType;
 public class SensorsSimulator {
 	public enum Action {
 		ADD, REMOVE, GET
-	};
+	}
 
 	private Integer id = 0;
 
@@ -45,6 +45,7 @@ public class SensorsSimulator {
 	}
 
 	// ------------------------- public API -----------------------------------
+
 	public String addSensor(GenericSensor s) {
 		Stream.of(PathType.values()).forEach(type -> Optional.ofNullable(loggers.get(type))
 				.ifPresent(ls -> ls.forEach(logger -> s.addLogger(type, logger))));

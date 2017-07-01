@@ -12,34 +12,34 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
  */
 public class SupplierStreamer extends MsgStreamerThread {
 
-	private Supplier<Map<String, Object>> msgGenerator;
+    private Supplier<Map<String, Object>> msgGenerator;
 
-	public SupplierStreamer(GenericSensor sensor, Long streamingInterval, Supplier<Map<String, Object>> msgGenerator) {
-		super(sensor, streamingInterval);
-		this.msgGenerator = msgGenerator;
-	}
+    public SupplierStreamer(GenericSensor sensor, Long streamingInterval, Supplier<Map<String, Object>> msgGenerator) {
+        super(sensor, streamingInterval);
+        this.msgGenerator = msgGenerator;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.
-	 * MsgStreamerThread#send()
-	 */
-	@Override
-	void send() {
-		sensor.sendMessage(msgGenerator.get());
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.
+     * MsgStreamerThread#send()
+     */
+    @Override
+    void send() {
+        sensor.sendMessage(msgGenerator.get());
 
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.
-	 * MsgStreamerThread#canStartStreaming()
-	 */
-	@Override
-	Boolean canStartStreaming() {
-		return true;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.
+     * MsgStreamerThread#canStartStreaming()
+     */
+    @Override
+    Boolean canStartStreaming() {
+        return true;
+    }
 
 }

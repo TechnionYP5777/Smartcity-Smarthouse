@@ -8,6 +8,7 @@ public class TimedListenerTest {
 	int counter;
 
 	@Test(expected = AssertionError.class)
+	@SuppressWarnings("static-method")
 	public void badInitTest() {
 		new TimedListener(null, null, null);
 	}

@@ -22,7 +22,6 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.MsgStrea
 import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.RangeStreamer;
 import il.ac.technion.cs.smarthouse.sensors.simulator.streaming_threads.SupplierStreamer;
 
-
 /**
  * @author Elia Traore
  * @since Jun 17, 2017
@@ -34,8 +33,7 @@ public class GenericSensor {
 	private Map<PathType, Set<Consumer<String>>> loggers = new HashMap<>();
 	private Map<PathType, Map<String, Class>> paths = new HashMap<>();
 	private Boolean interactive = false, connected = false;
-	private Long pollInterval = TimeUnit.SECONDS.toMillis(1), 
-			streamingInterval = TimeUnit.SECONDS.toMillis(20);
+	private Long pollInterval = TimeUnit.SECONDS.toMillis(1), streamingInterval = TimeUnit.SECONDS.toMillis(20);
 
 	private Map<String, List> lastReceivedRanges;
 	private Supplier<Map<String, Object>> msgsGenerator;
@@ -50,13 +48,14 @@ public class GenericSensor {
 	GenericSensor(GenericSensor other) {
 		Optional.ofNullable(other.loggers).ifPresent(otherloggers -> loggers = new HashMap<>(otherloggers));
 		Stream.of(PathType.values()).filter(t -> other.paths.containsKey(t))
-									.forEach(t -> paths.put(t, new HashMap<>(other.paths.get(t))));
+				.forEach(t -> paths.put(t, new HashMap<>(other.paths.get(t))));
 		interactive = other.interactive;
 		connected = other.connected;
 		pollInterval = other.pollInterval;
 		streamingInterval = other.streamingInterval;
-		
-		Optional.ofNullable(other.lastReceivedRanges).ifPresent(otherRanges -> lastReceivedRanges = new HashMap<>(otherRanges));
+
+		Optional.ofNullable(other.lastReceivedRanges)
+				.ifPresent(otherRanges -> lastReceivedRanges = new HashMap<>(otherRanges));
 		msgsGenerator = other.msgsGenerator;
 	}
 
@@ -106,9 +105,10 @@ public class GenericSensor {
 		lastReceivedRanges = ranges;
 	}
 
-	void setMsgsSupplier(Supplier<Map<String, Object>> m){
+	void setMsgsSupplier(Supplier<Map<String, Object>> m) {
 		msgsGenerator = m;
 	}
+
 	// ------------------------ getters --------------------------------------
 	List<String> getPaths(PathType t) {
 		return Optional.ofNullable(paths.get(t)).map(ps -> new ArrayList<>(ps.keySet())).orElse(new ArrayList<>());
@@ -118,15 +118,14 @@ public class GenericSensor {
 		return sensor;
 	}
 
-	String name(){
-		return "A sensor called: " +getAlias() + " ("+ getCommname()+", "+getId()+")";
+	String name() {
+		return "A sensor called: " + getAlias() + " (" + getCommname() + ", " + getId() + ")";
 	}
+
 	// ------------------------ logging --------------------------------------
 	void logInstruction(String path, String inst) {
-		Optional.ofNullable(loggers.get(PathType.INSTRUCTION_RECEIVING)).ifPresent(ls -> ls
-				.forEach(logger -> logger.accept(name()+ 
-													"\n\tReceived instruction:\t"+ inst+
-													"\n\tOn path:\t" + path)));
+		Optional.ofNullable(loggers.get(PathType.INSTRUCTION_RECEIVING)).ifPresent(ls -> ls.forEach(
+				logger -> logger.accept(name() + "\n\tReceived instruction:\t" + inst + "\n\tOn path:\t" + path)));
 	}
 
 	void logMsgSent(Map<String, String> data) {
@@ -143,7 +142,8 @@ public class GenericSensor {
 	// ------------------------ public method -------------------------------
 	/** blocks until an instruction is sent */
 	public void waitForInstruction() {
-		while (!sensor.operate());
+		while (!sensor.operate())
+			;
 	}
 
 	/** blocking method */
@@ -163,7 +163,7 @@ public class GenericSensor {
 	public String getAlias() {
 		return sensor.getAlias();
 	}
-	
+
 	public List<String> getObservationSendingPaths() {
 		return sensor.getObservationSendingPaths();
 	}
@@ -171,11 +171,11 @@ public class GenericSensor {
 	public List<String> getInstructionRecievingPaths() {
 		return sensor.getInstructionRecievingPaths();
 	}
-	
-	public Map<String, Class> getPathsWithClasses(PathType t){
+
+	public Map<String, Class> getPathsWithClasses(PathType t) {
 		return paths.get(t);
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		return o instanceof GenericSensor && this.getId().equals(((GenericSensor) o).getId());
@@ -197,7 +197,7 @@ public class GenericSensor {
 		logMsgSent(d);
 	}
 
-	private void stream(final MsgStreamerThread t){
+	private void stream(final MsgStreamerThread t) {
 		if (!paths.containsKey(PathType.INFO_SENDING))
 			return;
 
@@ -213,7 +213,7 @@ public class GenericSensor {
 		msgStreamer = t;
 		msgStreamer.start();
 	}
-	
+
 	/**
 	 * the list object is interperated by the path (key type) if the type is
 	 * string or boolean, the list contains all the legal values if the type is
@@ -223,17 +223,17 @@ public class GenericSensor {
 	public void streamMessages(final Map<String, List> ranges) {
 		lastReceivedRanges = ranges;
 		stream(new RangeStreamer(this, streamingInterval, lastReceivedRanges));
-		
+
 	}
-	
-	public void streamMessages(final Supplier<Map<String, Object>> msgsGenerator){
+
+	public void streamMessages(final Supplier<Map<String, Object>> msgsGenerator) {
 		this.msgsGenerator = msgsGenerator;
 		stream(new SupplierStreamer(this, streamingInterval, msgsGenerator));
 	}
 
 	/**
-	 * streams with the default given values: 
-	 * first tries through supplier, and if none exists through ranges
+	 * streams with the default given values: first tries through supplier, and
+	 * if none exists through ranges
 	 */
 	public void startStreaming() {
 		if (msgsGenerator != null)
@@ -242,7 +242,7 @@ public class GenericSensor {
 			streamMessages(lastReceivedRanges);
 	}
 
-	public void stopStreaming(){
+	public void stopStreaming() {
 		Optional.ofNullable(msgStreamer).ifPresent(t -> t.interrupt());
 	}
 }

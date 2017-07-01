@@ -15,6 +15,8 @@ import il.ac.technion.cs.smarthouse.system.services.sensors_service.SensorData;
  * 
  * @author RON
  * @since 10-06-2017
+ * 
+ *        [[SuppressWarningsSpartan]]
  */
 public interface WidgetsRegionBuilder {
     public WidgetsRegionBuilder setTitle(String title);

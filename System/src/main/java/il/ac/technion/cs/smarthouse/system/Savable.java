@@ -14,14 +14,13 @@ import com.google.gson.JsonParser;
 import com.google.gson.annotations.Expose;
 
 /**
+ * An interface that allows to serialize and deserialize the class, using json.
+ * <p>
+ * The interface uses Gson, and it is defined to exclude fields without
+ * {@link Expose} Annotation
+ * 
  * @author RON
  * @since 21-04-2017
- * 
- *        An interface that allows to serialize and deserialize the class, using
- *        json.
- *        <p>
- *        The interface uses Gson, and it is defined to exclude fields without
- *        {@link Expose} Annotation
  */
 public interface Savable {
     final GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();

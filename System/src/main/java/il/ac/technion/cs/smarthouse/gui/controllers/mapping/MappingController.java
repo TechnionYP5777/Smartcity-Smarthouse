@@ -80,7 +80,7 @@ public class MappingController extends SystemGuiController {
 
         log.debug("subscribed to sensors root");
 
-        model.getFileSystem().subscribe((p, l) -> {
+        model.getFileSystem().subscribeWithNoNulls((p, l) -> {
             log.debug("map gui was notified on (path,val)=(" + p + "," + l + ")");
             final String commname = FileSystemEntries.COMMERCIAL_NAME.getPartFromPath(p),
                             id = FileSystemEntries.SENSOR_ID.getPartFromPath(p);

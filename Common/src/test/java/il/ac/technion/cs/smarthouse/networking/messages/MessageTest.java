@@ -9,31 +9,34 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-/** @author Sharon
- * @since 30.12.16 */
+/**
+ * @author Sharon
+ * @since 30.12.16
+ */
 public abstract class MessageTest {
-    protected abstract Message defaultMessage();
+	protected abstract Message defaultMessage();
 
-    @Test public void testMessageDeliveryWithoutInput() {
-        Assert.assertNull(defaultMessage().send(null, null));
-    }
+	@Test
+	public void testMessageDeliveryWithoutInput() {
+		Assert.assertNull(defaultMessage().send(null, null));
+	}
 
-    @Test public void testMessageDeliveryWithoutResponse() {
-        final Message message = defaultMessage();
-        final PrintWriter pw = Mockito.mock(PrintWriter.class);
+	@Test
+	public void testMessageDeliveryWithoutResponse() {
+		final Message message = defaultMessage();
+		final PrintWriter pw = Mockito.mock(PrintWriter.class);
+		Assert.assertNull(message.send(pw, null));
+		Mockito.verify(pw, Mockito.times(1)).println(Matchers.anyString());
+	}
 
-        Assert.assertNull(message.send(pw, null));
-        Mockito.verify(pw, Mockito.times(1)).println(Matchers.anyString());
-    }
-
-    @Test public void testMessageDeliveryWithResponse() throws IOException {
-        final Message message = defaultMessage();
-        final PrintWriter pw = Mockito.mock(PrintWriter.class);
-        final BufferedReader br = Mockito.mock(BufferedReader.class);
-        Mockito.when(br.readLine()).thenReturn("A response");
-
-        Assert.assertEquals("A response", message.send(pw, br));
-        Mockito.verify(pw, Mockito.times(1)).println(Matchers.anyString());
-        Mockito.verify(br, Mockito.times(1)).readLine();
-    }
+	@Test
+	public void testMessageDeliveryWithResponse() throws IOException {
+		final Message message = defaultMessage();
+		final PrintWriter pw = Mockito.mock(PrintWriter.class);
+		final BufferedReader br = Mockito.mock(BufferedReader.class);
+		Mockito.when(br.readLine()).thenReturn("A response");
+		Assert.assertEquals("A response", message.send(pw, br));
+		Mockito.verify(pw, Mockito.times(1)).println(Matchers.anyString());
+		Mockito.verify(br, Mockito.times(1)).readLine();
+	}
 }

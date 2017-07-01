@@ -157,6 +157,7 @@ public class Sensor {
 			final String $ = new SensorMessage(MessageType.REGISTRATION, this).send(out, in);
 			return $ != null && new SensorMessage($).isSuccesful();
 		} catch (final IllegalMessageBaseExecption e) {
+			// Ignoring
 		}
 		return false;
 	}
@@ -183,6 +184,7 @@ public class Sensor {
 		try {
 			new SensorMessage(MessageType.UPDATE, this).setData(data).send(out, null);
 		} catch (final IllegalMessageBaseExecption e) {
+			// Ignoring
 		}
 	}
 

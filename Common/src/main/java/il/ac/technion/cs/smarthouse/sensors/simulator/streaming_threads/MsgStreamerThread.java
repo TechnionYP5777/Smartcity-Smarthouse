@@ -12,13 +12,13 @@ import il.ac.technion.cs.smarthouse.sensors.simulator.GenericSensor;
 
 public abstract class MsgStreamerThread extends Thread {
 	private static Logger log = LoggerFactory.getLogger(MsgStreamerThread.class);
-	
+
 	GenericSensor sensor;
 	Long streamingInterval;
 	private Boolean keepStreaming = true;
 
 	protected MsgStreamerThread(GenericSensor sensor, Long streamingInterval) {
-		this.sensor = sensor; 
+		this.sensor = sensor;
 		this.streamingInterval = streamingInterval;
 	}
 
@@ -31,7 +31,7 @@ public abstract class MsgStreamerThread extends Thread {
 
 	@Override
 	public void run() {
-		if(!canStartStreaming())
+		if (!canStartStreaming())
 			return;
 		log.info("streamer initialized.");
 		while (keepStreaming) {
@@ -44,12 +44,15 @@ public abstract class MsgStreamerThread extends Thread {
 		}
 	}
 
+	/**
+	 * Sends a single message to the system
+	 */
+	abstract void send();
 
 	/**
-	 * Sends a single message to the system*/
-	abstract void send();
-	
-	/**Will be called before initializing the streaming to assure theres a point
-	 * @return <code>true</code> if the streaming can begin.*/
+	 * Will be called before initializing the streaming to assure theres a point
+	 * 
+	 * @return <code>true</code> if the streaming can begin.
+	 */
 	abstract Boolean canStartStreaming();
 }
