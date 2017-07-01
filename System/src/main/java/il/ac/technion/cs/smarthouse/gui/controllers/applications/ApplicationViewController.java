@@ -29,11 +29,11 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 /**
- * This controller is for the application view, both in the user and develper
- * modes.
- * 
  * @author Roy
  * @since 10-01-2017
+ * 
+ *        This controller is for the application view, both in the user and
+ *        developer modes.
  */
 public class ApplicationViewController extends SystemGuiController {
     @FXML ListView<String> listView;
@@ -51,6 +51,15 @@ public class ApplicationViewController extends SystemGuiController {
 
     private ApplicationsCore appsHandler;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see il.ac.technion.cs.smarthouse.gui.controllers.SystemGuiController#
+     * initialize(il.ac.technion.cs.smarthouse.system.SystemCore,
+     * il.ac.technion.cs.smarthouse.gui_controller.GuiController,
+     * il.ac.technion.cs.smarthouse.system.SystemMode, java.net.URL,
+     * java.util.ResourceBundle)
+     */
     @Override
     protected <T extends GuiController<SystemCore>> void initialize(SystemCore model, T parent, SystemMode m,
                     URL location, ResourceBundle b) {
