@@ -7,9 +7,11 @@ It is comprised of 3 main components: the sensors in the house (or their simulat
 
 The system acts as a mediator between the sensors and the applications. The sensors send data to the system and the system notifies the applications that a new data has been received.
 
-In order to efficiently communicate the information between those components, We've implemented an **OS-like system** that runs a local sensors-server, contains an event driven file-system and an access control mechanism.
+In order to efficiently communicate the information between those components, We've implemented an **OS-like system** that runs a local sensors-server, contains an [event driven file-system](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki/The-Smathouse's-File-System) and an access control mechanism.
 
 Any Applications and sensors that are developed by 3rd party developers, must implement the platform's API.
+
+For more information, go to our [wiki](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki)
 
 ## Development Status
 [![Build Status](https://travis-ci.org/TechnionYP5777/Smartcity-Smarthouse.svg?branch=master)](https://travis-ci.org/TechnionYP5777/Smartcity-Smarthouse)
@@ -21,25 +23,33 @@ Please feel free to leave a review of your installation experience in our Wiki. 
 If your are reviewing us during 2<sup>nd</sup>-3<sup>rd</sup> of July 2017 between 12:30-14:30 GMT+3, you can also receive live support from our team - just open an issue and we'll try to assist you. For more information about how to submit reviews and issues please look into [the following page](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki/Users-Reviews-Related-Information).
 
 ## Contributions
-The project is developed using the `Java` programming language. To run the code you will need JDK 8 and the JavaFX library. For a better understanding of the project structure, please read the [System Overview](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki/The-Smart-House-System-Overview) wiki page, which presents the different parts of the project.
+The project is developed using the `Java` programming language. To run the code you will need JDK 8 and the JavaFX library.
 
-## Windows
-To install the required run time environment and libraries, simply go to the Oracle official download pages, and download any JDK 8 release installation.
 
-## Linux
-If installing using the `apt-get` program, run the following commands:
+For a better understanding of the project structure, please read the [System Overview](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki/The-Smart-House-System-Overview) wiki page, which presents the different parts of the project.
 
-`sudo apt-get install openjdk-8-jdk`
+## Installation
+Please read our [Installation Guide](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki/Installation-Guide). But before, make sure you have installed the required run time environment and libraries.
+- Working on **Windows**?
 
-`sudo apt-get install openjdk-8-jre`
+  Simply go to the Oracle official download pages, and download any JDK 8 release installation.
+- Working on **Linux**?
 
-And the following command to install the JavaFX library:
+  If installing using the `apt-get` program, run the following commands:
+  
+  `sudo apt-get install openjdk-8-jdk`
+  
+  `sudo apt-get install openjdk-8-jre`
+  
+  
+  And the following command to install the JavaFX library:
+  
+  `sudo apt-get install openjfx`
+  
+  
+  These three commands will install the java development kit, java runtime environment and the JavaFX library. Another option would be to go to the official Oracle download page, download the java binaries and do the installation manually.
 
-`sudo apt-get install openjfx`
-
-These three commands will install the java development kit, java runtime environment and the JavaFX library. Another option would be to go to the official Oracle download page, download the java binaries and do the installation manually.
-
-## Building the application
+## Building the application with Maven
 From the root directory, run
 `mvn clean package -DskipTests`
 
@@ -48,10 +58,7 @@ The following jar files will be created in the `target` folder:
 - `Sos-1.01-jar-with-dependencies.jar` - the sos application runner
 - `Stove-1.01-jar-with-dependencies.jar` - the stove application runner
 - `Vitals-1.01-jar-with-dependencies.jar` - the vitals application runner
-- `Shutter-1.01-jar-with-dependencies.jar` - the shutter application runner
 
 You can run any of those jar files with the command:
 `java -jar <JAR_FILE_NAME>`
 
-## About
-Icons by www.icons8.com
