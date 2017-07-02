@@ -13,10 +13,10 @@ import javafx.util.Pair;
 
 public class MappingInformation {
 
-    private static final int ROOM_IN_ROW = 4;
+    private static final int ROOM_IN_ROW = 2;
     private static final int MARGIN = 20;
-    private static final int HEIGHT = 150;
-    private static final int WIDTH = 160;
+    private static final int HEIGHT = 170;
+    private static final int WIDTH = 320;
     @Expose private List<String> allLocations = new ArrayList<>();
     @Expose private final House house = new House();
     @Expose private final Map<String, List<Pair<String,String>>> locationsContents = new HashMap<>();

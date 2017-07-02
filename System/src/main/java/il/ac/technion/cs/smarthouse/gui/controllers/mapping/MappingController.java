@@ -189,7 +189,7 @@ public class MappingController extends SystemGuiController {
         int xPlusRoom = mappingInformaton.calcxPlusRoom(), yPlusRoom = mappingInformaton.calcyPlusRoom();
         g.strokeRect(xPlusRoom, yPlusRoom, MappingInformation.getWidth(), MappingInformation.getHeight());
         g.setFont(new Font(45.0));
-        g.fillText("+", xPlusRoom + 65, yPlusRoom + 85);
+        g.fillText("+", xPlusRoom + 150, yPlusRoom + 85);
         g.setFill(Color.BLUE);
         g.setFont(new Font(84.0));
         canvas.setOnMouseClicked(mouseEvent -> {
