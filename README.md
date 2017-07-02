@@ -1,5 +1,5 @@
 # Smartcity - Smarthouse
-<img src="https://cloud.githubusercontent.com/assets/15971916/24823370/5f96f4fa-1c06-11e7-9784-0089af77932f.png" align="left" hspace="10" vspace="9" width="300">
+<img src="https://cloud.githubusercontent.com/assets/15971916/24823370/5f96f4fa-1c06-11e7-9784-0089af77932f.png" align="left" hspace="10" vspace="35" width="300">
 
 This project offers a smart-house framework, allowing comfortable development of applications utilizing existing sensors within the smart-house to assess and manipulate the state of the house.
 
@@ -11,7 +11,7 @@ In order to efficiently communicate the information between those components, We
 
 Any Applications and sensors that are developed by 3rd party developers, must implement the platform's API.
 
-For more information, go to our [wiki](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki)
+For more information, go to our [wiki pages](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki).
 
 ## Development Status
 [![Build Status](https://travis-ci.org/TechnionYP5777/Smartcity-Smarthouse.svg?branch=master)](https://travis-ci.org/TechnionYP5777/Smartcity-Smarthouse)
