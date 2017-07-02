@@ -36,19 +36,19 @@ public enum EmergencyLevel {
     CONTACT_FIRE_FIGHTERS;
 
     public static EmergencyLevel fromString(final String $) {
-        return EmergencyLevel.valueOf($);
+        return $ == null ? null : EmergencyLevel.valueOf($);
     }
 
     public static List<String> stringValues() {
-        return Stream.of(EmergencyLevel.values()).map(v->v.name()).collect(Collectors.toList());
+        return Stream.of(EmergencyLevel.values()).map(v -> v.name()).collect(Collectors.toList());
     }
-    
+
     public String toPretty() {
         return name().toLowerCase().replace('_', ' ');
     }
-    
+
     public static String fromPretty(String pretty) {
-        return pretty.toUpperCase().replace(' ', '_');
+        return pretty == null ? null : pretty.toUpperCase().replace(' ', '_');
     }
 
 }
