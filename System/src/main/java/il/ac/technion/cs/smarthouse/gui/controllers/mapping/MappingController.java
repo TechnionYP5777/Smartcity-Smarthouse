@@ -208,11 +208,14 @@ public class MappingController extends SystemGuiController {
                         if (!result.isPresent())
                             return;
                         final String name = result.get();
-                        mappingInformaton.getAllLocations().remove(r.location);
                         mappingInformaton.getAllLocations().add(name);
+                        List<Pair<String,String>> currSensors = mappingInformaton.getLocationsContents().get(r.location);
+                        mappingInformaton.getAllLocations().remove(r.location);
+                        mappingInformaton.getLocationsContents().remove(r.location);
                         r.location = name;
                         sensors.values().forEach(e -> e.updateRooms());
-                        drawMapping();
+                        for(Pair<String,String> p:currSensors)
+                            sensors.get(p.getKey()).setLocation(name);
                     }
                 });
                 return;
