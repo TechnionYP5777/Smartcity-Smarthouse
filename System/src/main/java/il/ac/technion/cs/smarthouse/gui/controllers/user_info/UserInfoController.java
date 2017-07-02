@@ -205,11 +205,11 @@ public class UserInfoController extends SystemGuiController {
     }
 
     static boolean validateId(final String id) {
-        return id != null && !"".equals(id) && id.chars().allMatch(Character::isDigit);
+        return id != null && !"".equals(id) && id.chars().allMatch(Character::isDigit) && id.length() == 9;
     }
 
     static boolean validatePhone(final String phone) {
-        return phone != null && !"".equals(phone) && phone.chars().allMatch(Character::isDigit);
+        return phone != null && !"".equals(phone) && phone.chars().allMatch(Character::isDigit) && phone.length() >= 9;
     }
 
     static boolean validateAddress(final String address) {
