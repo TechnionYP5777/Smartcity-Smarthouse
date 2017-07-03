@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
 import org.slf4j.Logger;
@@ -57,7 +58,7 @@ public class FileSystemImpl implements FileSystem, Savable {
 		private Object mostRecentDataOnBranch;
 		private final Map<String, EventHandler> eventHandlers = new HashMap<>();
 		@Expose
-		Map<String, FileNode> children = new HashMap<>();
+		Map<String, FileNode> children = new ConcurrentHashMap<>();
 
 		public FileNode(final String name) {
 			myName = name;
