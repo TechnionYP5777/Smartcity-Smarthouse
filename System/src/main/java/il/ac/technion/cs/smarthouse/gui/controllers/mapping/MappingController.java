@@ -84,7 +84,7 @@ public class MappingController extends SystemGuiController {
         canvas.setWidth(2000);
         canvas.setHeight(2000);
 
-        addRoom(SensorLocation.UNDIFINED);
+        addRoom(SensorLocation.UNDEFINED);
 
         log.debug("subscribed to sensors root");
 
@@ -206,7 +206,7 @@ public class MappingController extends SystemGuiController {
                 mappingInformaton.getHouse().getRooms().forEach(r -> {
                     if (x > r.x && x < r.x + MappingInformation.getWidth() && y > r.y
                                     && y < r.y + MappingInformation.getHeight()) {
-                        if (r.location.equals(SensorLocation.UNDIFINED))
+                        if (r.location.equals(SensorLocation.UNDEFINED))
                             return;
                         final TextInputDialog dialog = new TextInputDialog(r.location);
                         dialog.setTitle("Update Room");
