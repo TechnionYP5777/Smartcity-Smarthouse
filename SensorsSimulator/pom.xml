@@ -9,7 +9,7 @@
 	<artifactId>SensorsSimulator</artifactId>
 	<name>SensorsSimulator</name>
 	<properties>
-		<jar.runnable.main.class>il.ac.technion.cs.smarthouse.simulator.view.SimulatorGui</jar.runnable.main.class>
+		<jar.runnable.main.class>il.ac.technion.cs.smarthouse.DeveloperSimulator.DeveloperSimulatorGui</jar.runnable.main.class>
 	</properties>
 	<build>
 		<plugins>

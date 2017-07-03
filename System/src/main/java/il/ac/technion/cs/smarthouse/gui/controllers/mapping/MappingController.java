@@ -23,7 +23,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -46,7 +48,13 @@ public class MappingController extends SystemGuiController {
     @FXML private Canvas canvas;
 
     void addRoom(String roomName) {
-        mappingInformaton.addRoom(roomName);
+        if(!mappingInformaton.addRoom(roomName)){
+            final Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Room allready exists");
+            alert.setContentText("Make sure to give a unique name to each room.");
+            alert.showAndWait();
+        }
         sensors.values().forEach(e -> e.updateRooms());
         drawMapping();
     }
@@ -76,7 +84,7 @@ public class MappingController extends SystemGuiController {
         canvas.setWidth(2000);
         canvas.setHeight(2000);
 
-        addRoom(SensorLocation.UNDIFINED);
+        addRoom(SensorLocation.UNDEFINED);
 
         log.debug("subscribed to sensors root");
 
@@ -198,7 +206,7 @@ public class MappingController extends SystemGuiController {
                 mappingInformaton.getHouse().getRooms().forEach(r -> {
                     if (x > r.x && x < r.x + MappingInformation.getWidth() && y > r.y
                                     && y < r.y + MappingInformation.getHeight()) {
-                        if (r.location.equals(SensorLocation.UNDIFINED))
+                        if (r.location.equals(SensorLocation.UNDEFINED))
                             return;
                         final TextInputDialog dialog = new TextInputDialog(r.location);
                         dialog.setTitle("Update Room");
