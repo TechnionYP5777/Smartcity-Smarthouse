@@ -57,7 +57,7 @@ public class SensorDataRecevierThread extends SensorManagingThread {
                         + "\n\tThe sensor will update on paths: " + msg.getObservationSendingPaths()
                         + "\n\tThe sensor will listen on paths: " + msg.getInstructionRecievingPaths());
 
-        filesystem.sendMessage(SensorLocation.UNDIFINED,
+        filesystem.sendMessage(SensorLocation.UNDEFINED,
                         FileSystemEntries.LOCATION.buildPath(msg.getSensorCommName(), msg.getSensorId()));
 
         filesystem.sendMessage(msg.getAlias(),
