@@ -23,11 +23,14 @@ public class MappingInformation {
     @Expose private final Map<String, String> sensorsLocations = new HashMap<>();
     @Expose private int roomNumbers;
 
-    public void addRoom(String roomName) {
+    public boolean addRoom(String roomName) {
+        if(allLocations.contains(roomName))
+            return false;
         allLocations.add(roomName);
         house.addRoom(new Room(MARGIN + (roomNumbers % ROOM_IN_ROW) * WIDTH,
                         MARGIN + (roomNumbers / ROOM_IN_ROW) * HEIGHT, WIDTH, HEIGHT, roomName));
         ++roomNumbers;
+        return true;
     }
 
     public List<String> getAllLocations() {
