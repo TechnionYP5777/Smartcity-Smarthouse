@@ -32,6 +32,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
@@ -40,6 +41,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -130,7 +132,7 @@ public class ConfigController extends SystemGuiController {
     private final Map<String, List<BasicWidget>> widgets = initWidgets();
 
     private ConfigConsumer consumer;
-    private WidgetType chosenType;
+    private WidgetType chosenType = null;
     private final String unitfDefaultText = "(optional)", namefDefaultText = "<name>",
                     pathscbDefaultText = "<choose path>", titlefDefaultText = "(optional)";
 
@@ -228,6 +230,9 @@ public class ConfigController extends SystemGuiController {
             c.setUnit(unitField.getText());
 
         final List<String> badNames = Arrays.asList(namefDefaultText, "", null);
+        if (tableData.isEmpty())
+            return null;
+
         tableData.forEach(namedPath -> {
             if (!pathscbDefaultText.equals(namedPath.getPath())) {
                 final String actualname = badNames.contains(namedPath.getName()) ? null : namedPath.getName();
@@ -238,6 +243,7 @@ public class ConfigController extends SystemGuiController {
         return c;
     }
 
+    
     private List<String> getAvailablePaths(final FileSystem s) {
         List<String> $ = getAvailablePathsInner(s.getReadOnlyFileSystem(FileSystemEntries.SENSORS_DATA.buildPath()),
                         new ArrayList<>());
@@ -256,6 +262,26 @@ public class ConfigController extends SystemGuiController {
 
         n.getChildren().forEach(c -> ss.addAll(getAvailablePathsInner(c, new ArrayList<>())));
         return ss;
+    }
+
+    private static void alertMessageUnvalidInput(String fieldType) {
+        final Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText("Bad Input");
+        String errorMsg;
+        switch (fieldType) {
+            case "paths":
+                errorMsg = "Please select at least one path";
+                break;
+            case "widgetType":
+                errorMsg = "Please select a widget type";
+                break;
+            default:
+                errorMsg = "Both widget type and path are missing";
+                break;
+        }
+        alert.setContentText(errorMsg);
+        alert.showAndWait();
     }
 
     // ------------------ GUI elements initializers ---------------------------
@@ -304,9 +330,15 @@ public class ConfigController extends SystemGuiController {
     private void initExitButtonsRegion() {
         // final buttons
         okBtn.setOnMouseClicked(e -> {
-            if (consumer != null)
+            if (consumer != null && getCollectedInfo() != null && chosenType != null) {
                 Platform.runLater(() -> consumer.create(chosenType, getCollectedInfo()));
-            shutdownFrom(okBtn);
+                shutdownFrom(okBtn);
+            }
+            if (chosenType == null)
+                alertMessageUnvalidInput(getCollectedInfo() == null ? "both" : "widgetType");
+            else if (getCollectedInfo() == null)
+                alertMessageUnvalidInput("paths");
+
         });
 
         cancelBtn.setOnMouseClicked(e -> shutdownFrom(cancelBtn));

@@ -96,6 +96,7 @@ public class DashboardController extends SystemGuiController {
         try {
             final ConfigController configController = createChildController("dashboard_config_window_ui.fxml");
             configController.setConfigConsumer((type, info) -> {
+
                 final String wid = addWidget(type.createWidget(TILE_SIZE, info));
                 core.registerWidget(wid, currentWidgets.get(wid));
             });
