@@ -13,6 +13,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jar.runnable.main.class>il.ac.technion.cs.smarthouse.custom_house.Entry</jar.runnable.main.class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -55,4 +56,11 @@
 			<version>0.9.10</version>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
