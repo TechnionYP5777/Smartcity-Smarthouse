@@ -19,7 +19,7 @@ For more information, go to our [wiki pages](https://github.com/TechnionYP5777/S
 [![Awesomeness](https://img.shields.io/badge/awesomeness-100%25-blue.svg)](https://shields.io/)
 
 ## Users Reviews
-Please feel free to leave a review of your installation experience in our Wiki. .<br>
+Please feel free to leave a review of your installation experience in our Wiki.<br>
 If your are reviewing us during 2<sup>nd</sup>-3<sup>rd</sup> of July 2017 between 12:30-14:30 GMT+3, you can also receive live support from our team - just open an issue and we'll try to assist you. For more information about how to submit reviews and issues please look into [the following page](https://github.com/TechnionYP5777/Smartcity-Smarthouse/wiki/Users-Reviews-Related-Information).
 
 ## Contributions
