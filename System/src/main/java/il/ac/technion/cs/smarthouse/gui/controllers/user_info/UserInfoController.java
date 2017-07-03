@@ -209,7 +209,7 @@ public class UserInfoController extends SystemGuiController {
     }
 
     static boolean validatePhone(final String phone) {
-        return phone != null && !"".equals(phone) && phone.chars().allMatch(Character::isDigit) && phone.length() >= 9;
+        return phone != null && !"".equals(phone) && phone.chars().allMatch(Character::isDigit) && phone.startsWith("0") && phone.length() >= 9;
     }
 
     static boolean validateAddress(final String address) {
@@ -274,7 +274,7 @@ public class UserInfoController extends SystemGuiController {
             @Override
             public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
                 if (!newValue) // Focusing out
-                    setStatus(idStatus, idMessage, "ID can't be empty and must contain only digits",
+                    setStatus(idStatus, idMessage, "ID can't be empty and must contain only digits and should contain 9 digits",
                                     validateId(userIDField.getText()));
             }
         });
@@ -282,9 +282,19 @@ public class UserInfoController extends SystemGuiController {
         userPhoneNumField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> b, Boolean oldValue, Boolean newValue) {
-                if (!newValue) // Focusing out
-                    setStatus(phoneStatus, phoneMessage, "Phone number can't be empty and must contain only digits",
-                                    validatePhone(userPhoneNumField.getText()));
+                if (newValue)
+					return;
+				String errorMsg = "Phone number not legal", phoneNum = userPhoneNumField.getText();
+				if (!validatePhone(phoneNum))
+					if ("".equals(phoneNum))
+						errorMsg = "Phone number cannot be empty";
+					else if (phoneNum.length() != 9)
+						errorMsg = "Phone number is not in the right length";
+					else if (!phoneNum.chars().allMatch(Character::isDigit))
+						errorMsg = "Phone number should contain only digits";
+					else if (phoneNum.startsWith("0"))
+						errorMsg = "Phone number should start with zero";
+				setStatus(phoneStatus, phoneMessage, errorMsg, validatePhone(userPhoneNumField.getText()));
             }
         });
 
